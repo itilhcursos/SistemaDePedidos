@@ -5,11 +5,9 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="75" height="75" />
-
+    
     <div class="wrapper">
       <HelloWorld msg="Sistema de compras" />
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">Sobre</RouterLink>
