@@ -23,6 +23,11 @@ const router = createRouter({
       path: '/listaRefatorada',
       name: 'Lista de Compra Refatorada',
       component: () => import('../views/ListaComprasRefatoradaView.vue')
+    },
+    {
+      path: '/testeAxios',
+      name: 'Teste AXIOS',
+      component:()=>import('../views/TesteAxiosView.vue')
     }
   ]
 })
