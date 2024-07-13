@@ -8,11 +8,12 @@ import SupportIcon from './icons/IconSupport.vue'
 </script>
 
 <template>
+   <h1>teste de alteração</h1>
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
     </template>
-    <template #heading>Orientações</template>
+    <template #heading>xxxxx</template>
 
     Bem-vindo a lista de compras.....
   </WelcomeItem>
