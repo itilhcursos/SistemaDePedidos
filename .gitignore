@@ -88,3 +88,6 @@ coverage
 
 *.tsbuildinfo
 
+backend/src/main/resources/application.properties
+backend/pom.xml
+.gitignore
