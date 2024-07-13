@@ -12,7 +12,7 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #icon>
       <DocumentationIcon />
     </template>
-    <template #heading>Orientações</template>
+    <template #heading>Orientações para Compras</template>
 
     Bem-vindo a lista de compras.....
   </WelcomeItem>
