@@ -14,73 +14,52 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Orientações</template>
 
-    Bem-vindo a lista de compras.....
+    Bem-vindo a lista de compras, abaixo temos umas opções de melhor entendimento do nosso Software!
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <ToolingIcon />
     </template>
-    <template #heading>Tooling</template>
-
-    This project is served and bundled with
-    <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener">Vite</a>. The
-    recommended IDE setup is
-    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a> +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank" rel="noopener">Volar</a>. If
-    you need to test your components and web pages, check out
-    <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a> and
-    <a href="https://on.cypress.io/component" target="_blank" rel="noopener"
-      >Cypress Component Testing</a
-    >.
-
-    <br />
-
-    More instructions are available in <code>README.md</code>.
+    <template #heading>Ferramentas</template>
+    Obtenha ferramentas e bibliotecas oficiais para seu projeto, clique aqui 
+        <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener">Vite</a>. 
+    Se precisar de mais recursos, sugerimos que você faça uma visita ao
+        <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a>
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <EcosystemIcon />
     </template>
-    <template #heading>Ecosystem</template>
+    <template #heading>Ecossistemas</template>
 
-    Get official tools and libraries for your project:
-    <a href="https://pinia.vuejs.org/" target="_blank" rel="noopener">Pinia</a>,
-    <a href="https://router.vuejs.org/" target="_blank" rel="noopener">Vue Router</a>,
-    <a href="https://test-utils.vuejs.org/" target="_blank" rel="noopener">Vue Test Utils</a>, and
-    <a href="https://github.com/vuejs/devtools" target="_blank" rel="noopener">Vue Dev Tools</a>. If
-    you need more resources, we suggest paying
-    <a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">Awesome Vue</a>
-    a visit.
+    Segue nossa listas de Ecossistemas integrado de sistemas:
+  <ol>
+  <li>Sistema Compras</li>
+  <li>Sistemas NF-e</li>
+  <li>Sistema de Almoxarifado</li>
+  </ol>
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <CommunityIcon />
     </template>
-    <template #heading>Community</template>
+    <template #heading>Comunidade</template>
 
-    Got stuck? Ask your question on
-    <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a>, our official
-    Discord server, or
-    <a href="https://stackoverflow.com/questions/tagged/vue.js" target="_blank" rel="noopener"
-      >StackOverflow</a
-    >. You should also subscribe to
-    <a href="https://news.vuejs.org" target="_blank" rel="noopener">our mailing list</a> and follow
-    the official
-    <a href="https://twitter.com/vuejs" target="_blank" rel="noopener">@vuejs</a>
-    twitter account for latest news in the Vue world.
+    Segue a nossa Comunidades dos nossos Clientes e com o nosso forúm do sistema.
+    <a href="https://web.telegram.org/k/" target="_blank" rel="noopener">@Telegram</a>
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <SupportIcon />
     </template>
-    <template #heading>Support Vue</template>
+    <template #heading>Suporte Técnico</template>
 
-    As an independent project, Vue relies on community backing for its sustainability. You can help
-    us by
-    <a href="https://vuejs.org/sponsor/" target="_blank" rel="noopener">becoming a sponsor</a>.
+    Precisando de Suporte do nosso sistema, favor entrar em contato clicando aqui
+    <a href="https://web.whatsapp.com/" target="_blank" rel="noopener">@whatsapp</a>
+  
   </WelcomeItem>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>texto que eu quero!!!</h1>
+    <h1>Sinister Systems é o melhor sistema do Brasil, venha conhecer nossos sistemas!!!</h1>
   </div>
 </template>
 
