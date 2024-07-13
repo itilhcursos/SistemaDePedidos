@@ -4,26 +4,37 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    
-    <div class="wrapper">
-      <HelloWorld msg="Sistema de compras" />
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">Sobre</RouterLink>
-        <RouterLink to="/estados">Estados</RouterLink>
-        <p></p>
-        <p></p>
-        <RouterLink to="/lista">Lista de Compras</RouterLink>
-        <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
-      </nav>
-    </div>
-  </header>
+  
+    <header>
+      <div class="wrapper">
+        <HelloWorld msg="Sistema de compras" />
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">Sobre</RouterLink>
+          <RouterLink to="/estados">Estados</RouterLink>
+          <p></p>
+          <p></p>
+          <RouterLink to="/lista">Lista de Compras</RouterLink>
+          <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-  <RouterView />
+    <RouterView />
+  
+  
 </template>
 
+<style>
+  body{
+    background-image: linear-gradient(to bottom, blue, black );
+    color: aliceblue;
+
+  }
+</style> 
 <style scoped>
+
+
 header {
   line-height: 1.5;
   max-height: 100vh;
