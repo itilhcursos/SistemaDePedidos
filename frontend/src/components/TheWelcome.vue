@@ -50,6 +50,6 @@ import CommunityIcon from './icons/IconCommunity.vue'
     <template #heading>Comunidade</template>
 
     Não temos nenhuma comunidade pública atualmente, apenas o repositório do projeto no
-    <a href="https://github.com/itilhcursos/SistemaDePedidos" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://github.com/itilhcursos/SistemaDePedidos" target="_blank" rel="noopener">GitHub</a>.
   </WelcomeItem>
 </template>

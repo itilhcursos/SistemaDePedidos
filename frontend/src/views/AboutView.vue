@@ -3,7 +3,7 @@
     <h1>O Sistema de Compras é uma aplicação web desenvolvida para otimizar o
         processo de compras dos cidadãos. <br>
         Projetado inicialmente para facilitar a anotação de produtos e suas respectivas quantidades,
-        o sistema visa otimizar o tempo na hora das compras, não ocorrer de esquecer algum produto e melhorar o controle sobre o estoque e as despesas dentro de casa.</h1>
+        o sistema visa otimizar o tempo na hora das compras, não ocorrer de esquecer algum produto e melhorar o controle sobre o estoque e as despesas.</h1>
   </div>
 </template>
 
