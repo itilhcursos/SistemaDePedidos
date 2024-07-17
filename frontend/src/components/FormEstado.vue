@@ -1,17 +1,28 @@
 <template>
-    <div>
-        <h1>Cadastro de estado</h1>
+    <div class="form-floating mb-3">
+        <h3>Cadastro de estado</h3>
         <hr/>
-        <p><input type="text" v-model="id" :disabled="true" placeholder="Id estado" /></p>
-        <p><input type="text" v-model="nome" placeholder="Nome" /></p>
+        <p><input type="text" class="form-control" v-model="id" :disabled="true" placeholder="Id Estado" /></p>
+        <p><input type="text" class="form-control" v-model="nome" placeholder="Nome"/></p>
         <div v-if="isInvalido"  role="alert">
             Nome deve ser preenchido!!
         </div>
-        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
-        <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
+        <button type="submit" class="btn btn-success" v-on:click.prevent="salvarEstado" >Incluir</button>
+        <button type="submit" class="btn btn-success" v-on:click.prevent="cancelar" >Cancelar</button>
         <hr/>
     </div>
 </template>
+
+<style scoped>
+    .btn.btn-success {
+        margin-left: 3px;
+        color: rgb(255, 255, 255);
+    }
+
+    input {
+        border-radius: 8px;
+    }
+</style>
 
 <script> 
 import axios from "axios";
