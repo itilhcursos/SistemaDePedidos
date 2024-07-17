@@ -7,15 +7,15 @@ import HelloWorld from './components/HelloWorld.vue'
   <header>
     
     <div class="wrapper">
-      <HelloWorld msg="Sistema de compras" />
+      <HelloWorld msg="FUNDAÇÃO SPEEDWAGON" />
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">Sobre</RouterLink>
-        <RouterLink to="/estados">Estados</RouterLink>
+        <RouterLink to="/">Principal</RouterLink>
+        <RouterLink to="/about">Sobre a Fundação Speedwagon</RouterLink>
+        <RouterLink to="/estados">Estados Atuantes</RouterLink>
         <p></p>
         <p></p>
-        <RouterLink to="/lista">Lista de Compras</RouterLink>
-        <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
+        <RouterLink to="/lista">Lista de Compras medicamentos</RouterLink>
+        <RouterLink to="/listaRefatorada">Lista de Compras Ocultismo</RouterLink>
       </nav>
     </div>
   </header>
@@ -25,7 +25,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <style scoped>
 header {
-  line-height: 1.5;
+  line-height: 0.9;
   max-height: 100vh;
 }
 
@@ -36,23 +36,24 @@ header {
 
 nav {
   width: 100%;
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
   margin-top: 2rem;
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
+  color: rgb(211, 113, 113);
 }
 
 nav a.router-link-exact-active:hover {
-  background-color: transparent;
+  background-color: rgb(0, 0, 0);
 }
 
 nav a {
-  display: inline-block;
+  display: center;
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-border);
+  color:rgb(253, 253, 253)
 }
 
 nav a:first-of-type {
@@ -61,9 +62,9 @@ nav a:first-of-type {
 
 @media (min-width: 1024px) {
   header {
-    display: flex;
+    display: inline-flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    color:  rgb(236, 15, 137) ;
   }
 
   .logo {
@@ -71,18 +72,20 @@ nav a:first-of-type {
   }
 
   header .wrapper {
-    display: flex;
+    display: inline-flex;
     place-items: flex-start;
     flex-wrap: wrap;
   }
 
   nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+    text-align: center;
+    margin-left: -3rem;
+    font-size: 1.1rem;
 
-    padding: 1rem 0;
-    margin-top: 1rem;
+    padding: 1.1rem 0;
+    margin-top: 2rem;
+    
   }
+  
 }
 </style>

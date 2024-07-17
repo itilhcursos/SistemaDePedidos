@@ -43,8 +43,7 @@ import axios from "axios";
         methods:{
             async buscarEstados(){
                 this.formVisible = false;
-                //buscar a lista de estados no servidor
-                // http://localhost:8080/estados 
+                
                 const response = await axios.get("http://localhost:8080/estados");
                 console.log(response.data);
                 this.listaEstados = response.data;

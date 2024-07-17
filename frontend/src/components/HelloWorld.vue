@@ -9,9 +9,9 @@ defineProps({
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="black">{{ msg }}</h1>
     <h3>
-      Bem vindo a sua lista de compras on-line.
+      Bem vindo a Fundação Speedwagon, aqui você irá encontrar mais informações,fazer compras de nossos produtos e onde atuamos.
     </h3>
   </div>
 </template>
@@ -19,9 +19,10 @@ defineProps({
 <style scoped>
 h1 {
   font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
+  font-size: 2.9rem;
+  position: center;
   top: -10px;
+  color:rgb(238, 89, 178)
 }
 
 h3 {

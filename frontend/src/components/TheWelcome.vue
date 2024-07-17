@@ -12,75 +12,52 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #icon>
       <DocumentationIcon />
     </template>
-    <template #heading>Orientações</template>
-
-    Bem-vindo a lista de compras.....
+    <template #heading>Sobre a criação da Fundação Speedwagon</template>
+A história da Fundação Speedwagon começa em 1938 quando Robert Speedwagon viajou aos Estados Unidos em busca de oportunidades,onde não encontrou em primeira vista,depois de alguns meses perambulando em estado e estado dos Estados Unidos, ele incrivelmente encontrou petróleo no deserto de Nevada, após enriquecer repentinamente, ele fundou a poderosa Fundação Speedwagon em 1939. 
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <ToolingIcon />
     </template>
-    <template #heading>Tooling</template>
+  <template #heading>Descubra o que a Fundação Speedwagon faz</template>
 
-    This project is served and bundled with
-    <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener">Vite</a>. The
-    recommended IDE setup is
-    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a> +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank" rel="noopener">Volar</a>. If
-    you need to test your components and web pages, check out
-    <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a> and
-    <a href="https://on.cypress.io/component" target="_blank" rel="noopener"
-      >Cypress Component Testing</a
-    >.
+    Ciências médicas: Abrange no desenvolvimento e na produção de medicamentos globais.
+   <br> Ocultismo: Criação de estudos e na contenção de eventos sobrenaturais. <br>
 
-    <br />
 
-    More instructions are available in <code>README.md</code>.
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <EcosystemIcon />
     </template>
-    <template #heading>Ecosystem</template>
-
-    Get official tools and libraries for your project:
-    <a href="https://pinia.vuejs.org/" target="_blank" rel="noopener">Pinia</a>,
-    <a href="https://router.vuejs.org/" target="_blank" rel="noopener">Vue Router</a>,
-    <a href="https://test-utils.vuejs.org/" target="_blank" rel="noopener">Vue Test Utils</a>, and
-    <a href="https://github.com/vuejs/devtools" target="_blank" rel="noopener">Vue Dev Tools</a>. If
-    you need more resources, we suggest paying
-    <a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">Awesome Vue</a>
-    a visit.
+    <template #heading>Sede da Fundação Speedwagon</template>
+    Estamos situados no Estados Unidos no Estado da Califórnia.
+    
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <CommunityIcon />
     </template>
-    <template #heading>Community</template>
+    <template #heading>Como entra em contato</template>
 
-    Got stuck? Ask your question on
-    <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a>, our official
-    Discord server, or
-    <a href="https://stackoverflow.com/questions/tagged/vue.js" target="_blank" rel="noopener"
-      >StackOverflow</a
-    >. You should also subscribe to
-    <a href="https://news.vuejs.org" target="_blank" rel="noopener">our mailing list</a> and follow
-    the official
-    <a href="https://twitter.com/vuejs" target="_blank" rel="noopener">@vuejs</a>
-    twitter account for latest news in the Vue world.
+    Email:Speedwagon_Fundação@gmail.com
+    <br>Telefone:(001) 468.875.189 <br>
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <SupportIcon />
     </template>
-    <template #heading>Support Vue</template>
-
-    As an independent project, Vue relies on community backing for its sustainability. You can help
-    us by
-    <a href="https://vuejs.org/sponsor/" target="_blank" rel="noopener">becoming a sponsor</a>.
+    <template #heading>Público de Interesse</template>
+    Somos uma empresa com atividades de grande porte ao redor do mundo e transformamos a vida de milhões de pessoas. E dentro da nossa atuação, estamos sempre em contato com diferentes públicos, com interesses diversos. Por isso, buscamos entender quem são eles, suas opiniões, expectativas, percepções e necessidades.
+  
   </WelcomeItem>
 </template>
+<style>
+
+</style>
+
+

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Cadastro de estado</h1>
+        <h1>Inclua aqui o Estado aonde queiram que a Fundação atue</h1>
         <hr/>
         <p><input type="text" v-model="id" :disabled="true" placeholder="Id estado" /></p>
         <p><input type="text" v-model="nome" placeholder="Nome" /></p>
@@ -56,13 +56,20 @@ import axios from "axios";
                 this.$emit('cancelar',true);
             
             },
+            excluir(){
+               this.id ='';
+               this.nome='';
+               this.$emit('excluir',true);
+            }
+       
         },
         computed() {
             if(this.estado){
                 this.id =this.estado.id;
                 this.nome =this.estado.nome;
             }
-        }
+        },
+
    }
 </script>
 
