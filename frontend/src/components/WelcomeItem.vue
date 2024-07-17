@@ -13,31 +13,27 @@
 </template>
 
 <style scoped>
-.item {
-  margin-top: 2rem;
-  display: flex;
-  position: relative;
-}
 
-.details {
-  flex: 1;
-  margin-left: 1rem;
-}
-
-i {
-  display: flex;
-  place-items: center;
-  place-content: center;
-  width: 32px;
-  height: 32px;
-  color: var(--color-text);
+:root {
+  --cor0: #c8d1f2;
+  --cor1: #0B1654;
+  --cor2: #33395D;
+  --cor3: #8591D4;
+  --cor4: #AE91D4;
+  --cor5: #d65f71;
+  
+  --fonte-padrao: Arial, Verdana, Helvetica, sans-serif;
+  --fonte-destaque: 'Bebas Neue', sans-serif;
 }
 
 h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  color: var(--color-heading);
+  background-color: #33395D;
+  margin-top: 10px;
+  border-radius: 5px;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.267);
+  text-align: left;
+  padding: 6px;
+  color: #d65f71;
 }
 
 @media (min-width: 1024px) {

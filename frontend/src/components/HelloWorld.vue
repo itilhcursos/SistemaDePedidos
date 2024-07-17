@@ -8,14 +8,14 @@ defineProps({
 </script>
 
 <template>
-<div class="greetings">
-  <header>
-    <h1 class="green">{{ msg }}</h1>
-    <h2>
-      Bem vindo(a) a sua lista de compras online. Este é um projeto de lista de compras online com <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> e com <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue3</a>.
-    </h2>
-  </header>
-</div>
+  <div class="greetings">
+    <header>
+      <h1 class="green">{{ msg }}</h1>
+      <h2>
+        Bem vindo(a) a sua lista de compras online. Este é um projeto de lista de compras online com <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> e com <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue3</a>.
+      </h2>
+    </header>
+  </div>
 </template>
 
 <style scoped>
@@ -40,7 +40,8 @@ defineProps({
 header {
   background-color: #d65f71;
   padding-top: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
+  border-radius: 5px;
   min-height: 80px;
   text-align: center;
 }

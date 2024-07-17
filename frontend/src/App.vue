@@ -5,15 +5,12 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-    
     <div class="wrapper">
       <HelloWorld msg="Sistema de compras" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">Sobre</RouterLink>
         <RouterLink to="/estados">Estados</RouterLink>
-        <p></p>
-        <p></p>
         <RouterLink to="/lista">Lista de Compras</RouterLink>
         <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
       </nav>
@@ -24,30 +21,41 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 
 <style scoped>
+
+:root {
+  --cor0: #c8d1f2;
+  --cor1: #0B1654;
+  --cor2: #33395D;
+  --cor3: #8591D4;
+  --cor4: #AE91D4;
+  --cor5: #d65f71;
+  
+  --fonte-padrao: Arial, Verdana, Helvetica, sans-serif;
+  --fonte-destaque: 'Bebas Neue', sans-serif;
+}
+
+
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+  background-color: #d65f71;
+  padding-top: 20px;
+  padding-bottom: 1px;
+  border-radius: 5px;
+  text-align: center;
 }
 
 nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+  padding: 20px;
+  padding-top: 5px;
 }
 
 nav a {
   display: inline-block;
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  color: #0B1654;
+}
+
+nav a:hover {
+  background-color: #8591D4;
 }
 
 nav a:first-of-type {
