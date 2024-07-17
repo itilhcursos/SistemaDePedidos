@@ -18,6 +18,7 @@ defineProps({
 
 <style scoped>
 h1 {
+  font-family: 'Times New Roman', Times, serif;
   font-weight: 500;
   font-size: 2.6rem;
   position: relative;
@@ -26,6 +27,7 @@ h1 {
 
 h3 {
   font-size: 1.2rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 .greetings h1,
