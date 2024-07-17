@@ -5,22 +5,18 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-    
     <div class="wrapper">
-      <HelloWorld msg="Sistema de compras" />
+      <HelloWorld msg="Sistema de Compras" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">Sobre</RouterLink>
         <RouterLink to="/estados">Estados</RouterLink>
-        <p></p>
-        <p></p>
         <RouterLink to="/lista">Lista de Compras</RouterLink>
-        <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
+        <RouterLink to="/listaRefatorada">Lista de Compras Refatorada</RouterLink>
       </nav>
     </div>
   </header>
-
-  <RouterView />
+  <RouterView/>
 </template>
 
 <style scoped>
@@ -35,6 +31,7 @@ header {
 }
 
 nav {
+  font-family: 'Times New Roman', Times, serif;
   width: 100%;
   font-size: 12px;
   text-align: center;
@@ -50,6 +47,7 @@ nav a.router-link-exact-active:hover {
 }
 
 nav a {
+  font-size: 20px;
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
