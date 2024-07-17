@@ -7,49 +7,59 @@ import HelloWorld from './components/HelloWorld.vue'
   
     <header>
       <div class="wrapper">
-        <HelloWorld msg="Sistema de compras" />
+          <HelloWorld msg="Sistema de compras "  />  
         <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/about">Sobre</RouterLink>
           <RouterLink to="/estados">Estados</RouterLink>
-          <p></p>
-          <p></p>
+          
           <RouterLink to="/lista">Lista de Compras</RouterLink>
           <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
         </nav>
       </div>
     </header>
 
-    <RouterView />
+    <main>
+      <RouterView />   
+    </main>
+   
   
   
 </template>
 
+
 <style>
   body{
-    background-image: linear-gradient(to bottom, blue, black );
-    color: aliceblue;
+    background-image: linear-gradient(to left, blue, black 90%);
 
   }
-</style> 
+  
+
+  header {
+    line-height: 0;
+    max-height: 95vh;
+    
+  }
+
+
+</style>
+
 <style scoped>
 
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
 }
 
-nav {
+.wrapper nav {
   width: 100%;
   font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  text-align:left;
+  margin-top: -22rem;
+  
 }
 
 nav a.router-link-exact-active {
@@ -63,7 +73,8 @@ nav a.router-link-exact-active:hover {
 nav a {
   display: inline-block;
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-text);
+  color: rgb(255, 255, 255);
 }
 
 nav a:first-of-type {
@@ -91,9 +102,10 @@ nav a:first-of-type {
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;
-
     padding: 1rem 0;
     margin-top: 1rem;
+    background: #23232e;
+    display: flex;
   }
 }
-</style>
+</style> 
