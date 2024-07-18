@@ -6,7 +6,7 @@
                 <span><strong>{{item.produto}}</strong></span>
                 <p>{{item.quantidade}}</p>
                 <div>
-                    <a href="#" @click.prevent="excluirProduto(index)">Excluir</a>
+                    <a type="button" class="btn btn-danger btn-sm" href="#" @click.prevent="excluirProduto(index)">Excluir</a>
                 </div>
             </div>
         </div>

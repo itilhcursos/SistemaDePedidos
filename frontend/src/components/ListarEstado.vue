@@ -1,14 +1,21 @@
 <template>
-    <div>
-        <p>Lista de Estados</p>
-        <button v-if="!formVisible" @click="novoEstado">Novo</button>
-       <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
-        <table>
+    <div class="estado-list">
+        <h1>Lista de Estados</h1>
+        <!-- <button v-if="!formVisible" @click="novoEstado">Novo</button> -->
+        <button type="button" class="btn btn-primary btn-sm" v-if="!formVisible" @click="novoEstado">Novo</button>
+        <hr/>
+        <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
+        
+      <div class="table-responsive">
+        <table class="table table-dark table-striped">
+            <thead>
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Ações</th>
+                <th class="text-center">Ações</th>
             </tr>
+            </thead>
+            <tbody>
             <tr v-for="estado in listaEstados" :key="estado.id">
                 <td>
                     {{ estado.id }}
@@ -17,12 +24,15 @@
                     {{ estado.nome }}
                 </td>
                 <td>
-                    <button @click="alterarEstado(estado)">Alterar</button>
-                    <button @click="excluirEstado(estado.id)">Excluir</button>
+                    <!-- <button @click="alterarEstado(estado)">Alterar</button> -->
+                    <button type="button" class="btn btn-warning btn-sm" @click="alterarEstado(estado)">Alterar</button>
+                    <!-- <button @click="excluirEstado(estado.id)">Excluir</button> -->
+                    <button type="button" class="btn btn-danger btn-sm" @click="excluirEstado(estado.id)">Excluir</button>
                 </td>
             </tr>
+            </tbody>
         </table>
-
+      </div>
     </div>
 </template>
 
@@ -69,3 +79,17 @@ import axios from "axios";
         }     
     }
 </script>
+
+<style scoped>
+.estado-list {
+  padding: 100px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+</style>
