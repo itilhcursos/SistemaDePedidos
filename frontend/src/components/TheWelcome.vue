@@ -8,7 +8,7 @@ import SupportIcon from './icons/IconSupport.vue'
 </script>
 
 <template>
-  <WelcomeItem>
+  <WelcomeItem class="n1">
     <template #icon>
       <DocumentationIcon />
     </template>
@@ -85,3 +85,9 @@ import SupportIcon from './icons/IconSupport.vue'
   </WelcomeItem>
 </template>
 
+<style scoped>
+ body{
+  color: var();
+  
+ } 
+</style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="div">
         <p>Lista de Estados</p>
         <button v-if="!formVisible" @click="novoEstado">Novo</button>
        <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
@@ -69,3 +69,5 @@ import axios from "axios";
         }     
     }
 </script>
+
+

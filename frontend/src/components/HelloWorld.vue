@@ -24,12 +24,15 @@ h1 {
   font-weight: 500;
   font-size: 2.6rem;
   position: relative;
-  top: -10px;
+  top: -4px;
+left: 2rem;  
 }
 
 h3 {
   font-size: 1.2rem;
-  color: aliceblue;
+  color: rgb(247, 247, 247);
+  position: relative;
+  left: 3rem;
 }
 
 .greetings h1,

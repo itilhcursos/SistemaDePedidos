@@ -7,3 +7,12 @@ import ListarEstado from '../components/ListarEstado.vue'
    <ListarEstado />
  </main>
 </template>
+
+<style scoped>
+  main{
+    position: absolute;
+    top: 2rem;
+    right: 15rem;
+    width: 20rem;
+  }
+</style>
