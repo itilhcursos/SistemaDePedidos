@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>texto que eu quero!!!</h1>
+    <h1>Bem-vindo(a) ao Sistema de Pedidos do ITILH!</h1>
   </div>
 </template>
 

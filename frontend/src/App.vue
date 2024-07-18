@@ -7,7 +7,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <header>
     
     <div class="wrapper">
-      <HelloWorld msg="Sistema de compras" />
+      <HelloWorld msg="Sistema de Compras"/>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">Sobre</RouterLink>
@@ -15,7 +15,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <p></p>
         <p></p>
         <RouterLink to="/lista">Lista de Compras</RouterLink>
-        <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
+        <RouterLink to="/listaRefatorada">Lista de Compras Refatorada</RouterLink>
       </nav>
     </div>
   </header>
@@ -43,16 +43,24 @@ nav {
 
 nav a.router-link-exact-active {
   color: var(--color-text);
+  color: rgb(186, 62, 106)
 }
 
 nav a.router-link-exact-active:hover {
   background-color: transparent;
+  color: rgb(247, 44, 115)
 }
 
 nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
+  color: rgb(114, 145, 242);
+}
+
+nav a:hover {
+  background-color: rgb(83, 100, 143);
+  color: rgb(246, 247, 253)
 }
 
 nav a:first-of-type {
@@ -84,5 +92,6 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+
 }
 </style>

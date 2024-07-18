@@ -4,6 +4,6 @@ import ListarEstado from '../components/ListarEstado.vue'
 
 <template>
  <main>
-   <ListarEstado />
+   <ListarEstado/>
  </main>
 </template>

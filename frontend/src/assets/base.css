@@ -19,6 +19,12 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+
+  --vt-c-itilh-darkblue: rgba(22, 29, 48, 1);
+  --vt-c-itilh-darkred: rgb(54, 25, 35);
+  --vt-c-itilh-darkblue-2: rgb(40, 42, 58);
+  --vt-c-itilh-darkblue-3: rgb(32, 32, 49);
+  --vt-c-itilh-light: rgb(238, 238, 238);
 }
 
 /* semantic color variables for this project */
@@ -36,9 +42,23 @@
   --section-gap: 160px;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+} */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-itilh-darkblue-3);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
 
