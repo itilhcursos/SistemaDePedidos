@@ -5,17 +5,15 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <header>
-    
+    <img alt="Vue logo" class="carrinho" src="@/assets/carrinho.png" width="75" height="75" />          
     <div class="wrapper">
       <HelloWorld msg="Sistema de compras" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">Sobre</RouterLink>
         <RouterLink to="/estados">Estados</RouterLink>
-        <p></p>
-        <p></p>
-        <RouterLink to="/lista">Lista de Compras</RouterLink>
-        <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
+        <!-- <RouterLink to="/lista">Lista de Compras</RouterLink> -->
+        <RouterLink to="/listaRefatorada">Lista de Compras</RouterLink>
       </nav>
     </div>
   </header>
@@ -50,7 +48,7 @@ nav a.router-link-exact-active:hover {
 }
 
 nav a {
-  display: inline-block;
+  display: inline-flexbox;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
 }
@@ -68,12 +66,13 @@ nav a:first-of-type {
 
   .logo {
     margin: 0 2rem 0 0;
+    background-color: transparent;
   }
 
   header .wrapper {
     display: flex;
     place-items: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap;   
   }
 
   nav {

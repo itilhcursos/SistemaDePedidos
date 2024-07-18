@@ -1,9 +1,10 @@
 <template>
     <div>
         <p>Lista de Estados</p>
-        <button v-if="!formVisible" @click="novoEstado">Novo</button>
+        <button v-if="!formVisible" @click="novoEstado" class="btn btn-primary">Novo</button>
+        <p></p>
        <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
-        <table>
+        <table class="tb_estado">
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
@@ -69,3 +70,19 @@ import axios from "axios";
         }     
     }
 </script>
+
+<style scoped>
+  table.tb_estado {
+    border-collapse: collapse; /* CSS2 */
+    background: #FFFFF0;
+}
+ 
+table.tb_estado td {
+    border: 1px solid black;
+}
+ 
+table.tb_estado th {
+    border: 1px solid black;
+    background: #F0FFF0;
+}
+</style>

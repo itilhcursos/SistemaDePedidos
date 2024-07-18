@@ -7,7 +7,7 @@
         <div v-if="isInvalido"  role="alert">
             Nome deve ser preenchido!!
         </div>
-        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
+        <button type="submit" v-on:click.prevent="salvarEstado"  >Incluir</button>
         <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
         <hr/>
     </div>
