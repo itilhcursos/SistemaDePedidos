@@ -12,7 +12,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th class="text-center">Ações</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -89,7 +89,7 @@ import axios from "axios";
   overflow-x: auto;
 }
 
-.text-center {
+.text-center {  
   text-align: center;
 }
 </style>

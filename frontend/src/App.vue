@@ -17,7 +17,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <!-- <p></p>
         <p></p>
         <RouterLink to="/lista">Lista de Compras</RouterLink> -->
-        <RouterLink to="/listaRefatorada">Lista de Compras</RouterLink>
+        <RouterLink to="/listaRefatorada">Compras</RouterLink>
       </nav>
     </div>
   </header>
@@ -80,7 +80,7 @@ nav a:first-of-type {
 
   nav {
     text-align: left;
-    margin-left: -1rem;
+    margin-left: 0rem;
     font-size: 1rem;
 
     padding: 1rem 0;
