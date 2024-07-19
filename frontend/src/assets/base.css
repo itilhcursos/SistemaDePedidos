@@ -20,10 +20,11 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
-  --vt-c-itilh-darkblue: rgba(22, 29, 48, 1);
-  --vt-c-itilh-darkred: rgb(54, 25, 35);
+  --vt-c-itilh-darkblue-1: rgba(22, 29, 48, 1);
+  --vt-c-itilh-darkred-1: rgb(54, 25, 35);
   --vt-c-itilh-darkblue-2: rgb(40, 42, 58);
-  --vt-c-itilh-darkblue-3: rgb(32, 32, 49);
+  --vt-c-itilh-darkviolet-1: rgb(32, 32, 49);
+  --vt-c-itilh-darkviolet-2: rgb(30, 27, 45);
   --vt-c-itilh-light: rgb(237, 237, 237);
 
   --vt-c-text-itilh-dark: rgb(215, 215, 220);
@@ -47,7 +48,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--vt-c-itilh-darkblue-3);
+    --color-background: var(--vt-c-itilh-darkviolet-2);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
 

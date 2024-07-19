@@ -9,9 +9,9 @@ defineProps({
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 style="text-decoration:underline; text-decoration-color: rgba(186, 62, 106, 0.8); text-decoration-thickness: 3px" class="itilh">{{ msg }}</h1>
     <h3>
-      Bem-vindo a sua lista de compras online.
+      Bem-vindo à sua lista de compras online!
     </h3>
   </div>
 </template>

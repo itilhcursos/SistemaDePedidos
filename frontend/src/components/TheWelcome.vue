@@ -14,7 +14,7 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Orientações</template>
 
-    Bem-vindo a lista de compras.....
+    Bem-vindos ao Sistema de Pedidos. Nele você pode Listar, Cadastrar, Alterar e Apagar diversos itens do nosso Banco de Dados. 
   </WelcomeItem>
 
   <WelcomeItem>

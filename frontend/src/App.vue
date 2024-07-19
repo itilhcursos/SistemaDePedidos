@@ -55,7 +55,7 @@ nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
-  color: rgb(114, 145, 242);
+  color: rgb(104, 135, 232);
 }
 
 nav a:hover {

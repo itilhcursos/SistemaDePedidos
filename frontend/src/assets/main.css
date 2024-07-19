@@ -10,7 +10,14 @@
 a,
 .green {
   text-decoration: none;
-  /* color: hsla(160, 100%, 37%, 1); */
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+a,
+.itilh {
+  text-decoration: none;
   color: rgb(114, 145, 242);
   transition: 0.4s;
   padding: 3px;
@@ -18,7 +25,8 @@ a,
 
 @media (hover: hover) {
   a:hover {
-    /* background-color: hsla(160, 100%, 37%, 0.2); */
+    /* PADRÃO VUE: 
+    background-color: hsla(160, 100%, 37%, 0.2); */
     background-color: rgb(83, 100, 143);
     color: rgb(246, 247, 253);
   }
