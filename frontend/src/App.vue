@@ -7,6 +7,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <header>
     
     <div class="wrapper">
+
       <HelloWorld msg="Sistema de compras" />
       <nav>
         <RouterLink to="/">Home</RouterLink>

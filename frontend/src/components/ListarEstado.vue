@@ -2,7 +2,7 @@
     <div>
         <p>Lista de Estados</p>
         <button v-if="!formVisible" @click="novoEstado">Novo</button>
-       <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
+        <FormEstado :estado="estadoAtual" v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
         <table>
             <tr>
                 <th>ID</th>
@@ -37,7 +37,8 @@ import axios from "axios";
         data(){
             return{
                 listaEstados:[],
-                formVisible:false
+                formVisible:false,
+                estadoAtual:null
             }
         },
         methods:{
@@ -51,12 +52,15 @@ import axios from "axios";
             },
             limpar(){
                 this.formVisible = !this.formVisible;
+                this.estadoAtual = null;
             }, 
             novoEstado(){
                 this.formVisible = !this.formVisible;
             },
             alterarEstado(estado){
-                console.log(estado);
+                this.estadoAtual = estado;
+                this.formVisible = !this.formVisible;
+                console.log(estado, this.estadoAtual);
             },
             async excluirEstado(id){
                 const response = await axios.delete(`http://localhost:8080/estado/${id}`);
@@ -66,6 +70,10 @@ import axios from "axios";
         } ,  
         mounted() {
             this.buscarEstados();
+            console.log(import.meta.env.VITE_APP_TITLE);
+            console.log(import.meta.env.MODE);
+            console.log(import.meta.env.BASE_URL);
+            console.log(import.meta.env.VITE_APP_URL_BACKEND);
         }     
     }
 </script>

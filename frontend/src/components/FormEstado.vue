@@ -7,7 +7,7 @@
         <div v-if="isInvalido"  role="alert">
             Nome deve ser preenchido!!
         </div>
-        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
+        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir/Alterar</button>
         <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
         <hr/>
     </div>
@@ -34,13 +34,21 @@ import axios from "axios";
                 }
                 this.isInvalido = false;
 
+                if(this.id != "" ){
+                    const response = await axios.put(`http://localhost:8080/estado/${this.id}`, {
+                         id:this.id,
+                         nome:this.nome
+                     });
+                     console.log(response.data);
+                    this.listaEstados = response.data;
+                }else{
                 const response = await axios.post("http://localhost:8080/estado", {
                          id:this.id,
                          nome:this.nome
                      });
-                console.log(response.data);
-                this.listaEstados = response.data;
-
+                     console.log(response.data);
+                    this.listaEstados = response.data;
+                }
                  this.$emit('salvar_estado',{
                          id:this.id,
                          nome:this.nome
@@ -57,7 +65,7 @@ import axios from "axios";
             
             },
         },
-        computed() {
+        mounted(){
             if(this.estado){
                 this.id =this.estado.id;
                 this.nome =this.estado.nome;
