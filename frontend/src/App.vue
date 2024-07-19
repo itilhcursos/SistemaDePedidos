@@ -58,6 +58,7 @@ h2{
   font-size: 70px;
   font-family: serif;
 
+
 }
 .wrapper nav {
   width: 100%;
@@ -80,6 +81,7 @@ nav a {
   padding: 0 1rem;
   border-left: 1px solid var(--color-text);
   color: rgb(255, 255, 255);
+
 }
 
 nav a:first-of-type {

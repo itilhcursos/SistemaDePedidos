@@ -60,6 +60,8 @@
 
 body {
   min-height: 94vh;
+  min-width: 83rem;
+  overflow-x: hidden;
   color: var(--vt-c-black-mute);
   background: var(--color-background);
   transition:

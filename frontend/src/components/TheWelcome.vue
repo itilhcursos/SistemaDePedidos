@@ -14,7 +14,16 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
       <template #heading>Orientações</template>
       
-    Bem-vindo a lista de compras.....
+    <p>
+      navegação intuitiva e fácil de usar <br>
+      <br>
+      descrições detalhadas para ajudar os clientes a tomar uma decisão de compra.
+      <br>
+      pagamento seguras e variadas para atender às preferências dos clientes.
+      <br>
+      e muitas outras. acesse e veja mais <a href="/">Orientações</a>
+
+    </p>
   </WelcomeItem>
 
   <WelcomeItem>
@@ -23,20 +32,15 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Ferramentas</template>
 
-    This project is served and bundled with
-    <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener">Vite</a>. The
-    recommended IDE setup is
-    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a> +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank" rel="noopener">Volar</a>. If
-    you need to test your components and web pages, check out
-    <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a> and
-    <a href="https://on.cypress.io/component" target="_blank" rel="noopener"
-      >Cypress Component Testing</a
-    >.
-
-    <br />
-
-    More instructions are available in <code>README.md</code>.
+    Plataforma de e-commerce (ex: Shopify, Magento, WooCommerce)
+    <br>
+    Gateway de pagamento (ex: PayPal, PagSeguro)
+    <br>
+    Sistema de gestão de estoque
+    CRM (Customer Relationship Management)
+    <br>
+    Ferramentas de marketing digital (ex: Google Analytics, Facebook Ads)
+    e muitos outros.
   </WelcomeItem>
 
   <WelcomeItem>
@@ -45,14 +49,13 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Ecosistema</template>
 
-    Get official tools and libraries for your project:
-    <a href="https://pinia.vuejs.org/" target="_blank" rel="noopener">Pinia</a>,
-    <a href="https://router.vuejs.org/" target="_blank" rel="noopener">Vue Router</a>,
-    <a href="https://test-utils.vuejs.org/" target="_blank" rel="noopener">Vue Test Utils</a>, and
-    <a href="https://github.com/vuejs/devtools" target="_blank" rel="noopener">Vue Dev Tools</a>. If
-    you need more resources, we suggest paying
-    <a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">Awesome Vue</a>
-    a visit.
+    Plataforma de e-commerce: é a base da loja virtual, onde os produtos são exibidos,
+    os pedidos são processados e os pagamentos são realizados. Existem diversas opções de 
+    plataformas disponíveis, como Shopify, WooCommerce e Magento.
+  <br>
+    Design e usabilidade do site: uma boa experiência do usuário é essencial para atrair e reter clientes.
+    O design do site, a navegação fácil e a responsividade são aspectos importantes a serem considerados.
+    acesse e saiba mais sobre o ecossistema do Sys Vendas.  
   </WelcomeItem>
 
   <WelcomeItem>
@@ -61,16 +64,10 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Comunidade</template>
 
-    Got stuck? Ask your question on
-    <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a>, our official
-    Discord server, or
-    <a href="https://stackoverflow.com/questions/tagged/vue.js" target="_blank" rel="noopener"
-      >StackOverflow</a
-    >. You should also subscribe to
-    <a href="https://news.vuejs.org" target="_blank" rel="noopener">our mailing list</a> and follow
-    the official
-    <a href="https://twitter.com/vuejs" target="_blank" rel="noopener">@vuejs</a>
-    twitter account for latest news in the Vue world.
+    Acesse e interaja com a Comunidade do <a href="/">Sys Vendas</a> 
+    Os membros desta comunidade interagem entre si, compartilham experiências, dicas, avaliações de produtos,
+    feedbacks, além de tirarem dúvidas uns dos outros. A loja online pode criar um espaço específico para esta comunidade, 
+    como fóruns de discussão, grupos em redes sociais, e-mails exclusivos, entre outros.
   </WelcomeItem>
 
   <WelcomeItem>
@@ -79,9 +76,8 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Suporte</template>
 
-    As an independent project, Vue relies on community backing for its sustainability. You can help
-    us by
-    <a href="https://vuejs.org/sponsor/" target="_blank" rel="noopener">becoming a sponsor</a>.
+   Tenha o Suporte do Sys Vendas, pelas Redes Sociais, facebook, whatsapp, instagram e outros. <br>
+   Tenha acesso tambem pelo Numero de Contato (xx) xxxxxxxxxxx.
   </WelcomeItem>
 </template>
 

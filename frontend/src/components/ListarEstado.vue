@@ -1,6 +1,6 @@
 <template>
     <div class="div">
-        <p>Lista de Estados</p>
+        <p>Cadastre aqui o seu Estado para registro</p>
         <button v-if="!formVisible" @click="novoEstado">Novo</button>
        <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
         <table>
@@ -69,5 +69,10 @@ import axios from "axios";
         }     
     }
 </script>
-
+<style scoped>
+    p{
+        color: rgb(255, 217, 0);
+    }
+    
+</style>
 
