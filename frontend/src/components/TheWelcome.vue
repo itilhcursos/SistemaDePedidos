@@ -13,56 +13,48 @@ import SupportIcon from './icons/IconSupport.vue'
       <DocumentationIcon />
     </template>
     <template #heading>Orientações para Compras</template>
-
-    Bem-vindo a lista de compras.....
+    Bem-vindo ao Sistema de Pedidos...
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <ToolingIcon />
     </template>
-    <template #heading>Tooling</template>
+    <template #heading>Ferramentas</template>
 
-    This project is served and bundled with
-    <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener">Vite</a>. The
-    recommended IDE setup is
-    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a> +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank" rel="noopener">Volar</a>. If
-    you need to test your components and web pages, check out
-    <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a> and
-    <a href="https://on.cypress.io/component" target="_blank" rel="noopener"
-      >Cypress Component Testing</a
-    >.
-
+    Este sistema permite o cadastro de um novo produto na
+    <a href="/listaRefatorada" target="_blank" rel="noopener">Lista de Compra</a>. 
+    Podemos contar com o cadastro da 
+    <a href="/estados" target="_blank" rel="noopener">Lista de Estados</a> para 
+    inclusão e exclusão de novos registros na base de dados.
     <br />
 
-    More instructions are available in <code>README.md</code>.
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <EcosystemIcon />
     </template>
-    <template #heading>Ecosystem</template>
+    <template #heading>Ecossistema</template>
 
-    Get official tools and libraries for your project:
-    <a href="https://pinia.vuejs.org/" target="_blank" rel="noopener">Pinia</a>,
-    <a href="https://router.vuejs.org/" target="_blank" rel="noopener">Vue Router</a>,
-    <a href="https://test-utils.vuejs.org/" target="_blank" rel="noopener">Vue Test Utils</a>, and
-    <a href="https://github.com/vuejs/devtools" target="_blank" rel="noopener">Vue Dev Tools</a>. If
-    you need more resources, we suggest paying
-    <a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">Awesome Vue</a>
-    a visit.
+   O sistema de Pedidos conta com diversas tecnologias embarcadas no projeto:
+    <a href="https://getbootstrap.com/" target="_blank" rel="noopener">Bootstrap</a>,
+    <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue.js</a>,
+    <a href="https://www.javascript.com/" target="_blank" rel="noopener">JavaScript</a> e
+    <a href="https://www.oracle.com/br/java/" target="_blank" rel="noopener">Java</a>. Além
+    de diversas outras aplicações e tecnologias agregadas ao desenvolvimento do sistema.
+
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <CommunityIcon />
     </template>
-    <template #heading>Community</template>
+    <template #heading>Comunidade</template>
 
-    Got stuck? Ask your question on
-    <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a>, our official
+    Ficou alguma dúvida? Em breve estaremos disponibilizando nossos canais de
+    comunicação para falar com os desenvolvedores responsáveis pelo projeto.
+    <!-- <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a>, our official
     Discord server, or
     <a href="https://stackoverflow.com/questions/tagged/vue.js" target="_blank" rel="noopener"
       >StackOverflow</a
@@ -70,17 +62,17 @@ import SupportIcon from './icons/IconSupport.vue'
     <a href="https://news.vuejs.org" target="_blank" rel="noopener">our mailing list</a> and follow
     the official
     <a href="https://twitter.com/vuejs" target="_blank" rel="noopener">@vuejs</a>
-    twitter account for latest news in the Vue world.
+    twitter account for latest news in the Vue world. -->
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <SupportIcon />
     </template>
-    <template #heading>Support Vue</template>
+    <template #heading>Suporte</template>
 
-    As an independent project, Vue relies on community backing for its sustainability. You can help
-    us by
-    <a href="https://vuejs.org/sponsor/" target="_blank" rel="noopener">becoming a sponsor</a>.
+   Este é um projeto para aprendizado e estudo, o Sistema de Pedidos conta com o apoio dos participantes do
+   curso e seu instrutor.
+    <a href="https://vuejs.org/sponsor/" target="_blank" rel="noopener"></a>
   </WelcomeItem>
 </template>

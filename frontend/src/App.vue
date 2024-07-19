@@ -6,16 +6,18 @@ import HelloWorld from './components/HelloWorld.vue'
 <template>
   <header>
     
+    <!-- <img alt="Compra logo" class="logo" src="/img/pedir-comida.png" width="210" height="210" /> -->
+
     <div class="wrapper">
       <HelloWorld msg="Sistema de compras" />
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">Sobre</RouterLink>
         <RouterLink to="/estados">Estados</RouterLink>
+        <!-- <p></p>
         <p></p>
-        <p></p>
-        <RouterLink to="/lista">Lista de Compras</RouterLink>
-        <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
+        <RouterLink to="/lista">Lista de Compras</RouterLink> -->
+        <RouterLink to="/listaRefatorada">Compras</RouterLink>
       </nav>
     </div>
   </header>
@@ -78,7 +80,7 @@ nav a:first-of-type {
 
   nav {
     text-align: left;
-    margin-left: -1rem;
+    margin-left: 0rem;
     font-size: 1rem;
 
     padding: 1rem 0;

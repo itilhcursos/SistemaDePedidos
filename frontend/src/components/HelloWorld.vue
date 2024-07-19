@@ -26,6 +26,8 @@ h1 {
 
 h3 {
   font-size: 1.2rem;
+  text-align: center;
+  margin-left: 0rem;
 }
 
 .greetings h1,

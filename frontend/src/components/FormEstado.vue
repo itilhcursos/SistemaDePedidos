@@ -1,14 +1,18 @@
 <template>
     <div>
-        <h1>Cadastro de estado</h1>
+        <h3 style="color: hsla(160, 100%, 37%, 1)">Cadastro de Estado</h3>
         <hr/>
-        <p><input type="text" v-model="id" :disabled="true" placeholder="Id estado" /></p>
-        <p><input type="text" v-model="nome" placeholder="Nome" /></p>
-        <div v-if="isInvalido"  role="alert">
-            Nome deve ser preenchido!!
+        <p><input type="text" v-model="id" :disabled="true" placeholder="Id Estado" /></p>
+        <p><input type="text" v-model="nome" placeholder="Nome do Estado..." /></p>
+        
+        <div v-if="isInvalido" class="alert alert-warning" role="alert">
+            Nome do Estado deve ser preenchido!
         </div>
-        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
-        <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
+        <!-- <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button> -->
+        <button type="submit"  class="btn btn-success btn-sm" v-on:click.prevent="salvarEstado">Incluir</button>
+
+        <!-- <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button> -->
+        <button type="submit" class="btn btn-secondary btn-sm" v-on:click.prevent="cancelar">Cancelar</button>
         <hr/>
     </div>
 </template>

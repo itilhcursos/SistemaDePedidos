@@ -1,16 +1,29 @@
 <template>
     <div class="container">
-        <h1>Lista de compras - {{ titulo }}</h1>
+        <h1>Lista de Compras</h1>
+        <p style="color: hsla(160, 100%, 37%, 1)"><b>Quantidade de Produtos:</b> {{ titulo }}</p>
         <hr/>
-        <p><input type="text" v-model="produto" placeholder="Nome do produto" class="form-control" /></p>
-        <p><input type="text" v-model="quantidade" placeholder="Quantidade do produto" class="form-control" /></p>
-        <div v-if="isInvalido" class="alert alert-danger" role="alert">
-            Nome do produto e quantidade devem ser preenchidos!!
+        
+        <div class="mb-3">
+            <input type="text" v-model="produto" placeholder="Nome do produto" class="form-control" />
         </div>
-        <button type="submit" v-on:click.prevent="incluirProduto" class="btn btn-primary">Incluir</button>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-3">
+                    <input type="text" v-model="quantidade" placeholder="Quantidade" class="form-control" />
+                </div>
+            </div>
+        </div>
+        
+        <div v-if="isInvalido" class="alert alert-warning" role="alert">
+            Nome do produto e quantidade devem ser preenchidos!
+        </div>
+        <button type="submit" class="btn btn-success btn-sm" v-on:click.prevent="incluirProduto">Incluir</button>
         <hr/>
     </div>
 </template>
+
+
 
 <script> 
    export default{
@@ -27,7 +40,7 @@
         methods:{
             incluirProduto(){
                 console.log (this.produto , this.quantidade);
-                if(this.produto ==='' || this.quantidade==='' ){
+                if(this.produto === '' || this.quantidade=== '') {
                     this.isInvalido = true;
                     return;
                 }
@@ -45,4 +58,11 @@
         }
    }
 </script>
+
+<style>
+input[v-model="quantidade"] {
+    max-width: 100%;
+}
+</style>
+
 
