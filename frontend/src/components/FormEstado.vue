@@ -1,17 +1,79 @@
 <template>
-    <div>
-        <h1>Cadastro de estado</h1>
-        <hr/>
-        <p><input type="text" v-model="id" :disabled="true" placeholder="Id estado" /></p>
-        <p><input type="text" v-model="nome" placeholder="Nome" /></p>
+    <div class="cadastro">
+        <h1>Cadastro</h1>
+        
+        <p><input class="id-estado" type="text" v-model="id" :disabled="true" placeholder="Id Estado" /></p>
+        <p><input class="nome-estado" type="text" v-model="nome" placeholder="Nome" /></p>
         <div v-if="isInvalido"  role="alert">
             Nome deve ser preenchido!!
         </div>
-        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
-        <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
-        <hr/>
+        <button class="botão-incluir" type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
+        <button class="botão-cancelar" type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
+        
     </div>
 </template>
+
+<style scoped>
+.botão-incluir {
+    background: #f0f0f0;
+    border-radius: 4px;
+    color: #7a7a7a;
+    border-color: #7a7a7a;
+    font-size: 15px;
+    font-weight: 500;
+    width: 77.3px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.botão-cancelar {
+    background: #f0f0f0;
+    border-radius: 4px;
+    color: #7a7a7a;
+    border-color: #7a7a7a;
+    font-size: 15px;
+    font-weight: 500;
+    width: 77.3px;
+}
+
+
+.id-estado {
+    border-color: #dddddd;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 4px;
+    color: #7a7a7a;
+    margin-top: 10px;
+}
+
+.id-estado::placeholder{
+    color: #979797;
+}
+
+.nome-estado{
+    border-color: #dddddd;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 4px;
+    color: #7a7a7a;
+}
+.nome-estado::placeholder{
+    color: #979797;
+}
+
+.cadastro {
+    margin-left: 135px;
+    margin-bottom: 40px;
+}
+
+h1{
+    margin-left: 100px;
+    margin-left: 10px;
+    font-weight: 700;
+}
+
+
+</style>
 
 <script> 
 import axios from "axios";
