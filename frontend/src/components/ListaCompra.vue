@@ -66,7 +66,7 @@
     h1{
         position: relative;
         color: rgb(243, 243, 243);
-        right: -8rem;
+        text-align: center;
     }
 </style> 
 

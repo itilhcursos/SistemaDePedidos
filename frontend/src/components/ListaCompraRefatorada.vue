@@ -41,10 +41,11 @@ import FormCompraRefatorada from './FormCompraRefatorada.vue';
         padding: 7px;
         box-shadow: 3px 3px 3px 3px rgba(43, 44, 51, 0.534) ;
         border-radius: 8px ;
+
     }
-    h1{
+    .container form{
         position: relative;
-        color: rgb(248, 248, 248);
+        color: rgb(255, 255, 255);
         
     }
 </style> 
