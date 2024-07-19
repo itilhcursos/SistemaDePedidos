@@ -2,7 +2,7 @@
     <div>
         <h1>Cadastro de estado</h1>
         <hr/>
-        <p><input type="text" v-model="id" :disabled="true" placeholder="Id estado" /></p>
+        <p><input type="text" v-model="id" :disabled="true" placeholder="ID" /></p>
         <p><input type="text" v-model="nome" placeholder="Nome" /></p>
         <div v-if="isInvalido"  role="alert">
             Nome deve ser preenchido!!
@@ -35,26 +35,26 @@ import axios from "axios";
                 this.isInvalido = false;
 
                 const response = await axios.post("http://localhost:8080/estado", {
-                         id:this.id,
-                         nome:this.nome
-                     });
+                    id:this.id,
+                    nome:this.nome
+                });
+
                 console.log(response.data);
                 this.listaEstados = response.data;
 
-                 this.$emit('salvar_estado',{
-                         id:this.id,
-                         nome:this.nome
-                     });
+                this.$emit('salvar_estado',{
+                    id:this.id,
+                    nome:this.nome
+                });
 
                 this.id = '';
                 this.nome ='';
-            
             },
+
             cancelar(){
                 this.id = '';
                 this.nome ='';
                 this.$emit('cancelar',true);
-            
             },
         },
         computed() {

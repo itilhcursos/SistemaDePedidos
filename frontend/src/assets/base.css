@@ -25,6 +25,8 @@
   --vt-c-itilh-darkblue-2: rgb(40, 42, 58);
   --vt-c-itilh-darkblue-3: rgb(32, 32, 49);
   --vt-c-itilh-light: rgb(238, 238, 238);
+
+  --vt-c-text-itilh-dark: rgb(215, 215, 220);
 }
 
 /* semantic color variables for this project */
@@ -66,7 +68,7 @@
     --color-border-hover: var(--vt-c-divider-dark-1);
 
     --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --color-text: var(--vt-c-text-itilh-dark);
   }
 }
 
