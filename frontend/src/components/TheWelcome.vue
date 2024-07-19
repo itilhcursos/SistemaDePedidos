@@ -11,8 +11,6 @@ import SupportIcon from './icons/IconSupport.vue'
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
-      
-
     </template>
     <template #heading>Orientações</template>
 

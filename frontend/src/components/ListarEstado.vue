@@ -10,6 +10,7 @@
                 <th>Ações</th>
             </tr>
             <tr v-for="estado in listaEstados" :key="estado.id">
+                <img :src="getBandeiraUrl(estado.nome)" alt="Bandeira do Estado" :style="{ width: '20px', height: 'auto' }" />
                 <td>
                     {{ estado.id }}
                 </td>
@@ -48,6 +49,7 @@ import axios from "axios";
                 const response = await axios.get("http://localhost:8080/estados");
                 console.log(response.data);
                 this.listaEstados = response.data;
+                this.listaEstados.sort((a, b) => a.nome.localeCompare(b.nome));
             },
             limpar(){
                 this.formVisible = !this.formVisible;
@@ -62,8 +64,11 @@ import axios from "axios";
                 const response = await axios.delete(`http://localhost:8080/estado/${id}`);
                 console.log(response.data);
                 this.buscarEstados();
-            }
-        } ,  
+            },
+            getBandeiraUrl(nome) {
+      return `./src/assets/png-200/${nome}.png`;
+    },
+        },  
         mounted() {
             this.buscarEstados();
         }     
