@@ -24,39 +24,26 @@
   --vt-c-itilh-darkred: rgb(54, 25, 35);
   --vt-c-itilh-darkblue-2: rgb(40, 42, 58);
   --vt-c-itilh-darkblue-3: rgb(32, 32, 49);
-  --vt-c-itilh-light: rgb(238, 238, 238);
+  --vt-c-itilh-light: rgb(237, 237, 237);
 
   --vt-c-text-itilh-dark: rgb(215, 215, 220);
+  --vt-c-heading-itilh-light-1: rgb(72,90,133);
 }
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--vt-c-white);
+  --color-background: var(--vt-c-itilh-light);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
   --color-border: var(--vt-c-divider-light-2);
   --color-border-hover: var(--vt-c-divider-light-1);
 
-  --color-heading: var(--vt-c-text-light-1);
+  --color-heading: var(--vt-c-heading-itilh-light-1);
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
-} */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -71,6 +58,34 @@
     --color-text: var(--vt-c-text-itilh-dark);
   }
 }
+
+/* :root {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
+
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+
+  --section-gap: 160px;
+} */
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+} */
 
 *,
 *::before,

@@ -7,19 +7,19 @@
         <!-- <table style="width:100%"> -->
         <table style="border: 2px ridge rgba(255, 255, 255, 1.0)">
             <tr style="border-bottom: 2px ridge rgba(255,255,255,1); text-align: center">
-                <th style="border-right: 2px solid">ID</th>
-                <th style="border-right: 2px solid">Nome</th>
+                <th style="border-right: 2px ridge">ID</th>
+                <th style="border-right: 2px ridge">Nome</th>
                 <th>Ações</th>
             </tr>
             <tr v-for="estado in listaEstados" :key="estado.id">
-                <td style="padding-inline: 7px; border-right: 2px ridge rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.5); text-align: center">
+                <td style="padding-inline: 7px; border-right: 2px ridge rgba(255,255,255,0.5); border-bottom: 2px ridge rgba(255,255,255,0.5); text-align: center">
                     {{ estado.id }}
                 </td>
                 
-                <td style="padding-inline: 10px; border-right: 2px ridge rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.5)">
+                <td style="padding-inline: 10px; border-right: 2px ridge rgba(255,255,255,0.5); border-bottom: 2px ridge rgba(255,255,255,0.5)">
                     {{ estado.nome }}
                 </td>
-                <td style="padding-inline: 4px; border-bottom: 1px solid rgba(255,255,255,0.5)">
+                <td style="padding-inline: 4px; border-bottom: 2px ridge rgba(255,255,255,0.5)">
                     <button @click="alterarEstado(estado)">Alterar</button>
                     <button @click="excluirEstado(estado.id)">Excluir</button>
                 </td>
