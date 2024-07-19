@@ -1,6 +1,13 @@
+<script setup>
+  import TheWelcome from '../components/TheWelcome.vue'
+</script>
 <template>
   <div class="about">
-    <h1>texto que eu quero!!!</h1>
+
+    <main>
+    <h1>Compreendendo o Sistema</h1>
+    <TheWelcome />
+  </main>
   </div>
 </template>
 
@@ -12,4 +19,10 @@
     align-items: center;
   }
 }
+h1{
+    color:#ffbb00;
+    
+}
+
+
 </style>

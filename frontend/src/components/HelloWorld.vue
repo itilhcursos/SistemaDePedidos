@@ -10,29 +10,20 @@ defineProps({
 <template>
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
-    <h3>
-      Bem vindo a sua lista de compras on-line.
-    </h3>
   </div>
 </template>
 
 <style scoped>
 .green{
-  color:aliceblue
+  color:rgb(255, 174, 0)
 }
 h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
+  font-weight: 400;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 5rem;
   position: relative;
   top: -4px;
-left: 2rem;  
-}
-
-h3 {
-  font-size: 1.2rem;
-  color: rgb(247, 247, 247);
-  position: relative;
-  left: 3rem;
+  left: 11rem;  
 }
 
 .greetings h1,

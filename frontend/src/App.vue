@@ -7,7 +7,8 @@ import HelloWorld from './components/HelloWorld.vue'
   
     <header>
       <div class="wrapper">
-          <HelloWorld msg="Sistema de compras "  />  
+          <HelloWorld msg="Sys  "  />
+          <h2>VENDAS</h2>
         <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/about">Sobre</RouterLink>
@@ -37,23 +38,27 @@ import HelloWorld from './components/HelloWorld.vue'
 
   header {
     line-height: 0;
-    max-height: 95vh;
+    max-height: 94vh;
     
   }
-
 
 </style>
 
 <style scoped>
-
-
-
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
 }
 
+h2{
+  position: relative;
+  bottom: -6rem;
+  right: 2rem;
+  font-size: 70px;
+  font-family: serif;
+
+}
 .wrapper nav {
   width: 100%;
   font-size: 12px;
@@ -105,6 +110,8 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
     background: #23232e;
+    border-radius: 11px;
+    
   }
 }
 </style> 
