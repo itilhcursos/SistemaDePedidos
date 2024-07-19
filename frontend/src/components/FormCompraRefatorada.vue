@@ -12,14 +12,24 @@
 </template>
 
 <style scoped>
+
+h1 {
+  color: #3F8DBF;
+  font-weight: 1000;
+  font-size: 2.4rem;
+  position: relative;
+  top: -10px;
+  margin-bottom: 5px;
+  margin-top: 30px;
+  text-align: center;
+}
 .alert {
     color: red;
     font-weight: bold;
     margin-top: 10px;
+    font-size: 15px;
 } 
-.container {
-    width: 446px;
-}
+
 .form-control {
     border-color: #dddddd;
     font-size: 15px;
@@ -44,13 +54,19 @@
     font-size: 18px;
     font-weight: 500;
     width: 77.3px;
-    margin-right: 10px;
+    margin-right: 20px;
     margin-left: 180px;
     height: 2rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    
 }
+
+.btn:hover{
+background-color: #e2f5ff;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
 </style>
 
 <script> 

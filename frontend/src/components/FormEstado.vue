@@ -26,6 +26,11 @@
     margin-left: 10px;
 }
 
+.botão-incluir:hover{
+background-color: #e2f5ff;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
 .botão-cancelar {
     background: #f0f0f0;
     border-radius: 4px;
@@ -34,6 +39,11 @@
     font-size: 15px;
     font-weight: 500;
     width: 77.3px;
+}
+
+.botão-cancelar:hover{
+background-color: #e2f5ff;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 

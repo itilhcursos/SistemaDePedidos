@@ -24,7 +24,6 @@
 
 .botao-listaExcluir {
     font-weight: 500;
-    
 }
 
 .alert {
@@ -72,6 +71,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.btn:hover{
+background-color: #e2f5ff;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 .list-group-item{

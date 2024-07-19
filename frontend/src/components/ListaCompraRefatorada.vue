@@ -15,6 +15,10 @@
 
 <style scoped>
 
+.container {
+    width: 466px;
+}
+
 .botao-listaExcluir {
     font-weight: 500;
 }
@@ -36,6 +40,8 @@
     border-color: #ddd;
     color: #7a7a7a;
     font-weight: bold;
+    margin-left: 15px;
+    width: 442px;
     
 }
 
