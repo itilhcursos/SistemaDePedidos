@@ -1,11 +1,11 @@
 <template>
     <div class="form-floating mb-3">
-        <h3>Cadastro de estado</h3>
+        <h3>Cadastro de Estado</h3>
         <hr/>
-        <p><input type="text" class="form-control" v-model="id" :disabled="true" placeholder="Id Estado" /></p>
+        <p><input type="text" class="form-control" v-model="id" :disabled="true" placeholder="ID Estado" /></p>
         <p><input type="text" class="form-control" v-model="nome" placeholder="Nome"/></p>
-        <div v-if="isInvalido"  role="alert">
-            Nome deve ser preenchido!!
+        <div class="alert alert-warning" v-if="isInvalido"  role="alert">
+            Nome do estado deve ser preenchido!
         </div>
         <button type="submit" class="btn btn-success" v-on:click.prevent="salvarEstado" >Incluir</button>
         <button type="submit" class="btn btn-success" v-on:click.prevent="cancelar" >Cancelar</button>

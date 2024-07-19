@@ -1,8 +1,13 @@
 <template>
     <div>
-        <h1 class="green">Lista de Estados</h1>
-        <button class="btn btn-primary" v-if="!formVisible" @click="novoEstado">Novo</button>
-       <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
+        <div>
+        <h1 class="green" v-if="!formVisible">Lista de Estados</h1>
+        <a v-if="!formVisible">Clique no botão para criar um novo estado ---></a>
+        <button class="btn btn-light btn-sm" v-if="!formVisible" @click="novoEstado">Criar Estado</button>
+        <hr v-if="!formVisible">
+        </div>
+        <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
+        <div class="table-overflow">
         <table class="table table-dark table-striped table-bordered table-sm table align-middle">
             <thead class="table-dark">
                 <tr>
@@ -26,7 +31,7 @@
                 </tr>
             </tbody>
         </table>
-
+        </div>
     </div>
 </template>
 
@@ -35,8 +40,20 @@
         margin-left: 5px;
     }
 
-    .btn.btn-primary {
-        margin-bottom: 10px;
+    .btn.btn-light.btn-sm {
+        padding: 6px;
+        margin-bottom: 5px;
+        margin-left: 190px;
+    }
+
+    .table-overflow {
+        max-height: 354px;
+        overflow-y:auto;
+    }
+
+    hr {
+        margin: 2px;
+        padding: 2px;
     }
 </style>
 
