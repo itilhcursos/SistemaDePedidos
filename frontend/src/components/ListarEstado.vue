@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1> {{ mode }} </h1>
         <div>
         <h1 class="green" v-if="!formVisible">Lista de Estados</h1>
         <a v-if="!formVisible">Clique no botão para criar um novo estado ---></a>
@@ -67,7 +68,8 @@ import axios from "axios";
         data(){
             return{
                 listaEstados:[],
-                formVisible:false
+                formVisible:false,
+                mode: import.meta.env.MODE,
             }
         },
         methods:{
