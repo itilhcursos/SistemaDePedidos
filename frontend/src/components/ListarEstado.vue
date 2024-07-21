@@ -1,13 +1,14 @@
 <template>
     <div>
         <h1> {{ mode }} </h1>
+        <h1> {{ url }} </h1>
         <div>
         <h1 class="green" v-if="!formVisible">Lista de Estados</h1>
         <a v-if="!formVisible">Clique no botão para criar um novo estado ---></a>
         <button class="btn btn-light btn-sm" v-if="!formVisible" @click="novoEstado">Criar Estado</button>
         <hr v-if="!formVisible">
         </div>
-        <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
+        <FormEstado v-if="formVisible" :propsEstado="estadoEscolhido" @cancelar="limpar" @salvar_estado="buscarEstados"/>
         <div class="table-overflow">
         <table class="table table-dark table-striped table-bordered table-sm table align-middle">
             <thead class="table-dark">
@@ -68,13 +69,16 @@ import axios from "axios";
         data(){
             return{
                 listaEstados:[],
+                estadoEscolhido:null,
                 formVisible:false,
                 mode: import.meta.env.MODE,
+                url: import.meta.env.VITE_APP_URL_API,
             }
         },
         methods:{
             async buscarEstados(){
                 this.formVisible = false;
+                this.estadoEscolhido = null;
                 //buscar a lista de estados no servidor
                 // http://localhost:8080/estados 
                 const response = await axios.get("http://localhost:8080/estados");
@@ -82,13 +86,15 @@ import axios from "axios";
                 this.listaEstados = response.data;
             },
             limpar(){
+                this.estadoEscolhido = null;
                 this.formVisible = !this.formVisible;
             }, 
             novoEstado(){
                 this.formVisible = !this.formVisible;
             },
             alterarEstado(estado){
-                console.log(estado);
+                this.estadoEscolhido = estado;
+                this.formVisible = true;
             },
             async excluirEstado(id){
                 const response = await axios.delete(`http://localhost:8080/estado/${id}`);
