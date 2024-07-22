@@ -69,7 +69,7 @@ import axios from "axios";
             },
         },
         mounted() {
-            if(this.estado){
+            if(this.propsEstado){
                 this.id =this.propsEstado.id;
                 this.nome =this.propsEstado.nome;
             }
