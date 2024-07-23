@@ -7,7 +7,7 @@
         <div v-if="isInvalido"  role="alert">
             Nome deve ser preenchido!!
         </div>
-        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
+        <button type="submit" v-on:click.prevent="salvarEstado" >{{ getAcao }}</button>
         <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
         <hr/>
     </div>
@@ -26,7 +26,7 @@ import axios from "axios";
                 isInvalido:false,
             }
         },
-        methods:{
+        methods:{ //Chamados pela programação ou usuário
             async salvarEstado(){
                 if(this.nome ==='' ){
                     this.isInvalido = true;
@@ -34,12 +34,19 @@ import axios from "axios";
                 }
                 this.isInvalido = false;
 
-                const response = await axios.post("http://localhost:8080/estado", {
+                if ( this.id === "") {
+                    const response = await axios.post("http://localhost:8080/estado", {
                          id:this.id,
                          nome:this.nome
                      });
-                console.log(response.data);
-                this.listaEstados = response.data;
+                     this.listaEstados = response.data;
+                } else {
+                    const response = await axios.put(`http://localhost:8080/estado/${this.id}`, {
+                         id:this.id,
+                         nome:this.nome
+                     });
+                     this.listaEstados = response.data;
+                }
 
                  this.$emit('salvar_estado',{
                          id:this.id,
@@ -57,10 +64,15 @@ import axios from "axios";
             
             },
         },
-        mounted() {
+        mounted() { //Função Completa
             if(this.propsEstado){
                 this.id =this.propsEstado.id;
                 this.nome =this.propsEstado.nome;
+            }
+        },
+        computed: { // Método de resposta
+            getAcao () {
+                return this.id === ""? "Incluir":"Alterar";
             }
         }
    }

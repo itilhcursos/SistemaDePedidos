@@ -23,7 +23,12 @@
                 </td>
             </tr>
         </table>
-
+    </div>
+    <div>
+        <hr>
+        <h2>Páginação</h2>
+        <p><input type="text" v-model="pageNumber" placeholder="Número da página"></p>
+        <p><button @click.prevent="buscarEstados">Buscar</button></p>
     </div>
 </template>
 
@@ -41,18 +46,19 @@ import axios from "axios";
                 estadoEscolhido:null,
                 formVisible:false,
                 mode: import.meta.env.MODE,
-                url: import.meta.env.VITE_APP_URL_API
+                url: import.meta.env.VITE_APP_URL_API,
+                pageNumber: 1
             }
         },
         methods:{
             async buscarEstados(){
-                this.estadoEscolhido = null;
+                this.estadoEscolhido = true;
                 this.formVisible = false;
                 //buscar a lista de estados no servidor
                 // http://localhost:8080/estados 
-                const response = await axios.get("http://localhost:8080/estados");
+                const response = await axios.get(`http://localhost:8080/estados?pageNumber=${this.pageNumber}`);
                 console.log(response.data);
-                this.listaEstados = response.data;
+                this.listaEstados = response.data.content;
             },
             limpar(){
                 this.estadoEscolhido = null;
