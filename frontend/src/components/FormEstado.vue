@@ -7,7 +7,7 @@
         <div v-if="isInvalido"  role="alert">
             Nome deve ser preenchido!!
         </div>
-        <button type="submit" v-on:click.prevent="salvarEstado" >Incluir</button>
+        <button type="submit" v-on:click.prevent="salvarEstado" >{{ getAcao }}</button>
         <button type="submit" v-on:click.prevent="cancelar" >Cancelar</button>
         <hr/>
     </div>
@@ -17,7 +17,7 @@
 import axios from "axios";
    export default{
         props:{
-            estado: Object
+            propsEstado: Object
         },
         data(){
             return {
@@ -34,13 +34,20 @@ import axios from "axios";
                 }
                 this.isInvalido = false;
 
-                const response = await axios.post("http://localhost:8080/estado", {
-                         id:this.id,
-                         nome:this.nome
-                     });
-                console.log(response.data);
-                this.listaEstados = response.data;
-
+                if(this.id === ""){ //incluir pelo POST da API
+                    const response = await axios.post("http://localhost:8080/estado", {
+                            id:this.id,
+                            nome:this.nome
+                    });
+                    this.listaEstados = response.data;
+                }else{ // alterar pelo PUT da API
+                    const response = await axios.put(`http://localhost:8080/estado/${this.id}`, {
+                            id:this.id,
+                            nome:this.nome
+                    });
+                    this.listaEstados = response.data;
+                }
+                
                  this.$emit('salvar_estado',{
                          id:this.id,
                          nome:this.nome
@@ -57,10 +64,15 @@ import axios from "axios";
             
             },
         },
-        computed() {
-            if(this.estado){
-                this.id =this.estado.id;
-                this.nome =this.estado.nome;
+        mounted() {
+            if(this.propsEstado){
+                this.id =this.propsEstado.id;
+                this.nome =this.propsEstado.nome;
+            }
+        },
+        computed:{
+            getAcao(){
+                return this.id === ""? "Incluir":"Alterar";
             }
         }
    }
