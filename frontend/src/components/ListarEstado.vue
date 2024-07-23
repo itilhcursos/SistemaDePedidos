@@ -2,7 +2,10 @@
     <div class="div">
         <p>Cadastre aqui o seu Estado para registro</p>
         <button v-if="!formVisible" @click="novoEstado">Novo</button>
-       <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
+       <FormEstado v-if="formVisible" 
+       :propsEstado="estadoEscolhido"
+       @cancelar="limpar" 
+       @salvar_estado="buscarEstados"/>
         <table>
             <tr>
                 <th>ID</th>
@@ -24,6 +27,12 @@
         </table>
 
     </div>
+    <div>
+        <hr>
+        <h2>Paginação</h2>
+        <p><input type="text" v-model="pageNumber" placeholder="Numero da pagina"></p>
+        <p><button @click.prevent="buscarEstados" >Buscar</button></p>
+    </div>
 </template>
 
 
@@ -37,26 +46,34 @@ import axios from "axios";
         data(){
             return{
                 listaEstados:[],
-                formVisible:false
+                estadoEscolhido:null,
+                formVisible:false,
+                mode: import.meta.env.MODE,
+                url: import.meta.env.VITE_APP_URL_API,
+                pageNumber:1
             }
         },
         methods:{
             async buscarEstados(){
+                this.estadoEscolhido=null;
                 this.formVisible = false;
                 //buscar a lista de estados no servidor
                 // http://localhost:8080/estados 
-                const response = await axios.get("http://localhost:8080/estados");
+                const response = await axios.get(`http://localhost:8080/estados?pageNumber=${this.pageNumber}`);
                 console.log(response.data);
-                this.listaEstados = response.data;
+                this.listaEstados = response.data.content;
+            
             },
             limpar(){
+                this.estadoEscolhido=null;
                 this.formVisible = !this.formVisible;
             }, 
             novoEstado(){
                 this.formVisible = !this.formVisible;
             },
             alterarEstado(estado){
-                console.log(estado);
+                this.estadoEscolhido = estado;
+                this.formVisible = true;
             },
             async excluirEstado(id){
                 const response = await axios.delete(`http://localhost:8080/estado/${id}`);
