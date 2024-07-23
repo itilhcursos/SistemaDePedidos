@@ -5,11 +5,15 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
-
+import java.util.ArrayList;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +37,14 @@ public class EstadoController {
     }
 
     @GetMapping("/estados")
-    public List<Estado> getTodos() {
-        return  (List<Estado>) repositorio.findAll();
+    public Page<Estado> getTodos(
+    @RequestParam(required = false, defaultValue = "1")int pageNumber,
+    @RequestParam(required = false, defaultValue = "10")int pageSize,
+    @RequestParam(required = false, defaultValue = "ASC")String direction,
+    @RequestParam(required = false, defaultValue = "id") String property
+    ) {
+        Pageable peageble = PageRequest.of(pageNumber - 1, pageSize,Sort.Direction.valueOf(direction),property);
+        return  (Page<Estado>) repositorio.findAll(peageble);
     }
 
     @GetMapping("/estados/nome/{nome}")

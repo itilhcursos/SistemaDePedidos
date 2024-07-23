@@ -24,6 +24,12 @@
         </table>
 
     </div>
+    <div>
+        <hr>
+        <h2> Paginação</h2>
+        <p><input type="text" v-model="pageNumber" placeholder="Número de pagina"></p>
+        <p><button @click.prevent="buscarEstados">buscar</button></p>
+    </div>
 </template>
 
 
@@ -37,16 +43,18 @@ import axios from "axios";
         data(){
             return{
                 listaEstados:[],
-                formVisible:false
+                formVisible:false,
+                pageNumber:1
+
             }
         },
         methods:{
             async buscarEstados(){
                 this.formVisible = false;
                 
-                const response = await axios.get("http://localhost:8080/estados");
+                const response = await axios.get(`http://localhost:8080/estados?pageNumber=${this.pageNumber}`);
                 console.log(response.data);
-                this.listaEstados = response.data;
+                this.listaEstados = response.data.content;
             },
             limpar(){
                 this.formVisible = !this.formVisible;
