@@ -15,7 +15,7 @@
                 <th>Ações</th>
             </tr>
             <tr v-for="estado in listaEstados" :key="estado.id">
-                <img :src="getBandeiraUrl(estado.nome)" alt="Bandeira do Estado" :style="{ width: '20px', height: 'auto' }" />
+                <img :src="getBandeiraUrl(estado.nome)" alt="Bandeira do Estado" :style="{ width: '30px', height: 'auto' }" />
                 <td>
                     <!--{{ estado.id }}-->
                 </td>
@@ -86,7 +86,7 @@ import axios from "axios";
                 this.buscarEstados();
             },
             getBandeiraUrl(nome) {
-      return `./src/assets/png-200/${nome}.png`;
+      return `./public/png-200/${nome}.png`;
     },
         },  
         mounted() {
