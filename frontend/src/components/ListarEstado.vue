@@ -1,5 +1,7 @@
 <template>
     <div>
+        <h1>{{ mode }}</h1>
+        <h1>{{ url }}</h1>
         <p>Lista de Estados</p>
         <button v-if="!formVisible" @click="novoEstado">Novo</button>
        <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
@@ -28,8 +30,8 @@
 
 
 <script> 
-import FormEstado from './FormEstado.vue';
 import axios from "axios";
+import FormEstado from './FormEstado.vue';
     export default {
         components:{
             FormEstado
@@ -37,7 +39,9 @@ import axios from "axios";
         data(){
             return{
                 listaEstados:[],
-                formVisible:false
+                formVisible:false,
+                mode: import.meta.env.MODE,
+                url : import.meta.env.VITE_APP_URL_API,
             }
         },
         methods:{
