@@ -1,9 +1,8 @@
 <template>
     <div>
-        <h1>{{ mode }}</h1>
         <p class="titulo-lista">Lista de Estados</p>
         <button class="botão-novoEstado" v-if="!formVisible" @click="novoEstado">NOVO</button>
-       <FormEstado v-if="formVisible" @cancelar="limpar" @salvar_estado="buscarEstados"/>
+       <FormEstado v-if="formVisible" :propsEstado="estadoEscolhido" @cancelar="limpar" @salvar_estado="buscarEstados"/>
         <table class="lista-estados">
             <thead>
             <tr>
@@ -139,12 +138,15 @@ import axios from "axios";
         data(){
             return{
                 listaEstados:[],
+                estadoEscolhido:null,
                 formVisible:false,
                 mode: import.meta.env.MODE,
+                url: import.meta.env.VITE_APP_URL_API
             }
         },
         methods:{
             async buscarEstados(){
+                this.estadoEscolhido = null;
                 this.formVisible = false;
                 //buscar a lista de estados no servidor
                 // http://localhost:8080/estados 
@@ -154,12 +156,15 @@ import axios from "axios";
             },
             limpar(){
                 this.formVisible = !this.formVisible;
+                this.estadoEscolhido = null;
             }, 
             novoEstado(){
                 this.formVisible = !this.formVisible;
             },
             alterarEstado(estado){
-                console.log(estado);
+                this.estadoEscolhido = estado;
+                this.formVisible = true;
+
             },
             async excluirEstado(id){
                 const response = await axios.delete(`http://localhost:8080/estado/${id}`);

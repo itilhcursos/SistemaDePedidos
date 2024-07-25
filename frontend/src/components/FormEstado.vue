@@ -89,7 +89,7 @@ h1{
 import axios from "axios";
    export default{
         props:{
-            estado: Object
+            propsEstado: Object
         },
         data(){
             return {
@@ -129,10 +129,10 @@ import axios from "axios";
             
             },
         },
-        computed() {
-            if(this.estado){
-                this.id =this.estado.id;
-                this.nome =this.estado.nome;
+        mounted() {
+            if(this.propsEstado){
+                this.id =this.propsEstado.id;
+                this.nome =this.propsEstado.nome;
             }
         }
    }
