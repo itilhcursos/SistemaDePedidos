@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import TelaInicial from "../components/TelaInicial.vue";
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
+  <main>   
+    <TelaInicial msg="Sys" msg2="VENDAS "/>
   </main>
 </template>
