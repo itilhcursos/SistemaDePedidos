@@ -73,7 +73,7 @@
       </div>
       <div class="col-auto">
         <input
-            class="form-control"
+            class="form-control w-25"
             type="text"
             v-model="pageNumber"
           />
