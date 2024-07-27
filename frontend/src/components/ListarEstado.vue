@@ -167,7 +167,7 @@ export default {
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarEstados();
-    },
+     },
   },
   mounted() {
     this.buscarEstados();
