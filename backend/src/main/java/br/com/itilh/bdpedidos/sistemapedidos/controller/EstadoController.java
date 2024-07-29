@@ -1,11 +1,5 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
-import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
-
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +8,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
 
 
 
@@ -62,7 +61,10 @@ public class EstadoController {
 
     @PostMapping("/estado")
     public Estado criarEstado(@RequestBody Estado entity) throws Exception { 
-        try{               
+        try{     
+            if(entity.getId() !=null) {
+                throw new Exception("Entidade já existe.");
+            }         
             return repositorio.save(entity);
         }catch(Exception e){
             throw new Exception("Erro ao salvar o estado.");
