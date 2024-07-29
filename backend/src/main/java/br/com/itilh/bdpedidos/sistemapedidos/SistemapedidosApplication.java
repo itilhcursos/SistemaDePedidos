@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,10 @@ public class SistemapedidosApplication {
             }
 
         };
+    }
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
     }
 
 }
