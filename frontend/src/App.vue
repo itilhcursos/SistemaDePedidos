@@ -1,44 +1,61 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterLink, RouterView } from "vue-router";
+
 </script>
 
 <template>
   <header>
-    
-    <div class="wrapper">
-      <HelloWorld msg="Sistema de compras" />
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">Sobre</RouterLink>
-        <RouterLink to="/estados">Estados</RouterLink>
-        <p></p>
-        <p></p>
-        <RouterLink to="/lista">Lista de Compras</RouterLink>
-        <RouterLink to="/listaRefatorada">Lista de Compras Refatorda</RouterLink>
-      </nav>
-    </div>
+    <div>
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">Sobre</RouterLink>
+      <RouterLink to="/estados">Estados</RouterLink>
+      <RouterLink to="/municipios">Municípios</RouterLink>
+      <RouterLink to="/produtos">Produtos</RouterLink>
+      <RouterLink to="/formas-pagamento">Formas de Pagamento</RouterLink>
+      <RouterLink to="/Clientes">Clientes</RouterLink>
+      <RouterLink to="/pedidos">Pedidos</RouterLink>
+    </nav>
+    <img src="./assets/carrinho.png" alt=""/>
+  </div>
   </header>
-
-  <RouterView />
+  <main>
+    <RouterView />
+  </main>
 </template>
 
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+
+img{
+  width: 150px;
+  height: 15s0px;
+  margin: auto;
+  display: inline-block;
+
 }
+
+nav {
+    text-align: left;
+    font-size: 1rem;
+    padding: 1rem 0;
+    margin-top: 1rem;
+    background: #23232e;
+    border-radius: 11px;
+    display: inline-block;
+    width: 80%;
+  }
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
 }
 
-nav {
+
+.wrapper nav {
   width: 100%;
   font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  text-align: left;
 }
 
 nav a.router-link-exact-active {
@@ -52,7 +69,8 @@ nav a.router-link-exact-active:hover {
 nav a {
   display: inline-block;
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-text);
+  color: rgb(255, 255, 255);
 }
 
 nav a:first-of-type {
@@ -60,29 +78,10 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+
 
   .logo {
     margin: 0 2rem 0 0;
   }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
 }
-</style>
+</style> 
