@@ -34,4 +34,14 @@ public class FormaPagamento {
 
     @Column(name = "bo_entrega")
     private Boolean entrega;
+
+    public Object getNome() {
+     
+        throw new UnsupportedOperationException("Unimplemented method 'getNome'");
+    }
+
+    public void setNome(Object nome) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'setNome'");
+    }
 }

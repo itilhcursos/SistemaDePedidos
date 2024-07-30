@@ -41,4 +41,14 @@ public class Produto {
     @Column(name = "bo_ativo")
     private Boolean ativo;
 
+    public Object getNome() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNome'");
+    }
+
+    public void setNome(Object nome) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setNome'");
+    }
+
 }
