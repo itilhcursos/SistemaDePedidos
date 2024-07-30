@@ -27,11 +27,7 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
 
     @Query("FROM Estado e WHERE e.nome like %?1")
     List<Estado> findByMinhaQuery(String nome);
-<<<<<<< HEAD
-
-=======
     
->>>>>>> master
     @Override
     Page<Estado> findAll(Pageable pageable);
 }

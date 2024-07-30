@@ -72,17 +72,10 @@ public class EstadoController {
 
     @PostMapping("/estado")
     public Estado criarEstado(@RequestBody Estado entity) throws Exception { 
-<<<<<<< HEAD
-        try{     
-            if(entity.getId() !=null) {
-                throw new Exception("Entidade já existe.");
-            }         
-=======
         try{               
             if(entity.getId() != null){
                 throw new Exception("Entidade já existe.");
             }
->>>>>>> master
             return repositorio.save(entity);
         }catch(Exception e){
             throw new Exception("Erro ao salvar o estado.");
