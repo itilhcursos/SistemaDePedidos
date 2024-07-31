@@ -32,7 +32,7 @@ public class FormaPagamentoController {
         this.repositorio = repositorio;
     }
 
-    @GetMapping("/forma-pagamentos")
+    @GetMapping("/formas-pagamento")
     public Page<FormaPagamento> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -44,7 +44,7 @@ public class FormaPagamentoController {
         return  (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
 
-    @GetMapping("/forma-pagamentos/descricao/{descricao}")
+    @GetMapping("/formas-pagamento/descricao/{descricao}")
     public List<FormaPagamento> getFormaPagamentosPorDescricao(@PathVariable String descricao, @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
             return repositorio.findByDescricao(descricao);
