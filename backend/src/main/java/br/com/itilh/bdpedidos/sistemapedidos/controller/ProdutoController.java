@@ -2,12 +2,10 @@ package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
 import java.math.BigInteger;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

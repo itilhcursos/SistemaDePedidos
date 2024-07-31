@@ -1,6 +1,8 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
 
 
 @RestController
@@ -40,40 +43,63 @@ public class FormaPagamentoController {
         return  (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
 
+    @GetMapping("/formaPagamento/descricao/{descricao}")
+    public List<FormaPagamento> getFormaPagamentoPorDescricao(@PathVariable String descricao,
+    @RequestParam(required = true) ModoBusca modoBusca) {
+        if(modoBusca.equals(ModoBusca.EXATO)){
+            return repositorio.findByDescricao(descricao);
+        }else if (modoBusca.equals(ModoBusca.INICIADO)){
+            return repositorio.findByDescricaoStartingWithIgnoreCase(descricao);
+        }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
+            return repositorio.findByDescricaoEndingWithIgnoreCase(descricao);
+        }else{
+            return repositorio.findByDescricaoContainingIgnoreCase(descricao);
+        }       
+    }
+
     @GetMapping("/formaPagamento/{id}")
-    public FormaPagamento getPorId(@RequestParam BigInteger id) throws Exception {
+    public FormaPagamento getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
-    }
+    }  
 
     @PostMapping("/formaPagamento")
-    public FormaPagamento postFormaPagamento(@RequestBody FormaPagamento entity) throws Exception {    
-        try{ 
+    public FormaPagamento criarFormaPagamento(@RequestBody FormaPagamento entity) throws Exception { 
+        try{               
+            if(entity.getId() != null){
+                throw new Exception("Entidade já existe.");
+            }
             return repositorio.save(entity);
-        }catch (Exception ex){
-            throw new Exception("Não foi possível criar o município." + ex.getMessage());
+        }catch(Exception e){
+            throw new Exception("Erro ao salvar o estado.");
         }
     }
     
     @PutMapping("/formaPagamento/{id}")
-    public FormaPagamento putMunicipio(@PathVariable BigInteger id, @RequestBody FormaPagamento entity) throws Exception {
-        try{ 
-            return repositorio.save(entity);
-        }catch (Exception ex){
-            throw new Exception("Não foi possível alterar o município." + ex.getMessage());
-        }
+    public FormaPagamento alterarFormaPagamento(@PathVariable BigInteger id, 
+                                @RequestBody FormaPagamento novosDados) throws Exception {
+
+        Optional<FormaPagamento> formaPagamentoArmazenada = repositorio.findById(id);
+        if(formaPagamentoArmazenada.isPresent()){
+            //Atribuir novo nome ao objeto já existem no banco de dados
+            formaPagamentoArmazenada.get().setDescricao(novosDados.getDescricao());
+            //
+            return repositorio.save(formaPagamentoArmazenada.get());
+        }        
+        throw new Exception("Alteração não foi realizada.");
     }
 
     @DeleteMapping("/formaPagamento/{id}")
-    public String deleteFormaPagamento(@PathVariable BigInteger id) throws Exception{
-        try{ 
-             repositorio.deleteById(id);
-             return "Excluído";
-        }catch (Exception ex){
-            throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+    public String deletePorId(@PathVariable BigInteger id) throws Exception {
+
+        Optional<FormaPagamento> formaPagamentoArmazenada = repositorio.findById(id);
+        if(formaPagamentoArmazenada.isPresent()){
+            repositorio.delete(formaPagamentoArmazenada.get());
+            return "Excluído";
         }
-    }
+        throw new Exception("Id não econtrado para a exclusão");
+    }    
 
     
 }
