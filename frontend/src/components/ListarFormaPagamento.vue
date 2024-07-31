@@ -40,7 +40,7 @@
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
+              @click="alterarFormaPagamento(formaPagamento)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
@@ -92,7 +92,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="descricao">Descrição</option>
           </select>
         </div>
         <div class="col-auto">
@@ -139,7 +139,7 @@ export default {
 
       //buscar a lista de formas de pagamentos no servidor
       const response = await axios.get(
-        `http://localhost:8080/formaPagamento`
+        `http://localhost:8080/formaPagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
       this.listaFormasPagamento = response.data.content;
@@ -153,8 +153,8 @@ export default {
     novaFormaPagamento() {
       this.formVisible = !this.formVisible;
     },
-    alterarEstado(formaPagamentoEscolhida) {
-      this.formaPagamentoEscolhida = formaPagamentoEscolhida;
+    alterarFormaPagamento(formaPagamento) {
+      this.formaPagamentoEscolhida = formaPagamento;
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {

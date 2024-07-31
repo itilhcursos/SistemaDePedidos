@@ -25,8 +25,8 @@
       <div class="mb-3">
         <label class="form-label">Ativo</label>
           <select v-model="ativo" class="form-select">
-            <option value="true">Sim</option>
-            <option value="false">Não</option>
+            <option :value="true">Sim</option>
+            <option :value="false">Não</option>
           </select>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -91,8 +91,8 @@ export default {
           `http://localhost:8080/formaPagamento/${this.id}`,
           {
             id: this.id,
-            nome: this.descricao,
-            ativo: this.ativo,
+            descricao: this.descricao,
+            ativo: this.ativo
           }
         );
         this.listaFormasPagamento = response.data;
