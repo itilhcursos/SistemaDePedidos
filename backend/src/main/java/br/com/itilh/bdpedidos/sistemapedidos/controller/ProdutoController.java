@@ -4,8 +4,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,38 +45,65 @@ public class ProdutoController {
         return  (Page<Produto>) repositorio.findAll(pageable);
     }
 
+    @GetMapping("/produto/descricao/{descricao}")
+    public List<Produto> getProdutoPorDescricao(@PathVariable String descricao,
+    @RequestParam(required = true) ModoBusca modoBusca) {
+        if(modoBusca.equals(ModoBusca.EXATO)){
+            return repositorio.findByDescricao(descricao);
+        }else if (modoBusca.equals(ModoBusca.INICIADO)){
+            return repositorio.findByDescricaoStartingWithIgnoreCase(descricao);
+        }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
+            return repositorio.findByDescricaoEndingWithIgnoreCase(descricao);
+        }else{
+            return repositorio.findByDescricaoContainingIgnoreCase(descricao);
+        }       
+    }
+
     @GetMapping("/produto/{id}")
-    public Produto getProdutoPorId(@PathVariable BigInteger id) throws Exception {
-            return repositorio.findById(id)
-            .orElseThrow(() -> new Exception("ID não encontrado."));
+    public Produto getPorId(@PathVariable BigInteger id) throws Exception {
+        return repositorio.findById(id).orElseThrow(
+            () -> new Exception("ID inválido.")
+         );
     }
     
     @PostMapping("/produto")
-    public Produto postProduto(@RequestBody Produto entity) throws Exception {
-        try{ 
+    public Produto criarProduto(@RequestBody Produto entity) throws Exception { 
+        try{               
+            if(entity.getId() != null){
+                throw new Exception("Entidade já existe.");
+            }
             return repositorio.save(entity);
-        }catch (Exception ex){
-            throw new Exception("Não foi possível criar um novo Produto" + ex.getMessage());
-        }    
+        }catch(Exception e){
+            throw new Exception("Erro ao salvar o produto.");
+        }
     }
 
     @PutMapping("/produto/{id}")
-    public Produto putProduto(@PathVariable String id, @RequestBody Produto entity) throws Exception {
-        try {
-            return repositorio.save(entity);
-        } catch (Exception ex) {
-            throw new Exception("Não foi possível alterar o Produto." + ex.getMessage());
-        }
+    public Produto alterarProduto(@PathVariable BigInteger id, 
+                                @RequestBody Produto novosDados) throws Exception {
+
+        Optional<Produto> produtoArmazenado = repositorio.findById(id);
+        if(produtoArmazenado.isPresent()){
+            //Atribuir nova descrição, quantidadeEstoque, preço e novo modo ativo ao objeto já existente no banco de dados
+            produtoArmazenado.get().setDescricao(novosDados.getDescricao());
+            produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+            produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+            produtoArmazenado.get().setAtivo(novosDados.getAtivo());
+            //
+            return repositorio.save(produtoArmazenado.get());
+        }        
+        throw new Exception("Alteração não foi realizada.");
     }
     
     @DeleteMapping("/produto/{id}")
-    public String DeleteMethodName(@PathVariable BigInteger id) throws Exception {
-        try {
-            repositorio.deleteById(id);
+    public String deletePorId(@PathVariable BigInteger id) throws Exception {
+
+        Optional<Produto> produtoArmazenado = repositorio.findById(id);
+        if(produtoArmazenado.isPresent()){
+            repositorio.delete(produtoArmazenado.get());
             return "Excluído";
-        } catch (Exception ex) {
-            throw new Exception("Não foi possível deletar o ID informado." + ex.getMessage());
         }
-    }
+        throw new Exception("Id não econtrado para a exclusão");
+    }    
 
 }
