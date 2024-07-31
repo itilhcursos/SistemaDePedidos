@@ -44,6 +44,7 @@
       </tbody>
     </table>
   </div>
+  
   <div v-if="!formVisible">
     <hr />
 
