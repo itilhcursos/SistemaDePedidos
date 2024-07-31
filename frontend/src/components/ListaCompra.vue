@@ -21,8 +21,13 @@
     </div>
 </template>
 
-<script> 
+<script>
+   import FormProduto from './FormProduto.vue';
+   import axios from "axios";
    export default{
+        components: {
+          FormProduto,
+        },
         data(){
             return {
                 produto:'',
