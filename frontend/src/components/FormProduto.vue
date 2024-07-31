@@ -14,12 +14,12 @@
         />
       </div>
       <div class="mb-3">
-        <label class="form-label">Nome</label>
+        <label class="form-label">Descrição</label>
         <input
           class="form-control"
           type="text"
-          v-model="nome"
-          placeholder="Nome"
+          v-model="descricao"
+          placeholder="Descrição"
         />
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -57,13 +57,13 @@ export default {
   data() {
     return {
       id: "",
-      nome: "",
+      descricao: "",
       isInvalido: false,
     };
   },
   methods: {
     async salvarProduto() {
-      if (this.nome === "") {
+      if (this.descricao === "") {
         this.isInvalido = true;
         return;
       }
@@ -73,7 +73,7 @@ export default {
         //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/produto", {
           id: this.id,
-          nome: this.nome,
+          nome: this.descricao,
         });
         this.listaProdutos = response.data;
       } else {
@@ -82,7 +82,7 @@ export default {
           `http://localhost:8080/produto/${this.id}`,
           {
             id: this.id,
-            nome: this.nome,
+            nome: this.descricao,
           }
         );
         this.listaProdutos = response.data;
@@ -90,22 +90,22 @@ export default {
 
       this.$emit("salvar_produto", {
         id: this.id,
-        nome: this.nome,
+        nome: this.descricao,
       });
     
       this.id = "";
-      this.nome = "";
+      this.descricao = "";
     },
     cancelar() {
       this.id = "";
-      this.nome = "";
+      this.descricao = "";
       this.$emit("cancelar", true);
     },
   },
   mounted() {
     if (this.propsProduto) {
       this.id = this.propsProduto.id;
-      this.nome = this.propsProduto.nome;
+      this.descricao = this.propsProduto.descricao;
     }
   },
   computed: {
