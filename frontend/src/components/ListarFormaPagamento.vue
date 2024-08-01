@@ -1,21 +1,22 @@
+
 <template>
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>ESTADOS</h3>
+        <h3>FORMAS DE PAGAMENTO</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormFormaPagamento
             v-if="formVisible"
-            :propsEstado="estadoEscolhido"
+            :propsFormaPagamento="formaPagamentoEscolhido"
             @cancelar="limpar"
-            @salvar_estado="buscarEstados"
+            @salvar_formapagamento="buscarFormasPagamento"
           />
         </div>
       </div>
@@ -25,29 +26,33 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Entrega</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="estado in listaEstados" :key="estado.id" scope="row">
+        <tr v-for="formapagamento in listaFormasPagamento" :key="formapagamento.id" scope="row">
           <th>
-            {{ estado.id }}
+            {{ formapagamento.id }}
           </th>
           <td>
-            {{ estado.nome }}
+            {{ formapagamento.descricao}}
+          </td>
+          <td>
+            {{ formapagamento.entrega ? "Verdadeiro":"Falso"}}
           </td>
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
+              @click="alterarFormaPagamento(formapagamento)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
             <button
               class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
+              @click="excluirFormaPagamento(formapagamento.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
@@ -92,7 +97,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="descricao">Descrição</option>
+            <option value="entrega">Entrega</option>
           </select>
         </div>
         <div class="col-auto">
@@ -102,7 +108,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
+          <button @click.prevent="buscarFormasPagamento" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -114,16 +120,16 @@
 
 
 <script>
-import FormEstado from "./FormEstado.vue";
+import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
 export default {
   components: {
-    FormEstado,
+    FormFormaPagamento,
   },
   data() {
     return {
-      listaEstados: [],
-      estadoEscolhido: null,
+      listaFormasPagamento: [],
+      formaPagamentoEscolhido: null,
       formVisible: false,
       mode: import.meta.env.MODE,
       url: import.meta.env.VITE_APP_URL_API,
@@ -135,42 +141,42 @@ export default {
     };
   },
   methods: {
-    async buscarEstados() {
-      this.estadoEscolhido = null;
+    async buscarFormasPagamento() {
+      this.formaPagamentoEscolhido = null;
       this.formVisible = false;
       //buscar a lista de estados no servidor
       // http://localhost:8080/estados
       const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/formaspagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
-      this.listaEstados = response.data.content;
+      this.listaFormasPagamento = response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
     },
     limpar() {
-      this.estadoEscolhido = null;
+      this.formaPagamentoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoEstado() {
+    novaFormaPagamento() {
       this.formVisible = !this.formVisible;
     },
-    alterarEstado(estado) {
-      this.estadoEscolhido = estado;
+    alterarFormaPagamento(formapagamento) {
+      this.formaPagamentoEscolhido = formapagamento;
       this.formVisible = true;
     },
-    async excluirEstado(id) {
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`);
+    async excluirFormaPagamento(id) {
+      const response = await axios.delete(`http://localhost:8080/formapagamento/${id}`);
       console.log(response.data);
-      this.buscarEstados();
+      this.buscarFormasPagamento();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarEstados();
+      this.buscarFormasPagamento();
     },
   },
   mounted() {
-    this.buscarEstados();
+    this.buscarFormasPagamento();
   },
 };
 </script>
