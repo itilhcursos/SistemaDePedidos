@@ -18,8 +18,9 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
 
     List<FormaPagamento> findByNomeStartingWithIgnoreCase(String nome);
 
-    List<FormaPagamento> findByNomeEndingWithIgnoreCase(String nome);
 
+    List<FormaPagamento> findByNomeEndinWithIgnoreCase(String nome);
+    
     List<FormaPagamento> findByNomeContainingIgnoreCase(String nome);
 
      @Query("FROM FormaPagamento e WHERE e.nome like %?1")
@@ -28,6 +29,6 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
     @Override
     Page<FormaPagamento> findAll(Pageable pageable);
 
-    List<FormaPagamento> findByNomeEndinWithIgnoreCase(String nome);
+
 
 }
