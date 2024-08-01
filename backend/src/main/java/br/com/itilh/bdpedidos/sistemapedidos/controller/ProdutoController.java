@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +42,9 @@ public class ProdutoController {
         return repositorio.findById(id).orElseThrow(() -> new Exception("ID Não Encontrado!"));
     }
     
-    // TODO: Post não funcionando por algum motivo maluco. Quando passando ID "null", o valor "1" sempre é passado
+    // "Post não funcionando por algum motivo maluco. Quando passando ID "null", o valor "1" sempre é passado"
+    // 01/08/24: Resolvido. Problema estava no Sequence do Produto dentro do Banco de Dados. O valor não estava refletindo a quantidade de itens presentes na tabela. Alterar o "Current value" pra 99 consertou o problema.
+    // Explicação: Aconteceu que o Sequence tava "zerado" (no meu caso tava com valor 4). Então ele estava incrementando o valor ID corretamente, porém, como ja existiam itens com os IDs que ele gerava, dava erro.
 
     @PostMapping("/produto")
     public Produto criarProduto(@RequestBody Produto entity) throws Exception {
@@ -56,12 +59,16 @@ public class ProdutoController {
     }
     
     @PutMapping("/produto/{id}")
-    public Produto alterarProduto(@PathVariable BigInteger id, @RequestBody Produto entity) throws Exception {
-        try{
-            return repositorio.save(entity);
-        } catch (Exception e) {
-            throw new Exception("Não foi possível alterar o produto." + e.getMessage());
+    public Produto alterarProduto(@PathVariable BigInteger id, @RequestBody Produto novosDados) throws Exception {
+        Optional<Produto> produtoArmazenado = repositorio.findById(id);
+        if (produtoArmazenado.isPresent()){
+            produtoArmazenado.get().setDescricao(novosDados.getDescricao());
+            produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+            produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+            produtoArmazenado.get().setAtivo(novosDados.getAtivo());
+            return repositorio.save(produtoArmazenado.get());
         }
+        throw new Exception ("Não foi possível alterar o Produto.");
     }
 
     @DeleteMapping("/produto/{id}")
