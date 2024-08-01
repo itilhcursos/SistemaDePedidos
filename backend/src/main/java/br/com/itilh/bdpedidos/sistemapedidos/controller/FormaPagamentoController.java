@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
 
+@RestController
 public class FormaPagamentoController {
 
     private final FormaPagamentoRepository repositorio;
@@ -53,7 +55,7 @@ public class FormaPagamentoController {
         }
     }
 
-    @GetMapping("/forma-pagamentos/{id}")
+    @GetMapping("/forma-pagamento/{id}")
     public FormaPagamento getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
                 () -> new Exception("ID inválido."));

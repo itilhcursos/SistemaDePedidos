@@ -22,6 +22,13 @@
           placeholder="Descricao"
         />
       </div>
+      <div class="mb-3">
+        <label class="form-label">Situação</label>
+    <select class="form-control" type="text" v-model="situacao">
+      <option value="Ativo">Ativo</option>
+      <option value="Inativo">Inativo</option>
+    </select>
+      </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">Descrição deve ser preenchido!!</div>
@@ -30,7 +37,7 @@
         <button
           class="btn btn-primary m-2"
           type="submit"
-          v-on:click.prevent="salvarEstado"
+          v-on:click.prevent="salvarFormaPagamento"
         >
         <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
@@ -60,6 +67,7 @@ export default {
       descricao: "",
       ativo:"",
       isInvalido: false,
+      
     };
   },
   methods: {
@@ -75,13 +83,13 @@ export default {
         const response = await axios.post("http://localhost:8080/forma-pagamento", {
           id: this.id,
           descricao: this.descricao,
-         ativo: this.ativo
+          ativo: this.ativo
         });
         this.listaFormaPagamentos = response.data;
       } else {
         // alterar pelo PUT da API
         const response = await axios.put(
-          `http://localhost:8080/forma-pagamentos/${this.id}`,
+          `http://localhost:8080/forma-pagamento/${this.id}`,
           {
             id: this.id,
             descricao: this.descricao,
@@ -94,7 +102,7 @@ export default {
       this.$emit("salvar_forma-pagamento", {
         id: this.id,
         descricao: this.descricao,
-        ativo: this.ativo
+        ativo: this.ativo,
       });
 
       this.id = "";
@@ -112,6 +120,7 @@ export default {
     if (this.propsFormaPagamento) {
       this.id = this.propsFormaPagamento.id;
       this.descricao = this.propsFormaPagamento.descricao;
+      this.ativo = this.propsFormaPagamento.ativo;
     }
   },
   computed: {
