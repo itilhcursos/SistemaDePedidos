@@ -2,7 +2,7 @@
     <div>
         <div>
             <div>
-                <h3>Produtos</h3>
+                <h3>PRODUTOS</h3>
             </div>
             <div>
                 <button>
@@ -32,16 +32,16 @@
                         {{ produto.id }}
                     </th>
                     <td>
-
+                        {{ produto.descricao }}
                     </td>
                     <td>
-
+                        {{ produto.quantidadeEstoque }}
                     </td>
                     <td>
-
+                        {{ produto.precoUnidadeAtual }}
                     </td>
                     <td>
-
+                        {{ produto.ativo }}
                     </td>
                         <td>
                         <button>
@@ -72,7 +72,7 @@
                     />
                 </div>
                 <div>
-                    <select name="" id="">
+                    <select v-model="pageSize">
                         <option value="2">2</option>
                         <option value="10">10</option>
                         <option value="20">15</option>
@@ -80,7 +80,7 @@
                     </select>
                 </div>
                 <div>
-                    <select name="" id="">
+                    <select v-model="property">
                         <option value="id">ID</option>
                         <option value="descricao">Descrição</option>
                         <option value="quantidadeEstoque">Quantidade</option>
@@ -89,7 +89,7 @@
                     </select>
                 </div>
                 <div>
-                    <select name="" id="">
+                    <select v-model="direction">
                         <option value="ASC">Crescente</option>
                         <option value="DESC">Decrecente</option>
                     </select>
@@ -123,7 +123,7 @@ export default {
             pageSize:10,
             direction: "ASC",
             property: "id",
-            totalPage:0,  
+            totalPages:0,  
         };
     },
     methods:{
@@ -135,9 +135,14 @@ export default {
             );
             console.log(response.data);
             this.listaProdutos = response.data.content;
-            
+            this.totalPages = response.data.totalPages;
+            console.log(this.totalPages);
 
-        }
-    }
-}
+        },
+
+    },
+    mounted(){
+        this.buscarProdutos();
+    },
+};
 </script>
