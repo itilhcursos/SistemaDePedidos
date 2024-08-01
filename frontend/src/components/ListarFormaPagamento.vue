@@ -25,7 +25,8 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -36,6 +37,9 @@
           </th>
           <td>
             {{ formaPagamento.descricao }}
+          </td>
+          <td>
+            {{ formaPagamento.ativo }}
           </td>
           <td class="d-flex justify-content-end">
             <button

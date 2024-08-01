@@ -25,7 +25,10 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Quantidade</th>
+          <th scope="col">Preço</th>
+          <th scope="col">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -36,6 +39,15 @@
           </th>
           <td>
             {{ produto.descricao }}
+          </td>
+          <td>
+            {{ produto.quantidadeEstoque }}
+          </td>
+          <td>
+            R$ {{ produto.precoUnidadeAtual }}
+          </td>
+          <td>
+            {{ produto.ativo }}
           </td>
           <td class="d-flex justify-content-end">
             <button
