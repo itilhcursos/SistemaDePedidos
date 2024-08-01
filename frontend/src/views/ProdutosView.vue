@@ -1,10 +1,10 @@
 <script setup>
-import ListarProduto from '@/components/ListarProduto.vue'
+import listarProduto from '@/components/ListarProduto.vue'
 </script>
 
 <template>
  <main>
-   <ListarProduto />
+   <listarProduto />
  </main>
 </template>
 

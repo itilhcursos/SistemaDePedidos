@@ -61,7 +61,7 @@ public class ProdutoController {
     public Produto getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
-         );
+        );
     }
 
     @PostMapping("/produto")
@@ -84,6 +84,9 @@ public class ProdutoController {
         if (produtoArmazenado.isPresent()) {
             //Atribuir novo nome ao objeto já existente no banco de dados
             produtoArmazenado.get().setDescricao(novosDados.getDescricao());
+            produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+            produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+            produtoArmazenado.get().setAtivo(novosDados.getAtivo());
 
             return repositorio.save(produtoArmazenado.get());
         }

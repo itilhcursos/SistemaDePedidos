@@ -22,9 +22,27 @@
           placeholder="Descrição"
         />
       </div>
+      <div class="mb-3">
+        <label class="form-label">Quantidade</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="quantidadeEstoque"
+          placeholder="Quantidade"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Preço</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="precoUnidadeAtual"
+          placeholder="Preço"
+        />
+      </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
-        <div class="p-2">Nome deve ser preenchido!!</div>
+        <div class="p-2">Os campos devem ser preenchidos!!</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button 
@@ -58,6 +76,8 @@ export default {
     return {
       id: "",
       descricao: "",
+      quantidadeEstoque: "",
+      precoUnidadeAtual: "",
       isInvalido: false,
     };
   },
@@ -73,7 +93,9 @@ export default {
         //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/produto", {
           id: this.id,
-          nome: this.descricao,
+          descricao: this.descricao,
+          quantidadeEstoque: this.quantidadeEstoque,
+          precoUnidadeAtual: this.precoUnidadeAtual,
         });
         this.listaProdutos = response.data;
       } else {
@@ -82,7 +104,9 @@ export default {
           `http://localhost:8080/produto/${this.id}`,
           {
             id: this.id,
-            nome: this.descricao,
+            descricao: this.descricao,
+            quantidadeEstoque: this.quantidadeEstoque,
+            precoUnidadeAtual: this.precoUnidadeAtual,
           }
         );
         this.listaProdutos = response.data;
@@ -90,15 +114,21 @@ export default {
 
       this.$emit("salvar_produto", {
         id: this.id,
-        nome: this.descricao,
+        descricao: this.descricao,
+        quantidadeEstoque: this.quantidadeEstoque,
+        precoUnidadeAtual: this.precoUnidadeAtual,
       });
     
       this.id = "";
       this.descricao = "";
+      this.quantidadeEstoque = "";
+      this.precoUnidadeAtual = "";
     },
     cancelar() {
       this.id = "";
       this.descricao = "";
+      this.quantidadeEstoque = "";
+      this.precoUnidadeAtual = "";
       this.$emit("cancelar", true);
     },
   },
@@ -106,6 +136,8 @@ export default {
     if (this.propsProduto) {
       this.id = this.propsProduto.id;
       this.descricao = this.propsProduto.descricao;
+      this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
+      this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual;
     }
   },
   computed: {
