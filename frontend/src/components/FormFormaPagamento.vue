@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produto</h4>
+        <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Forma de Pagamento</h4>
         <hr />
         <form>
             <div class="mb-3">
@@ -10,7 +10,7 @@
                 type="text"
                 v-model="id"
                 :disabled="true"
-                placeholder="Id produto"
+                placeholder="Id Forma de Pagamento"
                 />
             </div>
             <div class="mb-3">
@@ -20,24 +20,6 @@
                 type="text"
                 v-model="descricao"
                 placeholder="Descrição"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Quantidade em Estoque</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="quantidadeEstoque"
-                placeholder="Quantidade em Estoque"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Preço Unitário</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="precoUnidadeAtual"
-                placeholder="Preço Unitário"
                 />
             </div>
             <div class="mb-3">
@@ -58,7 +40,7 @@
                 <button
                 class="btn btn-primary m-2"
                 type="submit"
-                v-on:click.prevent="salvarProduto"
+                v-on:click.prevent="salvarFormaPagamento"
                 >
                     <i class="bi bi-clipboard2-check"></i>
                     {{ getAcao }}
@@ -83,7 +65,7 @@ export default {
 
 
     props: {
-        propsProduto: Object,
+        propsFormaPagamento: Object,
     },
 
 
@@ -97,7 +79,7 @@ export default {
 
 
     methods: {
-        async salvarProduto() {
+        async salvarFormaPagamento() {
             if (this.descricao === "") {
                 this.isInvalido = true;
                 return;
@@ -105,45 +87,35 @@ export default {
             this.isInvalido = false;
 
             if (this.id === "") {
-                const response = await axios.post("http://localhost:8080/produto", {
+                const response = await axios.post("http://localhost:8080/formaPagamento", {
                     id: this.id, 
                     descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
                     ativo: this.ativo
                 });
-                this.listaProdutos = response.data;
+                this.listaFormaPagamentos = response.data;
             } else {
-                const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
+                const response = await axios.put(`http://localhost:8080/formaPagamento/${this.id}`, 
                 {
                     id: this.id,
                     descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
                     ativo: this.ativo
                 });
                 this.listaEstados = response.data;
             }
 
-            this.$emit("salvar_produto", {
+            this.$emit("salvar_formaPagamento", {
                 id: this.id,
                 descricao: this.descricao, 
-                quantidadeEstoque: this.quantidadeEstoque, 
-                precoUnidadeAtual: this.precoUnidadeAtual, 
                 ativo: this.ativo
             });
             this.id = "";
             this.descricao = "";
-            this.quantidadeEstoque = "";
-            this.precoUnidadeAtual = ""; 
             this.ativo = "";
         },
 
         cancelar(){
             this.id = "";
             this.descricao = "";
-            this.quantidadeEstoque = "";
-            this.precoUnidadeAtual = ""; 
             this.ativo = "";
             this.$emit("cancelar", true);
         },
@@ -151,12 +123,10 @@ export default {
 
 
     mounted(){
-        if (this.propsProduto) {
-            this.id = this.propsProduto.id;
-            this.descricao = this.propsProduto.descricao;
-            this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
-            this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual; 
-            this.ativo = this.propsProduto.ativo;
+        if (this.propsFormaPagamento) {
+            this.id = this.propsFormaPagamento.id;
+            this.descricao = this.propsFormaPagamento.descricao;
+            this.ativo = this.propsFormaPagamento.ativo;
         }
     },
 

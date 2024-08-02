@@ -43,8 +43,10 @@ public class ProdutoController {
     }
     
     // "Post não funcionando por algum motivo maluco. Quando passando ID "null", o valor "1" sempre é passado"
-    // 01/08/24: Resolvido. Problema estava no Sequence do Produto dentro do Banco de Dados. O valor não estava refletindo a quantidade de itens presentes na tabela. Alterar o "Current value" pra 99 consertou o problema.
-    // Explicação: Aconteceu que o Sequence tava "zerado" (no meu caso tava com valor 4). Então ele estava incrementando o valor ID corretamente, porém, como ja existiam itens com os IDs que ele gerava, dava erro.
+    // 01/08/24: Resolvido. Problema estava no Sequence do Produto dentro do Banco de Dados. O valor não estava refletindo a quantidade de itens presentes na tabela. Alterar o "Current value" para o maior ID existente na tabela resolve o problema.
+    // No caso do BD incluido no repo, é só colocar em 100, pois o Produto com maior ID é 100.
+    // Explicação: Aconteceu que o Sequence tava "zerado" (no meu caso tava com valor 4, mas começa com 1). Então ele estava incrementando o valor ID corretamente, porém, como ja existiam itens com os IDs que ele gerava, dava erro.
+    // Incluí um novo backup do BD, dessa vez com o Sequence em 100, no meu projeto na pasta "bd", sobrescrevendo o anterior.
 
     @PostMapping("/produto")
     public Produto criarProduto(@RequestBody Produto entity) throws Exception {
