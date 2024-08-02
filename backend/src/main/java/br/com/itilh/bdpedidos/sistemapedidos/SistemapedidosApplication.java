@@ -21,7 +21,7 @@ public class SistemapedidosApplication {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController( "/" )
-                        .setViewName("forward:/app/index.html");
+                        .setViewName("forward:/app/dist/index.html");
             }
             @Override
             public void addCorsMappings(CorsRegistry registry) {
