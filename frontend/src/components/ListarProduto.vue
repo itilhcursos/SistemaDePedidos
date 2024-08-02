@@ -1,17 +1,22 @@
 <template>
-    <div>
-        <div>
-            <div>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
                 <h3>PRODUTOS</h3>
             </div>
-            <div>
-                <button>
-                    <i></i>Novo
+            <div class="col-2 d-flex justify-content-end">
+                <button v-if="!formVisible" @click="novoProduto" class=" btn btn-success">
+                    <i class="bi bi-clipboard-plus"></i>Novo
                 </button>
             </div>
-            <div>
+            <div class="row">
                 <div>
-
+                    <FormProduto
+                        v-if="formVisible"
+                        :propsProduto="produtoEscolhido"
+                        @cancelar="limpar"
+                        @salvar_produto ="buscarProduto"
+                    />
                 </div>
             </div>
         </div>
@@ -22,7 +27,7 @@
                     <th scope="col">Descrição</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Preço/Unidade</th>
-                    <th scope="col">Ativo</th>
+                    <th scope="col">Entrega</th>
                     <th scope="col" class="d-flex justify-content-end">Ações</th>
                 </tr>
             </thead>
@@ -41,14 +46,20 @@
                         {{ produto.precoUnidadeAtual }}
                     </td>
                     <td>
-                        {{ produto.ativo }}
+                        {{ produto.ativo? "Verdadeiro": "Falso" }}
                     </td>
-                        <td>
-                        <button>
-                            Alterar
+                        <td class="d-flex justify-content-end">
+                        <button
+                        class="btn btn-btn btn-primary m-2"
+                        @click="alterarProduto(produto)"
+                        >
+                         <i class="bi bi-clipboard-pulse"></i>   Alterar
                         </button>
-                        <button>
-                            Excluir
+                        <button
+                        class="btn btn-outline-danger m-2"
+                        @click="excluirProduto(produto.id)"
+                        >
+                            <i class="bi bi-clipboard2-minus"></i>Excluir
                         </button>   
                     </td>
                     
@@ -56,31 +67,38 @@
             </tbody>
         </table>
     </div>
-    <div>
+    <div v-if="!formVisible">
         <hr>
-        <div>
-            <div>
-                <div>
-                    <button>
-                        
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-auto">
+                    <button
+                    v-for="pagina in totalPages"
+                    :key="pagina"
+                    @click.prevent="irPara(pagina)"
+                    class="btn btn-light ms-1"
+                    >
+                    {{ pagina }} 
                     </button>
                 </div>
-                <div>
+                <div class="col-auto">
                     <input 
                         type="text"
+                        v-model="pageNumber"
                         placeholder="Número da Pagina"
+                        class="form-control w-25"
                     />
                 </div>
-                <div>
-                    <select v-model="pageSize">
+                <div class="col-auto">
+                    <select v-model="pageSize" class="form-select">
                         <option value="2">2</option>
                         <option value="10">10</option>
-                        <option value="20">15</option>
-                        <option value="50">30</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
                     </select>
                 </div>
-                <div>
-                    <select v-model="property">
+                <div class="col-auto">
+                    <select v-model="property" class="form-select">
                         <option value="id">ID</option>
                         <option value="descricao">Descrição</option>
                         <option value="quantidadeEstoque">Quantidade</option>
@@ -88,15 +106,15 @@
                         <option value="ativo">Ativo</option>
                     </select>
                 </div>
-                <div>
-                    <select v-model="direction">
+                <div class="col-auto">
+                    <select v-model="direction" class="form-select">
                         <option value="ASC">Crescente</option>
                         <option value="DESC">Decrecente</option>
                     </select>
                 </div>
-                <div>
-                    <button>
-                        Buscar
+                <div class="col-auto">
+                    <button @click.prevent="buscarProdutos" class="btn btn-success">
+                        <i class="bi bi-binoculars"></i>Buscar
                     </button>
                 </div>
             </div>
@@ -104,13 +122,13 @@
     </div>
 </template>
 
+
 <script>
-
+import FormProduto from './FormProduto.vue';
 import axios from 'axios';
-
 export default {
     components:{
-        
+        FormProduto 
     },
     data() {
         return{
@@ -139,7 +157,25 @@ export default {
             console.log(this.totalPages);
 
         },
-
+        limpar(){
+            this.produtoEscolhido=null;
+            this.formVisible = !this.formVisible;
+        },
+        novoProduto(){
+            this.formVisible = !this.formVisible;
+        },
+        alterarProduto(produto){
+            this.produtoEscolhido = produto;
+            this.formVisible =true;
+        },
+        async excluirProduto(produto){
+            this.produtoEscolhido = produto;
+            this.formVisible = true;
+        },
+        irPara(pagina){
+            this.pageNumber = pagina;
+            this.buscarProdutos();
+        },
     },
     mounted(){
         this.buscarProdutos();

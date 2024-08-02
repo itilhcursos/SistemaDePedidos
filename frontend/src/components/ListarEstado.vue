@@ -85,8 +85,8 @@
           <select v-model="pageSize" class="form-select">
             <option value="2">2</option>
             <option value="10">10</option>
-            <option value="20">15</option>
-            <option value="50">30</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
           </select>
         </div>
         <div class="col-auto">
