@@ -40,6 +40,13 @@
           placeholder="Preço"
         />
       </div>
+      <div class="mb-3">
+        <label class="form-label">Ativo</label>
+          <select v-model="ativo" class="form-select">
+            <option :value="true">true</option>
+            <option :value="false">false</option>
+          </select>
+      </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">Os campos devem ser preenchidos!!</div>
@@ -78,6 +85,7 @@ export default {
       descricao: "",
       quantidadeEstoque: "",
       precoUnidadeAtual: "",
+      ativo: "",
       isInvalido: false,
     };
   },
@@ -96,6 +104,7 @@ export default {
           descricao: this.descricao,
           quantidadeEstoque: this.quantidadeEstoque,
           precoUnidadeAtual: this.precoUnidadeAtual,
+          ativo: this.ativo,
         });
         this.listaProdutos = response.data;
       } else {
@@ -107,6 +116,7 @@ export default {
             descricao: this.descricao,
             quantidadeEstoque: this.quantidadeEstoque,
             precoUnidadeAtual: this.precoUnidadeAtual,
+            ativo: this.ativo,
           }
         );
         this.listaProdutos = response.data;
@@ -117,18 +127,21 @@ export default {
         descricao: this.descricao,
         quantidadeEstoque: this.quantidadeEstoque,
         precoUnidadeAtual: this.precoUnidadeAtual,
+        ativo: this.ativo,
       });
     
       this.id = "";
       this.descricao = "";
       this.quantidadeEstoque = "";
       this.precoUnidadeAtual = "";
+      this.ativo = "";
     },
     cancelar() {
       this.id = "";
       this.descricao = "";
       this.quantidadeEstoque = "";
       this.precoUnidadeAtual = "";
+      this.ativo = "";
       this.$emit("cancelar", true);
     },
   },
@@ -138,6 +151,7 @@ export default {
       this.descricao = this.propsProduto.descricao;
       this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
       this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual;
+      this.ativo = this.propsProduto.ativo;
     }
   },
   computed: {

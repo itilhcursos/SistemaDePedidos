@@ -28,6 +28,7 @@
           <th scope="col">Descrição</th>
           <th scope="col">Quantidade</th>
           <th scope="col">Preço</th>
+          <th scope="col">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -43,7 +44,10 @@
             {{ produto.quantidadeEstoque }}
           </td>
           <td>
-            {{ produto.preco }}
+            {{ produto.precoUnidadeAtual }}
+          </td>
+          <td>
+            {{ produto.ativo }}
           </td>
           <td class="d-flex justify-content-end">
             <button
