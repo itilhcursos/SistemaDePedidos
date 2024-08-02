@@ -90,6 +90,7 @@ public class FormaPagamentoController {
         Optional<FormaPagamento> formaPagamentoArmazenado = repositorio.findById(id);
         if(formaPagamentoArmazenado.isPresent()){
             formaPagamentoArmazenado.get().setDescricao(novosDados.getDescricao());
+            formaPagamentoArmazenado.get().setAtivo(novosDados.getAtivo());
             return repositorio.save(formaPagamentoArmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");

@@ -86,6 +86,9 @@ public class ProdutoController {
         Optional<Produto> produtoArmazenado = repositorio.findById(id);
         if(produtoArmazenado.isPresent()){
             produtoArmazenado.get().setDescricao(novosDados.getDescricao());
+            produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+            produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+            produtoArmazenado.get().setAtivo(novosDados.getAtivo());
             return repositorio.save(produtoArmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
