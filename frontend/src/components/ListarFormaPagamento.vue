@@ -2,77 +2,70 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>PRODUTOS</h3>
+        <h3>FORMAS DE PAGAMENTO</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoProduto" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoFormaPagamento" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormProduto
+          <FormFormaPagamento
             v-if="formVisible"
-            :propsProduto="produtoEscolhido"
+            :propsFormaPagamento="formaPagamentoEscolhido"
             @cancelar="limpar"
-            @salvar_produto="buscarProdutos"
+            @salvar_formaPagamento="buscarFormaPagamento"
           />
         </div>
+       </div>
       </div>
+  
+      <table class="table table-dark table-striped" v-if="!formVisible">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Ativo</th>
+            <th scope="col" class="d-flex justify-content-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
+            <th>
+              {{ formaPagamento.id }}
+            </th>
+            <td>
+              {{ formaPagamento.descricao }}
+            </td>
+            <td>
+              {{ formaPagamento.ativo }}
+            </td>
+            <td class="d-flex justify-content-end">
+              <button
+                class="btn btn-btn btn-primary m-2"
+                @click="alterarFormaPagamento(formaPagamento)"
+              >
+                <i class="bi bi-clipboard-pulse"></i> Alterar
+              </button>
+  
+              <button
+                class="btn btn-outline-danger m-2"
+                @click="excluirFormaPagamento(formaPagamento.id)"
+              >
+                <i class="bi bi-clipboard2-minus"></i> Excluir
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <table class="table table-dark table-striped" v-if="!formVisible">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Descrição</th>
-          <th scope="col">Quantidade</th>
-          <th scope="col">Preço</th>
-          <th scope="col">Ativo</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="produto in listaProdutos" :key="produto.id" scope="row">
-          <th>
-            {{ produto.id }}
-          </th>
-          <td>
-            {{ produto.descricao }}
-          </td>
-          <td>
-            {{ produto.quantidadeEstoque }}
-          </td>
-          <td>
-            {{ produto.precoUnidadeAtual }}
-          </td>
-          <td>
-            {{ produto.ativo }}
-          </td>
-          <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterarProduto(produto)"
-            >
-              <i class="bi bi-clipboard-pulse"></i> Alterar
-            </button>
-
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirProduto(produto.id)"
-            >
-              <i class="bi bi-clipboard2-minus"></i> Excluir
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
   <div v-if="!formVisible">
     <hr />
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
+  
           <button
             v-for="pagina in totalPages"
             :key="pagina"
@@ -81,6 +74,8 @@
           >
             {{ pagina }}
           </button>
+  
+  
         </div>
         <div class="col-auto">
           <input
@@ -101,7 +96,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="descricao">Descrição</option>
+            <option value="nome">Descrição</option>
           </select>
         </div>
         <div class="col-auto">
@@ -111,7 +106,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarProdutos" class="btn btn-success">
+          <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -120,18 +115,18 @@
     </div>
   </div>
 </template>
-
+  
 <script>
-import FormProduto from "./FormProduto.vue";
+import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
 export default {
   components: {
-    FormProduto,
+    FormFormaPagamento,
   },
   data() {
     return {
-      listaProdutos: [],
-      produtoEscolhido: null,
+      listaFormasPagamento: [],
+      formaPagamentoEscolhido: null,
       formVisible: false,
       mode: import.meta.env.MODE,
       url: import.meta.env.VITE_APP_URL_API,
@@ -143,42 +138,43 @@ export default {
     };
   },
   methods: {
-    async buscarProdutos() {
-      this.produtoEscolhido = null;
+    async buscarFormaPagamento() {
+      this.formaPagamentoEscolhido = null;
       this.formVisible = false;
       //buscar a lista de estados no servidor
-      //http://localhost:8080/produtos
+      // http://localhost:8080/formas-pagamento
       const response = await axios.get(
-        `http://localhost:8080/produtos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
-      this.listaProdutos = response.data.content;
+      this.listaFormasPagamento = response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
     },
     limpar() {
-      this.produtoEscolhido = null;
+      this.formaPagamentoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoProduto() {
+    novoFormaPagamento() {
       this.formVisible = !this.formVisible;
     },
-    alterarProduto(produto) {
-      this.produtoEscolhido = produto;
+    alterarFormaPagamento(formaPagamento) {
+      this.formaPagamentoEscolhido = formaPagamento;
       this.formVisible = true;
     },
-    async excluirProduto(id) {
-      const response = await axios.delete(`http://localhost:8080/produto/${id}`);
+    async excluirFormaPagamento(id) {
+      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`);
       console.log(response.data);
-      this.buscarProdutos();
+      this.buscarFormaPagamento();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarProdutos();
+      this.buscarFormaPagamento();
     },
   },
   mounted() {
-    this.buscarProdutos();
+    this.buscarFormaPagamento();
   },
 };
 </script>
+  
