@@ -26,7 +26,7 @@ import lombok.ToString;
 public class FormaPagamento {
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_formas_pagamento_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "formas_pagamento_id_seq")
     private BigInteger id;
 
     @Column(name = "tx_descricao")
@@ -35,13 +35,8 @@ public class FormaPagamento {
     @Column(name = "bo_entrega")
     private Boolean entrega;
 
-    public Object getNome() {
-     
-        throw new UnsupportedOperationException("Unimplemented method 'getNome'");
+  
+
+    
     }
 
-    public void setNome(Object nome) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setNome'");
-    }
-}

@@ -37,7 +37,7 @@ public class ProdutoController {
         this.repositorio = repositorio;
     }
 
-    @GetMapping("/Produto")
+    @GetMapping("/produto")
     public Page<Produto> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -49,22 +49,22 @@ public class ProdutoController {
         return  (Page<Produto>) repositorio.findAll(pageable);
     }
 
-    @GetMapping("/Produto/nome/{nome}")
-    public List<Produto> getProdutoPorNome(@PathVariable String nome,
+    @GetMapping("/produto/descricao/{descricao}")
+    public List<Produto> getProdutoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
-            return repositorio.findByNome(nome);
+            return repositorio.findByDescricao(descricao);
         }else if (modoBusca.equals(ModoBusca.INICIADO)){
-            return repositorio.findByNomeStartingWithIgnoreCase(nome);
+            return repositorio.findByDescricaoStartingWithIgnoreCase(descricao);
         }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
-            return repositorio.findByNomeEndingWithIgnoreCase(nome);
+            return repositorio.findByDescricaoEndingWithIgnoreCase(descricao);
         }else{
-            return repositorio.findByNomeContainingIgnoreCase(nome);
+            return repositorio.findByDescricaoContainingIgnoreCase(descricao);
         }       
     }
     
     
-    @GetMapping("/Produto/{id}")
+    @GetMapping("/produto/{id}")
     public Produto getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
@@ -84,15 +84,18 @@ public class ProdutoController {
         }
     }
 
-    @PutMapping("/Produto/{id}")
+    @PutMapping("/produto/{id}")
     public Produto alterarEstado(@PathVariable BigInteger id, 
                                 @RequestBody Produto novosDados) throws Exception {
 
         Optional<Produto> produtoAmazenado = repositorio.findById(id);
         if(produtoAmazenado.isPresent()){
             
-            produtoAmazenado.get().setNome(novosDados.getNome());
-            
+            produtoAmazenado.get().setDescricao(novosDados.getDescricao());
+            produtoAmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+            produtoAmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+            produtoAmazenado.get().setAtivo(novosDados.getAtivo());
+
             return repositorio.save(produtoAmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
