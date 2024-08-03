@@ -4,7 +4,7 @@
     <hr />
     <form>
       <div class="mb-3">
-        <label class="form-label">Id</label>
+        <label class="form-label">ID</label>
         <input
           class="form-control"
           type="text"

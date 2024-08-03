@@ -32,7 +32,7 @@ public class FormaPagamentoController {
         this.repositorio = repositorio;
     }
 
-    @GetMapping("/formas-pagamento")
+    @GetMapping("/forma-pagamento")
     public Page<FormaPagamento> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
