@@ -15,7 +15,7 @@
                         v-if="formVisible"
                         :propsProduto="produtoEscolhido"
                         @cancelar="limpar"
-                        @salvar_produto ="buscarProduto"
+                        @salvar_produto ="buscarProdutos"
                     />
                 </div>
             </div>
@@ -48,16 +48,17 @@
                     <td>
                         {{ produto.ativo? "Verdadeiro": "Falso" }}
                     </td>
-                        <td class="d-flex justify-content-end">
+                    <td class="d-flex justify-content-end">
                         <button
                         class="btn btn-btn btn-primary m-2"
                         @click="alterarProduto(produto)"
                         >
                          <i class="bi bi-clipboard-pulse"></i>   Alterar
                         </button>
+
                         <button
                         class="btn btn-outline-danger m-2"
-                        @click="excluirProduto(produto.id)"
+                        @click=" excluirProduto(produto.id)"
                         >
                             <i class="bi bi-clipboard2-minus"></i>Excluir
                         </button>   
@@ -132,7 +133,7 @@ export default {
     },
     data() {
         return{
-            listaProdutos:[],
+            listaProdutos: [],
             produtoEscolhido:null,
             formVisible:false,
             mode: import.meta.env.MODE,
@@ -158,7 +159,7 @@ export default {
 
         },
         limpar(){
-            this.produtoEscolhido=null;
+            this.produtoEscolhido = null;
             this.formVisible = !this.formVisible;
         },
         novoProduto(){
@@ -166,11 +167,12 @@ export default {
         },
         alterarProduto(produto){
             this.produtoEscolhido = produto;
-            this.formVisible =true;
-        },
-        async excluirProduto(produto){
-            this.produtoEscolhido = produto;
             this.formVisible = true;
+        },
+        async excluirProduto(id){
+            const response = await axios.delete(`http://localhost:8080/produto/${id}`);
+            console.log(response.data);
+            this.buscarProdutos();
         },
         irPara(pagina){
             this.pageNumber = pagina;

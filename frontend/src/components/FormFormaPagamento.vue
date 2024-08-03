@@ -24,13 +24,15 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Entrega</label>
-        <input
-        class="form-control"
-        type="text"
-        v-model="entrega"
-        placeholder="Entrega"
         
-        />
+          <select 
+            class="form-control"
+            v-model="entrega"
+          >
+            <option disabled value="">Entrega</option>
+            <option value="true">Verdadeiro</option>
+            <option value="false">Falso</option>
+          </select>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -67,15 +69,15 @@ export default {
   data() {
     return {
       id: "",
-      nome: "",
-      entrega: "",
+      descricao: "",
+      entrega:"",
       isInvalido: false,
     };
   },
   methods: {
     async salvarFormaPagamento() {
-      if (this.descricao === "") {
-        this.isInvalido = true;
+      if (this.descricao === ""){
+          this.isInvalido = true;
         return;
       }
       this.isInvalido = false;
@@ -100,7 +102,6 @@ export default {
         );
         this.listaFormasPagamento = response.data;
       }
-
       this.$emit("salvar_formapagamento", {
         id: this.id,
         descricao: this.descricao,
@@ -115,7 +116,7 @@ export default {
     cancelar() {
       this.id = "";
       this.descricao = "";
-      this.entrega ;
+      this.entrega ="";
       this.$emit("cancelar", true);
     },
   },

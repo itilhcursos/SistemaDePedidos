@@ -66,18 +66,18 @@ public class ProdutoController {
     }
 
     @PostMapping("/produto")
-    public Produto criarEstado(@RequestBody Produto entity)throws Exception{
+    public Produto criarProduto(@RequestBody Produto entity)throws Exception{
         try{
             if(entity.getId() != null){
                 throw new Exception("Produto já Existe.");
             }
             return repositorio.save(entity);
         }catch(Exception e){
-            throw new Exception("Erro ao salvar o estado.");
+            throw new Exception("Erro ao salvar o Produto.");
         }
     }
     
-    @PutMapping("produto/{id}")
+    @PutMapping("/produto/{id}")
     public Produto alterarProduto(@PathVariable BigInteger id, 
                                 @RequestBody Produto novosDados) throws Exception {
 
@@ -85,6 +85,9 @@ public class ProdutoController {
         if(produtoArmazenado.isPresent()){
             //Atribuir novo nome ao objeto já existem no banco de dados
             produtoArmazenado.get().setDescricao(novosDados.getDescricao());
+            produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+            produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+            produtoArmazenado.get().setAtivo(novosDados.getAtivo());
             //
             return repositorio.save(produtoArmazenado.get());
         }        

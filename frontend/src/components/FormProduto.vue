@@ -116,8 +116,8 @@ export default {
                     `http://localhost:8080/produto/${this.id}`, 
                     {
                         id: this.id,
-                        descricao: this.descricao,
-                        quantidadeEstoque: this.quantidadeEstoque,
+                        descicao :this.descricao,
+                        quantidadeEstoque :this.quantidadeEstoque,
                         precoUnidadeAtual: this.precoUnidadeAtual,
                         ativo: this.ativo,
                     }
@@ -152,12 +152,12 @@ export default {
             this.descricao = this.propsProduto.descricao;
             this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
             this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual;
-            this.ativo = this.propsProduto.ativo;
+            this.ativo = this.propsProduto.ativo? "Verdadeiro": "Falso";
         }
     },
     computed:{
         getAcao(){
-            return this.id ===""? "incluir": "Alterar"
+            return this.id ==="" ? "incluir": "Alterar";
         },
     },
 };
