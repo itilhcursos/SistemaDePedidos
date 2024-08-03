@@ -18,7 +18,7 @@
         <input
           class="form-control"
           type="text"
-          v-model="Descricao"
+          v-model="descricao"
           placeholder="descricao"
         />
       </div>
@@ -43,8 +43,8 @@
       <div class="mb-3">
         <label class="form-label">Ativo</label>
         <select v-model="ativo" class="form-select">
-            <option :value="true">true</option>
-            <option :value="false">false</option>
+            <option :value="true">SIM</option>
+            <option :value="false">NÃO</option>
           </select>
         
       </div>
@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       id: "",
-      Descricao: "",
+      descricao: "",
       quantidadeEstoque:"",
       PrecoUnidadeAtual:"",
       ativo:"",
@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     async salvarProduto() {
-      if (this.Descricao === "") {
+      if (this.descricao === "") {
         this.isInvalido = true;
         return;
       }

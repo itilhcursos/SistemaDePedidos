@@ -20,7 +20,6 @@
         </div>
       </div>
     </div>
-
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
@@ -38,7 +37,7 @@
             {{ produto.id }}
           </th>
           <td>
-            {{ produto.Descricao }}
+            {{ produto.descricao }}
           </td>
           <td>
             {{ produto.quantidadeEstoque }}

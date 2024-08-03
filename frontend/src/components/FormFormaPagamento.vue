@@ -25,8 +25,8 @@
     <div class="mb-3">
         <label class="form-label">Entrega</label>
           <select v-model="ativo" class="form-select">
-            <option :value="true">true</option>
-            <option :value="false">false</option>
+            <option :value="true">SIM</option>
+            <option :value="false">NÃO</option>
           </select>
         </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
