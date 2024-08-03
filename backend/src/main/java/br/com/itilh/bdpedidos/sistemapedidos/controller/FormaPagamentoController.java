@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
-
+@RestController
 public class FormaPagamentoController {
  
     private final FormaPagamentoRepository repositorio;
@@ -28,7 +29,7 @@ public class FormaPagamentoController {
         this.repositorio = repositorio;
     }
 
-    @GetMapping("/formasPagamento")
+    @GetMapping("/formas-pagamento")
     public Page<FormaPagamento> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -40,7 +41,7 @@ public class FormaPagamentoController {
         return  (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
 
-    @GetMapping("/formasPagamento/nome/{nome}")
+    @GetMapping("/formas-pagamento/nome/{nome}")
     public List<FormaPagamento> getFormaPagamentoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
@@ -54,14 +55,14 @@ public class FormaPagamentoController {
         }       
     }
     
-    @GetMapping("/formaPagamento/{id}")
+    @GetMapping("/formas-pagamento/{id}")
     public FormaPagamento getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
     }    
 
-    @PostMapping("/formaPagamento")
+    @PostMapping("/forma-pagamento")
     public FormaPagamento criarFormaPagamento(@RequestBody FormaPagamento entity) throws Exception { 
         try{               
             if(entity.getId() != null){
@@ -73,26 +74,26 @@ public class FormaPagamentoController {
         }
     }
 
-    @PutMapping("/formaPagamento/{id}")
+    @PutMapping("/forma-pagamento/{id}")
     public FormaPagamento alterarFormaPagamento(@PathVariable BigInteger id, 
                                 @RequestBody FormaPagamento novosDados) throws Exception {
 
-        Optional<FormaPagamento> formapagamentoArmazenado = repositorio.findById(id);
-        if(formapagamentoArmazenado.isPresent()){
+        Optional<FormaPagamento> formaPagamentoArmazenado = repositorio.findById(id);
+        if(formaPagamentoArmazenado.isPresent()){
             //Atribuir novo nome ao objeto já existem no banco de dados
-            formapagamentoArmazenado.get().setDescricao(novosDados.getDescricao());
+            formaPagamentoArmazenado.get().setDescricao(novosDados.getDescricao());
             //
-            return repositorio.save(formapagamentoArmazenado.get());
+            return repositorio.save(formaPagamentoArmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
     }
 
-    @DeleteMapping("/formaPagamento/{id}")
+    @DeleteMapping("/forma-pagamento/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
-        Optional<FormaPagamento> formapagamentoArmazenado = repositorio.findById(id);
-        if(formapagamentoArmazenado.isPresent()){
-            repositorio.delete(formapagamentoArmazenado.get());
+        Optional<FormaPagamento> formaPagamentoArmazenado = repositorio.findById(id);
+        if(formaPagamentoArmazenado.isPresent()){
+            repositorio.delete(formaPagamentoArmazenado.get());
             return "Excluído";
         }
         throw new Exception("Id não econtrado para a exclusão");
