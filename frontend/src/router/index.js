@@ -19,7 +19,11 @@ const router = createRouter({
       name: 'estados',
       component:()=>import('../views/EstadosView.vue')
     },
-
+    {
+      path: '/produtos',
+      name: 'produtos',
+      component:()=>import('../views/ProdutosView.vue')
+    },
   ]
 })
 

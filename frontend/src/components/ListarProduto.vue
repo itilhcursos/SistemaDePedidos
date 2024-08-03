@@ -149,7 +149,6 @@
         this.produtoEscolhido = null;
         this.formVisible = false;
   
-        //buscar a lista de formas de pagamentos no servidor
         const response = await axios.get(
           `http://localhost:8080/produtos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
         );
