@@ -11,7 +11,7 @@
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormProduto
             v-if="formVisible"
             :propsProduto="produtoEscolhido"
             @cancelar="limpar"
@@ -132,7 +132,7 @@
 import FormProduto from "./FormProduto.vue";
 import axios from "axios";
 export default {
-  components: {
+  Components: {
     FormProduto
 
   },

@@ -48,7 +48,7 @@ public class FormaPagamentoController {
         return  (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
 
-    @GetMapping("/formas-pagamento/descricao/{descricao}")
+    @GetMapping("/forma-pagamento/descricao/{descricao}")
     public List<FormaPagamento> getFormaPagamentoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){

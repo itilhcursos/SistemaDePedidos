@@ -11,7 +11,7 @@
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormFormaPagamento
             v-if="formVisible"
             :propsFormaPagamento="formaPagamentoEscolhido"
             @cancelar="limpar"
@@ -26,12 +26,12 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
-          <th scope="col">Ativo</th>
+          <th scope="col">Entrega</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="formaPagamento in listaformaPagamento" :key="formaPagamento.id" scope="row">
+        <tr v-for="formaPagamento in ListarFormaPagamento" :key="formaPagamento.id" scope="row">
           <th>
             {{ formaPagamento.id }}
           </th>
@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formaPagamento.entrega }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -74,8 +74,6 @@
           >
             {{ pagina }}
           </button>
-
-
         </div>
         <div class="col-auto">
           <input
@@ -97,7 +95,7 @@
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
             <option value="nome">Descrição</option>
-            <option value="nome">Ativo</option>
+            <option value="nome">Entrega</option>
           </select>
         </div>
         <div class="col-auto">
@@ -122,13 +120,14 @@
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
 export default {
-  components: {
+  Components: {
     FormFormaPagamento,
+  
   },
   data() {
     return {
-      listaEstados: [],
-      estadoEscolhido: null,
+      ListarFormaPagamento: [],
+      formaPagamentoEscolhido: null,
       formVisible: false,
       mode: import.meta.env.MODE,
       url: import.meta.env.VITE_APP_URL_API,
@@ -145,10 +144,10 @@ export default {
       this.formVisible = false;
       
       const response = await axios.get(
-        `http://localhost:8080/estados?forma-pagamento=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/forma-pagamento?=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
-      this.listaFormaPagamento = response.data.content;
+      this.ListarFormaPagamento = response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
     },

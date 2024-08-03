@@ -1,11 +1,12 @@
 
 <script setup>
-import ListarEstado from '../components/ListarFormaPagamento.vue'
+import ListarFormaPagamento from '../components/ListarFormaPagamento.vue';
+
 </script>
 
 <template>
  <main>
-   <ListarEstado />
+   <ListarFormaPagamento />
  </main>
 </template>
 

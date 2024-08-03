@@ -2,7 +2,7 @@
   <div class="container">
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produtos</h4>
     <hr />
-
+<form>
       <div class="mb-3">
         <label class="form-label">Id</label>
         <input
@@ -22,7 +22,6 @@
           placeholder="descricao"
         />
       </div>
-    </div>
       <div class="mb-3">
         <label class="form-label">Quantidade no Estoque</label>
         <input
@@ -32,7 +31,6 @@
           placeholder="Quantidade"
         />
       </div>
-    <div>
       <div class="mb-3">
         <label class="form-label">Preço Atual</label>
         <input
@@ -42,7 +40,6 @@
           placeholder="Preço Atual"
         />
       </div>
-    </div>
       <div class="mb-3">
         <label class="form-label">Ativo</label>
         <select v-model="ativo" class="form-select">
@@ -73,12 +70,12 @@
           Cancelar
         </button>
       </div>
-      >
+    </form>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
-
 export default {
   props: {
     propsProduto: Object,
