@@ -71,7 +71,6 @@
             {{ pagina }}
           </button>
 
-
         </div>
         <div class="col-auto">
           <input
@@ -82,7 +81,7 @@
           />
         </div>
         <div class="col-auto">
-          <select v-model="pageSize" class="form-select">
+          <select v-model="pageSize" class="form-select" >
             <option value="2">2</option>
             <option value="10">10</option>
             <option value="20">20</option>

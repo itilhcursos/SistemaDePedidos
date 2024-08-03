@@ -79,8 +79,7 @@ export default {
       } else {
         // alterar pelo PUT da API
         const response = await axios.put(
-          `http://localhost:8080/estado/${this.id}`,
-          {
+          `http://localhost:8080/estado/${this.id}`, {
             id: this.id,
             nome: this.nome,
           }

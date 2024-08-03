@@ -2,8 +2,8 @@ package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
 
 import java.math.BigInteger;
@@ -24,16 +24,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-public class EstadoController {
+public class ProdutoController {
 
-    private final EstadoRepository repositorio;
+    private final ProdutoRepository repositorio;
 
-    public EstadoController(EstadoRepository repositorio){
+    public ProdutoController(ProdutoRepository repositorio){
         this.repositorio = repositorio;
     }
-    // GET Todos os estados
-    @GetMapping("/estados")
-    public Page<Estado> getTodos(
+    // GET Todos os produtos
+    @GetMapping("/produtos")
+    public Page<Produto> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -41,63 +41,64 @@ public class EstadoController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
-        return  (Page<Estado>) repositorio.findAll(pageable);
+        return  (Page<Produto>) repositorio.findAll(pageable);
     }
-    // GET Estado pelo nome
-    @GetMapping("/estados/nome/{nome}")
-    public List<Estado> getEstadosPorNome(@PathVariable String nome,
+    // GET Produto pela descricao
+    @GetMapping("/produto/descricao/{descricao}")
+    public List<Produto> getProdutosPorNome(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
-            return repositorio.findByNome(nome);
+            return repositorio.findByDescricao(descricao);
         }else if (modoBusca.equals(ModoBusca.INICIADO)){
-            return repositorio.findByNomeStartingWithIgnoreCase(nome);
+            return repositorio.findByDescricaoStartingWithIgnoreCase(descricao);
         }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
-            return repositorio.findByNomeEndingWithIgnoreCase(nome);
+            return repositorio.findByDescricaoEndingWithIgnoreCase(descricao);
         }else{
-            return repositorio.findByNomeContainingIgnoreCase(nome);
+            return repositorio.findByDescricaoContainingIgnoreCase(descricao);
         }       
     }
     
-    // GET Estado pelo id
-    @GetMapping("/estado/{id}")
-    public Estado getPorId(@PathVariable BigInteger id) throws Exception {
+    // GET Produto pelo id
+    @GetMapping("/produto/{id}")
+    public Produto getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
     }    
 
-    // POST Estado (Incluir registro)
-    @PostMapping("/estado")
-    public Estado criarEstado(@RequestBody Estado entity) throws Exception { 
+    // POST Produto (Incluir registro)
+    @PostMapping("/produto")
+    public Produto criarProduto(@RequestBody Produto entity) throws Exception { 
         try{               
             if(entity.getId() != null){
                 throw new Exception("Entidade já existe.");
             }
             return repositorio.save(entity);
         }catch(Exception e){
-            throw new Exception("Erro ao salvar o estado.");
+            throw new Exception("Erro ao salvar o produto.");
         }
     }
-    // PUT Estado pelo id (Atualizar registro)
-    @PutMapping("/estado/{id}")
-    public Estado alterarEstado(@PathVariable BigInteger id, 
-                                @RequestBody Estado novosDados) throws Exception {
+    
+    // PUT Produto pelo id (Atualizar registro)
+    @PutMapping("/produto/{id}")
+    public Produto alterarProduto(@PathVariable BigInteger id, 
+                                @RequestBody Produto novosDados) throws Exception {
 
-        Optional<Estado> estadoAmazenado = repositorio.findById(id);
-        if(estadoAmazenado.isPresent()){
+        Optional<Produto> produtoAmazenado = repositorio.findById(id);
+        if(produtoAmazenado.isPresent()){
             //Atribuir novo nome ao objeto já existem no banco de dados
-            estadoAmazenado.get().setNome(novosDados.getNome());
-            return repositorio.save(estadoAmazenado.get());
+            produtoAmazenado.get().setDescricao(novosDados.getDescricao());
+            return repositorio.save(produtoAmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
     }
-    // DELETE Estado pelo id (Excluir registro)
-    @DeleteMapping("/estado/{id}")
+    // DELETE Produto pelo id (Excluir registro)
+    @DeleteMapping("/produto/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
-        Optional<Estado> estadoAmazenado = repositorio.findById(id);
-        if(estadoAmazenado.isPresent()){
-            repositorio.delete(estadoAmazenado.get());
+        Optional<Produto> produtoAmazenado = repositorio.findById(id);
+        if(produtoAmazenado.isPresent()){
+            repositorio.delete(produtoAmazenado.get());
             return "Excluído";
         }
         throw new Exception("Id não econtrado para a exclusão");
