@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Municípios</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <h1>Listagem de Municípios</h1>
+    <form>
+        <label>ID: </label>
+        <input type="text" id="tx_id" disabled="disabled" readonly="readonly"/>
+        <br>
+        <label> NOME: </label>
+        <input type="text" id="tx_nome"/>
+        <br>
+        <label> ESTADO: </label>
+        <select id="id_estado"> </select>
+        <br>
+        <br>
+        <label> ENTREGA: </label>
+        <select id="bo_ativo">
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+        </select>
+    <!-- <br>
+        <label> ENTREGA: </label>
+        <input type="checkbox" id="bo_ativo" value="Sim"/>
+        <br>
+        <label> ENTREGA: </label>
+        <label> SIM </label><input type="radio" name="entrega" id="entrega_Sim" value="true"/>
+        <label> ,NÃO </label><input type="radio" name="entrega" id="entrega_Nao" value="false"/>
+    -->
+        <br><br>
+        <br>
+
+        <button type="button" onclick="criar()">Criar</button>
+        <button type="button" onclick="carregar()">Carregar Municípios</button>
+    </form>
+    <table border="1" id="listagem"></table>
+</body>
+<script>
+    
+    function criar(){
+       console.log("Criar novo municipio!!!!");
+       var xhttp = new XMLHttpRequest();
+       xhttp.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status==200){
+                alert("Município criado com sucesso");
+                carregar();
+          }}
+       xhttp.open("POST","/municipio");
+       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+       xhttp.send(JSON.stringify(
+                  {id:null,
+                    nome: document.getElementById("tx_nome").value,
+                    entrega : document.getElementById("bo_ativo").value,
+                    estado:{ id:document.getElementById("id_estado").value }
+                  }));
+    }
+
+    function carregar(){
+       var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log("SUCESSO");
+                console.log(this.responseText);
+                var dados = JSON.parse(this.responseText);
+                console.log(dados);
+                var conteudo ="<tr> <th>ID</th> <th>Nome</th> <th>Estado</th> <th>Entrega</th></tr>";
+                for(var municipio of dados){
+                  conteudo += "<tr><td>"+ municipio.id +"</td> <td>"+ municipio.nome+"</td> <td>"+ municipio.estado.nome+"</td> <td>"+ (municipio.entrega?"Sim":"Não") +"</td></tr>";
+                }
+                document.getElementById("listagem").innerHTML = conteudo;
+            }
+        };
+        xhttp.open("GET","/municipios");
+        xhttp.send();
+    }
+
+    //<option value="1">Acre</option>
+    function carregarEstado(){
+       var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var dados = JSON.parse(this.responseText);
+                console.log(dados);
+                var conteudo ="";
+                for(var estado of dados){
+                  conteudo += "<option value="+ estado.id + ">"+estado.nome+"</option>";
+                }
+                document.getElementById("id_estado").innerHTML = conteudo;
+            }
+        };
+        xhttp.open("GET","/estados");
+        xhttp.send();
+    }
+    carregarEstado();
+</script>
+</html>
