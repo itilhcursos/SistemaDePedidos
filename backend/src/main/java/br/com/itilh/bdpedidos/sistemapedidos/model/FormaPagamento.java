@@ -1,5 +1,4 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
-
 import java.math.BigInteger;
 
 import jakarta.persistence.Column;
@@ -22,8 +21,8 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "tb_formas_pagamento")
-
 public class FormaPagamento {
+
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_formas_pagamento_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
@@ -32,6 +31,7 @@ public class FormaPagamento {
     @Column(name = "tx_descricao")
     private String descricao;
 
-    @Column(name = "bo_entrega")
-    private Boolean entrega;
+    @Column(name = "bo_ativo")
+    private Boolean ativo;
+
 }

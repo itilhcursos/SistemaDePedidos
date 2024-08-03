@@ -2,8 +2,8 @@ package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
 
 import java.math.BigInteger;
@@ -24,16 +24,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-public class ProdutoController {
+public class FormaPagamentoController {
 
-    private final ProdutoRepository repositorio;
+    private final FormaPagamentoRepository repositorio;
 
-    public ProdutoController(ProdutoRepository repositorio){
+    public FormaPagamentoController(FormaPagamentoRepository repositorio){
         this.repositorio = repositorio;
     }
-    // GET Todos os produtos
-    @GetMapping("/produtos")
-    public Page<Produto> getTodos(
+
+    @GetMapping("/formas-pagamento")
+    public Page<FormaPagamento> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -41,11 +41,11 @@ public class ProdutoController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
-        return  (Page<Produto>) repositorio.findAll(pageable);
+        return (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
-    // GET Produto pela descricao
-    @GetMapping("/produto/descricao/{descricao}")
-    public List<Produto> getProdutosPelaDescricao(@PathVariable String descricao, @RequestParam(required = true) ModoBusca modoBusca) {
+
+    @GetMapping("/forma-pagamento/descricao/{descricao}")
+    public List<FormaPagamento> getFormaPagamentoPelaDescricao(@PathVariable String descricao, @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
             return repositorio.findByDescricao(descricao);
         }else if (modoBusca.equals(ModoBusca.INICIADO)){
@@ -57,49 +57,44 @@ public class ProdutoController {
         }       
     }
     
-    // GET Produto pelo id
-    @GetMapping("/produto/{id}")
-    public Produto getPorId(@PathVariable BigInteger id) throws Exception {
+    @GetMapping("/forma-pagamento/{id}")
+    public FormaPagamento getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
     }    
 
-    // POST Produto (Incluir registro)
-    @PostMapping("/produto")
-    public Produto criarProduto(@RequestBody Produto entity) throws Exception { 
+    @PostMapping("/forma-pagamento")
+    public FormaPagamento criarFormaPagamento(@RequestBody FormaPagamento entity) throws Exception { 
         try{               
             if(entity.getId() != null){
                 throw new Exception("Entidade já existe.");
             }
             return repositorio.save(entity);
         }catch(Exception e){
-            throw new Exception("Erro ao salvar o produto.");
+            throw new Exception("Erro ao salvar a Forma de Pagamento.");
         }
     }
     
-    // PUT Produto pelo id (Atualizar registro)
-    @PutMapping("/produto/{id}")
-    public Produto alterarProduto(@PathVariable BigInteger id, @RequestBody Produto novosDados) throws Exception {
+    @PutMapping("/forma-pagamento/{id}")
+    public FormaPagamento alterarFormaPagamento(@PathVariable BigInteger id, @RequestBody FormaPagamento novosDados) throws Exception {
 
-        Optional<Produto> produtoAmazenado = repositorio.findById(id);
-        if (produtoAmazenado.isPresent()) {
-            Produto produto = produtoAmazenado.get();
-            produto.setDescricao(novosDados.getDescricao());
-            produto.setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
-            produto.setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
-            produto.setAtivo(novosDados.getAtivo());
-            return repositorio.save(produto);
+        Optional<FormaPagamento> formaPagamentoAmazenado = repositorio.findById(id);
+        if (formaPagamentoAmazenado.isPresent()) {
+            FormaPagamento formaPagamento = formaPagamentoAmazenado.get();
+            formaPagamento.setDescricao(novosDados.getDescricao());
+            formaPagamento.setAtivo(novosDados.getAtivo());
+            return repositorio.save(formaPagamento);
         }       
         throw new Exception("Alteração não foi realizada.");
     }
-    // DELETE Produto pelo id (Excluir registro)
-    @DeleteMapping("/produto/{id}")
+
+    @DeleteMapping("/forma-pagamento/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
-        Optional<Produto> produtoAmazenado = repositorio.findById(id);
-        if(produtoAmazenado.isPresent()){
-            repositorio.delete(produtoAmazenado.get());
+        Optional<FormaPagamento> formaPagamentoArmazenado = repositorio.findById(id);
+        if(formaPagamentoArmazenado.isPresent()){
+            repositorio.delete(formaPagamentoArmazenado.get());
             return "Excluído";
         }
         throw new Exception("Id não econtrado para a exclusão");

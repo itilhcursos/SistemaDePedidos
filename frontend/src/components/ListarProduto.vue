@@ -19,8 +19,9 @@
             <th scope="col">ID</th>
             <th scope="col">Descrição</th>
             <th scope="col">Quantidade em Estoque</th>
-            <th scope="col">Preço</th>
-            <th scope="col" class="d-flex justify-content-end">Ações</th>
+            <th scope="col">Valor Unitário</th>
+            <th scope="col">Ativo</th>
+            <th scope="col" class="d-flex justify-content-center">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +72,7 @@
               <option value="id">ID</option>
               <option value="descricao">Descrição</option>
               <option value="quantidadeEstoque">Quantidade em Estoque</option>
-              <option value="precoUnidadeAtual">Preço Unitário</option>
+              <option value="precoUnidadeAtual">Valor Unitário</option>
               <option value="ativo">Ativo</option>
             </select>
           </div>
@@ -132,6 +133,7 @@
         this.formVisible = !this.formVisible;
       },
       alterarProduto(produto) {
+        console.log("Produto selecionado para edição: ", produto);
         this.produtoEscolhido = produto;
         this.formVisible = true;
       },

@@ -4,12 +4,27 @@
       <hr />
       <form>
         <div class="mb-3">
-          <label class="form-label">Id</label>
-          <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id produto"/>
+          <label class="form-label">ID</label>
+          <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="ID produto"/>
         </div>
         <div class="mb-3">
           <label class="form-label">Nome</label>
-          <input class="form-control" type="text" v-model="descricao" placeholder="Nome"/>
+          <input class="form-control" type="text" v-model="descricao" placeholder="Descrição do Produto"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Quantidade em Estoque</label>
+          <input class="form-control" type="number" v-model="quantidadeEstoque" placeholder="Quantidade"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Valor Unitário</label>
+          <input class="form-control" type="number" v-model="precoUnidadeAtual" placeholder="Valor Unitário"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ativo</label>
+          <select class="form-control" type="boolean" v-model="ativo">
+            <option :value="true">Sim</option>
+            <option :value="false">Não</option>
+          </select>
         </div>
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
           <i class="bi bi-exclamation-triangle-fill"></i>
@@ -54,7 +69,7 @@
             descricao: this.descricao,
             quantidadeEstoque: this.quantidadeEstoque,
             precoUnidadeAtual: this.precoUnidadeAtual,
-            ativo: this.ativo
+            ativo: this.ativo,
           });
           this.listaProdutos = response.data;
         } else {
@@ -65,18 +80,18 @@
               descricao: this.descricao,
               quantidadeEstoque: this.quantidadeEstoque,
               precoUnidadeAtual: this.precoUnidadeAtual,
-              ativo: this.ativo
+              ativo: this.ativo,
             }
           );
           this.listaProdutos = response.data;
         }
-  
+
         this.$emit("salvar_produto", {
           id: this.id,
           descricao: this.descricao,
           quantidadeEstoque: this.quantidadeEstoque,
           precoUnidadeAtual: this.precoUnidadeAtual,
-          ativo: this.ativo
+          ativo: this.ativo,
         });
   
         this.id = "";
@@ -88,9 +103,9 @@
       cancelar() {
         this.id = "";
         this.descricao = "";
-        this.quantidadeEstoque = "";
-        this.precoUnidadeAtual = "";
-        this.ativo = "";       
+        this.quantidadeEstoque = 0;
+        this.precoUnidadeAtual = 0;
+        this.ativo = true;       
         this.$emit("cancelar", true);
       },
     },
