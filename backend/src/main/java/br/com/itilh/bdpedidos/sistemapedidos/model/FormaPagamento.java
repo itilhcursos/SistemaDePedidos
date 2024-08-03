@@ -32,6 +32,6 @@ public class FormaPagamento {
     @Column(name = "tx_descricao")
     private String descricao;
 
-    @Column(name = "bo_entrega")
-    private Boolean entrega;
+    @Column(name = "bo_ativo")
+    private Boolean ativo;
 }
