@@ -163,7 +163,7 @@ export default {
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
-      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`);
+      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`);
       console.log(response.data);
       this.buscarFormaPagamento();
     },

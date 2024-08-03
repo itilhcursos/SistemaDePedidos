@@ -1,39 +1,39 @@
 <template>
   <div class="container">
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Forma de Pagamento</h4>
-      <hr />
-      <form>
-        <div class="mb-3">
-          <label class="form-label">Id</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="id"
-            :disabled="true"
-            placeholder="Id forma-de-pagamento"
-          />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Descrição</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="descricao"
-            placeholder="Descrição"
-          />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Ativo</label>
-            <select v-model="ativo" class="form-select">
-              <option :value="true">true</option>
-              <option :value="false">false</option>
-            </select>
-        </div>
-        <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-          <i class="bi bi-exclamation-triangle-fill"></i>
-          <div class="p-2">Os campos acima devem ser preenchidos!!</div>
-        </div>
-        <div class="mb-3 d-flex justify-content-end">
+    <hr />
+    <form>
+      <div class="mb-3">
+        <label class="form-label">Id</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="id"
+          :disabled="true"
+          placeholder="Id forma-de-pagamento"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Descrição</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="descricao"
+          placeholder="Descrição"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Ativo</label>
+          <select v-model="ativo" class="form-select">
+            <option :value="true">true</option>
+            <option :value="false">false</option>
+          </select>
+      </div>
+      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <div class="p-2">Os campos acima devem ser preenchidos!!</div>
+      </div>
+      <div class="mb-3 d-flex justify-content-end">
         <button
           class="btn btn-primary m-2"
           type="submit"
@@ -79,7 +79,7 @@ export default {
   
       if (this.id === "") {
         //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/formas-pagamento", {
+        const response = await axios.post("http://localhost:8080/forma-pagamento", {
           id: this.id,
           descricao: this.descricao,
           ativo: this.ativo,
@@ -88,7 +88,7 @@ export default {
       } else {
         // alterar pelo PUT da API
         const response = await axios.put(
-          `http://localhost:8080/formas-pagamento/${this.id}`,
+          `http://localhost:8080/forma-pagamento/${this.id}`,
           {
             id: this.id,
             descricao: this.descricao,
@@ -98,14 +98,13 @@ export default {
         this.listaFormasPagamento = response.data;
       }
   
-      this.$emit("salvar_forma_pagamento", {
+      this.$emit("salvar_formaPagamento", {
         id: this.id,
         descricao: this.descricao,
         ativo: this.ativo,
       });
   
       this.id = "";
-      this.nome = "";
       this.descricao = "";
       this.ativo = "";
     },
