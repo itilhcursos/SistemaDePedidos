@@ -129,11 +129,11 @@
 
 
 <script>
-import formProduto from "./FormProduto.vue";
+import FormProduto from "./FormProduto.vue";
 import axios from "axios";
 export default {
   components: {
-    formProduto
+    FormProduto
 
   },
   data() {

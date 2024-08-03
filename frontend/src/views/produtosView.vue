@@ -1,6 +1,6 @@
 
 <script setup>
-import ListarProduto from '../components/ListarProdutos.vue'
+import ListarProduto from '../components/ListarProduto.vue'
 </script>
 
 <template>
