@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
-
+@RestController
 public class ProdutoController {
  
     private final ProdutoRepository repositorio;
@@ -40,7 +41,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/produtos/nome/{nome}")
-    public List<Produto> getProdutosPorDescricao(@PathVariable String descricao,
+    public List<Produto> getProdutoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
             return repositorio.findByDescricao(descricao);
@@ -80,13 +81,15 @@ public class ProdutoController {
         if(produtoArmazenado.isPresent()){
             //Atribuir novo nome ao objeto já existem no banco de dados
             produtoArmazenado.get().setDescricao(novosDados.getDescricao());
-            //
+            produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+            produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+            produtoArmazenado.get().setAtivo(novosDados.getAtivo());
             return repositorio.save(produtoArmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
     }
 
-    @DeleteMapping("/estado/{id}")
+    @DeleteMapping("/produto/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
         Optional<Produto> produtoArmazenado = repositorio.findById(id);
