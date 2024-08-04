@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} FormaPagamento</h4>
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produto</h4>
     <hr />
     <form>
       <div class="mb-3">
@@ -10,7 +10,7 @@
           type="text"
           v-model="id"
           :disabled="true"
-          placeholder="Id forma-pagamento"
+          placeholder="Id produto"
         />
       </div>
       <div class="mb-3">
@@ -22,16 +22,25 @@
           placeholder="Descricao"
         />
       </div>
-     <!-- <div class="mb-3">
-        <label class="form-label">Situacao</label>
+      <div class="mb-3">
+        <label class="form-label">Estoque</label>
         <input
           class="form-control"
           type="text"
-          v-model="ativo"
-          placeholder="Ativo"
+          v-model ="quantidadeEstoque"
+          placeholder="quantidadeEstoque"
         />
-      </div>-->
-    <div class="mb-3">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Preço Unitario Atual</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="precoUnidadeAtual"
+          placeholder="precoUnidadeAtual"
+        />
+      </div>
+      <div class="mb-3">
         <label class="form-label">Situação</label>
     <select class="form-control" type="text" v-model="ativo">
       <option value="true">Ativo</option>
@@ -46,7 +55,7 @@
         <button
           class="btn btn-primary m-2"
           type="submit"
-          v-on:click.prevent="salvarFormaPagamento"
+          v-on:click.prevent="salvarProduto"
         >
         <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
@@ -68,19 +77,21 @@
 import axios from "axios";
 export default {
   props: {
-    propsFormaPagamento: Object,
+    propsProduto: Object,
   },
   data() {
     return {
       id: "",
       descricao: "",
-      ativo: "",
+      quantidadeEstoque:"" ,
+      precoUnidadeAtual:"",
+      ativo:true,
       isInvalido: false,
       
     };
   },
   methods: {
-    async salvarFormaPagamento() {
+    async salvarProduto() {
       if (this.descricao === "") {
         this.isInvalido = true;
         return;
@@ -89,48 +100,59 @@ export default {
 
       if (this.id === "") {
         //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/forma-pagamento", {
+        const response = await axios.post("http://localhost:8080/produto", {
           id: this.id,
           descricao: this.descricao,
-          ativo: this.ativo,
+          quantidadeEstoque: this.quantidadeEstoque,
+          precoUnidadeAtual: this.precoUnidadeAtual,
+          ativo: this.ativo
         });
-        this.listaFormaPagamentos = response.data;
+        this.listaProduto = response.data;
       } else {
         // alterar pelo PUT da API
         const response = await axios.put(
-          `http://localhost:8080/forma-pagamento/${this.id}`,
+          `http://localhost:8080/produto/${this.id}`,
           {
             id: this.id,
             descricao: this.descricao,
+            quantidadeEstoque: this.quantidadeEstoque,
+            precoUnidadeAtual: this.precoUnidadeAtual,
             ativo: this.ativo
-            
           }
         );
-        this.listaFormaPagamento = response.data;
+        this.listaProduto = response.data;
       }
 
-      this.$emit("salvar-forma-pagamento", {
-        id: this.id,
-        descricao: this.descricao,
-        ativo: this.ativo,
+      this.$emit("salvar-produto", {
+            id: this.id,
+            descricao: this.descricao,
+            quantidadeEstoque: this.quantidadeEstoque,
+            precoUnidadeAtual: this.precoUnidadeAtual,
+            ativo: this.ativo,
       });
 
       this.id = "";
       this.descricao = "";
+      this.quantidadeEstoque = "";
+      this.precoUnidadeAtual = "";
       this.ativo = "";
     },
     cancelar() {
       this.id = "";
       this.descricao = "";
+      this.quantidadeEstoque = "";
+      this.precoUnidadeAtual = "";
       this.ativo = "";
       this.$emit("cancelar", true);
     },
   },
   mounted() {
-    if (this.propsFormaPagamento) {
-      this.id = this.propsFormaPagamento.id;
-      this.descricao = this.propsFormaPagamento.descricao;
-      this.ativo = this.propsFormaPagamento.ativo;
+    if (this.propsProduto) {
+      this.id = this.propsProduto.id;
+      this.descricao = this.propsProduto.descricao;
+      this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
+      this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual
+      this.ativo = this.propsProduto.ativo;
     }
   },
   computed: {

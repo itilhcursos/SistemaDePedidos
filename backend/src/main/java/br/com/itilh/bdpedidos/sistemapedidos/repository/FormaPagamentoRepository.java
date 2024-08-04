@@ -13,16 +13,20 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 
 @Repository
 public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, BigInteger> {
-    // Select * from tb_estados where tx_nome = 'nome'//
+
+    // Select * from tb_formaPagamento where tx_nome = 'nome'//
+    List<FormaPagamento> findByAtivo(Boolean ativo);
+
+    // Select * from tb_formaPagamento where tx_nome = 'nome'//
     List<FormaPagamento> findByDescricao(String descricao);
 
-    // Select * from tb_estados where UPPER(tx_nome) like UPPER('nome%')//
+    // Select * from tb_formaPagamento where UPPER(tx_nome) like UPPER('nome%')//
     List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao);
 
-    // Select * from tb_estados where UPPER(tx_nome) like UPPER('%nome')//
+    // Select * from tb_formaPagamento where UPPER(tx_nome) like UPPER('%nome')//
     List<FormaPagamento> findByDescricaoEndingWithIgnoreCase(String descricao);
 
-    // Select * from tb_estados where UPPER(tx_nome) like UPPER('%nome%')//
+    // Select * from tb_formaPagamento where UPPER(tx_nome) like UPPER('%nome%')//
     List<FormaPagamento> findByDescricaoContainingIgnoreCase(String descricao);
 
     @Query("FROM FormaPagamento e WHERE e.descricao like %?1")

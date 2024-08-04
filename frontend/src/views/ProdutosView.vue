@@ -1,11 +1,11 @@
 
 <script setup>
-import ListarFormaPagamento from '../components/ListarFormaPagamento.vue'
+import ListarProduto from '../components/ListarProduto.vue'
 </script>
 
 <template>
  <main>
-   <ListarFormaPagamento />
+   <ListarProduto />
  </main>
 </template>
 
