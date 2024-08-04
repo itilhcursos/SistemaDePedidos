@@ -23,7 +23,7 @@
         />
       </div>
     <div class="mb-3">
-        <label class="form-label">Entrega</label>
+        <label class="form-label">Ativo</label>
           <select v-model="ativo" class="form-select">
             <option :value="true">SIM</option>
             <option :value="false">NÃO</option>
@@ -65,7 +65,7 @@ export default {
     return {
       id: "",
       descricao: "",
-      entrega:"",
+      ativo:"",
       isInvalido: false,
     };
   },
@@ -82,7 +82,7 @@ export default {
         const response = await axios.post("http://localhost:8080/forma-pagamento", {
           id: this.id,
           descricao: this.descricao,
-          entrega:this.entrega,
+          ativo:this.ativo,
         });
         this.listaFormaPagamento = response.data;
       } else {
@@ -92,7 +92,7 @@ export default {
           {
             id: this.id,
             descricao: this.descricao,
-            entrega:this.entrega,
+            ativo:this.ativo,
           }
         );
         this.listaFormaPagamento = response.data;
@@ -101,17 +101,17 @@ export default {
       this.$emit("salvar_FormaPagamento", {
         id: this.id,
         descricao: this.descricao,
-        entrega:this.entrega,
+        ativo:this.ativo
       });
 
       this.id = "";
       this.descricao = "";
-      this.entrega="";
+      this.ativo="";
     },
     cancelar() {
       this.id = "";
       this.descricao = "";
-      this.entrega="";
+      this.ativo="";
       this.$emit("cancelar", true);
     },
   },
@@ -119,7 +119,7 @@ export default {
     if (this.propsFormaPagamento) {
       this.id = this.propsFormaPagamento.id;
       this.descricao = this.propsFormaPagamento.descricao;
-      this.entrega=this.propsFormaPagamento.entrega;
+      this.ativo=this.propsFormaPagamento.ativo;
     }
   },
   computed: {

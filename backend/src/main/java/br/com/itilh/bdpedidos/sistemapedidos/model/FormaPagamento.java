@@ -26,14 +26,14 @@ import lombok.ToString;
 public class FormaPagamento {
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_formas_pagamento_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "formas_pagamento_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
     private BigInteger id;
 
     @Column(name = "tx_descricao")
     private String descricao;
 
-    @Column(name = "bo_entrega")
-    private Boolean entrega;
+    @Column(name = "bo_ativo")
+    private Boolean ativo;
 
   
 

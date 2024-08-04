@@ -26,7 +26,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
-          <th scope="col">Entrega</th>
+          <th scope="col">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.entrega }}
+            {{ formaPagamento.ativo }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -95,7 +95,7 @@
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
             <option value="nome">Descrição</option>
-            <option value="nome">Entrega</option>
+            <option value="nome">Ativo</option>
           </select>
         </div>
         <div class="col-auto">

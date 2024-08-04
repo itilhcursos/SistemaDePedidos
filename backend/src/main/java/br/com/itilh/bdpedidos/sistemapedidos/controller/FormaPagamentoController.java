@@ -90,7 +90,7 @@ public class FormaPagamentoController {
         if(formapagamentoAmazenado.isPresent()){
            
             formapagamentoAmazenado.get().setDescricao(novosDados.getDescricao());
-            formapagamentoAmazenado.get().setEntrega(novosDados.getEntrega());
+            formapagamentoAmazenado.get().setAtivo(novosDados.getAtivo());
          
          
             return repositorio.save(formapagamentoAmazenado.get());

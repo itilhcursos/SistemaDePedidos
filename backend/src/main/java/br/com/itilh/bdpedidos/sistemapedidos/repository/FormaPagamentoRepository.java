@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
@@ -26,9 +26,11 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
     List<FormaPagamento> findByDescricaoContainingIgnoreCase(String descricao);
     
     
-
+    @Query("FROM FormaPagamento e WHERE e.descricao like %?1")
+    List<FormaPagamento> findByMinhaQuery(String descricao);
 
     
+    @SuppressWarnings("null")
     @Override
     Page<FormaPagamento> findAll(Pageable pageable);
 

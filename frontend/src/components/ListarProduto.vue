@@ -155,7 +155,7 @@ export default {
       this.formVisible = false;
       
       const response = await axios.get(
-        `http://localhost:8080/produto?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/produtos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
       this.listaProdutos = response.data.content;

@@ -37,7 +37,7 @@ public class ProdutoController {
         this.repositorio = repositorio;
     }
 
-    @GetMapping("/produto")
+    @GetMapping("/produtos")
     public Page<Produto> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
