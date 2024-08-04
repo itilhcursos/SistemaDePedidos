@@ -43,7 +43,7 @@
             {{ produto.quantidadeEstoque }}
           </td>
           <td>
-            {{ produto.PrecoUnidadeAtual }}
+            {{ produto.precoUnidadeAtual }}
           </td>
           <td>
             {{ produto.ativo }}

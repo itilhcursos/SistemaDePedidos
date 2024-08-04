@@ -36,7 +36,7 @@
         <input
           class="form-control"
           type="text"
-          v-model="PrecoUnidadeAtual"
+          v-model="precoUnidadeAtual"
           placeholder="Preço Atual"
         />
       </div>
@@ -86,7 +86,7 @@ export default {
       id: "",
       descricao: "",
       quantidadeEstoque:"",
-      PrecoUnidadeAtual:"",
+      precoUnidadeAtual:"",
       ativo:"",
       isInvalido: false,
     };
@@ -105,7 +105,7 @@ export default {
           id: this.id,
           descricao: this.descricao,
           quantidadeEstoque:this.quantidadeEstoque,
-          PrecoUnidadeAtual:this.PrecoUnidadeAtual,
+          precoUnidadeAtual:this.precoUnidadeAtual,
           ativo:this.ativo,
         });
         this.listaProdutos = response.data;
@@ -117,7 +117,7 @@ export default {
             id: this.id,
             descricao: this.descricao,
             quantidadeEstoque:this.quantidadeEstoque,
-            PrecoUnidadeAtual:this.PrecoUnidadeAtual,
+            precoUnidadeAtual:this.precoUnidadeAtual,
             ativo:this.ativo,
 
           }
@@ -129,21 +129,21 @@ export default {
         id: this.id,
         descricao: this.descricao,
         quantidadeEstoque:this.quantidadeEstoque,
-          PrecoUnidadeAtual:this.PrecoUnidadeAtual,
+          precoUnidadeAtual:this.precoUnidadeAtual,
           ativo:this.ativo,
       });
 
       this.id = "";
       this.descricao = "";
       this.quantidadeEstoque="";
-      this.PrecoUnidadeAtual="";
+      this.precoUnidadeAtual="";
       this.ativo="";
     },
     cancelar() {
       this.id = "";
       this.descricao = "";
       this.quantidadeEstoque="";
-      this.PrecoUnidadeAtual="";
+      this.precoUnidadeAtual="";
       this.ativo="";
 
       this.$emit("cancelar", true);
@@ -154,7 +154,7 @@ export default {
       this.id = this.propsProduto.id;
       this.descricao = this.propsProduto.descricao;
       this.quantidadeEstoque=this.propsProduto.quantidadeEstoque;
-      this.precoUnidadeAtual=this.propsProduto.PrecoUnidadeAtual;
+      this.precoUnidadeAtual=this.propsProduto.precoUnidadeAtual;
       this.ativo=this.propsProduto.ativo;
     }
   },
