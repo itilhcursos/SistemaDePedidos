@@ -24,6 +24,11 @@ const router = createRouter({
       name: 'formas-pagamento',
       component:()=>import('../views/FormasPagamentoView.vue')
     },
+    {
+      path: '/produtos',
+      name: 'produtos',
+      component:()=>import('../views/ProdutosView.vue')
+    },
 
   ]
 })
