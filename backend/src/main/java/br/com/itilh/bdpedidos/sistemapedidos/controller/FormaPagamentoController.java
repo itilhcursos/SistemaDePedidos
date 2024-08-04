@@ -82,7 +82,7 @@ public class FormaPagamentoController {
         if(formaPagamentoArmazenado.isPresent()){
             //Atribuir novo nome ao objeto já existem no banco de dados
             formaPagamentoArmazenado.get().setDescricao(novosDados.getDescricao());
-            //
+            formaPagamentoArmazenado.get().setAtivo(novosDados.getAtivo());
             return repositorio.save(formaPagamentoArmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
