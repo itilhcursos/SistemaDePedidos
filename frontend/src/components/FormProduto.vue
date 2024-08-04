@@ -42,12 +42,12 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Entrega</label>
-                <input 
-                class="form-control"
-                type="text"
-                v-model="ativo"
-                placeholder="Entrega"
-                />
+                <select v-model="ativo" class="form-control">
+                    <option disabled value="">Entrega</option>
+                    <option value="true">Verdadeiro</option>
+                    <option value="false">Falso</option>
+                </select>
+                
             </div>
             <div  v-if="isInvalido" class="alert alert-danger d-flex align" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
