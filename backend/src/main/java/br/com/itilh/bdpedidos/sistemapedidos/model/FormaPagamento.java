@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -16,22 +18,24 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @ToString
+
 @Entity
-@Table(name = "tb_formas_pagamento")
+@Table(name = "tb_forma_pagamento")
 
 public class FormaPagamento {
+
     @Id
-    @SequenceGenerator(name = "sequencial", sequenceName = "tb_formas_pagamento_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
+    @SequenceGenerator(name = "tb_formas_pagamento_id_seq", sequenceName = "tb_formas_pagamento_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_formas_pagamento_id_seq")
     private BigInteger id;
 
     @Column(name = "tx_descricao")
     private String descricao;
-
-    @Column(name = "bo_entrega")
-    private Boolean entrega;
+    
+    @Column(name = "bo_ativo")
+    private Boolean ativo;
 }

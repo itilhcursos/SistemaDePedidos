@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +20,21 @@ const router = createRouter({
       name: 'estados',
       component:()=>import('../views/EstadosView.vue')
     },
-
+    {
+      path: '/formas-pagamento',
+      name: 'formas-pagamento',
+      component:()=>import('../views/FormaPagamentoView.vue')
+    },
+    {
+      path: '/produtos',
+      name: 'produtos',
+      component:()=>import('../views/ProdutoView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFoundView
+    }
   ]
 })
 
