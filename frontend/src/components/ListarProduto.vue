@@ -83,7 +83,6 @@
               {{ pagina }}
             </button>
   
-  
           </div>
           <div class="col-auto">
             <input
@@ -126,7 +125,6 @@
       </div>
     </div>
   </template>
-  
   
   <script>
   import FormProduto from "./FormProduto.vue";

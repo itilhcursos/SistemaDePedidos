@@ -20,7 +20,7 @@
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
-        <div class="p-2">Descrição deve ser preenchido!</div>
+        <div class="p-2">Descrição deve ser preenchida!</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarFormaPagamento">

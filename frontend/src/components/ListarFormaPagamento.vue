@@ -74,8 +74,7 @@
             >
               {{ pagina }}
             </button>
-  
-  
+
           </div>
           <div class="col-auto">
             <input
@@ -116,8 +115,7 @@
       </div>
     </div>
   </template>
-  
-  
+
   <script>
   import FormFormaPagamento from "./FormFormaPagamento.vue";
   import axios from "axios";
