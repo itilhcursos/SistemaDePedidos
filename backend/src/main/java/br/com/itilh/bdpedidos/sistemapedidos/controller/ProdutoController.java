@@ -31,7 +31,7 @@ public class ProdutoController {
     public ProdutoController(ProdutoRepository repositorio){
         this.repositorio = repositorio;
     }
-    // GET Todos os produtos
+
     @GetMapping("/produtos")
     public Page<Produto> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -41,11 +41,11 @@ public class ProdutoController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
-        return  (Page<Produto>) repositorio.findAll(pageable);
+        return (Page<Produto>) repositorio.findAll(pageable);
     }
-    // GET Produto pela descricao
+
     @GetMapping("/produto/descricao/{descricao}")
-    public List<Produto> getProdutosPelaDescricao(@PathVariable String descricao, @RequestParam(required = true) ModoBusca modoBusca) {
+    public List<Produto> getProdutoPelaDescricao(@PathVariable String descricao, @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
             return repositorio.findByDescricao(descricao);
         }else if (modoBusca.equals(ModoBusca.INICIADO)){
@@ -57,7 +57,6 @@ public class ProdutoController {
         }       
     }
     
-    // GET Produto pelo id
     @GetMapping("/produto/{id}")
     public Produto getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
@@ -65,7 +64,6 @@ public class ProdutoController {
          );
     }    
 
-    // POST Produto (Incluir registro)
     @PostMapping("/produto")
     public Produto criarProduto(@RequestBody Produto entity) throws Exception { 
         try{               
@@ -78,28 +76,27 @@ public class ProdutoController {
         }
     }
     
-    // PUT Produto pelo id (Atualizar registro)
     @PutMapping("/produto/{id}")
     public Produto alterarProduto(@PathVariable BigInteger id, @RequestBody Produto novosDados) throws Exception {
 
         Optional<Produto> produtoAmazenado = repositorio.findById(id);
         if (produtoAmazenado.isPresent()) {
-            Produto produto = produtoAmazenado.get();
-            produto.setDescricao(novosDados.getDescricao());
-            produto.setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
-            produto.setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
-            produto.setAtivo(novosDados.getAtivo());
-            return repositorio.save(produto);
+          Produto produto = produtoAmazenado.get();
+          produto.setDescricao(novosDados.getDescricao());
+          produto.setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
+          produto.setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
+          produto.setAtivo(novosDados.getAtivo());
+          return repositorio.save(produto);
         }       
         throw new Exception("Alteração não foi realizada.");
     }
-    // DELETE Produto pelo id (Excluir registro)
+
     @DeleteMapping("/produto/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
-        Optional<Produto> produtoAmazenado = repositorio.findById(id);
-        if(produtoAmazenado.isPresent()){
-            repositorio.delete(produtoAmazenado.get());
+        Optional<Produto> produtoArmazenado = repositorio.findById(id);
+        if(produtoArmazenado.isPresent()){
+            repositorio.delete(produtoArmazenado.get());
             return "Excluído";
         }
         throw new Exception("Id não econtrado para a exclusão");

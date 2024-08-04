@@ -1,11 +1,10 @@
-
 <script setup>
 import ListarProduto from '../components/ListarProduto.vue'
 </script>
 
 <template>
  <main>
-   <ListarProduto/>
+   <ListarProduto />
  </main>
 </template>
 
