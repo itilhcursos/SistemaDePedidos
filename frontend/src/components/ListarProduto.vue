@@ -39,7 +39,7 @@
             {{ produto.precoUnidadeAtual }}
           </td>
           <td>
-            {{ produto.ativo }}
+            {{ produto.ativo ? 'Sim' : 'Não' }}
           </td>
           <td class="d-flex justify-content-center">
             <button class="btn btn-btn btn-primary m-2" @click="alterarProduto(produto)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>

@@ -31,7 +31,7 @@
             {{ forma_pagamento.descricao }}
           </td>
           <td>
-            {{ forma_pagamento.ativo }}
+            {{ forma_pagamento.ativo ? 'Sim' : 'Não' }}
           </td>
           <td class="d-flex justify-content-center">
             <button class="btn btn-btn btn-primary m-2" @click="alterarFormaPagamento(forma_pagamento)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
