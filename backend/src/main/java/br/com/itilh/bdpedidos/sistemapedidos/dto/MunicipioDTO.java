@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MuniciopioDTO {
+public class MunicipioDTO {
 
     private BigInteger id;
     private String nome;

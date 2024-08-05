@@ -1,7 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import java.math.BigInteger;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.MunicipioService;
 
 
@@ -30,7 +29,7 @@ public class MunicipioController {
 
    
     @GetMapping("/municipios")
-    public Page<Municipio> getMunicipios(
+    public Page<MunicipioDTO> getMunicipios(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -41,28 +40,40 @@ public class MunicipioController {
     }
 
     @GetMapping("/municipios/estado-id/{id}")
-    public List<Municipio> getMunicipiosPorEstadoId(@PathVariable BigInteger id) {
-        return service.listarMunicipiosPorEstadoId(id);
+    public Page<MunicipioDTO> getMunicipiosPorEstadoId(@PathVariable BigInteger id,
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property
+    ){
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return service.listarMunicipiosPorEstadoId(id, pageable);
     }
 
     @GetMapping("/municipios/estado-nome/{nome}")
-    public List<Municipio> getMunicipiosPorEstadoNome(@PathVariable String nome) {
-        return service.listarMunicipiosPorEstadoNome(nome);
+    public Page<MunicipioDTO> getMunicipiosPorEstadoNome(@PathVariable String nome,
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property
+    ){
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return service.listarMunicipiosPorEstadoNome(nome, pageable);
     }
 
     @GetMapping("/municipio/{id}")
-    public Municipio getMunicipioPorId(@PathVariable BigInteger id) throws Exception {
+    public MunicipioDTO getMunicipioPorId(@PathVariable BigInteger id) throws Exception {
         return service.buscarMunicipioPorId(id);
     }
 
     @PostMapping("/municipio")
-    public Municipio postMunicipio(@RequestBody Municipio entity) throws Exception {    
-        return service.criarMunicipio(entity);
+    public MunicipioDTO postMunicipio(@RequestBody MunicipioDTO origem) throws Exception {    
+        return service.criarMunicipio(origem);
     }
 
     @PutMapping("/municipio/{id}")
-    public Municipio putMunicipio(@PathVariable BigInteger id, @RequestBody Municipio entity) throws Exception {
-        return service.alterarMunicipio(id, entity);
+    public MunicipioDTO putMunicipio(@PathVariable BigInteger id, @RequestBody MunicipioDTO origem) throws Exception {
+        return service.alterarMunicipio(id, origem);
     }
 
     @DeleteMapping("/municipio/{id}")
