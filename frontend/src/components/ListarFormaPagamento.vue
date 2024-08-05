@@ -11,12 +11,8 @@
       </div>
       <div class="row">
         <div>
-          <FormaPagamento
-            v-if="formVisible"
-            :propsFormaPagamento="formaPagamentoEscolhido"
-            @cancelar="limpar"
-            @salvar_formaPgamento="buscarFormaPagamento"
-          />
+          <FormaPagamento v-if="formVisible" :propsFormaPagamento="formaPagamentoEscolhido" @cancelar="limpar"
+            @salvar-forma-pagamento="buscarFormaPgamento" />
         </div>
       </div>
     </div>
@@ -31,7 +27,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="formaPagamento in listaFormaPagamento" :key="formaPagamento.id" scope="row">
+        <tr v-for="formaPagamento in listaFormaPagmento" :key="formaPagamento.id" scope="row">
           <th>
             {{ formaPagamento.id }}
           </th>
@@ -39,20 +35,14 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo ? 'Ativo' : 'Inativo'}}
+            {{ formaPagamento.ativo ? 'Ativo' : 'Inativo' }}
           </td>
           <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterarFormaPagamento(formaPagamento)"
-            >
+            <button class="btn btn-btn btn-primary m-2" @click="alterarFormaPagamento(formaPagamento)">
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirFormaPagamento(formaPagamento.id)"
-            >
+            <button class="btn btn-outline-danger m-2" @click="excluirFormaPagamento(formaPagamento.id)">
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
           </td>
@@ -66,24 +56,14 @@
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
 
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
             {{ pagina }}
           </button>
 
 
         </div>
         <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25" />
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -97,7 +77,7 @@
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
             <option value="descricao">Descrição</option>
-            <option value="ativo">Situação</option>
+            <option value="Ativo">Situação</option>
           </select>
         </div>
         <div class="col-auto">
@@ -107,7 +87,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
+          <button @click.prevent="buscarFormaPgamento" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -128,7 +108,7 @@ export default {
   data() {
     return {
       listaFormaPagmento: [],
-      estadoEscolhido: null,
+      formaPagamentoEscolhido: null,
       formVisible: false,
       mode: import.meta.env.MODE,
       url: import.meta.env.VITE_APP_URL_API,
@@ -140,18 +120,14 @@ export default {
     };
   },
   methods: {
-    async buscarFormaPagamento() {
+    async buscarFormaPgamento() {
       this.formaPagamentoEscolhido = null;
       this.formVisible = false;
- 
-      //----------------------------------------
-
-
       const response = await axios.get(
         `http://localhost:8080/forma-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
-      this.listaFormaPagamento = response.data.content;
+      this.listaFormaPagmento = response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
     },
@@ -159,7 +135,7 @@ export default {
       this.formaPagamentoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoFormaPagamento() {
+    novoFormaPgamento() {
       this.formVisible = !this.formVisible;
     },
     alterarFormaPagamento(formaPagamento) {
@@ -169,15 +145,15 @@ export default {
     async excluirFormaPagamento(id) {
       const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`);
       console.log(response.data);
-      this.buscarFormaPagamento();
+      this.buscarFormaPgamento();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarFormaPagamento();
-     },
+      this.buscarFormaPgamento();
+    },
   },
   mounted() {
-    this.buscarFormaPagamento();
+    this.buscarFormaPgamento();
   },
 };
 </script>

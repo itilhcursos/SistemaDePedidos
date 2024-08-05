@@ -20,64 +20,59 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 @RestController
 public class ProdutoController {
     private final ProdutoRepository repositorio;
-    public ProdutoController(ProdutoRepository repositorio){
+
+    public ProdutoController(ProdutoRepository repositorio) {
         this.repositorio = repositorio;
     }
 
-
-    
     @GetMapping("/produtos")
     public Page<Produto> getTodosProdutos(
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
-        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return (Page<Produto>) repositorio.findAll(pageable);
     }
-
-
 
     @GetMapping("/produto/{id}")
     public Produto getProdutoPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(() -> new Exception("ID Não Encontrado!"));
     }
-   
+
     @PostMapping("/produto")
     public Produto criarProduto(@RequestBody Produto entity) throws Exception {
-        try{               
-            if(entity.getId() != null){
-                throw new Exception("Entidade já existe.");
+        try {
+            if (entity.getId() != null) {
+                throw new Exception("Já existe.");
             }
             return repositorio.save(entity);
-        }catch(Exception e){
-            throw new Exception("Erro ao salvar o produto.");
+        } catch (Exception e) {
+            throw new Exception("Erro ao gravar o produto.");
         }
     }
-    
+
     @PutMapping("/produto/{id}")
     public Produto alterarProduto(@PathVariable BigInteger id, @RequestBody Produto novosDados) throws Exception {
         Optional<Produto> produtoArmazenado = repositorio.findById(id);
-        if (produtoArmazenado.isPresent()){
+        if (produtoArmazenado.isPresent()) {
             produtoArmazenado.get().setDescricao(novosDados.getDescricao());
             produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
             produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
             produtoArmazenado.get().setAtivo(novosDados.getAtivo());
             return repositorio.save(produtoArmazenado.get());
         }
-        throw new Exception ("Não foi possível alterar o Produto Solicitado.");
+        throw new Exception("Não foi possível alterar o Produto Solicitado.");
     }
 
     @DeleteMapping("/produto/{id}")
     public String deleteProduto(@PathVariable BigInteger id) throws Exception {
-        try{
+        try {
             repositorio.deleteById(id);
             return "Excluído!!!";
         } catch (Exception e) {
             throw new Exception("Não foi possível apagar o ID fornecido!" + e.getMessage());
-      
-      
+
         }
     }
 }
