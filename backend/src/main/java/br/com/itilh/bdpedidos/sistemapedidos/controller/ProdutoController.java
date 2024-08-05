@@ -44,8 +44,8 @@ public class ProdutoController {
         return (Page<Produto>) repositorio.findAll(pageable);
     }
 
-    @GetMapping("/produtos/descricao/{descricao}")
-    public List<Produto> getProdutosPorDescricao( @PathVariable String descricao,
+    @GetMapping("/produto/descricao/{descricao}")
+    public List<Produto> getProdutoPorDescricao( @PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if (modoBusca.equals(ModoBusca.EXATO)) {
             return repositorio.findByDescricao(descricao);
@@ -58,7 +58,7 @@ public class ProdutoController {
         }
     }
 
-    @GetMapping("produto/{id}")
+    @GetMapping("/produto/{id}")
     public Produto getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido")
@@ -83,7 +83,7 @@ public class ProdutoController {
 
         Optional<Produto> produtoArmazenado = repositorio.findById(id);
         if(produtoArmazenado.isPresent()){
-            //Atribuir novo nome ao objeto já existem no banco de dados
+            //Atribuir novo aos objeto já existem no banco de dados
             produtoArmazenado.get().setDescricao(novosDados.getDescricao());
             produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
             produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
