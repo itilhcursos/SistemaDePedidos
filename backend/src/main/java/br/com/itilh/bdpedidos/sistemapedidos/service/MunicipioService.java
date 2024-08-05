@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
@@ -16,8 +18,8 @@ public class MunicipioService {
     private MunicipioRepository repository;
 
 
-    public List<Municipio> listarMunicipios() {
-        return (List<Municipio>) repository.findAll();
+    public Page<Municipio> listarMunicipios(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public List<Municipio> listarMunicipiosPorEstadoId(BigInteger id) {
