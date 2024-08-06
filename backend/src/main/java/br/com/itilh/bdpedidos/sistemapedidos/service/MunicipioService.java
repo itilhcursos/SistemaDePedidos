@@ -2,7 +2,6 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
@@ -40,7 +40,7 @@ public class MunicipioService {
 
     public MunicipioDTO buscarMunicipioPorId(BigInteger id) throws Exception {
         return toDTO(repository.findById(id)
-        .orElseThrow(()-> new Exception("Id não encontrado.")));
+        .orElseThrow(()-> new IdInexistenteException("Município", id)));
     }
 
     public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
