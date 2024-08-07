@@ -124,7 +124,7 @@ export default {
     if (this.propsFormaPagamento) {
       this.id = this.propsFormaPagamento.id;
       this.descricao = this.propsFormaPagamento.descricao;
-      this.entrega = this.propsFormaPagamento.entrega? "Verdadeiro":"Falso";
+      this.entrega = this.propsFormaPagamento.entrega;
     }
   },
   computed: {

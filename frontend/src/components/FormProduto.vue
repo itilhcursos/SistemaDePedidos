@@ -152,7 +152,7 @@ export default {
             this.descricao = this.propsProduto.descricao;
             this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
             this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual;
-            this.ativo = this.propsProduto.ativo? "Verdadeiro": "Falso";
+            this.ativo = this.propsProduto.ativo;
         }
     },
     computed:{
