@@ -15,7 +15,7 @@
             v-if="formVisible"
             :propsFormaPagamento="formaPagamentoEscolhida"
             @cancelar="limpar"
-            @salvar_formaPagamento="buscarFormaPagamento"
+            @salvar-forma-pagamento="buscarFormaPagamento"
           />
         </div>
       </div>
@@ -162,7 +162,7 @@ export default {
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
-      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`);
+      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`);
       console.log(response.data);
       this.buscarFormaPagamento();
     },

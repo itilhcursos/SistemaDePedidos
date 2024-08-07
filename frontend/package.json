@@ -13,6 +13,7 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "projeto-lista": "file:",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },
