@@ -30,7 +30,8 @@ public class FormaPagamentoController {
     public FormaPagamentoController(FormaPagamentoRepository repositorio){
         this.repositorio = repositorio;
     }
-
+    // não use maiusculas no path
+    // use "-"  exemplo "forma-pagamento"
     @GetMapping("/formaPagamento")
     public Page<FormaPagamento> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -43,6 +44,8 @@ public class FormaPagamentoController {
         return  (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
 
+        // não use maiusculas no path
+    // use "-"  exemplo "forma-pagamento"
     @GetMapping("/formaPagamento/descricao/{descricao}")
     public List<FormaPagamento> getFormaPagamentoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
@@ -57,6 +60,8 @@ public class FormaPagamentoController {
         }       
     }
 
+        // não use maiusculas no path
+    // use "-"  exemplo "forma-pagamento"
     @GetMapping("/formaPagamento/{id}")
     public FormaPagamento getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
@@ -64,6 +69,8 @@ public class FormaPagamentoController {
          );
     }  
 
+        // não use maiusculas no path
+    // use "-"  exemplo "forma-pagamento"
     @PostMapping("/formaPagamento")
     public FormaPagamento criarFormaPagamento(@RequestBody FormaPagamento entity) throws Exception { 
         try{               
@@ -76,6 +83,8 @@ public class FormaPagamentoController {
         }
     }
     
+        // não use maiusculas no path
+    // use "-"  exemplo "forma-pagamento"
     @PutMapping("/formaPagamento/{id}")
     public FormaPagamento alterarFormaPagamento(@PathVariable BigInteger id, 
                                 @RequestBody FormaPagamento novosDados) throws Exception {
@@ -90,7 +99,9 @@ public class FormaPagamentoController {
         }        
         throw new Exception("Alteração não foi realizada.");
     }
-
+    // não use maiusculas no path
+    // use "-"  exemplo "forma-pagamento"
+    
     @DeleteMapping("/formaPagamento/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
