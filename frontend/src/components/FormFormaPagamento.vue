@@ -13,7 +13,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Situação</label>
-        <select class="form-control" type="text" v-model="ativo">
+        <select class="form-control"  v-model="ativo">
           <option value="true">Ativo</option>
           <option value="false">Inativo</option>
         </select>
@@ -65,7 +65,7 @@ export default {
           descricao: this.descricao,
           ativo: this.ativo,
         });
-        this.listaFormaPagamentos = response.data;
+        console.log(response.data);
       } else {
         // alterar pelo PUT da API
         const response = await axios.put(
@@ -74,10 +74,9 @@ export default {
             id: this.id,
             descricao: this.descricao,
             ativo: this.ativo
-
           }
         );
-        this.listaFormaPagamento = response.data;
+        console.log(response.data);
       }
 
       this.$emit("salvar-forma-pagamento", {
@@ -99,6 +98,7 @@ export default {
   },
   mounted() {
     if (this.propsFormaPagamento) {
+    console.log(this.propsFormaPagamento)
       this.id = this.propsFormaPagamento.id;
       this.descricao = this.propsFormaPagamento.descricao;
       this.ativo = this.propsFormaPagamento.ativo;

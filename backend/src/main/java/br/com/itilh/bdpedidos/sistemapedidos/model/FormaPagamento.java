@@ -33,5 +33,5 @@ public class FormaPagamento {
     private String descricao;
 
     @Column(name = "bo_ativo")
-    private Boolean entrega;
+    private Boolean ativo;
 }

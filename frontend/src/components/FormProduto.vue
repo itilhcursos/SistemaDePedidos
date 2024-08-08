@@ -1,80 +1,82 @@
 
 <template>
   <div class="container">
-      <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produto</h4>
-      <hr />
-      <form>
-          <div class="mb-3">
-              <label class="form-label">Id</label>
-              <input
-              class="form-control"
-              type="text"
-              v-model="id"
-              :disabled="true"
-              placeholder="Id produto"
-              />
-          </div>
-          <div class="mb-3">
-              <label class="form-label">Descrição</label>
-              <input
-              class="form-control"
-              type="text"
-              v-model="descricao"
-              placeholder="Descrição"
-              />
-          </div>
-          <div class="mb-3">
-              <label class="form-label">Quantidade em Estoque</label>
-              <input
-              class="form-control"
-              type="text"
-              v-model="quantidadeEstoque"
-              placeholder="Quantidade em Estoque"
-              />
-          </div>
-          <div class="mb-3">
-              <label class="form-label">Preço Unitário</label>
-              <input
-              class="form-control"
-              type="text"
-              v-model="precoUnidadeAtual"
-              placeholder="Preço Unitário"
-              />
-          </div>
-          <div class="mb-3">
-              <label class="form-label">Ativo</label>
-              <input
-              class="form-control"
-              type="text"
-              v-model="ativo"
-              placeholder="Ativo"
-              />
-          </div>
-          <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-              <i class="bi bi-exclamation-triangle-fill"></i>
-              <div class="p-2">Nome deve ser preenchido!!</div>
-          </div>
-          <div class="mb-3 d-flex justify-content-end">
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produto</h4>
+    <hr />
+    <form>
+      <div class="mb-3">
+        <label class="form-label">Id</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="id"
+          :disabled="true"
+          placeholder="Id produto"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Descrição</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="descricao"
+          placeholder="Descrição"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Quantidade em Estoque</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="quantidadeEstoque"
+          placeholder="Quantidade em Estoque"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Preço Unitário</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="precoUnidadeAtual"
+          placeholder="Preço Unitário"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Ativo</label>
+        <label class="form-label">Situação</label>
+        <select class="form-control"  v-model="ativo">
+          <option value="true">Ativo</option>
+          <option value="false">Inativo</option>
+        </select>
+      </div>
+      <div
+        v-if="isInvalido"
+        class="alert alert-danger d-flex align-items-center"
+        role="alert"
+      >
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <div class="p-2">Nome deve ser preenchido!!</div>
+      </div>
+      <div class="mb-3 d-flex justify-content-end">
+        <button
+          class="btn btn-primary m-2"
+          type="submit"
+          v-on:click.prevent="salvarProduto"
+        >
+          <i class="bi bi-clipboard2-check"></i>
+          {{ getAcao }}
+        </button>
 
-              <button
-              class="btn btn-primary m-2"
-              type="submit"
-              v-on:click.prevent="salvarProduto"
-              >
-                  <i class="bi bi-clipboard2-check"></i>
-                  {{ getAcao }}
-              </button>
-
-              <button
-              class="btn btn-warning m-2"
-              type="submit"
-              v-on:click.prevent="cancelar"
-              >
-                  <i class="bi bi-clipboard2-x"></i>
-                  Cancelar
-              </button>
-          </div>
-      </form>
+        <button
+          class="btn btn-warning m-2"
+          type="submit"
+          v-on:click.prevent="cancelar"
+        >
+          <i class="bi bi-clipboard2-x"></i>
+          Cancelar
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -92,6 +94,9 @@ export default {
       return {
           id: "",
           descricao: "",
+          quantidadeEstoque: 0, 
+          precoUnidadeAtual:0, 
+          ativo: false,
           isInvalido: false,
       };
   },

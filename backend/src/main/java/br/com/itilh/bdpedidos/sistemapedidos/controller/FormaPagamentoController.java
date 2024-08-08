@@ -88,6 +88,7 @@ public class FormaPagamentoController {
         if (formaPagamentoAmazenado.isPresent()) {
             // Atribuir novo nome ao objeto já existem no banco de dados
             formaPagamentoAmazenado.get().setDescricao(novosDados.getDescricao());
+            formaPagamentoAmazenado.get().setAtivo(novosDados.getAtivo());
             //
             return repositorio.save(formaPagamentoAmazenado.get());
         }
