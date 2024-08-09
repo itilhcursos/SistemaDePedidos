@@ -26,8 +26,8 @@ import lombok.ToString;
 public class Produto {
 
     @Id
-    @SequenceGenerator(name = "produto_id_seq", sequenceName = "tb_produtos_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "produto_id_seq")
+    @SequenceGenerator(name = "sequencial", sequenceName = "tb_produtos_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
     private BigInteger id;
 
     @Column(name = "tx_descricao")
