@@ -41,13 +41,13 @@
               {{ produto.descricao }}
             </td>
             <td>
-              {{ produto.quantidadeEstoque }}
+              {{ formatarQuantidade(produto.quantidadeEstoque) }}
             </td>
             <td>
-              R$ {{ produto.precoUnidadeAtual }}
+              {{ formatarPreco(produto.precoUnidadeAtual) }}
             </td>
             <td>
-              {{ produto.ativo }}
+              {{ formatarLogico(produto.ativo) }}
             </td>
             <td class="d-flex justify-content-end">
               <button
@@ -127,6 +127,9 @@
   
   <script>
   import FormProduto from "./FormProduto.vue";
+  import Logico from "@/utils/Logico.js";
+  import Monetario from "@/utils/Monetario.js";
+  import Decimal from "@/utils/Decimal.js";
   import axios from "axios";
   export default {
     components: {
@@ -178,6 +181,15 @@
         this.pageNumber = pagina;
         this.buscarProdutos();
       },
+      formatarLogico(valor){
+        return Logico.toSimNao(valor);
+      },
+      formatarPreco(valor){
+        return Monetario.toTela(valor);
+      },
+      formatarQuantidade(valor){
+        return Decimal.toTela(valor);
+      }
     },
     mounted() {
       this.buscarProdutos();

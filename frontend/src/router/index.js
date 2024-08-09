@@ -21,12 +21,12 @@ const router = createRouter({
     },
     {
       path: '/produtos',
-      nome: 'produtos',
+      name: 'produtos',
       component:()=>import('../views/ProdutoView.vue')
     },
     {
       path: '/formas-pagamento',
-      nome: 'formaPagamento',
+      name: 'formaPagamento',
       component:()=>import('../views/FormaPagamentoView.vue')
     }
 

@@ -143,7 +143,7 @@ export default {
 
       
       const response = await axios.get(
-        `http://localhost:8080/formaPagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
       this.listaFormasPagamento = response.data.content;
@@ -162,7 +162,7 @@ export default {
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
-      const response = await axios.delete(`http://localhost:8080/formaPagamento/${id}`);
+      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`);
       console.log(response.data);
       this.buscarFormaPagamento();
     },
