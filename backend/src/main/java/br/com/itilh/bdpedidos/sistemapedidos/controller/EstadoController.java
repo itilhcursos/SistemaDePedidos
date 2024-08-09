@@ -23,10 +23,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-
-
-
-
 @RestController
 public class EstadoController {
 
@@ -62,14 +58,12 @@ public class EstadoController {
         }       
     }
     
-    
     @GetMapping("/estado/{id}")
     public Estado getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
     }    
-
 
     @PostMapping("/estado")
     public Estado criarEstado(@RequestBody Estado entity) throws Exception { 
@@ -87,12 +81,12 @@ public class EstadoController {
     public Estado alterarEstado(@PathVariable BigInteger id, 
                                 @RequestBody Estado novosDados) throws Exception {
 
-        Optional<Estado> estadoAmazenado = repositorio.findById(id);
-        if(estadoAmazenado.isPresent()){
+        Optional<Estado> estadoArmazenado = repositorio.findById(id);
+        if(estadoArmazenado.isPresent()){
             //Atribuir novo nome ao objeto já existem no banco de dados
-            estadoAmazenado.get().setNome(novosDados.getNome());
+            estadoArmazenado.get().setNome(novosDados.getNome());
             //
-            return repositorio.save(estadoAmazenado.get());
+            return repositorio.save(estadoArmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
     }
@@ -100,9 +94,9 @@ public class EstadoController {
     @DeleteMapping("/estado/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
-        Optional<Estado> estadoAmazenado = repositorio.findById(id);
-        if(estadoAmazenado.isPresent()){
-            repositorio.delete(estadoAmazenado.get());
+        Optional<Estado> estadoArmazenado = repositorio.findById(id);
+        if(estadoArmazenado.isPresent()){
+            repositorio.delete(estadoArmazenado.get());
             return "Excluído";
         }
         throw new Exception("Id não econtrado para a exclusão");
