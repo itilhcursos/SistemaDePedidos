@@ -1,133 +1,183 @@
 <template>
-    <div class="container">
-      <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} forma de pagamento</h4>
-      <hr />
-      <form>
-        <div class="mb-3">
-          <label class="form-label"></label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="id"
-            :disabled="true"
-            placeholder="ID Pagamento"
+  <div class="container">
+    <div class="row">
+      <div class="col-10">
+        <h3>FORMAS DE PAGAMENTO</h3>
+      </div>
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
+          <i class="bi bi-clipboard-plus"></i> Novo
+        </button>
+      </div>
+      <div class="row">
+        <div>
+          <FormFormaPagamento
+            v-if="formVisible"
+            :propsFormaPagamento="formaPagamentoEscolhido"
+            @cancelar="limpar"
+            @salvar_formaPagamento="buscarFormasPagamento"
           />
         </div>
-        <div class="mb-3">
-          <label class="form-label"></label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="descricao"
-            placeholder="Descrição"
-          />
-        </div>
-        <div class="mb-3">
-          <label class="form-label"></label>
-            <select v-model="ativo" class="form-select">
-              <option value="true"></option>
-              <option value="false"></option>
-            </select>
-        </div>
-        <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-          <i class="bi bi-exclamation-triangle-fill"></i>
-          <div class="p-2"></div>
-        </div>
-        <div class="mb-3 d-flex justify-content-end">
-          <button
-            class="btn btn-primary m-2"
-            type="submit"
-            v-on:click.prevent="salvarFormaPagamento"
-          >
-          <i class="bi bi-clipboard2-check"></i>
-            {{ getAcao }}
-          </button>
-          <button
-            class="btn btn-warning m-2"
-            type="submit"
-            v-on:click.prevent="cancelar"
-          >
-          <i class="bi bi-clipboard2-x"></i>
-            Cancelar
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import axios from "axios";
-  export default {
-    props: {
-      propsFormaPagamento: Object,
+
+    <table class="table table-dark table-striped" v-if="!formVisible">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Ativo</th>
+          <th scope="col" class="d-flex justify-content-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
+          <th>
+            {{ formaPagamento.id }}
+          </th>
+          <td>
+            {{ formaPagamento.descricao }}
+          </td>
+          <td>
+            {{ formaPagamento.ativo ? "Sim" : "Não"}}
+          </td>
+          <td class="d-flex justify-content-end">
+            <button
+              class="btn btn-btn btn-primary m-2"
+              @click="alterarFormaPagamento(formaPagamento)"
+            >
+              <i class="bi bi-clipboard-pulse"></i> Alterar
+            </button>
+
+            <button
+              class="btn btn-outline-danger m-2"
+              @click="excluirFormaPagamento(formaPagamento.id)"
+            >
+              <i class="bi bi-clipboard2-minus"></i> Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div v-if="!formVisible">
+    <hr />
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-auto">
+
+          <button
+            v-for="pagina in totalPages"
+            :key="pagina"
+            @click.prevent="irPara(pagina)"
+            class="btn btn-light ms-1"
+          >
+            {{ pagina }}
+          </button>
+
+
+
+        </div>
+        <div class="col-auto">
+          <input
+            type="text"
+            v-model="pageNumber"
+            placeholder="Número da pagina"
+            class="form-control w-25"
+          />
+        </div>
+        <div class="col-auto">
+          <select v-model="pageSize" class="form-select">
+            <option value="2">2</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <select v-model="property" class="form-select">
+            <option value="id">ID</option>
+            <option value="descricao">Descrição</option>
+            <option value="ativo">Ativo</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <select v-model="direction" class="form-select">
+            <option value="ASC">Crescente</option>
+            <option value="DESC">Decrescente</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <button @click.prevent="buscarFormasPagamento" class="btn btn-success">
+            <i class="bi bi-binoculars"></i>
+            Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
+<script>
+import FormFormaPagamento from "./FormFormaPagamento.vue";
+import axios from "axios";
+export default {
+  components: {
+    FormFormaPagamento,
+  },
+  data() {
+    return {
+      listaFormasPagamento: [],
+      formaPagamentoEscolhido: null,
+      formVisible: false,
+      mode: import.meta.env.MODE,
+      url: import.meta.env.VITE_APP_URL_API,
+      pageNumber: 1,
+      pageSize: 10,
+      direction: "ASC",
+      property: "id",
+      totalPages: 0,
+    };
+  },
+  methods: {
+    async buscarFormasPagamento() {
+      this.formaPagamentoEscolhido = null;
+      this.formVisible = false;
+      //buscar a lista de formas de pagamento no servidor
+      // http://localhost:8080/formas-pagamento
+      const response = await axios.get(
+       `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+      );
+      console.log(response.data);
+      this.listaFormasPagamento = response.data.content;
+      this.totalPages = response.data.totalPages;
+      console.log(this.totalPages);
     },
-    data() {
-      return {
-        id: "",
-        descricao: "",
-        ativo: "",
-        isInvalido: false,
-      };
+    limpar() {
+      this.formaPagamentoEscolhido = null;
+      this.formVisible = !this.formVisible;
     },
-    methods: {
-      async salvarFormaPagamento() {
-        if (this.descricao === "") {
-          this.isInvalido = true;
-          return;
-        }
-        this.isInvalido = false;
-  
-        if (this.id === "") {
-          //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/formaPagamento", {
-            id: this.id,
-            descricao: this.descricao,
-            ativo: this.ativo
-          });
-          this.listaFormasPagamento = response.data;
-        } else {
-          // alterar pelo PUT da API
-          const response = await axios.put(
-            `http://localhost:8080/formaPagamento/${this.id}`,
-            {
-              id: this.id,
-              nome: this.descricao,
-              ativo: this.ativo,
-            }
-          );
-          this.listaFormasPagamento = response.data;
-        }
-  
-        this.$emit("salvar_formaPagamento", {
-          id: this.id,
-          descricao: this.descricao,
-          ativo: this.ativo
-        });
-  
-        this.id = "";
-        this.descricao = "";
-        this.ativo = "";
-      },
-      cancelar() {
-        this.id = "";
-        this.descricao = "";
-        this.ativo = "";
-        this.$emit("cancelar", true);
-      },
+    novaFormaPagamento() {
+      this.formVisible = !this.formVisible;
     },
-    mounted() {
-      if (this.propsFormaPagamento) {
-        this.id = this.propsFormaPagamento.id;
-        this.descricao = this.propsFormaPagamento.descricao;
-        this.ativo = this.propsFormaPagamento.ativo;
-      }
+    alterarFormaPagamento(formaPagamento) {
+      this.formaPagamentoEscolhido = formaPagamento;
+      this.formVisible = true;
     },
-    computed: {
-      getAcao() {
-        return this.id === "" ? "Incluir" : "Alterar";
-      },
+    async excluirFormaPagamento(id) {
+      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`);
+      console.log(response.data);
+      this.buscarFormasPagamento();
     },
-  };
-  </script>
-  
-  
+    irPara(pagina) {
+      this.pageNumber = pagina;
+      this.buscarFormasPagamento();
+    },
+  },
+  mounted() {
+    this.buscarFormasPagamento();
+  },
+};
+</script>
