@@ -40,7 +40,7 @@ public class ProdutoController {
         return  (Page<Produto>) repositorio.findAll(pageable);
     }
 
-    @GetMapping("/produtos/nome/{nome}")
+    @GetMapping("/produtos/descricao/{descricao}")
     public List<Produto> getProdutoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
