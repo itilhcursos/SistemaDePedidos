@@ -27,14 +27,19 @@ public class ValidadorTest {
                 () -> assertEquals(false, Validador.isCpf("000.000.000-00")),
                 () -> assertEquals(false, Validador.isCpf("111.111.111-11")),
                 () -> assertEquals(false, Validador.isCpf("222.222.222-22")),
-                () -> assertEquals(false, Validador.isCpf("333.333.333-33")), // ....
+                () -> assertEquals(false, Validador.isCpf("333.333.333-33")),
+                () -> assertEquals(false, Validador.isCpf("444.444.444-44")),
+                () -> assertEquals(false, Validador.isCpf("555.555.555-55")),
+                () -> assertEquals(false, Validador.isCpf("666.666.666-66")),
+                () -> assertEquals(false, Validador.isCpf("777.777.777-77")),
+                () -> assertEquals(false, Validador.isCpf("888.888.888-88")),
                 () -> assertEquals(false, Validador.isCpf("999.999.999-99")));
     }
 
     @Test
     @DisplayName("teste de letras no lugar de numero")
     void testIsCpfNaoNumerico() {
-        assertThrows(NumberFormatException.class, () -> Validador.isCpf("isglsaglxaucksa"));
+        assertThrows(NumberFormatException.class, () -> Validador.isCpf("dhsvdfbvifbid"));
     }
 
     @Test
@@ -52,7 +57,7 @@ public class ValidadorTest {
     ////// ================================== CNPJ
     ////// ====================================
     @Test
-    @DisplayName(" TESTE para CNPJ Valido")
+    @DisplayName("Teste CNPJ Valido")
     void testIsCnpjIsValido() {
         assertEquals(true, Validador.isCnpj("12.541.379/0001-26"));
     }
@@ -70,7 +75,12 @@ public class ValidadorTest {
                 () -> assertEquals(false, Validador.isCnpj("00.000.000/0000-00")),
                 () -> assertEquals(false, Validador.isCnpj("11.111.111/1111-11")),
                 () -> assertEquals(false, Validador.isCnpj("22.222.222/2222-22")),
-                () -> assertEquals(false, Validador.isCnpj("33.333.333/3333-33")), // ....
+                () -> assertEquals(false, Validador.isCnpj("33.333.333/3333-33")),
+                () -> assertEquals(false, Validador.isCnpj("44.444.444/4444-44")),
+                () -> assertEquals(false, Validador.isCnpj("55.555.555/5555-55")),
+                () -> assertEquals(false, Validador.isCnpj("66.666.666/6666-66")),
+                () -> assertEquals(false, Validador.isCnpj("77.777.777/7777-77")),
+                () -> assertEquals(false, Validador.isCnpj("88.888.888/8888-88")),
                 () -> assertEquals(false, Validador.isCnpj("99.999.999/9999-99")));
     }
 
