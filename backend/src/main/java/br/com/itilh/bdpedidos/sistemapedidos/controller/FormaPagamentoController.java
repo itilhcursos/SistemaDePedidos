@@ -30,9 +30,8 @@ public class FormaPagamentoController {
     public FormaPagamentoController(FormaPagamentoRepository repositorio){
         this.repositorio = repositorio;
     }
-    // não use maiusculas no path
-    // use "-"  exemplo "forma-pagamento"
-    @GetMapping("/formaPagamento")
+
+    @GetMapping("/forma-pagamento")
     public Page<FormaPagamento> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -44,9 +43,7 @@ public class FormaPagamentoController {
         return  (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
 
-        // não use maiusculas no path
-    // use "-"  exemplo "forma-pagamento"
-    @GetMapping("/formaPagamento/descricao/{descricao}")
+    @GetMapping("/forma-pagamento/descricao/{descricao}")
     public List<FormaPagamento> getFormaPagamentoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
@@ -60,18 +57,14 @@ public class FormaPagamentoController {
         }       
     }
 
-        // não use maiusculas no path
-    // use "-"  exemplo "forma-pagamento"
-    @GetMapping("/formaPagamento/{id}")
+    @GetMapping("/forma-pagamento/{id}")
     public FormaPagamento getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
     }  
 
-        // não use maiusculas no path
-    // use "-"  exemplo "forma-pagamento"
-    @PostMapping("/formaPagamento")
+    @PostMapping("/form-pagamento")
     public FormaPagamento criarFormaPagamento(@RequestBody FormaPagamento entity) throws Exception { 
         try{               
             if(entity.getId() != null){
@@ -82,10 +75,8 @@ public class FormaPagamentoController {
             throw new Exception("Erro ao salvar o estado.");
         }
     }
-    
-        // não use maiusculas no path
-    // use "-"  exemplo "forma-pagamento"
-    @PutMapping("/formaPagamento/{id}")
+   
+    @PutMapping("/form-pagamento/{id}")
     public FormaPagamento alterarFormaPagamento(@PathVariable BigInteger id, 
                                 @RequestBody FormaPagamento novosDados) throws Exception {
 
@@ -99,10 +90,8 @@ public class FormaPagamentoController {
         }        
         throw new Exception("Alteração não foi realizada.");
     }
-    // não use maiusculas no path
-    // use "-"  exemplo "forma-pagamento"
     
-    @DeleteMapping("/formaPagamento/{id}")
+    @DeleteMapping("/form-pagamento/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
         Optional<FormaPagamento> formaPagamentoArmazenada = repositorio.findById(id);
