@@ -73,15 +73,6 @@ public class MunicipioService {
     private MunicipioDTO toDTO(Municipio municipio){
 
         MunicipioDTO dto = mapper.map(municipio, MunicipioDTO.class);
-
-        // MunicipioDTO dto = new MunicipioDTO();
-        // dto.setId(municipio.getId());
-        // dto.setNome(municipio.getNome());
-        // dto.setEntrega(municipio.getEntrega());
-        // dto.setEstadoId(municipio.getEstado().getId());
-        // dto.setEstadoNome(municipio.getEstado().getNome().toString());
-
-
         return dto;
     }
     
@@ -93,7 +84,17 @@ public class MunicipioService {
 
     private Page<MunicipioDTO> toPageDTO(Page<Municipio> municipios){
         // Dever de Casa Estudar o ".stream" em java!!!!!!
-        List<MunicipioDTO> dtos = municipios.stream().map(this::toDTO).collect(Collectors.toList());
+
+
+         List<MunicipioDTO> dtos = municipios.stream().map(this::toDTO).collect(Collectors.toList());
+
+
+        // List<MunicipioDTO> dtos = new ArrayList<MunicipioDTO>();
+        // for (Municipio municipio : municipios.getContent()) {
+        //     dtos.add(toDTO(municipio));
+        // }
+
+
         return new PageImpl<>(dtos,municipios.getPageable(), municipios.getTotalElements());
     }
 }
