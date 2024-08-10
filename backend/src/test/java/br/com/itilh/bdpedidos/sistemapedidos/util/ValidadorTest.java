@@ -16,90 +16,80 @@ public class ValidadorTest {
 
     @Test
     @DisplayName("Teste CPF Inválido")
-    void testIsCpfIsInValido(){
+    void testIsCpfIsInValido() {
         assertEquals(false, Validador.isCpf("151.555.212-20"));
     }
 
     @Test
     @DisplayName("teste para todos os digitos iguais")
-    void testIsCpfDigitosIguais(){
+    void testIsCpfDigitosIguais() {
         assertAll("CPFs",
-             ()->  assertEquals(false, Validador.isCpf("000.000.000-00")),
-             ()->  assertEquals(false, Validador.isCpf("111.111.111-11")),
-             ()->  assertEquals(false, Validador.isCpf("222.222.222-22")),
-             ()->  assertEquals(false, Validador.isCpf("333.333.333-33")), //....
-             ()->  assertEquals(false, Validador.isCpf("999.999.999-99"))
-            );
+                () -> assertEquals(false, Validador.isCpf("000.000.000-00")),
+                () -> assertEquals(false, Validador.isCpf("111.111.111-11")),
+                () -> assertEquals(false, Validador.isCpf("222.222.222-22")),
+                () -> assertEquals(false, Validador.isCpf("333.333.333-33")), // ....
+                () -> assertEquals(false, Validador.isCpf("999.999.999-99")));
     }
 
     @Test
     @DisplayName("teste de letras no lugar de numero")
-    void testIsCpfNaoNumerico(){
-        assertThrows(NumberFormatException.class, ()->Validador.isCpf("isglsaglxaucksa"));
+    void testIsCpfNaoNumerico() {
+        assertThrows(NumberFormatException.class, () -> Validador.isCpf("isglsaglxaucksa"));
     }
 
-    
     @Test
     @DisplayName("teste de cpf com menos de 11 digitos")
-    void testIsCpfMenosDigitos(){
+    void testIsCpfMenosDigitos() {
         assertEquals(false, Validador.isCpf("151.001"));
     }
 
-
     @Test
     @DisplayName("teste de cpf com Mais de 11 digitos")
-    void testIsCpfMaisDigitos(){
+    void testIsCpfMaisDigitos() {
         assertEquals(false, Validador.isCpf("151.001.515.545-545-545"));
     }
 
-   //////   ================================== CNPJ ====================================
+    ////// ================================== CNPJ
+    ////// ====================================
     @Test
     @DisplayName(" TESTE para CNPJ Valido")
-    void testIsCnpjIsValido(){
-        assertEquals(true, Validador.isCnpj("12.345.678/0001-00"));
+    void testIsCnpjIsValido() {
+        assertEquals(true, Validador.isCnpj("12.541.379/0001-26"));
     }
-
 
     @Test
     @DisplayName("Teste CPF Inválido")
-    void testIsCnpjIsInValido(){
+    void testIsCnpjIsInValido() {
         assertEquals(false, Validador.isCnpj("11.555.212/0001-20"));
     }
 
     @Test
     @DisplayName("teste para todos os digitos iguais")
-    void testIsCnpjfDigitosIguais(){
+    void testIsCnpjfDigitosIguais() {
         assertAll("CNPJs",
-             ()->  assertEquals(false, Validador.isCnpj("00.000.000/0000-00")),
-             ()->  assertEquals(false, Validador.isCnpj("11.111.111/1111-11")),
-             ()->  assertEquals(false, Validador.isCnpj("22.222.222/2222-22")),
-             ()->  assertEquals(false, Validador.isCnpj("33.333.333/3333-33")), //....
-             ()->  assertEquals(false, Validador.isCnpj("99.999.999/9999-99"))
-            );
+                () -> assertEquals(false, Validador.isCnpj("00.000.000/0000-00")),
+                () -> assertEquals(false, Validador.isCnpj("11.111.111/1111-11")),
+                () -> assertEquals(false, Validador.isCnpj("22.222.222/2222-22")),
+                () -> assertEquals(false, Validador.isCnpj("33.333.333/3333-33")), // ....
+                () -> assertEquals(false, Validador.isCnpj("99.999.999/9999-99")));
     }
 
     @Test
     @DisplayName("teste de letras no lugar de numero")
-    void testIsCnpjNaoNumerico(){
-        assertThrows(NumberFormatException.class, ()->Validador.isCnpj("isglsaglxaucksa"));
+    void testIsCnpjNaoNumerico() {
+        assertThrows(NumberFormatException.class, () -> Validador.isCnpj("isglsaglxaucksa"));
     }
 
     @Test
     @DisplayName("teste de cpf com menos de 14 digitos")
-    void testIsCnpjMenosDigitos(){
-        assertEquals(false, Validador.isCpf("151.001"));
+    void testIsCnpjMenosDigitos() {
+        assertEquals(false, Validador.isCnpj("151.001"));
     }
-
 
     @Test
     @DisplayName("teste de cnpj com Mais de 15 digitos")
-    void testIsCnpjMaisDigitos(){
-        assertEquals(false, Validador.isCpf("151.001.515./0001-545-545"));
+    void testIsCnpjMaisDigitos() {
+        assertEquals(false, Validador.isCnpj("121.001.515./0001-545"));
     }
 
-
-
-
-
-    
 }
