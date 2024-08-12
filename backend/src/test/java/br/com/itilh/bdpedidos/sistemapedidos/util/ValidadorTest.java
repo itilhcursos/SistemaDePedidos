@@ -55,12 +55,12 @@ public class ValidadorTest {
     @Test
     @DisplayName(" TESTE para CNPJ Valido")
     void testIsCnpjIsValido(){
-        assertEquals(true, Validador.isCnpj("12.345.678/0001-00"));
+        assertEquals(true, Validador.isCnpj("84.401.848/0001-12"));
     }
 
 
     @Test
-    @DisplayName("Teste CPF Inválido")
+    @DisplayName("Teste CNPJ Inválido")
     void testIsCnpjIsInValido(){
         assertEquals(false, Validador.isCnpj("11.555.212/0001-20"));
     }
@@ -93,12 +93,6 @@ public class ValidadorTest {
     @Test
     @DisplayName("teste de cnpj com Mais de 15 digitos")
     void testIsCnpjMaisDigitos(){
-        assertEquals(false, Validador.isCpf("151.001.515./0001-545-545"));
-    }
-
-
-
-
-
-    
+        assertEquals(false, Validador.isCpf("151.001.5150001545-545"));
+    }    
 }
