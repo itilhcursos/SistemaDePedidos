@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.BadArgumentsException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.MunicipioService;
 
@@ -75,6 +76,8 @@ public class MunicipioController {
 
     @PostMapping("/municipio")
     public MunicipioDTO postMunicipio(@RequestBody MunicipioDTO origem) throws Exception {    
+        if(origem.getNome() == null)
+            throw new BadArgumentsException("Dados inválidos");
         return service.criarMunicipio(origem);
     }
 
