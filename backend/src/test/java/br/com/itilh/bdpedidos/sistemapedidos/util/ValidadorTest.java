@@ -99,7 +99,7 @@ public class ValidadorTest {
     @Test
     @DisplayName("teste de cnpj com Mais de 15 digitos")
     void testIsCnpjMaisDigitos() {
-        assertEquals(false, Validador.isCnpj("121.001.515./0001-545"));
+        assertEquals(false, Validador.isCnpj("121.001.515/0001-545"));
     }
 
 }
