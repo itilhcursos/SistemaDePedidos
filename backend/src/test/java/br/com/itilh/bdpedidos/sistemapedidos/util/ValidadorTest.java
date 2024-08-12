@@ -35,9 +35,8 @@ public class ValidadorTest {
     @Test
     @DisplayName("teste de letras no lugar de numero")
     void testIsCpfNaoNumerico(){
-        assertThrows(NumberFormatException.class, ()->Validador.isCpf("isglsaglxaucksa"));
+        assertThrows(NumberFormatException.class, ()->Validador.isCpf("qtetqrert"));
     }
-
     
     @Test
     @DisplayName("teste de cpf com menos de 11 digitos")

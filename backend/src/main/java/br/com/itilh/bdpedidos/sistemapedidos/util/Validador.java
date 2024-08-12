@@ -6,7 +6,7 @@ public class Validador {
         cpf = cpf.replace(".", "");
         cpf = cpf.replace("-", "");
 
-        Long.parseLong(cpf);
+      Long.parseLong(cpf);
 
         if("00000000000".equals(cpf) || "11111111111".equals(cpf)
         || "22222222222".equals(cpf) || "33333333333".equals(cpf)
@@ -70,6 +70,7 @@ public class Validador {
       
     public static boolean isCnpj(String cnpj){
         return true;
+        // desafio é implementar um validaÇão que passa nos teste
     }
 
 }
