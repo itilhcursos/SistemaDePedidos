@@ -2,6 +2,7 @@ package br.com.itilh.bdpedidos.sistemapedidos.util;
 
 import java.util.InputMismatchException;
 
+//https://gist.github.com/clairtonluz/0e82a03e8b6c148608f1
 public class Validador {
 
   public static boolean isCpf(String cpf) {
