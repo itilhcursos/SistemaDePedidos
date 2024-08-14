@@ -28,7 +28,7 @@ public class FormaPagamentoController {
         this.repositorio = repositorio;
     }
 
-    @GetMapping("/formaPagamentos")
+    @GetMapping("/formas-pagamento")
     public Page<FormaPagamento> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -40,7 +40,7 @@ public class FormaPagamentoController {
         return  (Page<FormaPagamento>) repositorio.findAll(pageable);
     }
 
-    @GetMapping("/formaPagamentos/descricao/{descricao}")
+    @GetMapping("/formas-pagamento/descricao/{descricao}")
     public List<FormaPagamento> getFormaPagamentoPorDescricao(@PathVariable String descricao,
     @RequestParam(required = true) ModoBusca modoBusca) {
         if(modoBusca.equals(ModoBusca.EXATO)){
@@ -55,7 +55,7 @@ public class FormaPagamentoController {
     }
     
     
-    @GetMapping("/formaPagamento/{id}")
+    @GetMapping("/forma-pagamento/{id}")
     public FormaPagamento getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
@@ -63,7 +63,7 @@ public class FormaPagamentoController {
     }    
 
 
-    @PostMapping("/formaPagamento")
+    @PostMapping("/forma-pagamento")
     public FormaPagamento criarFormaPagamento(@RequestBody FormaPagamento entity) throws Exception { 
         try{               
             if(entity.getId() != null){
@@ -75,7 +75,7 @@ public class FormaPagamentoController {
         }
     }
 
-    @PutMapping("/formaPagamento/{id}")
+    @PutMapping("/forma-pagamento/{id}")
     public FormaPagamento alterarFormaPagamento(@PathVariable BigInteger id, 
                                 @RequestBody FormaPagamento novosDados) throws Exception {
 
@@ -83,13 +83,13 @@ public class FormaPagamentoController {
         if(formaPagamentoAmazenado.isPresent()){
             //Atribuir novo nome ao objeto já existem no banco de dados
             formaPagamentoAmazenado.get().setDescricao(novosDados.getDescricao());
-            //
+        
             return repositorio.save(formaPagamentoAmazenado.get());
         }        
         throw new Exception("Alteração não foi realizada.");
     }
 
-    @DeleteMapping("/formaPagamento/{id}")
+    @DeleteMapping("/forma-pagamento/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
 
         Optional<FormaPagamento> formaPagamentoAmazenado = repositorio.findById(id);

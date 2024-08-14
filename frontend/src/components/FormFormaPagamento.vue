@@ -80,7 +80,7 @@ export default {
 
       if (this.id === "") {
         //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/formas-pagamento", {
+        const response = await axios.post("http://localhost:8080/forma-pagamento", {
           id: this.id,
           descricao: this.descricao,
           ativo: this.ativo
@@ -89,7 +89,7 @@ export default {
       } else {
         // alterar pelo PUT da API
         const response = await axios.put(
-          `http://localhost:8080/formas-pagamento/${this.id}`,
+          `http://localhost:8080/forma-pagamento/${this.id}`,
           {
             id: this.id,
             descricao: this.descricao,

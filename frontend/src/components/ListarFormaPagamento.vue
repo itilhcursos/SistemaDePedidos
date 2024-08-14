@@ -140,7 +140,7 @@ export default {
       this.formVisible = false;
       // http://localhost:8080/formas-pagamento
       const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
       this.listaFormaPagamentos = response.data.content;
@@ -159,7 +159,7 @@ export default {
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
-      const response = await axios.delete(`http://localhost:8080/formaPagamento/${id}`);
+      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`);
       console.log(response.data);
       this.buscarFormaPagamentos();
     },
