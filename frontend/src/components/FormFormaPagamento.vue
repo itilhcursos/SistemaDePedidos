@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Formas de Pagamento</h4>
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} forma de pagamento</h4>
     <hr />
     <form>
       <div class="mb-3">
@@ -10,7 +10,7 @@
           type="text"
           v-model="id"
           :disabled="true"
-          placeholder="Id forma-pagamento"
+          placeholder="ID Pagamento"
         />
       </div>
       <div class="mb-3">
@@ -19,19 +19,19 @@
           class="form-control"
           type="text"
           v-model="descricao"
-          placeholder="Descricao"
+          placeholder="Descrição"
         />
       </div>
       <div class="mb-3">
-        <label class="form-label">Situação</label>
-    <select class="form-control" type="text" v-model="situacao">
-      <option value="Ativo">Ativo</option>
-      <option value="Inativo">Inativo</option>
-    </select>
+        <label class="form-label">Ativo</label>
+          <select v-model="ativo" class="form-select">
+            <option :value="true">Sim</option>
+            <option :value="false">Não</option>
+          </select>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
-        <div class="p-2">Descrição deve ser preenchido!!</div>
+        <div class="p-2">Descrição e ativo devem ser preenchidos!</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button
@@ -65,9 +65,8 @@ export default {
     return {
       id: "",
       descricao: "",
-      ativo:"",
+      ativo: "",
       isInvalido: false,
-      
     };
   },
   methods: {
@@ -85,7 +84,7 @@ export default {
           descricao: this.descricao,
           ativo: this.ativo
         });
-        this.listaFormaPagamentos = response.data;
+        this.listaFormasPagamento = response.data;
       } else {
         // alterar pelo PUT da API
         const response = await axios.put(
@@ -96,13 +95,13 @@ export default {
             ativo: this.ativo
           }
         );
-        this.listaFormaPagamento = response.data;
+        this.listaFormasPagamento = response.data;
       }
 
-      this.$emit("salvar_formas-pagamento", {
+      this.$emit("salvar_formaPagamento", {
         id: this.id,
         descricao: this.descricao,
-        ativo: this.ativo,
+        ativo: this.ativo
       });
 
       this.id = "";

@@ -1,12 +1,16 @@
-const toSimNao =(valor) =>{
-    return valor? "Sim":"Não";
-}
 
-const toAtivoInativo =(valor) =>{
-    return valor? "Ativo":"Inativo";
-}
+const toBD = (valor) => {
+   let texto = valor.toString();
+   return texto.replace(".","").replace(",",".").replace("R$","");
+};
+
+const toTela = (valor) => {
+    let texto = String(valor.toFixed(2));
+    texto = texto.replace(",","").replace(".",",").replace("R$","");
+    return  texto;
+};
 
 export default{
-    toSimNao,
-    toAtivoInativo
+    toBD,
+    toTela
 }

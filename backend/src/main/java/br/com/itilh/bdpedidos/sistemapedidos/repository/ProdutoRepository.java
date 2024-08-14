@@ -13,21 +13,16 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
-    @Query("FROM Produto e WHERE e.Descricao like %?1")
+
     List<Produto> findByDescricao(String descricao);
-    
-    @Query("FROM Produto e WHERE e.Descricao like %?1")   
     List<Produto> findByDescricaoStartingWithIgnoreCase(String descricao);
-    
-    @Query("FROM Produto e WHERE e.Descricao like %?1")
     List<Produto> findByDescricaoEndingWithIgnoreCase(String descricao);
-    
-    @Query("FROM Produto e WHERE e.Descricao like %?1")
     List<Produto> findByDescricaoContainingIgnoreCase(String descricao);
 
-    @Query("FROM Produto e WHERE e.Descricao like %?1")
+    @Query("FROM FormaPagamento e WHERE e.descricao like %?1")
     List<Produto> findByMinhaQuery(String descricao);
-    
+
     @Override
     Page<Produto> findAll(Pageable pageable);
+
 }

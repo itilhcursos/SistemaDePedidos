@@ -5,7 +5,7 @@
         <h3>FORMAS DE PAGAMENTO</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoFormaPagamento" class="btn btn-success">
+        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
@@ -13,9 +13,9 @@
         <div>
           <FormFormaPagamento
             v-if="formVisible"
-            :propsFormaPagamento="formaPagamentoEscolhido"
+            :propsFormaPagamento="formaPagamentoEscolhida"
             @cancelar="limpar"
-            @salvar_formaPagamento="buscarFormaPagamentos"
+            @salvar_formaPagamento="buscarFormaPagamento"
           />
         </div>
       </div>
@@ -26,16 +26,20 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
+          <th scope="col">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="formaPagamento in listaFormaPagamentos" :key="formaPagamento.id" scope="row">
+        <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
           <th>
             {{ formaPagamento.id }}
           </th>
           <td>
-            {{ formaPagamento.desricao }}
+            {{ formaPagamento.descricao }}
+          </td>
+          <td>
+            {{ formaPagamento.ativo }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -92,7 +96,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="descricao">Descrição</option>
           </select>
         </div>
         <div class="col-auto">
@@ -102,7 +106,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarFormaPagamentos" class="btn btn-success">
+          <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -122,11 +126,9 @@ export default {
   },
   data() {
     return {
-      listaFormaPagamentos: [],
-      formaPagamentoEscolhido: null,
+      listaFormasPagamento: [],
+      formaPagamentoEscolhida: null,
       formVisible: false,
-      mode: import.meta.env.MODE,
-      url: import.meta.env.VITE_APP_URL_API,
       pageNumber: 1,
       pageSize: 10,
       direction: "ASC",
@@ -136,40 +138,41 @@ export default {
   },
   methods: {
     async buscarFormaPagamento() {
-      this.formaPagamentoEscolhido = null;
+      this.formaPagamentoEscolhida = null;
       this.formVisible = false;
-      // http://localhost:8080/formas-pagamento
+
+      
       const response = await axios.get(
         `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
-      this.listaFormaPagamentos = response.data.content;
+      this.listaFormasPagamento = response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
     },
     limpar() {
-      this.formaPagamentoEscolhido = null;
+      this.formaPagamentoEscolhida = null;
       this.formVisible = !this.formVisible;
     },
-    novoFormaPagamento() {
+    novaFormaPagamento() {
       this.formVisible = !this.formVisible;
     },
     alterarFormaPagamento(formaPagamento) {
-      this.formaPagamentoEscolhido = formaPagamento;
+      this.formaPagamentoEscolhida = formaPagamento;
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
       const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`);
       console.log(response.data);
-      this.buscarFormaPagamentos();
+      this.buscarFormaPagamento();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarFormaPagamentos();
+      this.buscarFormaPagamento();
     },
   },
   mounted() {
-    this.buscarFormaPagamentos();
+    this.buscarFormaPagamento();
   },
 };
 </script>
