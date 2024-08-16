@@ -1,6 +1,10 @@
 <template>
   <div class="container">
+<<<<<<< HEAD
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Forma de Pagamento</h4>
+=======
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} forma de pagamento</h4>
+>>>>>>> develop
     <hr />
     <form>
       <div class="mb-3">
@@ -10,7 +14,11 @@
           type="text"
           v-model="id"
           :disabled="true"
+<<<<<<< HEAD
           placeholder="Id forma-de-pagamento"
+=======
+          placeholder="ID Pagamento"
+>>>>>>> develop
         />
       </div>
       <div class="mb-3">
@@ -25,13 +33,22 @@
       <div class="mb-3">
         <label class="form-label">Ativo</label>
           <select v-model="ativo" class="form-select">
+<<<<<<< HEAD
             <option :value="true">true</option>
             <option :value="false">false</option>
+=======
+            <option :value="true">Sim</option>
+            <option :value="false">Não</option>
+>>>>>>> develop
           </select>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
+<<<<<<< HEAD
         <div class="p-2">Os campos acima devem ser preenchidos!!</div>
+=======
+        <div class="p-2">Descrição e ativo devem ser preenchidos!</div>
+>>>>>>> develop
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button
@@ -54,7 +71,11 @@
     </form>
   </div>
 </template>
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> develop
 <script>
 import axios from "axios";
 export default {
@@ -76,13 +97,21 @@ export default {
         return;
       }
       this.isInvalido = false;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> develop
       if (this.id === "") {
         //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/forma-pagamento", {
           id: this.id,
           descricao: this.descricao,
+<<<<<<< HEAD
           ativo: this.ativo,
+=======
+          ativo: this.ativo
+>>>>>>> develop
         });
         this.listaFormasPagamento = response.data;
       } else {
@@ -92,11 +121,16 @@ export default {
           {
             id: this.id,
             descricao: this.descricao,
+<<<<<<< HEAD
             ativo: this.ativo,
+=======
+            ativo: this.ativo
+>>>>>>> develop
           }
         );
         this.listaFormasPagamento = response.data;
       }
+<<<<<<< HEAD
   
       this.$emit("salvar_formaPagamento", {
         id: this.id,
@@ -104,6 +138,15 @@ export default {
         ativo: this.ativo,
       });
   
+=======
+
+      this.$emit("salvar_formaPagamento", {
+        id: this.id,
+        descricao: this.descricao,
+        ativo: this.ativo
+      });
+
+>>>>>>> develop
       this.id = "";
       this.descricao = "";
       this.ativo = "";
@@ -129,5 +172,9 @@ export default {
   },
 };
 </script>
+<<<<<<< HEAD
   
   
+=======
+
+>>>>>>> develop

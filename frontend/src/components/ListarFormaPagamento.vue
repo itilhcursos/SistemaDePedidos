@@ -5,7 +5,11 @@
         <h3>FORMAS DE PAGAMENTO</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
+<<<<<<< HEAD
         <button v-if="!formVisible" @click="novoFormaPagamento" class="btn btn-success">
+=======
+        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
+>>>>>>> develop
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
@@ -13,11 +17,16 @@
         <div>
           <FormFormaPagamento
             v-if="formVisible"
+<<<<<<< HEAD
             :propsFormaPagamento="formaPagamentoEscolhido"
+=======
+            :propsFormaPagamento="formaPagamentoEscolhida"
+>>>>>>> develop
             @cancelar="limpar"
             @salvar_formaPagamento="buscarFormaPagamento"
           />
         </div>
+<<<<<<< HEAD
        </div>
       </div>
   
@@ -60,12 +69,60 @@
         </tbody>
       </table>
     </div>
+=======
+      </div>
+    </div>
+
+    <table class="table table-dark table-striped" v-if="!formVisible">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Ativo</th>
+          <th scope="col" class="d-flex justify-content-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
+          <th>
+            {{ formaPagamento.id }}
+          </th>
+          <td>
+            {{ formaPagamento.descricao }}
+          </td>
+          <td>
+            {{ formaPagamento.ativo }}
+          </td>
+          <td class="d-flex justify-content-end">
+            <button
+              class="btn btn-btn btn-primary m-2"
+              @click="alterarFormaPagamento(formaPagamento)"
+            >
+              <i class="bi bi-clipboard-pulse"></i> Alterar
+            </button>
+
+            <button
+              class="btn btn-outline-danger m-2"
+              @click="excluirFormaPagamento(formaPagamento.id)"
+            >
+              <i class="bi bi-clipboard2-minus"></i> Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+>>>>>>> develop
   <div v-if="!formVisible">
     <hr />
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> develop
           <button
             v-for="pagina in totalPages"
             :key="pagina"
@@ -74,8 +131,13 @@
           >
             {{ pagina }}
           </button>
+<<<<<<< HEAD
   
   
+=======
+
+
+>>>>>>> develop
         </div>
         <div class="col-auto">
           <input
@@ -96,7 +158,11 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
+<<<<<<< HEAD
             <option value="nome">Descrição</option>
+=======
+            <option value="descricao">Descrição</option>
+>>>>>>> develop
           </select>
         </div>
         <div class="col-auto">
@@ -115,7 +181,12 @@
     </div>
   </div>
 </template>
+<<<<<<< HEAD
   
+=======
+
+
+>>>>>>> develop
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
@@ -126,10 +197,15 @@ export default {
   data() {
     return {
       listaFormasPagamento: [],
+<<<<<<< HEAD
       formaPagamentoEscolhido: null,
       formVisible: false,
       mode: import.meta.env.MODE,
       url: import.meta.env.VITE_APP_URL_API,
+=======
+      formaPagamentoEscolhida: null,
+      formVisible: false,
+>>>>>>> develop
       pageNumber: 1,
       pageSize: 10,
       direction: "ASC",
@@ -139,10 +215,17 @@ export default {
   },
   methods: {
     async buscarFormaPagamento() {
+<<<<<<< HEAD
       this.formaPagamentoEscolhido = null;
       this.formVisible = false;
       //buscar a lista de estados no servidor
       // http://localhost:8080/formas-pagamento
+=======
+      this.formaPagamentoEscolhida = null;
+      this.formVisible = false;
+
+      
+>>>>>>> develop
       const response = await axios.get(
         `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
@@ -152,6 +235,7 @@ export default {
       console.log(this.totalPages);
     },
     limpar() {
+<<<<<<< HEAD
       this.formaPagamentoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
@@ -164,6 +248,20 @@ export default {
     },
     async excluirFormaPagamento(id) {
       const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`);
+=======
+      this.formaPagamentoEscolhida = null;
+      this.formVisible = !this.formVisible;
+    },
+    novaFormaPagamento() {
+      this.formVisible = !this.formVisible;
+    },
+    alterarFormaPagamento(formaPagamento) {
+      this.formaPagamentoEscolhida = formaPagamento;
+      this.formVisible = true;
+    },
+    async excluirFormaPagamento(id) {
+      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`);
+>>>>>>> develop
       console.log(response.data);
       this.buscarFormaPagamento();
     },
@@ -177,4 +275,7 @@ export default {
   },
 };
 </script>
+<<<<<<< HEAD
   
+=======
+>>>>>>> develop

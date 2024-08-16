@@ -16,17 +16,23 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @ToString
+
 @Entity
 @Table(name = "tb_formas_pagamento")
 
 public class FormaPagamento {
     @Id
+<<<<<<< HEAD
     @SequenceGenerator(name = "formas_pagamento_id_seq", sequenceName = "tb_formas_pagamento_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "formas_pagamento_id_seq")
+=======
+    @SequenceGenerator(name = "formaPagamento_id_seq", sequenceName = "tb_formas_pagamento_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "formaPagamento_id_seq")
+>>>>>>> develop
     private BigInteger id;
 
     @Column(name = "tx_descricao")

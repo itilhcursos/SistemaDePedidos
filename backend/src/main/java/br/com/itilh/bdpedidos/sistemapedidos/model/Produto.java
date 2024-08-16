@@ -20,13 +20,19 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+
 @Entity
 @Table(name = "tb_produtos")
 public class Produto {
 
     @Id
+<<<<<<< HEAD
     @SequenceGenerator(name = "produto_id_seq", sequenceName = "tb_produtos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "produto_id_seq")
+=======
+    @SequenceGenerator(name = "sequencial", sequenceName = "tb_produtos_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
+>>>>>>> develop
     private BigInteger id;
 
     @Column(name = "tx_descricao")
