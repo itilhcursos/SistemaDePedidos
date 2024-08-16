@@ -19,12 +19,13 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 @Service
 public class MunicipioService {
 
+// todo:  implementar teste desta service
+
     @Autowired
     private MunicipioRepository repository;
 
     @Autowired
     private ModelMapper mapper;
-
 
     public Page<MunicipioDTO> listarMunicipios(Pageable pageable) {
         return toPageDTO(repository.findAll(pageable));
