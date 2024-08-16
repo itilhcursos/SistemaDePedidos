@@ -56,7 +56,7 @@ public class ValidadorTest {
    @Test
    @DisplayName("Teste CNPJ Valido")
    void testIsCnpjIsValido(){
-       assertEquals(true, Validador.isCnpj("12.345.678/0001-00"));
+       assertEquals(true, Validador.isCnpj("84.401.848/0001-12"));
     }
 
     @Test
