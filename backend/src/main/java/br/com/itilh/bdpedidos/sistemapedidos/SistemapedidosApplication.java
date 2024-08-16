@@ -34,9 +34,4 @@ public class SistemapedidosApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
 }

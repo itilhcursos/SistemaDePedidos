@@ -16,7 +16,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     // Select * from tb_produtos where tx_descricao = 'descricao'//
     List<Produto> findByDescricao(String descricao);
 
-<<<<<<< HEAD
     // Select * from tb_produtos where UPPER(tx_descricao) like UPPER('descricao%')//
     List<Produto> findByDescricaoStartingWithIgnoreCase(String descricao);
 
@@ -32,17 +31,3 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     @Override
     Page<Produto> findAll(Pageable pageable);
 }
-=======
-    List<Produto> findByDescricao(String descricao);
-    List<Produto> findByDescricaoStartingWithIgnoreCase(String descricao);
-    List<Produto> findByDescricaoEndingWithIgnoreCase(String descricao);
-    List<Produto> findByDescricaoContainingIgnoreCase(String descricao);
-
-    @Query("FROM FormaPagamento e WHERE e.descricao like %?1")
-    List<Produto> findByMinhaQuery(String descricao);
-
-    @Override
-    Page<Produto> findAll(Pageable pageable);
-
-}
->>>>>>> develop

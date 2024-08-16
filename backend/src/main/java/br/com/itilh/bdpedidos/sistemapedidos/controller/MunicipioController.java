@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.MunicipioService;
-<<<<<<< HEAD
-=======
-
-
->>>>>>> develop
 
 @RestController
 public class MunicipioController {
@@ -37,13 +32,8 @@ public class MunicipioController {
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
-<<<<<<< HEAD
         @RequestParam(required = false, defaultValue = "id") String property) {
 
-=======
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
->>>>>>> develop
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return service.listarMunicipios(pageable);
     }
@@ -94,12 +84,5 @@ public class MunicipioController {
     @DeleteMapping("/municipio/{id}")
     public String deleteMunicipio(@PathVariable BigInteger id) throws Exception{
         return service.excluirMunicipio(id);
-<<<<<<< HEAD
     } 
 }
-=======
-    }
-    
-    
-}
->>>>>>> develop

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-<<<<<<< HEAD
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
@@ -17,20 +16,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
 public class MunicipioService {
 
-=======
-import org.springframework.stereotype.Service;
-
-import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
-
-@Service
-public class MunicipioService {
-
-// todo:  implementar teste desta service
-
->>>>>>> develop
     @Autowired
     private MunicipioRepository repository;
 
@@ -51,11 +36,7 @@ public class MunicipioService {
 
     public MunicipioDTO buscarMunicipioPorId(BigInteger id) throws Exception {
         return toDTO(repository.findById(id)
-<<<<<<< HEAD
         .orElseThrow(()-> new Exception("Id não encontrado.")));
-=======
-        .orElseThrow(()-> new IdInexistenteException("Município", id)));
->>>>>>> develop
     }
 
     public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
@@ -83,10 +64,6 @@ public class MunicipioService {
         }
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
     // Receber um Objeto Municipio e criar um MunicipioDTO
     private MunicipioDTO toDTO(Municipio municipio){
 
@@ -102,11 +79,6 @@ public class MunicipioService {
 
         return dto;
     }
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> develop
     // Receber um Objeto MuncipioDTO to Municipio
     private Municipio toEntity(MunicipioDTO dto){
         Municipio entity = mapper.map(dto, Municipio.class);
@@ -118,9 +90,5 @@ public class MunicipioService {
         List<MunicipioDTO> dtos = municipios.stream().map(this::toDTO).collect(Collectors.toList());
         return new PageImpl<>(dtos,municipios.getPageable(), municipios.getTotalElements());
     }
-<<<<<<< HEAD
 
 }
-=======
-}
->>>>>>> develop

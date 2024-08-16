@@ -14,7 +14,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 @Repository
 public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, BigInteger> {
 
-<<<<<<< HEAD
     // Select * from tb_formas_pagamento where tx_descricao = 'descricao'//
     List<FormaPagamento> findByDescricao(String descricao);
 
@@ -33,10 +32,3 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
     @Override
     Page<FormaPagamento> findAll(Pageable pageable);
 }
-=======
-    List<FormaPagamento> findByDescricao(String descricao);
-
-    List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao);
-
-}
->>>>>>> develop

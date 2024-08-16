@@ -4,7 +4,6 @@ import java.math.BigInteger;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-<<<<<<< HEAD
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,13 +13,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-=======
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
->>>>>>> develop
 public class MunicipioDTO {
 
     private BigInteger id;
@@ -29,9 +21,4 @@ public class MunicipioDTO {
 
     private BigInteger estadoId;
     private String estadoNome;
-<<<<<<< HEAD
 }
-=======
-
-}
->>>>>>> develop
