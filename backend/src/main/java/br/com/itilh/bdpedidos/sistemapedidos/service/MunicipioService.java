@@ -63,7 +63,7 @@ public class MunicipioService {
     public String excluirMunicipio(BigInteger id) throws Exception{
         try{ 
             repository.deleteById(id);
-             return "Excluído";
+             return "Excluído com sucesso";
         }catch (Exception ex){
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
