@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
@@ -44,11 +45,14 @@ public class MunicipioService {
     }
 
     public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
-        try{ 
+
+            validar(origem);
             return toDTO(repository.save(toEntity(origem)));
-        }catch (Exception ex){
-            throw new Exception("Não foi possível criar o município." + ex.getMessage());
-        }
+    }
+
+    private void validar(MunicipioDTO origem) {
+        if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
+            throw new MunicipioDuplicadoException(origem.getNome());
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
