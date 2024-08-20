@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
@@ -45,19 +46,19 @@ public class MunicipioService {
     }
 
     public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
-        try{ 
-            return toDTO(repository.save(toEntity(origem)));
-        }catch (Exception ex){
-            throw new Exception("Não foi possível criar o município." + ex.getMessage());
-        }
+        validar(origem);
+        return toDTO(repository.save(toEntity(origem)));
+    }
+
+    private void validar(MunicipioDTO origem) {
+        // se já existe municipio com mesmo nome e no mesmo estado
+        if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
+          throw new MunicipioDuplicadoException(origem.getNome());
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
-        try{ 
-            return toDTO(repository.save(toEntity(origem)));
-        }catch (Exception ex){
-            throw new Exception("Não foi possível alterar o município." + ex.getMessage());
-        }
+        validar(origem);
+        return toDTO(repository.save(toEntity(origem)));
     }
 
     public String excluirMunicipio(BigInteger id) throws Exception{
@@ -72,17 +73,7 @@ public class MunicipioService {
 
     // Receber um Objeto Municipio e criar um MunicipioDTO
     private MunicipioDTO toDTO(Municipio municipio){
-
         MunicipioDTO dto = mapper.map(municipio, MunicipioDTO.class);
-
-        // MunicipioDTO dto = new MunicipioDTO();
-        // dto.setId(municipio.getId());
-        // dto.setNome(municipio.getNome());
-        // dto.setEntrega(municipio.getEntrega());
-        // dto.setEstadoId(municipio.getEstado().getId());
-        // dto.setEstadoNome(municipio.getEstado().getNome().toString());
-
-
         return dto;
     }
     
