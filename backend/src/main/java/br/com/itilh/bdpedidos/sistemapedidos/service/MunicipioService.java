@@ -20,7 +20,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 @Service
 public class MunicipioService {
 
-// todo:  implementar teste desta service
 
     @Autowired
     private MunicipioRepository repository;

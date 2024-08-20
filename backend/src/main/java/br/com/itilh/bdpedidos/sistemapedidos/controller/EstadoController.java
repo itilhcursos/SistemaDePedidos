@@ -22,11 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
-
-
-
 @RestController
 public class EstadoController {
 
@@ -61,15 +56,13 @@ public class EstadoController {
             return repositorio.findByNomeContainingIgnoreCase(nome);
         }       
     }
-    
-    
+        
     @GetMapping("/estado/{id}")
     public Estado getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
     }    
-
 
     @PostMapping("/estado")
     public Estado criarEstado(@RequestBody Estado entity) throws Exception { 
