@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
@@ -24,7 +25,6 @@ public class MunicipioService {
 
     @Autowired
     private ModelMapper mapper;
-
 
     public Page<MunicipioDTO> listarMunicipios(Pageable pageable) {
         return toPageDTO(repository.findAll(pageable));
@@ -40,37 +40,36 @@ public class MunicipioService {
 
     public MunicipioDTO buscarMunicipioPorId(BigInteger id) throws Exception {
         return toDTO(repository.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Município", id)));
+                .orElseThrow(() -> new IdInexistenteException("Município", id)));
     }
 
-    public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
-        try{ 
-            return toDTO(repository.save(toEntity(origem)));
-        }catch (Exception ex){
-            throw new Exception("Não foi possível criar o município." + ex.getMessage());
-        }
+    public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {
+        validar(origem);
+        return toDTO(repository.save(toEntity(origem)));
+    }
+
+    private void validar(MunicipioDTO origem) {
+        if (repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
+            throw new MunicipioDuplicadoException(origem.getNome());
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
-        try{ 
-            return toDTO(repository.save(toEntity(origem)));
-        }catch (Exception ex){
-            throw new Exception("Não foi possível alterar o município." + ex.getMessage());
-        }
+        validar(origem);
+        return toDTO(repository.save(toEntity(origem)));
+
     }
 
-    public String excluirMunicipio(BigInteger id) throws Exception{
-        try{ 
+    public String excluirMunicipio(BigInteger id) throws Exception {
+        try {
             repository.deleteById(id);
-             return "Excluído";
-        }catch (Exception ex){
+            return "Excluído";
+        } catch (Exception ex) {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
 
-
     // Receber um Objeto Municipio e criar um MunicipioDTO
-    private MunicipioDTO toDTO(Municipio municipio){
+    private MunicipioDTO toDTO(Municipio municipio) {
 
         MunicipioDTO dto = mapper.map(municipio, MunicipioDTO.class);
 
@@ -81,19 +80,18 @@ public class MunicipioService {
         // dto.setEstadoId(municipio.getEstado().getId());
         // dto.setEstadoNome(municipio.getEstado().getNome().toString());
 
-
         return dto;
     }
-    
+
     // Receber um Objeto MuncipioDTO to Municipio
-    private Municipio toEntity(MunicipioDTO dto){
+    private Municipio toEntity(MunicipioDTO dto) {
         Municipio entity = mapper.map(dto, Municipio.class);
         return entity;
     }
 
-    private Page<MunicipioDTO> toPageDTO(Page<Municipio> municipios){
+    private Page<MunicipioDTO> toPageDTO(Page<Municipio> municipios) {
         // Dever de Casa Estudar o ".stream" em java!!!!!!
         List<MunicipioDTO> dtos = municipios.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,municipios.getPageable(), municipios.getTotalElements());
+        return new PageImpl<>(dtos, municipios.getPageable(), municipios.getTotalElements());
     }
 }
