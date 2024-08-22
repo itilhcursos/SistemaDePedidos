@@ -52,16 +52,31 @@ public class MunicipioServiceTest {
     }
 
     @Test
-    @DisplayName("Teste de regra de negócio - Alteração de no")
-    void testCriarMunicipioDuplicadoAlterar() throws Exception {
+    @DisplayName("Teste de alteração de nome")
+    void testCriarMunicipioAlterar() throws Exception {
         setupEstado();
         MunicipioDTO dtoNomeErrado = new MunicipioDTO(null, "Nome errado", true, BigInteger.ONE, "estado teste");
         MunicipioDTO dtoRetorno = municipioService.criarMunicipio(dtoNomeErrado);
 
         MunicipioDTO dtoNomeCorrigido = new MunicipioDTO(dtoRetorno.getId(), "Nome corrigido", true, BigInteger.ONE, "estado teste");
-
-        assertThrows(MunicipioDuplicadoException.class, () -> municipioService.alterarMunicipio(dtoRetorno.getId(), dtoNomeCorrigido));
+		dtoNomeCorrigido = municipioService.alterarMunicipio(dtoRetorno.getId(), dtoNomeCorrigido);
+        assertEquals(true, dtoNomeCorrigido.getId().equals(dtoRetorno.getId()));
     }
+	
+	@Test
+    @DisplayName("Teste de alteração de nome duplicado")
+    void testCriarMunicipioDuplicadoAlterar() throws Exception {
+        setupEstado();
+        // criar municipio errado
+        MunicipioDTO dtoNomeErrado = new MunicipioDTO(null,"Nome errado",true, BigInteger.ONE, "estado teste");
+        dtoNomeErrado = municipioService.criarMunicipio(dtoNomeErrado);
+        //criar municicipio correto
+        MunicipioDTO dtoCorrigido = new MunicipioDTO(null,"Nome corrigido",true, BigInteger.ONE, "estado teste");
+        dtoCorrigido = municipioService.criarMunicipio(dtoCorrigido);
 
+        // gerar erro ao tentar mudar o nome de um municipio para outro já existente
+        MunicipioDTO dtoNomeCorrigido = new MunicipioDTO(dtoNomeErrado.getId(),"Nome corrigido",true, BigInteger.ONE, "estado teste");
+        assertThrows(MunicipioDuplicadoException.class, ()-> municipioService.alterarMunicipio(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
+    }
 
 }
