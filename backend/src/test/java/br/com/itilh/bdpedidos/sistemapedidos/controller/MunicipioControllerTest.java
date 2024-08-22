@@ -1,5 +1,9 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
+import java.math.BigInteger;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,24 +11,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.math.BigInteger;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;;
 
 @SpringBootTest
 @AutoConfigureMockMvc // só para controller
@@ -56,7 +54,7 @@ public class MunicipioControllerTest {
         mockMvc.perform(get("/municipio")).andExpect(status().isMethodNotAllowed());
     }
 
-    // criação das estidades necessárias parta os teste de existência de municipio
+    // criação das entidades necessárias parta os teste de existência de municipio
     void setUpMunicipio(){
         setupEstado();
         Municipio municipio = new Municipio(
