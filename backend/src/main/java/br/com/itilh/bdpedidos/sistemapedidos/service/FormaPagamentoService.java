@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
@@ -35,11 +36,19 @@ public class FormaPagamentoService {
         .orElseThrow(()-> new IdInexistenteException("Forma de Pagamento", id)));
     }
 
+        // Função de verificar se Forma de Pagamento já existe
+    public void validar(FormaPagamentoDTO origem) {
+        if(repositorio.existsByDescricao(origem.getDescricao()))
+        throw new FormaPagamentoDuplicadoException(origem.getDescricao());
+    }
+
     public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
@@ -51,7 +60,6 @@ public class FormaPagamentoService {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
-
 
     private FormaPagamentoDTO toDTO(FormaPagamento formaPagamento){
         FormaPagamentoDTO dto = mapper.map(formaPagamento, FormaPagamentoDTO.class);

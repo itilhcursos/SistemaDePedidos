@@ -12,7 +12,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, BigInteger> {
 
     List<FormaPagamento> findByDescricao(String descricao);
-
     List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao);
 
+    boolean existsByDescricao(String descricao);
 }
