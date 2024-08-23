@@ -5,12 +5,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigInteger;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -18,30 +26,47 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class FormaPagamentoControllerTest {
 
 
     @Autowired
     MockMvc  mockMvc;
 
-    @Test
+    @Autowired
+    FormaPagamentoRepository formaPagamentoRepository;
     
+    @Test
+    @DisplayName("alterar forma Pagamento")
     void testAlterarFormaPagamento()throws Exception {
-
+        setupFormaPagamento();
+        mockMvc.perform(put("/forma-pagamento/1")
+        .contentType("application/json")
+        .content( "{\r\n" + //
+        "  \"id\": 1, \r\n" + //
+        " \"descricao\": \"Forma Pagamento alterado\",\r\n" + //
+        " \"ativo\": \"true\",\r\n" + //  
+        "}")  
+        ).andExpect(status().isOk())
+        .andExpect(content().string(containsString("Forma Pagamento alterado")));
     }
+    
 
     @Test
     @DisplayName("teste de criar forma-pagamento")
     void testCriarFormaPagamento()throws Exception {
-        mockMvc.perform(post("/produto")
+        setupFormaPagamento();
+        mockMvc.perform(post("/forma-pagamento/1")
         .contentType("application/json")
         .content( "{\r\n" + //
         "  \"id\": 1, \r\n" + //
-        " \"descricao\": \"formas-pagamento teste\",\r\n" + //
+        " \"descricao\": \"Forma Pagamento teste\",\r\n" + //
         " \"ativo\": \"true\",\r\n" + //  
         "}")  
         ).andExpect(status().isOk());
+        
     }
+    
 
     @Test
     void testDeletePorId() {
@@ -68,6 +93,14 @@ public class FormaPagamentoControllerTest {
         .andExpect(content().string(containsString("totalElements")));
     }
 
+
+void setupFormaPagamento(){
+    FormaPagamento formaPagamento = new FormaPagamento(BigInteger.ONE, "Forma Pagamento teste", true);
+    formaPagamentoRepository.save(formaPagamento);
+}
+
+
+
     @Test
     @DisplayName("Teste do path inexistente")
     void TesteGetPathInexistente() throws Exception{
@@ -87,3 +120,4 @@ public class FormaPagamentoControllerTest {
        .andExpect(result -> assertTrue(result.getResolvedException()instanceof IdInexistenteException));
     }
 }
+
