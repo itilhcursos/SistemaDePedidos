@@ -14,6 +14,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,13 +46,13 @@ public class ProdutoControllerTest {
         .contentType("application/json")
         .content("{\r\n" + //
         "  \"id\": 1, \r\n" + //
-        " \"descricao\": \"produto teste\",\r\n" + //
+        " \"descricao\": \"produto teste alterado\",\r\n" + //
         " \"quantidadeEstoque\": \"1\",\r\n" + //
         " \"precoUnidadeAtual\": \"1\",\r\n" + //
         " \"ativo\": \"true\",\r\n" + //  
         "}")
         ).andExpect(status().isOk())
-        .andExpect(content().string(containsString("produto teste")));
+        .andExpect(content().string(containsString("produto teste alterado")));
     }
 
     @Test
@@ -72,19 +73,26 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("teste de delete do produto")
     void testDeleteProduto() throws Exception {
-
+        setupProduto();
+        mockMvc.perform(delete("/produto/1")
+        ).andExpect(status().isOk())
+        .andExpect(content().string(containsString("Excluído")));
     }
+    
 
     @Test
-    void testGetProdutoPorId() {
-
+    void testGetProdutoPorId()throws Exception {
+        setupProduto();
+        mockMvc.perform(get("/produto/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
     }
 
     @Test
     @DisplayName("Teste do path /produtos")
     void testGetTodosProdutos() throws Exception {
+        setupProduto();
         mockMvc.perform(get("/produtos")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("totalElements")));
+        .andExpect(content().string(containsString("produto teste")));
     }
 
 
@@ -98,6 +106,7 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("Teste do path inexistente")
     void TesteGetPathInexistente() throws Exception{
+        setupProduto();
         mockMvc.perform(get("/produto")).andExpect(status().isMethodNotAllowed());
 
     }
@@ -105,20 +114,23 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("Teste do path errado")
     void TesteGetPathErrado() throws Exception{
+        setupProduto();
         mockMvc.perform(get("/produtossss")).andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Teste do id existente")
     void testIdExistente() throws Exception {
+        setupProduto();
         mockMvc.perform(get("/produto/1")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("Shampoo anti-caspa")));
+        .andExpect(content().string(containsString("1")));
     }
 
 
     @Test
     @DisplayName("Teste do id inexistente")
     void TesteGetIdInexistente() throws Exception{
+        setupProduto();
         mockMvc.perform(get("/produto/1811818891")).andExpect(status().isBadRequest())
          .andExpect(result -> assertTrue(result.getResolvedException()instanceof IdInexistenteException));
 

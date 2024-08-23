@@ -14,6 +14,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,28 +70,38 @@ public class FormaPagamentoControllerTest {
     
 
     @Test
-    void testDeletePorId() {
-
+    @DisplayName("teste de delete do forma-pagamrento")
+    void testDeletePorId() throws Exception {
+        setupFormaPagamento();
+        mockMvc.perform(delete("/forma-pagamento/1"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("Excluído")));
     }
+    
 
     @Test
-    void testGetPorId() {
-
+    @DisplayName("Teste do path /formas-pagamento por id")
+    void testGetPorId() throws Exception{
+        setupFormaPagamento();
+        mockMvc.perform(get("/forma-pagamento/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
     }
 
 
     @Test
     @DisplayName("Teste do id existente")
     void testIdExistente() throws Exception {
-        mockMvc.perform(get("/forma-pagamento/3")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("PIX")));
+        setupFormaPagamento();
+        mockMvc.perform(get("/forma-pagamento/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("Forma Pagamento teste")));
 
     }
     @Test
     @DisplayName("Teste do path /formas-pagamento")
     void testGetTodos() throws Exception {
+        setupFormaPagamento();
         mockMvc.perform(get("/formas-pagamento")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("totalElements")));
+        .andExpect(content().string(containsString("Forma Pagamento teste")));
     }
 
 
@@ -104,18 +115,21 @@ void setupFormaPagamento(){
     @Test
     @DisplayName("Teste do path inexistente")
     void TesteGetPathInexistente() throws Exception{
+        setupFormaPagamento();
         mockMvc.perform(get("/forma-pagamento")).andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     @DisplayName("Teste do path errado")
     void TesteGetPathErrado() throws Exception{
+        setupFormaPagamento();
         mockMvc.perform(get("/forma-pagamentopok")).andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Teste do id inexistente")
     void TesteGetIdInexistente() throws Exception{
+        setupFormaPagamento();
         mockMvc.perform(get("/forma-pagamento/1811815481")).andExpect(status().isBadRequest())
        .andExpect(result -> assertTrue(result.getResolvedException()instanceof IdInexistenteException));
     }
