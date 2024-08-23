@@ -79,7 +79,7 @@ public class FormaPagamentoControllerTest {
 
     @Test
     @DisplayName("Teste de post de nova Forma de Pagamento")
-    void TestePostProduto() throws Exception {
+    void TestePostFormaPagamento() throws Exception {
         mockMvc.perform(
                 post("/forma-pagamento")
                         .contentType("application/json")
