@@ -77,7 +77,7 @@ public class MunicipioController {
     public MunicipioDTO postMunicipio(@RequestBody MunicipioDTO origem) throws Exception {    
         return service.criarMunicipio(origem);
     }
-
+    
     @PutMapping("/municipio/{id}")
     public MunicipioDTO putMunicipio(@PathVariable BigInteger id, @RequestBody MunicipioDTO origem) throws Exception {
         return service.alterarMunicipio(id, origem);

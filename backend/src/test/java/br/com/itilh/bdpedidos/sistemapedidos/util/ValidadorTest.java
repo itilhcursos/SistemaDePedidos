@@ -39,7 +39,7 @@ public class ValidadorTest {
     @Test
     @DisplayName("teste de letras no lugar de numero")
     void testIsCpfNaoNumerico() {
-        assertThrows(NumberFormatException.class, () -> Validador.isCpf("dhsvdfbvifbid"));
+        assertThrows(NumberFormatException.class, () -> Validador.isCpf("isglsaglxaucksa"));
     }
 
     @Test
@@ -57,9 +57,9 @@ public class ValidadorTest {
     ////// ================================== CNPJ
     ////// ====================================
     @Test
-    @DisplayName("Teste CNPJ Valido")
+    @DisplayName(" TESTE para CNPJ Valido")
     void testIsCnpjIsValido() {
-        assertEquals(true, Validador.isCnpj("12.541.379/0001-26"));
+        assertEquals(true, Validador.isCnpj("12.345.678/0001-00"));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ValidadorTest {
     @Test
     @DisplayName("teste de cnpj com Mais de 15 digitos")
     void testIsCnpjMaisDigitos() {
-        assertEquals(false, Validador.isCnpj("121.001.515/0001-545"));
+        assertEquals(false, Validador.isCpf("151.001.515./0001-545-545"));
     }
 
 }
