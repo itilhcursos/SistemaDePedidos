@@ -1,8 +1,33 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigInteger;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
+@SpringBootTest
+@ActiveProfiles("test")
 public class FormaPagamentoServiceTest {
+
+ @Autowired
+    FormaPagamentoRepository formaPagamentoRepository;
+
+    @Autowired
+    FormaPagamentoService formaPagamentoService;
+
+
+    void setupFormaPagamento(){
+    FormaPagamento formaPagamento = new FormaPagamento(BigInteger.ONE, "Forma Pagamento teste", true);
+    formaPagamentoRepository.save(formaPagamento);
+}
     @Test
     void testAlterarFormaPagamento() {
 
@@ -14,8 +39,13 @@ public class FormaPagamentoServiceTest {
     }
 
     @Test
-    void testCriarFormaPagamento() {
-
+    @DisplayName( "Criar forma-pagamento")
+    void testCriarFormaPagamento() throws Exception {
+    setupFormaPagamento();
+    FormaPagamentoDTO dto = new FormaPagamentoDTO(null,"forma-pagamento teste",true );
+    FormaPagamentoDTO dtoRetorno =formaPagamentoService.criarFormaPagamento(dto);
+    assertEquals(true,dtoRetorno.getId() != null);
+    
     }
 
     @Test

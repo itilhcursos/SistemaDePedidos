@@ -18,7 +18,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {
-
     @Autowired
     private ProdutoRepository repositorio;
 
