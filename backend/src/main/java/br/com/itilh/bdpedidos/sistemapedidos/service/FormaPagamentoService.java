@@ -46,7 +46,7 @@ public class FormaPagamentoService {
     public String excluirFormaPagamento(BigInteger id) throws Exception{
         try{ 
             repositorio.deleteById(id);
-             return "Excluído";
+             return "Excluido com sucesso";
         }catch (Exception ex){
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }

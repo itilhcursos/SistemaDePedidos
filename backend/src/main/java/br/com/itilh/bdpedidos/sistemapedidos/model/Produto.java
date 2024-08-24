@@ -25,6 +25,10 @@ import lombok.ToString;
 @Table(name = "tb_produtos")
 public class Produto {
 
+    public Produto(BigInteger one, String string, int i, double d, boolean b) {
+        //TODO Auto-generated constructor stub
+    }
+
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_produtos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
