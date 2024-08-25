@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 
-
+ 
 @Repository
 public interface MunicipioRepository extends JpaRepository<Municipio , BigInteger > {
 
