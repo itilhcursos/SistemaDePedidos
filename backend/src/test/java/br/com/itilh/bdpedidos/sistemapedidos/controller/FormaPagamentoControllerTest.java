@@ -16,61 +16,60 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.math.BigInteger;
-import java.math.BigDecimal;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc // só para controller
 @ActiveProfiles("test") // para pegar as properties de teste
 
-public class ProdutoControllerTest {
+public class FormaPagamentoControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    FormaPagamentoRepository formapagamentoRepository;
 
     
     @Test
-    @DisplayName("teste do path /Produtos")
-    void testGetProdutos() throws Exception {
-        mockMvc.perform(get("/produtos")).andExpect(status().isOk())
+    @DisplayName("teste do path /formas-pagamento")
+    void testGetFormasPagamento() throws Exception {
+        mockMvc.perform(get("/formas-pagamento")).andExpect(status().isOk())
         .andExpect(content().string(containsString("totalElements")));
 
     }
 
 
+
     @Test
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
-        mockMvc.perform(get("/produto")).andExpect(status().isMethodNotAllowed());
+        mockMvc.perform(get("/forma-pagamento")).andExpect(status().isMethodNotAllowed());
     }
 
 
+
     // criação das entidades necessárias parta os teste de existência de produto
-    void setupProduto() {
-        Produto produto = new Produto(
+    void setupFormaPagamento() {
+        FormaPagamento formaPagamento = new FormaPagamento(
                 BigInteger.ONE,
-                "Produto teste",
-                10.00,
-                BigDecimal.valueOf(2.90),
-                true);
-        produtoRepository.save(produto);
+                "Forma pagamento teste",true);
+        formapagamentoRepository.save(formaPagamento);
     }
 
 
     
     @Test
-    @DisplayName("teste de id existente ")
+    @DisplayName("teste de id existente")
     void TesteGetIdExistente() throws Exception{
-        setupProduto();
-        mockMvc.perform(get("/produto/1")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("Produto teste")));
+        setupFormaPagamento();
+        mockMvc.perform(get("/forma-pagamento/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("Forma pagamento teste")));
     }
 
 
@@ -78,7 +77,7 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("teste de id inexitente")
     void TesteGetIdInexistente() throws Exception{
-        mockMvc.perform(get("/produto/999340557")).andExpect(status().isBadRequest())
+        mockMvc.perform(get("/forma-pagamento/999340557")).andExpect(status().isBadRequest())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof IdInexistenteException));
     }
 
@@ -88,23 +87,21 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("teste de path errado")
     void TesteGetPathErrado() throws Exception{
-        mockMvc.perform(get("/produtojrferriabcd")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/forma-pagamentojrferriabcd")).andExpect(status().isNotFound());
     }
 
 
 
     @Test
-    @DisplayName("teste de post de novo Produto")
-    void TestePostProduto() throws Exception{
-        setupProduto();
+    @DisplayName("teste de post de nova forma de pagamento")
+    void TestePostFormaPagamento() throws Exception{
+        setupFormaPagamento();
         mockMvc.perform( 
-            post("/produto")
+            post("/forma-pagamento")
             .contentType("application/json")
             .content("{\r\n" + //
-                    "  \"id\": 1,\r\n" + //
-                    "  \"descricao\": \"Produto teste 2\",\r\n" + //
-                    "  \"quantidadeEstoque\": 10,\r\n" + //
-                    "  \"precoUnidadeAtual\": 2.90,\r\n" + //
+                    "  \"id\": 0,\r\n" + //
+                    "  \"descricao\": \"Forma de pagamento teste\",\r\n" + //
                     "  \"ativo\": \"true\"\r\n" + //
                                 "}")        
         ).andExpect(status().isOk());
@@ -112,32 +109,33 @@ public class ProdutoControllerTest {
 
     
     @Test
-    @DisplayName("teste de put de novo Produto")
-    void TestePutProduto() throws Exception{
-        setupProduto();
+    @DisplayName("teste de put de nova Forma de pagamento")
+    void TestePutFormaPagamento() throws Exception{
+        setupFormaPagamento();
         mockMvc.perform( 
-            put("/produto/1")
+            put("/forma-pagamento/1")
             .contentType("application/json")
             .content("{\r\n" + //
                     "  \"id\": 1,\r\n" + //
-                    "  \"descricao\": \"Produto teste Alterado\",\r\n" + //
-                    "  \"quantidadeEstoque\": 10,\r\n" + //
-                    "  \"precoUnidadeAtual\": 0.99,\r\n" + //
+                    "  \"descricao\": \"Forma de pagamento teste Alterado\",\r\n" + //
                     "  \"ativo\": \" true\"\r\n" + //
-                                "}")        
+                                "}")       
         ).andExpect(status().isOk()
-        ).andExpect(content().string(containsString("Produto teste Alterado")));
+        ).andExpect(content().string(containsString("Forma de pagamento teste Alterado")));
     }
   
 
 
     @Test
     @DisplayName(" Teste do delete")
-    void testeDeleteProduto() throws Exception{
-        setupProduto();
-        mockMvc.perform( delete("/produto/1")
+    void testeDeleteFormaPagamento() throws Exception{
+        setupFormaPagamento();
+        mockMvc.perform( delete("/forma-pagamento/1")
         ).andExpect(status().isOk()
         ).andExpect(content().string(containsString("Excluído")));
     }
-    }
+
+
+
+}
 

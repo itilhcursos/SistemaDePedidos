@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -45,6 +46,11 @@ public class ProdutoService {
           throw new ProdutoDuplicadoException(entityDTO.getDescricao());
     }
     
+        private void validarestoque(ProdutoDTO entityDTO) {
+        
+        if(repositorio.existsByDescricao(entityDTO.getDescricao()))
+          throw new ProdutoEstoqueNegativoException(entityDTO.getDescricao());
+    }
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO entityDTO) throws Exception {
         return toDTO(repositorio.save(toEntity(entityDTO)));
     }
@@ -72,4 +78,5 @@ public class ProdutoService {
         List<ProdutoDTO> dtos = produtos.stream().map(this::toDTO).collect(Collectors.toList());
         return new PageImpl<>(dtos,produtos.getPageable(), produtos.getTotalElements());
     }
+
 }

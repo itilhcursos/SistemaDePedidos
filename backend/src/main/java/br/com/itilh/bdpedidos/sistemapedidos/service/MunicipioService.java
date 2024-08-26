@@ -54,7 +54,7 @@ public class MunicipioService {
         if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
           throw new MunicipioDuplicadoException(origem.getNome());
     }
-
+ 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
         validar(origem);
         return toDTO(repository.save(toEntity(origem)));

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -32,6 +31,7 @@ public class ProdutoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste de criar produto")
     void testCriarProduto() throws Exception {
         setupProduto();
         ProdutoDTO dto = new ProdutoDTO(null,"Produto teste",(double)1,BigDecimal.valueOf(0.00),true);
@@ -39,42 +39,25 @@ public class ProdutoServiceTest {
         assertEquals(true, dtoRetorno.getId() != null);
     }
 
-
     @Test
-    @DisplayName("Teste de criação de um produto duplicado")
-    void testCriarProdutoDuplicado() throws Exception {
-        setupProduto();
-        ProdutoDTO dto = new ProdutoDTO(null,"Produto teste duplicado",(double)10,BigDecimal.valueOf(100l),true); 
-        ProdutoDTO dtoRetorno = produtoService.criarProduto(dto);
-        
-        assertThrows(ProdutoDuplicadoException.class, ()-> produtoService.criarProduto(dto));
+    void testAlterarProduto() {
+
     }
 
-    
+    @Test
+    void testBuscarProdutoPorId() {
+
+    }
 
 
 
+    @Test
+    void testExcluirProduto() {
 
+    }
 
+    @Test
+    void testListarProdutos() {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 }

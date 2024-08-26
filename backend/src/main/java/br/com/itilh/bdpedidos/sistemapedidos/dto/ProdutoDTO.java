@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProdutoDTO {
 
+    
     private BigInteger id;
     private String descricao;
     private Double quantidadeEstoque;
