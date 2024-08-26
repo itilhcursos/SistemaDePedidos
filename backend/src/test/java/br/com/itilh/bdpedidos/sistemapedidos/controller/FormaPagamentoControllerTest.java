@@ -58,7 +58,7 @@ public class FormaPagamentoControllerTest {
     @Test
     void testCriarFormaPagamento() throws Exception {
         mockMvc.perform(post("/forma-pagamento").contentType("application/json").content("{\r\n" + //
-                        "  \"id\": 0,\r\n" + //
+                        "  \"id\": null,\r\n" + //
                         "  \"descricao\": \"Forma de pagamento teste\",\r\n" + //
                         "  \"ativo\": true\r\n" + //
                         "}"))
@@ -84,9 +84,9 @@ public class FormaPagamentoControllerTest {
 
     @Test
     @DisplayName("Teste do path /forma-pagamento/{id} EXISTENTE")
-    void testGetPorIdExistente() throws Exception {
+    void testGetPorId() throws Exception {
         setUpFormaPagamento();
-        mockMvc.perform(get("/forma-pagamento/2")) // procuro por id 2 pois o Delete apaga o id1, e o setUp acima cria com id 2. //
+        mockMvc.perform(get("/forma-pagamento/2")) // busco por id 2 pois o Delete apaga o id 1, e o setUp acima cria com id 2. //
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("Forma de pagamento teste")));
     }
