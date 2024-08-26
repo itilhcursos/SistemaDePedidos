@@ -21,11 +21,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.util.ModoBusca;
 
-
-
-
-
-
 @RestController
 public class EstadoController {
 
@@ -60,15 +55,13 @@ public class EstadoController {
             return repositorio.findByNomeContainingIgnoreCase(nome);
         }       
     }
-    
-    
+        
     @GetMapping("/estado/{id}")
     public Estado getPorId(@PathVariable BigInteger id) throws Exception {
         return repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")
          );
     }    
-
 
     @PostMapping("/estado")
     public Estado criarEstado(@RequestBody Estado entity) throws Exception { 

@@ -1,8 +1,8 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import java.math.BigInteger;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,66 +16,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.service.ProdutoService;
 
 @RestController
 public class ProdutoController {
-    private final ProdutoRepository repositorio;
-    public ProdutoController(ProdutoRepository repositorio){
-        this.repositorio = repositorio;
-    }
+
+    @Autowired
+    ProdutoService produtoService;
 
     @GetMapping("/produtos")
-    public Page<Produto> getTodosProdutos(
+    public Page<ProdutoDTO> getTodosProdutos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
         @RequestParam(required = false, defaultValue = "id") String property
     ) {
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
-        return (Page<Produto>) repositorio.findAll(pageable);
+        return produtoService.listarProdutos(pageable);
     }
 
     @GetMapping("/produto/{id}")
-    public Produto getProdutoPorId(@PathVariable BigInteger id) throws Exception {
-        return repositorio.findById(id).orElseThrow(() -> new Exception("ID Não Encontrado!"));
-    }
-    
+    public ProdutoDTO getProdutoPorId(@PathVariable BigInteger id) throws Exception {
+        return produtoService.buscarProdutoPorId(id);
+    }    
 
     @PostMapping("/produto")
-    public Produto criarProduto(@RequestBody Produto entity) throws Exception {
-        try{               
-            if(entity.getId() != null){
-                throw new Exception("Entidade já existe.");
-            }
-            return repositorio.save(entity);
-        }catch(Exception e){
-            throw new Exception("Erro ao salvar o produto.");
-        }
+    public ProdutoDTO criarProduto(@RequestBody ProdutoDTO entity) throws Exception {
+        return produtoService.criarProduto(entity);
     }
     
     @PutMapping("/produto/{id}")
-    public Produto alterarProduto(@PathVariable BigInteger id, @RequestBody Produto novosDados) throws Exception {
-        Optional<Produto> produtoArmazenado = repositorio.findById(id);
-        if (produtoArmazenado.isPresent()){
-            produtoArmazenado.get().setDescricao(novosDados.getDescricao());
-            produtoArmazenado.get().setQuantidadeEstoque(novosDados.getQuantidadeEstoque());
-            produtoArmazenado.get().setPrecoUnidadeAtual(novosDados.getPrecoUnidadeAtual());
-            produtoArmazenado.get().setAtivo(novosDados.getAtivo());
-            return repositorio.save(produtoArmazenado.get());
-        }
-        throw new Exception ("Não foi possível alterar o Produto.");
+    public ProdutoDTO alterarProduto(@PathVariable BigInteger id, @RequestBody ProdutoDTO novosDados) throws Exception {
+        return produtoService.alterarProduto(id, novosDados);
     }
 
     @DeleteMapping("/produto/{id}")
     public String deleteProduto(@PathVariable BigInteger id) throws Exception {
-        try{
-            repositorio.deleteById(id);
-            return "Excluído!";
-        } catch (Exception e) {
-            throw new Exception("Não foi possível apagar o ID fornecido!" + e.getMessage());
-        }
+        return produtoService.excluirProduto(id);
     }
 }
 
