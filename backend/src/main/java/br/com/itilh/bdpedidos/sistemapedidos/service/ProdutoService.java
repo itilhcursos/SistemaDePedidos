@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,10 +12,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoQuantidadeEstoqueException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoUnidadeAtualException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -22,34 +23,50 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 public class ProdutoService {
 
     @Autowired
-    private ProdutoRepository repositorio;
+    private ProdutoRepository repository;
 
     @Autowired
     private ModelMapper mapper;
 
     public Page<ProdutoDTO> listarProdutos(Pageable pageable) {
-        return toPageDTO(repositorio.findAll(pageable));
+        return toPageDTO(repository.findAll(pageable));
     }
 
     public ProdutoDTO buscarProdutoPorId(BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id)
+        return toDTO(repository.findById(id)
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
-        return toDTO(repositorio.save(toEntity(origem)));
+        validarEstoque(origem);
+        validarPreco(origem);
+        return toDTO(repository.save(toEntity(origem)));
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
-        return toDTO(repositorio.save(toEntity(origem)));
+        validarEstoque(origem);
+        validarPreco(origem);
+        return toDTO(repository.save(toEntity(origem)));
     }
 
     public String excluirProduto(BigInteger id) throws Exception{
         try{ 
-            repositorio.deleteById(id);
+            repository.deleteById(id);
              return "Excluído";
         }catch (Exception ex){
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+        }
+    }
+
+    private void validarEstoque(ProdutoDTO origem) {
+        if (origem.getQuantidadeEstoque() != null && origem.getQuantidadeEstoque() < 0) {
+            throw new ProdutoQuantidadeEstoqueException(origem.getQuantidadeEstoque());
+        }
+    }
+
+    private void validarPreco(ProdutoDTO origem) {
+        if (origem.getPrecoUnidadeAtual() != null && origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ProdutoPrecoUnidadeAtualException(origem.getPrecoUnidadeAtual());
         }
     }
 
