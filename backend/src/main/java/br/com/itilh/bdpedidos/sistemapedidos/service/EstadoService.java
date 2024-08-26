@@ -17,7 +17,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 
 @Service
-public class EstadoService {
+public class EstadoService extends GenericService<Estado, EstadoDTO>{
 
     @Autowired
     EstadoRepository repositorio;
@@ -62,22 +62,5 @@ public class EstadoService {
         repositorio.deleteById(id);
         return "Excluído";
     }  
-
-
-    private EstadoDTO toDTO(Estado estado){
-        EstadoDTO dto = mapper.map(estado, EstadoDTO.class);
-        return dto;
-    }
-    
-    private Estado toEntity(EstadoDTO dto){
-        Estado entity = mapper.map(dto, Estado.class);
-        return entity;
-    }
-
-    private Page<EstadoDTO> toPageDTO(Page<Estado> estados){
-        List<EstadoDTO> dtos = estados.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,estados.getPageable(), estados.getTotalElements());
-    }
-
 
 }
