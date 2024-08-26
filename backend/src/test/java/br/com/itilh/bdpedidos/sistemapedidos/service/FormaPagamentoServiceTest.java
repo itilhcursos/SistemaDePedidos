@@ -12,9 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
