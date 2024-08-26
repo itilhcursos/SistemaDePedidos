@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -34,7 +35,13 @@ public class ProdutoService {
     }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
-        return toDTO(repositorio.save(toEntity(origem)));
+       validar(origem);
+       return toDTO(repositorio.save(toEntity(origem)));
+    }
+
+    private void validar(ProdutoDTO origem) {
+        if(repositorio.existsByDescricaoAndId(origem.getDescricao(), origem.getId()))
+        throw new ProdutoDuplicadoException(origem.getDescricao());
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {

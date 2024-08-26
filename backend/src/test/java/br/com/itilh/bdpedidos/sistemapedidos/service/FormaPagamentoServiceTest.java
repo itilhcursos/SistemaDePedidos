@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigInteger;
 
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 @SpringBootTest
@@ -39,7 +41,7 @@ public class FormaPagamentoServiceTest {
     }
 
     @Test
-    @DisplayName( "Criar forma-pagamento")
+    @DisplayName( " teste do Criar forma-pagamento")
     void testCriarFormaPagamento() throws Exception {
     setupFormaPagamento();
     FormaPagamentoDTO dto = new FormaPagamentoDTO(null,"forma-pagamento teste",true );
@@ -47,7 +49,15 @@ public class FormaPagamentoServiceTest {
     assertEquals(true,dtoRetorno.getId() != null);
     
     }
-
+    @Test
+    @DisplayName( " teste do Criar forma-pagamento duplicado")
+    void testCriarFormaPagamentoDuplicado() throws Exception {
+        setupFormaPagamento();
+        FormaPagamentoDTO dto = new FormaPagamentoDTO(null,"forma-pagamento teste",true );
+        FormaPagamentoDTO dtoRetorno =formaPagamentoService.criarFormaPagamento(dto);
+    
+        assertThrows(FormaPagamentoDuplicadoException.class,()-> formaPagamentoService.criarFormaPagamento(dto));
+    }
     @Test
     void testExcluirFormaPagamento() {
 
