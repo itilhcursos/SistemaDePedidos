@@ -17,6 +17,8 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
 
     boolean existsByDescricao(String descricao);
 
+
+
    
     
 }

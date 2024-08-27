@@ -1,10 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
-import java.math.BigInteger;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 
 
@@ -26,10 +24,13 @@ public class FormaPagamentoServiceTest {
     @Autowired
     FormaPagamentoService formaPagamentoService;
 
+    @Autowired
+    FormaPagamentoRepository formaPagamentoRepository;
+
 
     @Test
     void testListarFormasPagamento() {
-
+       
     }
 
     @Test
@@ -60,20 +61,33 @@ public class FormaPagamentoServiceTest {
     }
 
     @Test
-    @DisplayName("teste de alteração de nome")
-    void testCriarFormaPagamentoDuplicadoAlterar() throws Exception {
+    @DisplayName("teste de alteração de descrição de forma de pagamento")
+    void testAlterarFormaPagamento() throws Exception {
         FormaPagamentoDTO dtoDescricaoErrada = new FormaPagamentoDTO(null, "Descrição errada", true);
-
         FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dtoDescricaoErrada);
 
         FormaPagamentoDTO dtoDescricaoCorrigida= new FormaPagamentoDTO(dtoRetorno.getId(), "Descrição corrigida ", true);
         dtoDescricaoCorrigida = formaPagamentoService.alterarFormaPagamento(dtoRetorno.getId(), dtoDescricaoCorrigida);
+
         assertEquals(true, dtoDescricaoCorrigida.getId().equals(dtoDescricaoErrada.getId()));
     }
-    @Test
-    void testAlterarFormaPagamento() {
 
-        
+    @Test
+    @DisplayName("teste de alteração de Descrição Duplicado")
+    void testCriarFormaPagamentoDuplicadoPorAlteracao() throws Exception {
+        //criar Forma de pagamento errado
+        FormaPagamentoDTO dtoDescricaoErrado = new FormaPagamentoDTO(null, "Descrição errada", true);
+        dtoDescricaoErrado = formaPagamentoService.criarFormaPagamento(dtoDescricaoErrado);
+
+        //criar Forma de pagamento correto
+        FormaPagamentoDTO dtoCorrigido = new FormaPagamentoDTO(null, "Descrição corrigida ", true);
+        dtoCorrigido = formaPagamentoService.criarFormaPagamento(dtoCorrigido);
+
+        //gerar erro ao tentar mudar a Descrição de uma Forma de Pagamento para outro ja existente
+        FormaPagamentoDTO dtoDescricaoCorrigida= new FormaPagamentoDTO(dtoDescricaoErrado.getId(), "Descrição corrigida ", true);
+        assertThrows(FormaPagamentoDuplicadoException.class, () -> formaPagamentoService.alterarFormaPagamento(dtoDescricaoCorrigida.getId(),dtoDescricaoCorrigida));
+
+       
     }
 
     @Test

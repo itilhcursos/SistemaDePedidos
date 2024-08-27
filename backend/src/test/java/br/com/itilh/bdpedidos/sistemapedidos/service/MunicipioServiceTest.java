@@ -1,10 +1,9 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.math.BigInteger;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class MunicipioServiceTest {
 
     @Test
     @DisplayName("Teste de alteração de nome")
-    void testCriarMunicipioAlterar() throws Exception {
+    void testAlterarMunicipio() throws Exception {
         setUpEstado();
         MunicipioDTO dtoNomeErrado = new MunicipioDTO(null,"Nome errado",true, BigInteger.ONE, "estado teste");
         MunicipioDTO dtoRetorno = municipioService.criarMunicipio(dtoNomeErrado);
