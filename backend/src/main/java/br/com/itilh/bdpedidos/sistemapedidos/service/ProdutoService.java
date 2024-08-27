@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -35,11 +39,39 @@ public class ProdutoService {
     }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+        if(repositorio.existsByDescricao(origem.getDescricao()))
+            throw new ProdutoDuplicadoException(origem.getDescricao());
+        validarEstoque(origem);
+        validarPreco(origem);
+        try{
         return toDTO(repositorio.save(toEntity(origem)));
+        }catch(Exception e){
+            throw new Exception("Erro ao salvar produto.");
+        }
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        if(repositorio.existsByDescricao(origem.getDescricao()))
+            throw new ProdutoDuplicadoException(origem.getDescricao());
+        validarEstoque(origem);
+        validarPreco(origem);
+        try{
         return toDTO(repositorio.save(toEntity(origem)));
+        }catch(Exception e) {
+            throw new Exception("Erro ao alterar produto");
+        }
+    }
+
+    private void validarEstoque(ProdutoDTO origem) {
+        if(origem.getQuantidadeEstoque() < 0){
+            throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+        }
+    }
+
+    private void validarPreco(ProdutoDTO origem) {
+        if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+        }
     }
 
     public String excluirProduto(BigInteger id) throws Exception{
