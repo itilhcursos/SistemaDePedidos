@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,12 +19,12 @@ public class SistemapedidosApplication {
     public WebMvcConfigurer forwardToIndex() {
         return new WebMvcConfigurer() {
             @Override
-            public void addViewControllers(ViewControllerRegistry registry) {
+            public void addViewControllers(@SuppressWarnings("null") ViewControllerRegistry registry) {
                 registry.addViewController( "/" )
                         .setViewName("forward:/app/dist/index.html");
             }
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
                 registry.addMapping("/**").allowedMethods("*");
             }
 
