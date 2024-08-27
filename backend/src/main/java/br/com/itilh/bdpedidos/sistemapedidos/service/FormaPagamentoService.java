@@ -43,11 +43,12 @@ public class FormaPagamentoService {
     }
 
     private void validar(FormaPagamentoDTO origem) {
-        if(repositorio.existsByDescricaoAndId(origem.getDescricao(), origem.getId()))
+        if(repositorio.existsByDescricaoAndId(origem.getDescricao()));
         throw new FormaPagamentoDuplicadoException(origem.getDescricao());
     }
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
