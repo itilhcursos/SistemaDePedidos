@@ -1,13 +1,9 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +13,10 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 
 @Service
-public class EstadoService {
+public class EstadoService extends GenericService<Estado,EstadoDTO> {
 
     @Autowired
     EstadoRepository repositorio;
-
-    @Autowired
-    ModelMapper mapper;
 
     public Page<EstadoDTO> getTodos(Pageable pageable ){
         return toPageDTO(repositorio.findAll(pageable));
@@ -61,21 +54,5 @@ public class EstadoService {
     public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
-    }  
-
-
-    private EstadoDTO toDTO(Estado estado){
-        EstadoDTO dto = mapper.map(estado, EstadoDTO.class);
-        return dto;
-    }
-    
-    private Estado toEntity(EstadoDTO dto){
-        Estado entity = mapper.map(dto, Estado.class);
-        return entity;
-    }
-
-    private Page<EstadoDTO> toPageDTO(Page<Estado> estados){
-        List<EstadoDTO> dtos = estados.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,estados.getPageable(), estados.getTotalElements());
     }
 }
