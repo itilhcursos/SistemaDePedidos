@@ -27,19 +27,18 @@ public class ProdutoController {
 
     @GetMapping("/produtos")
     public Page<ProdutoDTO> getTodosProdutos(
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
-        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return produtoService.listarProdutos(pageable);
     }
 
     @GetMapping("/produto/{id}")
     public ProdutoDTO getProdutoPorId(@PathVariable BigInteger id) throws Exception {
         return produtoService.buscarProdutoPorId(id);
-    }    
+    }
 
     @PostMapping("/produto")
     public ProdutoDTO criarProduto(@RequestBody ProdutoDTO entity) throws Exception {
@@ -56,4 +55,3 @@ public class ProdutoController {
         return produtoService.excluirProduto(id);
     }
 }
-

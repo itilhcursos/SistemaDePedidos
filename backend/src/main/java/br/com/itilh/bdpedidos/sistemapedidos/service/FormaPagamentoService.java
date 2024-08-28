@@ -39,9 +39,10 @@ public class FormaPagamentoService {
     // Exception {
     // return toDTO(repositorio.save(toEntity(origem)));
     // }
+
     public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {
-        if (repositorio.existsByDescricao(origem.getDescricao()))
-            throw new FormaPagamentoDuplicadoException(origem.getDescricao());
+       if (repositorio.existsByDescricao(origem.getDescricao()))
+           throw new FormaPagamentoDuplicadoException(origem.getDescricao());
 
         try {
             return toDTO(repositorio.save(toEntity(origem)));
