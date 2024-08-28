@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
     public class ProdutoEstoqueNegativoException extends RuntimeException{
         
         
-        public  ProdutoEstoqueNegativoException(String descricao){
-            super("O estoque do Produto = "+ descricao + " não pode ser negativo");
+        public  ProdutoEstoqueNegativoException(Double quantidadeEstoque){
+            super("A quantidade = "+ quantidadeEstoque + "não é válida.");
 
 
     }
+
+      
 
 
 

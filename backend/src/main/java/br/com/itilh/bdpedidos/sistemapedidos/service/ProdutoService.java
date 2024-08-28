@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,9 +15,9 @@ import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
-
 
 @Service
 public class ProdutoService {
@@ -30,53 +31,73 @@ public class ProdutoService {
     public Page<ProdutoDTO> listarProdutos(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
     }
-    
+
     public ProdutoDTO buscarProdutoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Produto", id)));}
+                .orElseThrow(() -> new IdInexistenteException("Produto", id)));
+    }
 
-    public ProdutoDTO criarProduto(ProdutoDTO entityDTO) throws Exception { 
-            validar(entityDTO);
-        return toDTO(repositorio.save(toEntity(entityDTO)));
-    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {
+        if (repositorio.existsByDescricao(origem.getDescricao()))
+            throw new ProdutoDuplicadoException(origem.getDescricao());
+        validarEstoque(origem);
+        validarPreco(origem);
+        try{
+            return toDTO(repositorio.save(toEntity(origem)));
+    } catch (Exception e) {
+        throw new Exception("Erro ao criar o produto" );
     }
-        private void validar(ProdutoDTO entityDTO) {
-        // se já existe produto com mesma Descrição
-        if(repositorio.existsByDescricao(entityDTO.getDescricao()))
-          throw new ProdutoDuplicadoException(entityDTO.getDescricao());
-    }
-    
-        private void validarestoque(ProdutoDTO entityDTO) {
+}
+
         
-        if(repositorio.existsByDescricao(entityDTO.getDescricao()))
-          throw new ProdutoEstoqueNegativoException(entityDTO.getDescricao());
+        public ProdutoDTO alterarProduto(ProdutoDTO origem) throws Exception {
+            if (repositorio.existsByDescricao(origem.getDescricao()))
+                throw new ProdutoDuplicadoException(origem.getDescricao());
+            validarEstoque(origem);
+            validarPreco(origem);
+            try {
+                return toDTO(repositorio.save(toEntity(origem)));
+        }catch(Exception e) {
+            throw new Exception("Erro ao alterar produto");
+        }
     }
-    public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO entityDTO) throws Exception {
-        return toDTO(repositorio.save(toEntity(entityDTO)));
+            
+
+    private void validarEstoque(ProdutoDTO origem) {
+        if (origem.getQuantidadeEstoque() != null && origem.getQuantidadeEstoque() < 0)
+            throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
     }
 
-    public String excluirProduto(BigInteger id) throws Exception{
-        try{ 
+    private void validarPreco(ProdutoDTO origem) {
+        if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+        }
+
+    }
+
+    
+    public String excluirProduto(BigInteger id) throws Exception {
+        try {
             repositorio.deleteById(id);
-             return "Excluído com sucesso";
-        }catch (Exception ex){
+            return "Excluído com sucesso";
+        } catch (Exception ex) {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
 
-    private ProdutoDTO toDTO(Produto produto){
+    private ProdutoDTO toDTO(Produto produto) {
         ProdutoDTO dto = mapper.map(produto, ProdutoDTO.class);
         return dto;
     }
 
-    private Produto toEntity(ProdutoDTO dto){
+    private Produto toEntity(ProdutoDTO dto) {
         Produto entity = mapper.map(dto, Produto.class);
         return entity;
     }
 
-    private Page<ProdutoDTO> toPageDTO(Page<Produto> produtos){
+    private Page<ProdutoDTO> toPageDTO(Page<Produto> produtos) {
         List<ProdutoDTO> dtos = produtos.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,produtos.getPageable(), produtos.getTotalElements());
+        return new PageImpl<>(dtos, produtos.getPageable(), produtos.getTotalElements());
     }
 
 }
