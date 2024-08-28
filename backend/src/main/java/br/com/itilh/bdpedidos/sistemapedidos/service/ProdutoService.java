@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -44,8 +46,11 @@ public class ProdutoService {
 
 
     private void validar(ProdutoDTO origem) {
+        if(origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) <= 0){
+            throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+        }
         
-        if( origem.getQuantidadeEstoque() < 0){
+        if( origem.getQuantidadeEstoque() <= 0){
             throw new  ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
         }
         
@@ -56,6 +61,7 @@ public class ProdutoService {
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
