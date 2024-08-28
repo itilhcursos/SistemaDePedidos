@@ -77,8 +77,4 @@ public class MunicipioServiceTest {
         MunicipioDTO dtoNomeCorrigido = new MunicipioDTO(dtoNomeErrado.getId(),"Nome corrigido",true, BigInteger.ONE, "estado teste");
         assertThrows(MunicipioDuplicadoException.class, ()-> municipioService.alterarMunicipio(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
     }
-    
-
-
-
 }
