@@ -3,19 +3,17 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
-
 @Service
 public class FormaPagamentoService {
 
@@ -24,7 +22,6 @@ public class FormaPagamentoService {
 
     @Autowired
     private ModelMapper mapper;
-
 
     public Page<FormaPagamentoDTO> listarFormasPagamento(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
@@ -35,12 +32,19 @@ public class FormaPagamentoService {
         .orElseThrow(()-> new IdInexistenteException("Forma de Pagamento", id)));
     }
 
-    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
-        return toDTO(repositorio.save(toEntity(origem)));
+    private void validarDuplicado(FormaPagamentoDTO formaPagtoOrigem) {
+        if(repositorio.existsByDescricao(formaPagtoOrigem.getDescricao()))
+          throw new FormaPagamentoDuplicadoException(formaPagtoOrigem.getDescricao());
+    }    
+
+    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO formaPagtoOrigem) throws Exception { 
+        validarDuplicado(formaPagtoOrigem);    
+        return toDTO(repositorio.save(toEntity(formaPagtoOrigem)));
     }
 
-    public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
-        return toDTO(repositorio.save(toEntity(origem)));
+    public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO formaPagtoOrigem) throws Exception {
+        validarDuplicado(formaPagtoOrigem);    
+        return toDTO(repositorio.save(toEntity(formaPagtoOrigem)));
     }
 
     public String excluirFormaPagamento(BigInteger id) throws Exception{
@@ -51,7 +55,6 @@ public class FormaPagamentoService {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
-
 
     private FormaPagamentoDTO toDTO(FormaPagamento formaPagamento){
         FormaPagamentoDTO dto = mapper.map(formaPagamento, FormaPagamentoDTO.class);

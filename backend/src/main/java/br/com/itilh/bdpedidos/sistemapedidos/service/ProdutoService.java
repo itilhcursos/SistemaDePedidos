@@ -3,19 +3,19 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoValorNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
-
 @Service
 public class ProdutoService {
 
@@ -34,12 +34,35 @@ public class ProdutoService {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
-        return toDTO(repositorio.save(toEntity(origem)));
+    private void validarEstoqueNegativo(ProdutoDTO prodOrigem) {       
+        if(prodOrigem.getQuantidadeEstoque() < 0){
+          throw new ProdutoEstoqueNegativoException(prodOrigem.getDescricao());
+        }
     }
 
-    public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
-        return toDTO(repositorio.save(toEntity(origem)));
+    private void validarVlrNegativo(ProdutoDTO prodOrigem) {       
+        if(prodOrigem.getPrecoUnidadeAtual().floatValue() < 0){
+          throw new ProdutoValorNegativoException(prodOrigem.getDescricao());
+        }
+    }  
+    
+    private void validarDuplicado(ProdutoDTO prodOrigem) {
+        if(repositorio.existsByDescricao(prodOrigem.getDescricao()))
+          throw new ProdutoDuplicadoException(prodOrigem.getDescricao());
+    }    
+
+    public ProdutoDTO criarProduto(ProdutoDTO prodOrigem) throws Exception {  
+        validarDuplicado(prodOrigem);
+        validarEstoqueNegativo(prodOrigem);  
+        validarVlrNegativo(prodOrigem);
+        return toDTO(repositorio.save(toEntity(prodOrigem)));
+    }
+
+    public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO prodOrigem) throws Exception {
+        validarDuplicado(prodOrigem);
+        validarEstoqueNegativo(prodOrigem);  
+        validarVlrNegativo(prodOrigem);
+        return toDTO(repositorio.save(toEntity(prodOrigem)));
     }
 
     public String excluirProduto(BigInteger id) throws Exception{
@@ -51,8 +74,8 @@ public class ProdutoService {
         }
     }
 
-    private ProdutoDTO toDTO(Produto produto){
-        ProdutoDTO dto = mapper.map(produto, ProdutoDTO.class);
+    private ProdutoDTO toDTO(Produto prodOrigem){
+        ProdutoDTO dto = mapper.map(prodOrigem, ProdutoDTO.class);
         return dto;
     }
 
