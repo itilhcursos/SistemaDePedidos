@@ -42,9 +42,9 @@ public class FormaPagamentoControllerTest {
     // criar banco de dados para teste do Controller
 
     @Test
-    @DisplayName("Teste do path /formas de pagamento")
+    @DisplayName("Teste do path /formas-pagamento")
     void testGetFormasPagamento() throws Exception {
-        mockMvc.perform(get("/formas-Pagamento")).andExpect(status().isOk())
+        mockMvc.perform(get("/formas-pagamento")).andExpect(status().isOk())
         .andExpect(content().string(containsString("totalElements")));
 
     }
@@ -52,7 +52,7 @@ public class FormaPagamentoControllerTest {
     @Test
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
-        mockMvc.perform(get("/FormaPagamento")).andExpect(status().isMethodNotAllowed());
+        mockMvc.perform(get("/forma-pagamento")).andExpect(status().isMethodNotAllowed());
     }
 
 
@@ -61,13 +61,13 @@ public class FormaPagamentoControllerTest {
     void TesteGetIdExistente() throws Exception{
         setupFormaPagamento();
         mockMvc.perform(get("/forma-pagamento/1")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("Forma de Pagamento")));
+        .andExpect(content().string(containsString("Forma de Pagamento teste")));
     }
 
 
     @Test
     @DisplayName("teste de id inexitente")
-    void TesteGetIdInexistente() throws Exception{
+    void TesteGetIdInexistente() throws Exception {
         mockMvc.perform(get("/formapagamento/9999999")).andExpect(status().isBadRequest())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof IdInexistenteException));
     }
@@ -75,7 +75,7 @@ public class FormaPagamentoControllerTest {
     @Test
     @DisplayName("teste de path errado")
     void TesteGetPathErrado() throws Exception{
-        mockMvc.perform(get("/forma-pagamentoxpto")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/forma-pagamentoxptoyzujmkpto")).andExpect(status().isNotFound());
     }
 
     void setupFormaPagamento(){
@@ -88,30 +88,30 @@ public class FormaPagamentoControllerTest {
 
 
     @Test
-    @DisplayName("teste de post de nova FormaPagamento")
+    @DisplayName("teste de post de nova Forma de Pagamento")
     void TestePostFormaPagamento() throws Exception{
         setupFormaPagamento();
         mockMvc.perform( 
-            post("/formapagamento")
+            post("/forma-pagamento")
             .contentType("application/json")
             .content("{\r\n" + //
                     "  \"id\": 0,\r\n" + //
-                    "  \"descricao\": \"FormaPagamento teste\",\r\n" + //
+                    "  \"descricao\": \"Forma de Pagamento teste\",\r\n" + //
                     "  \"ativo\": true,\r\n" + //
                                 "}")        
         ).andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("teste de put de nova FormaPagamento")
+    @DisplayName("teste de put de nova Forma de Pagamento")
     void TestePutFormaPagamento() throws Exception{
         setupFormaPagamento();
         mockMvc.perform( 
-            put("/formapagamento/1")
+            put("/forma-pagamento/1")
             .contentType("application/json")
             .content("{\r\n" + //
                     "  \"id\": 1,\r\n" + 
-                    "  \"descricao\": \"FormaPagamento teste Alterado\",\r\n" + 
+                    "  \"descricao\": \"Forma de Pagamento teste Alterado\",\r\n" + 
                     "  \"ativo\": true,\r\n" + //
                                 "}")        
         ).andExpect(status().isOk()
@@ -122,7 +122,7 @@ public class FormaPagamentoControllerTest {
     @DisplayName(" Teste do delete")
     void testeDeleteFormaPagamento() throws Exception{
         setupFormaPagamento();
-        mockMvc.perform( delete("/formapagamento/1")
+        mockMvc.perform( delete("/forma-pagamento/1")
         ).andExpect(status().isOk()
         ).andExpect(content().string(containsString("Excluído")));
     }

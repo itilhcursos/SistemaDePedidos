@@ -44,8 +44,8 @@ public class ProdutoControllerTest {
 
     @Test
     @DisplayName("teste do path / produtos ")
-    void testGetProduto() throws Exception {
-        mockMvc.perform(get("/Produtos")).andExpect(status().isOk())
+    void testGetProdutos() throws Exception {
+        mockMvc.perform(get("/produtos")).andExpect(status().isOk())
         .andExpect(content().string(containsString("totalElements")));
 
     }
@@ -56,12 +56,16 @@ public class ProdutoControllerTest {
         mockMvc.perform(get("/produto")).andExpect(status().isMethodNotAllowed());
     }
 
+    /**
+     * @throws Exception
+     */
     @Test
     @DisplayName("teste de id existente ")
-    void TesteGetIdExistente() throws Exception{
-        setupProduto();
+    void TesteGetIdExistente() throws Exception {
         mockMvc.perform(get("/produto/1")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("Produto Teste")));
+            .andExpect(content().string(containsString("Produto teste")));
+
+    
     }
 
 
@@ -75,7 +79,7 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("teste de path errado")
     void TesteGetPathErrado() throws Exception{
-        mockMvc.perform(get("/produtoxpto")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/produtoxptoyzujmkpto")).andExpect(status().isNotFound());
     }
     
     void setupProduto() {
@@ -88,13 +92,32 @@ public class ProdutoControllerTest {
                 produtoRepository.save(produto);
     }
 
-
+    
     @Test
     @DisplayName("teste de post de novo produto")
     void TestePostProduto() throws Exception{
-        setupProduto();
         mockMvc.perform( 
             post("/produto/1")
+            .contentType("application/json")
+            .content("{\r\n" + //
+                    "  \"id\": 1,\r\n" + //
+                    "  \"descrição\": \"Produto teste\",\r\n" + 
+                    "  \"quantidadeEstoque\":0 \"\",\r\n" + 
+                    "  \"precoUnidadeAtual\": \"0.0\",\r\n" + //
+                    "  \"ativo\": true,\r\n" + //
+                                "}"))       
+        .andExpect(status().isOk());
+    
+    }
+
+
+   
+    @Test
+    @DisplayName("teste de put de novo produto")
+    void TestePutProduto() throws Exception{
+        setupProduto();
+        mockMvc.perform( 
+            put("/produto/1")
             .contentType("application/json")
             .content("{\r\n" + //
                     "  \"id\": 1,\r\n" + //
