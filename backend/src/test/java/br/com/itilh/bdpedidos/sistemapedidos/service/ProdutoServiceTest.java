@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -121,7 +123,29 @@ assertThrows(ProdutoDuplicadoException.class,()-> produtoService.criarProduto(dt
     }
 
     @Test
-    void testListarProdutos() {
+    @DisplayName(" teste de listar produtos")
+    void testListarProdutos() throws Exception {
 
-    }
+        Page<ProdutoDTO> produtosList = produtoService.listarProdutos(null);
+    
+    assertEquals(null, produtosList);
+    
+        ProdutoDTO produto1 = null;
+
+
+        for (ProdutoDTO produto : produtosList){
+            if (produto.getId().equals(BigInteger.ONE)){
+                produto1 = produto;  }
+       
+            }
+            assertNull(produto1);
+            assertEquals(BigInteger.ONE, produto1.getId());
+            assertEquals("produto teste", produto1.getDescricao());
+            assertEquals(Double.valueOf(1), produto1.getQuantidadeEstoque());
+            assertEquals(BigDecimal.valueOf(1), produto1.getPrecoUnidadeAtual());
+        assertEquals(true, produto1.getAtivo());
+        }
+       
+    
+
 }

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 import java.math.BigInteger;
-
+import org.springframework.data.domain.Page;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,8 +121,28 @@ void testAlterarFormaPagamentoDuplicado() throws Exception {
 FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.buscarFormaPagamentoPorId(BigInteger.ONE);
 assertEquals(BigInteger.ONE, formaPagamentoDTO);
     }
+
+
+
     @Test
-    void testListarFormasPagamento() {
+    @DisplayName(" teste de listar formas-pagamento")
+    void testListarFormasPagamento() throws Exception{
+
+        Page<FormaPagamentoDTO> formaPagamentoList =  formaPagamentoService.listarFormasPagamento(null);
+
+         assertEquals(null, formaPagamentoList);
+
+         FormaPagamentoDTO formaPagamento1 = null;
+
+         for(FormaPagamentoDTO formaPagamento : formaPagamentoList){
+         if(formaPagamento.getId().equals(BigInteger.ONE)){
+             formaPagamento1 = formaPagamento;}
+         }
+
+assertNull(formaPagamento1);
+assertEquals(BigInteger.ONE, formaPagamento1.getAtivo());
+assertEquals("Forma Pagamento teste", formaPagamento1.getDescricao());
+assertEquals(true, formaPagamento1.getAtivo());
 
     }
 }
