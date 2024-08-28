@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class FormaPagamentoDuplicadoException extends RuntimeException {
     public FormaPagamentoDuplicadoException(String descricao){
-        super("Forma de Pagamento = " + descricao + " duplicado.");
+        super("Forma de Pagamento = " + descricao + ", duplicado.");
     }
 
 }
