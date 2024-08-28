@@ -36,6 +36,7 @@ public class MunicipioServiceTest {
         setUpEstado();
         MunicipioDTO dto = new MunicipioDTO(null,"Municipio teste",true, BigInteger.ONE, "estado teste");
         MunicipioDTO dtoRetorno = municipioService.criarMunicipio(dto);
+        
         assertEquals(true, dtoRetorno.getId() != null);
     }
 
