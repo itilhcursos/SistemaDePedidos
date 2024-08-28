@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -66,8 +67,21 @@ void testAlterarFormaPagamentoDuplicado() throws Exception {
 }
 
     @Test
-    void testBuscarFormaPagamentoPorId() {
+    @DisplayName("teste de buscar forma-pagamento por id")
+    void testBuscarFormaPagamentoPorId()throws Exception {
+        setupFormaPagamento();
+        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.buscarFormaPagamentoPorId(BigInteger.ONE);
+        assertEquals(BigInteger.ONE, formaPagamentoDTO.getId());
 
+    }
+
+    @Test
+    @DisplayName("teste deforma-pagamento  id nao encontrado")
+    void testFormaPagamentoIdNaoEncontrado()throws Exception {
+        setupFormaPagamento();
+     
+        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.buscarFormaPagamentoPorId(BigInteger.valueOf(7897897412L));
+         assertEquals(null, formaPagamentoDTO);
     }
 
     @Test
@@ -88,11 +102,25 @@ void testAlterarFormaPagamentoDuplicado() throws Exception {
     
         assertThrows(FormaPagamentoDuplicadoException.class,()-> formaPagamentoService.criarFormaPagamento(dto));
     }
-    @Test
-    void testExcluirFormaPagamento() {
 
+    @Test
+    @DisplayName("teste de excluir forma-pagamento")
+    void testExcluirFormaPagamento() throws Exception{
+        setupFormaPagamento();
+    formaPagamentoService.excluirFormaPagamento(BigInteger.ONE);
+
+    FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.buscarFormaPagamentoPorId(BigInteger.ONE);
+    assertNull(formaPagamentoDTO);
     }
 
+    @Test
+    @DisplayName("teste de excluir forma-pagamento nao existente")
+    void testExcluirFormaPagamentoNaoExistente() throws Exception{
+        setupFormaPagamento();
+        formaPagamentoService.excluirFormaPagamento(BigInteger.TEN);
+FormaPagamentoDTO formaPagamentoDTO = formaPagamentoService.buscarFormaPagamentoPorId(BigInteger.ONE);
+assertEquals(BigInteger.ONE, formaPagamentoDTO);
+    }
     @Test
     void testListarFormasPagamento() {
 

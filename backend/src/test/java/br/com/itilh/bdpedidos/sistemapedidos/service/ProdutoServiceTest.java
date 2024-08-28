@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
@@ -60,7 +61,19 @@ void testAlterarProduto() throws Exception {
 }
 
     @Test
-    void testBuscarProdutoPorId() {
+    @DisplayName("teste de buscar produto por id")
+    void testBuscarProdutoPorId() throws Exception{
+        setupProduto();
+        ProdutoDTO produtodto = produtoService.buscarProdutoPorId(BigInteger.ONE);
+        assertEquals(BigInteger.ONE, produtodto.getId());
+    }
+
+@Test
+@DisplayName("teste de produto id nao encontrado")
+void  testProdutoIDNaoEncontrado()throws Exception{
+    setupProduto();
+    ProdutoDTO produtodto = produtoService.buscarProdutoPorId(BigInteger.valueOf(586486486486L));
+    assertEquals(null, produtodto);
 
     }
 
@@ -87,7 +100,23 @@ assertThrows(ProdutoDuplicadoException.class,()-> produtoService.criarProduto(dt
 
 
     @Test
-    void testExcluirProduto() {
+    @DisplayName("teste de excluir produto")
+    void testExcluirProduto() throws Exception {
+        setupProduto();
+        produtoService.excluirProduto(BigInteger.ONE);
+        
+        ProdutoDTO produtodto = produtoService.buscarProdutoPorId(BigInteger.ONE);
+        assertNull(produtodto);
+    }
+
+@Test
+@DisplayName("teste de excluir produto nao existente")
+    void testExcluirProdutoNaoExistente() throws Exception {
+        setupProduto();
+        produtoService.excluirProduto(BigInteger.TEN);
+        ProdutoDTO produtodto = produtoService.buscarProdutoPorId(BigInteger.ONE);
+        assertEquals(BigInteger.ONE,produtodto);
+
 
     }
 

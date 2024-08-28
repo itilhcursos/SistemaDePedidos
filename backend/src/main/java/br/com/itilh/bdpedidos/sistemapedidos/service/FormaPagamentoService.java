@@ -43,7 +43,7 @@ public class FormaPagamentoService {
     }
 
     private void validar(FormaPagamentoDTO origem) {
-        if(repositorio.existsByDescricaoAndId(origem.getDescricao()));
+        if(repositorio.existsByDescricao(origem.getDescricao()));
         throw new FormaPagamentoDuplicadoException(origem.getDescricao());
     }
 
