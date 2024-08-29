@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 import static org.hamcrest.Matchers.containsString;
@@ -18,6 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigInteger;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;;
 
@@ -45,11 +48,21 @@ public class FormaPagamentoControllerTest {
         mockMvc.perform(get("/forma-pagamento")).andExpect(status().isMethodNotAllowed());
     }
 
+    void setUpFormaPagamento() {
+        FormaPagamento formaPagamento = new FormaPagamento(
+            BigInteger.ONE,
+            "FormaPagamento teste",
+            true
+        );
+        formaPagamentoRepository.save(formaPagamento);
+    }
+
     @Test
     @DisplayName("teste de id existente")
     void TesteGetIdExistente() throws Exception {
+        setUpFormaPagamento();
         mockMvc.perform(get("/forma-pagamento/1")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("Forma-Pagamento teste")));
+        .andExpect(content().string(containsString("FormaPagamento teste")));
     }
 
     @Test
@@ -73,9 +86,9 @@ public class FormaPagamentoControllerTest {
             .contentType("application/json")
             .content("{\r\n" + //
                     "  \"id\": 0,\r\n" + //
-                    "  \"descrição\": \"Forma-Pagamento teste\",\r\n" + //
+                    "  \"descrição\": \"FormaPagamento teste\",\r\n" + //
                     "  \"ativo\": true,\r\n" + //
-                                "}")        
+                    "}")        
         ).andExpect(status().isOk());
     }
 
@@ -87,16 +100,17 @@ public class FormaPagamentoControllerTest {
             .contentType("application/json")
             .content("{\r\n" + //
                     "  \"id\": 1,\r\n" + //
-                    "  \"descrição\": \"Forma-Pagamento teste Alterada\",\r\n" + //
+                    "  \"descrição\": \"FormaPagamento teste Alterada\",\r\n" + //
                     "  \"ativo\": true,\r\n" + //
-                                "}")        
+                    "}")        
         ).andExpect(status().isOk()
-        ).andExpect(content().string(containsString("Forma-Pagamento teste Alterada")));
+        ).andExpect(content().string(containsString("FormaPagamento teste Alterada")));
     }
 
     @Test
     @DisplayName(" Teste do delete")
     void testeDeleteFormaPagamento() throws Exception{
+        setUpFormaPagamento();
         mockMvc.perform( delete("/forma-pagamento/1")
         ).andExpect(status().isOk()
         ).andExpect(content().string(containsString("Excluído")));

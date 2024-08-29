@@ -70,7 +70,5 @@ public class FormaPagamentoController {
     @DeleteMapping("/forma-pagamento/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return formaPagamentoService.excluirFormaPagamento(id);
-    }    
-
-    
+    }
 }

@@ -3,8 +3,8 @@ package br.com.itilh.bdpedidos.sistemapedidos.repository;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+/* import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable; */
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     @Query("FROM FormaPagamento e WHERE e.descricao like %?1")
     List<Produto> findByMinhaQuery(String descricao);
 
-    @Override
-    Page<Produto> findAll(Pageable pageable);
+    /* @Override
+    Page<Produto> findAll(Pageable pageable); */
 
 }
