@@ -16,4 +16,6 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
 
     List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao, Pageable pageable);
 
+    boolean exiexistsBydescricao(String descricao) ;
+
 }
