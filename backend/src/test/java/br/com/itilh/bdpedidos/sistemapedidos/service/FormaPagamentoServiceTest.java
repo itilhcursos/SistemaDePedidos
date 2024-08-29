@@ -1,20 +1,17 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 
 @SpringBootTest
 @ActiveProfiles("test")
 public class FormaPagamentoServiceTest {
-
     @Autowired
     FormaPagamentoService formaPagamentoService;
 
@@ -27,6 +24,7 @@ public class FormaPagamentoServiceTest {
         assertThrows(FormaPagamentoDuplicadoException.class, ()-> formaPagamentoService.criarFormaPagamento(dto));
     }
 
+    
     @Test
     @DisplayName("Teste de alteração de nome duplicado")
     void testCriarFormaPagamentoDuplicadoAlterar() throws Exception {
@@ -39,4 +37,6 @@ public class FormaPagamentoServiceTest {
         FormaPagamentoDTO dtoNomeCorrigido = new FormaPagamentoDTO(dtoNomeErrado.getId(),"Nome corrigido", true);
         assertThrows(FormaPagamentoDuplicadoException.class, ()-> formaPagamentoService.alterarFormaPagamento(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
     }
+
 }
+
