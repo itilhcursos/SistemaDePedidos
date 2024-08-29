@@ -11,7 +11,8 @@ public class ValidadorTest {
     @Test
     @DisplayName("Teste CPF Válido")
     void testIsCpfIsValido() {
-        assertEquals(true, Validador.isCpf("077.584.877-85"));
+        assertEquals(true, Validador.isCpf("167.873.527-27"));
+        
     }
 
     @Test
@@ -27,7 +28,12 @@ public class ValidadorTest {
              ()->  assertEquals(false, Validador.isCpf("000.000.000-00")),
              ()->  assertEquals(false, Validador.isCpf("111.111.111-11")),
              ()->  assertEquals(false, Validador.isCpf("222.222.222-22")),
-             ()->  assertEquals(false, Validador.isCpf("333.333.333-33")), //....
+             ()->  assertEquals(false, Validador.isCpf("333.333.333-33")),
+             ()->  assertEquals(false, Validador.isCpf("444.444.444-44")),
+             ()->  assertEquals(false, Validador.isCpf("555.555.555-55")),
+             ()->  assertEquals(false, Validador.isCpf("666.666.666-66")),
+             ()->  assertEquals(false, Validador.isCpf("777.777.777-77")),
+             ()->  assertEquals(false, Validador.isCpf("888.888.888-88")), //....
              ()->  assertEquals(false, Validador.isCpf("999.999.999-99"))
             );
     }

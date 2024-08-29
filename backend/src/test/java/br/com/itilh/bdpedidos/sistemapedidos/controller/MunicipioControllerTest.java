@@ -45,7 +45,7 @@ public class MunicipioControllerTest {
     @Test
     @DisplayName("teste do path /municipios")
     void testGetMunicipios() throws Exception {
-        mockMvc.perform(get("/municipios")).andExpect(status().isOk())
+        mockMvc.perform(get("/municipios")).andExpect(status().isOk())  //perform o comando que voce quer e andExpect o resultado que devera dar
         .andExpect(content().string(containsString("totalElements")));
 
     }
