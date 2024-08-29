@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,4 +79,17 @@ public class ProdutoService {
         List<ProdutoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
         return new PageImpl<>(dtos,entities.getPageable(), entities.getTotalElements());
     }
+
+    public ProdutoDTO alterarProdutoPrecoNegativo(BigDecimal precoUnidadeAtual, ProdutoDTO origem) {
+      validar(origem);
+      return toDTO(repositorio.save(toEntity(origem)));
+    }
+
+
+public ProdutoDTO alterarProdutoEstoqueNegativo(Double quantidadeEstoque,ProdutoDTO origem){
+
+    validar(origem);
+    return toDTO(repositorio.save(toEntity(origem)));
+}
+
 }

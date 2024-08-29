@@ -18,6 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 @SpringBootTest
@@ -146,6 +148,65 @@ assertThrows(ProdutoDuplicadoException.class,()-> produtoService.criarProduto(dt
         assertEquals(true, produto1.getAtivo());
         }
        
-    
+    @Test
+    @DisplayName(" teste de criar produtos com estoque negativo")
+void testCriarProdutoEstoqueNegativo()throws Exception{
+    setupProduto();
+    ProdutoDTO dto = new ProdutoDTO(BigInteger.ONE,"produto teste estoque negativo",Double.valueOf(-1L), BigDecimal.valueOf(1L), true);
+    ProdutoDTO dtoRetorno =produtoService.criarProduto(dto);
+
+
+assertThrows(ProdutoEstoqueNegativoException.class,()-> produtoService.criarProduto(dto));
+
 
 }
+    
+
+@Test
+@DisplayName(" teste de criar produtos com preco negativo")
+void testCriarProdutoPrecoNegativo()throws Exception{
+    setupProduto();
+    ProdutoDTO dto = new ProdutoDTO(BigInteger.ONE,"produto teste estoque negativo",Double.valueOf(1L), BigDecimal.valueOf(-1L), true);
+    ProdutoDTO dtoRetorno =produtoService.criarProduto(dto);
+
+
+assertThrows(ProdutoPrecoNegativoException.class,()-> produtoService.criarProduto(dto));
+
+}
+
+@Test
+@DisplayName(" teste de alterar produtos com preco negativo")
+     void testAlterarProdutoPrecoNegativo()throws Exception{
+     setupProduto();
+     ProdutoDTO dtoPrecoErrado = new ProdutoDTO(BigInteger.ONE,"produto errado",Double.valueOf(1L), BigDecimal.valueOf(-5L), true);
+     dtoPrecoErrado =produtoService.criarProduto(dtoPrecoErrado);
+
+    ProdutoDTO dtoPrecoCorrigido = new ProdutoDTO(null,"produto corrigido",Double.valueOf(1L), BigDecimal.valueOf(1L), true);
+    dtoPrecoCorrigido = produtoService.criarProduto(dtoPrecoCorrigido);
+
+    ProdutoDTO dtoCorrigido = new ProdutoDTO(null,"produto teste corrigido",Double.valueOf(1L),BigDecimal.valueOf(1L),true);
+
+    assertThrows(ProdutoPrecoNegativoException.class,()-> produtoService.alterarProdutoPrecoNegativo(dtoCorrigido.getPrecoUnidadeAtual(), dtoCorrigido));
+
+
+}
+
+@Test
+@DisplayName(" teste de alterar produtos com quantidade negativo")
+    void testAlterarProdutoEstoqueNegativo()throws Exception{
+        setupProduto();
+        ProdutoDTO dtoEstoqueErrado = new ProdutoDTO(BigInteger.ONE,"produto errado",Double.valueOf(-8L), BigDecimal.valueOf(1L), true);
+        dtoEstoqueErrado =produtoService.criarProduto(dtoEstoqueErrado);
+   
+       ProdutoDTO dtoEstoqueCorrigido = new ProdutoDTO(null,"produto corrigido",Double.valueOf(1L), BigDecimal.valueOf(1L), true);
+       dtoEstoqueCorrigido = produtoService.criarProduto(dtoEstoqueCorrigido);
+   
+       ProdutoDTO dtoCorrigido = new ProdutoDTO(null,"produto teste corrigido",Double.valueOf(1L),BigDecimal.valueOf(1L),true);
+
+
+       assertThrows(ProdutoEstoqueNegativoException.class,()-> produtoService.alterarProdutoEstoqueNegativo(dtoCorrigido.getQuantidadeEstoque(), dtoCorrigido));
+
+    }
+
+}
+
