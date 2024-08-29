@@ -58,7 +58,7 @@ public class ProdutoControllerTest {
     }
 
     @Test
-    @DisplayName("Teste de id inexitente")
+    @DisplayName("Teste de id inexistente")
     void TesteGetIdInexistente() throws Exception {
         mockMvc.perform(get("/produto/9999999")).andExpect(status().isBadRequest())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof IdInexistenteException));
