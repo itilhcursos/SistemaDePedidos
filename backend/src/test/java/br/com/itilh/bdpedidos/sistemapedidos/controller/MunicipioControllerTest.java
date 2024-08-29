@@ -43,7 +43,7 @@ public class MunicipioControllerTest {
     // criar banco de dados para teste do Controller
 
     @Test
-    @DisplayName("teste do path /municipios")
+    @DisplayName("teste do path /municipios")   
     void testGetMunicipios() throws Exception {
         mockMvc.perform(get("/municipios")).andExpect(status().isOk())
         .andExpect(content().string(containsString("totalElements")));
@@ -71,6 +71,7 @@ public class MunicipioControllerTest {
     @DisplayName("teste de id existente ")
     void TesteGetIdExistente() throws Exception{
         setUpMunicipio();
+
         mockMvc.perform(get("/municipio/1")).andExpect(status().isOk())
         .andExpect(content().string(containsString("Municipio teste")));
     }
