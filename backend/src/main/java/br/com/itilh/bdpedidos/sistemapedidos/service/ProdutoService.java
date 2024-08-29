@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -34,11 +38,17 @@ public class ProdutoService {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {   
+        validarDuplicidade(origem); 
+        validarPrecoNegativo(origem);
+        validarEstoqueNegativo(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        validarDuplicidade(origem);
+        validarPrecoNegativo(origem);
+        validarEstoqueNegativo(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
@@ -50,6 +60,24 @@ public class ProdutoService {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
+
+     private void validarDuplicidade(ProdutoDTO origem) {
+        if (repositorio.existsByDescricao(origem.getDescricao())) {
+            throw new ProdutoDuplicadoException(origem.getDescricao());
+        }
+    }
+
+   private void validarPrecoNegativo(ProdutoDTO origem) {
+    if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
+        throw new ProdutoPrecoNegativoException(); //precisaria inserir o (origem.getPrecoUnidadeAtual) aqui?
+        }
+    }
+
+    private void validarEstoqueNegativo(ProdutoDTO origem) {
+        if (origem.getQuantidadeEstoque() < 0) {
+            throw new ProdutoEstoqueNegativoException(); //precisaria inserir o (origem.getQuantidadeEstoque) aqui?
+            }
+        }
 
     private ProdutoDTO toDTO(Produto produto){
         ProdutoDTO dto = mapper.map(produto, ProdutoDTO.class);
