@@ -2,6 +2,7 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ public class FormaPagamentoServiceTest {
     FormaPagamentoService formaPagamentoService;
 
     @Test
+    @DisplayName("teste do Serviço de Alterar a Forma de Pagamento criada")
     void testAlterarFormaPagamentoCriada() throws Exception {
         FormaPagamentoDTO dtoDescricaoErrada = new FormaPagamentoDTO(null,"Descrição errada",true);
         FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dtoDescricaoErrada);
@@ -29,16 +31,20 @@ public class FormaPagamentoServiceTest {
     }
 
     @Test
+    @DisplayName("teste do Serviço de Alterar a Forma de Pagamento com a intenção de Duplicar")
     void testAlterarFormaPagamentoCriadaDuplicado() throws Exception {
-        
         FormaPagamentoDTO dtoDescricaoErrada = new FormaPagamentoDTO(null,"Descrição errada",true);
         dtoDescricaoErrada = formaPagamentoService.criarFormaPagamento(dtoDescricaoErrada);
+
+        FormaPagamentoDTO dtoCorrigido = new FormaPagamentoDTO(null, "Descrição corrigida", true);
+        dtoCorrigido = formaPagamentoService.criarFormaPagamento(dtoCorrigido);
 
         FormaPagamentoDTO dtoDescricaoCorrigida = new FormaPagamentoDTO(dtoDescricaoErrada.getId(),"Descrição corrigida",true);
         assertThrows(FormaPagamentoDuplicadoException.class, ()-> formaPagamentoService.alterarFormaPagamento(dtoDescricaoCorrigida.getId(), dtoDescricaoCorrigida));
     }
 
     @Test
+    @DisplayName("teste do Serviço de Criar uma Forma de Pagamento")
     void testCriarFormaPagamento() throws Exception {
         FormaPagamentoDTO dto = new FormaPagamentoDTO(null, "Forma Pagamento teste", true);
         FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dto);
@@ -46,6 +52,7 @@ public class FormaPagamentoServiceTest {
     }
 
     @Test
+    @DisplayName("teste do Serviço de Criar uma Forma de Pagamento duplicada")
     void testCriarFormaPagamentoDuplicado() throws Exception {
         FormaPagamentoDTO dto = new FormaPagamentoDTO(null, "Forma Pagamento teste duplicado", true);
         FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dto);

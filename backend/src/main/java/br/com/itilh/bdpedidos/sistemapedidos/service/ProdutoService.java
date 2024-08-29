@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -34,11 +37,32 @@ public class ProdutoService {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public void checarDuplicado(ProdutoDTO origem) {
+        if(repositorio.existsByDescricao(origem.getDescricao()))
+        throw new ProdutoDuplicadoException(origem.getDescricao());
+    }
+
+    public void checarEstoqueNegativo(ProdutoDTO origem) {
+        if(origem.getQuantidadeEstoque() < 0.0)
+        throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+    }
+
+    public void checarPrecoNegativo(ProdutoDTO origem) {
+        if(origem.getPrecoUnidadeAtual().intValue() < 0)
+        throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+    }
+
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception { 
+        checarEstoqueNegativo(origem);
+        checarPrecoNegativo(origem);
+        checarDuplicado(origem); 
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        checarEstoqueNegativo(origem);
+        checarPrecoNegativo(origem);
+        checarDuplicado(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 

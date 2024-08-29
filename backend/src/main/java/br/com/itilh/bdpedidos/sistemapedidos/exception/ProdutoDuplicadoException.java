@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class FormaPagamentoDuplicadoException extends RuntimeException {
+public class ProdutoDuplicadoException extends RuntimeException {
 
-    public FormaPagamentoDuplicadoException(String descricao){
-        super("Forma de Pagamento: "+descricao+" já existe no sistema!");
+    public ProdutoDuplicadoException(String descricao){
+        super("Produto: "+descricao+" já existe no sistema!");
     }
 }

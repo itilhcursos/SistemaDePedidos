@@ -56,6 +56,7 @@ public class FormaPagamentoControllerTest {
     }
 
     @Test
+    @DisplayName("Teste de criar uma Forma de Pagamento")
     void testCriarFormaPagamento() throws Exception {
         mockMvc.perform(post("/forma-pagamento").contentType("application/json").content("{\r\n" + //
                         "  \"id\": null,\r\n" + //
