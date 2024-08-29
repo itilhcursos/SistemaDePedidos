@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
@@ -36,8 +37,18 @@ public class FormaPagamentoService {
     }
 
     public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
+        if(repositorio.existsByDescricao(origem.getDescricao()))
+        throw new FormaPagamentoDuplicadoException(origem.getDescricao());
+        try{
         return toDTO(repositorio.save(toEntity(origem)));
+        }catch(Exception e) {
+            throw new Exception("Erro ao salvar forma de pagamento.");
+        }
     }
+
+
+
+
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
         return toDTO(repositorio.save(toEntity(origem)));

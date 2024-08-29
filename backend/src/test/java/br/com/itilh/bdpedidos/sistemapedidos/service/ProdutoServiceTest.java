@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
@@ -60,7 +62,7 @@ public class ProdutoServiceTest {
         ProdutoDTO dtoRetorno = produtoService.criarProduto(dtoNomeErrado);
         
         ProdutoDTO dtoNomeCorrigido = new ProdutoDTO(dtoRetorno.getId(),"Nome corrigido",(double)1,BigDecimal.valueOf(0.00),true);
-        dtoNomeCorrigido = produtoService.alterarProduto(dtoRetorno.getId(), dtoNomeCorrigido);
+        dtoNomeCorrigido = produtoService.alterarProduto(dtoNomeCorrigido);
         assertEquals(true, dtoNomeCorrigido.getId().equals(dtoRetorno.getId()));
     }
 
@@ -76,7 +78,7 @@ public class ProdutoServiceTest {
         dtoCorrigido = produtoService.criarProduto(dtoCorrigido);
 
         // gerar erro ao tentar mudar o nome de um produto para outro já existente
-        ProdutoDTO dtoNomeCorrigido = new ProdutoDTO(dtoNomeErrado.getId(),"Nome corrigido",(double)1,BigDecimal.valueOf(0.00),true);
+        ProdutoDTO dtoNomeCorrigido = new ProdutoDTO(dtoNomeErrado.getId(),"Nome corrigido",1.0, BigDecimal.valueOf(10), true);
         assertThrows(ProdutoDuplicadoException.class, ()-> produtoService.alterarProduto(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
     }
     
