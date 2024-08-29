@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -24,6 +25,8 @@ public class ProdutoService {
 
     @Autowired
     private ModelMapper mapper;
+    
+    //ProdutoDTO entityDTO;
 
     public Page<ProdutoDTO> listarProdutos(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
@@ -31,38 +34,53 @@ public class ProdutoService {
 
     public ProdutoDTO buscarProdutoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Produto", id)));
+                .orElseThrow(() -> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
-        return toDTO(repositorio.save(toEntity(origem)));
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {
+        
+        if (repositorio.existsByDescricao(origem.getDescricao()))
+            throw new ProdutoDuplicadoException(origem.getDescricao());
+        try {
+            return toDTO(repositorio.save(toEntity(origem)));
+        } catch (Exception e) {
+            throw new Exception("Erro ao salvar o Produto.", e);
+        }
     }
-
+    
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
-        return toDTO(repositorio.save(toEntity(origem)));
+
+        if (repositorio.existsByDescricao(origem.getDescricao()))
+            throw new ProdutoDuplicadoException(origem.getDescricao());
+        try {
+            return toDTO(repositorio.save(toEntity(origem)));
+        } catch (Exception e) {
+            throw new Exception("Erro ao salvar o Produto.", e);
+        }
+
     }
 
-    public String excluirProduto(BigInteger id) throws Exception{
-        try{ 
+    public String excluirProduto(BigInteger id) throws Exception {
+        try {
             repositorio.deleteById(id);
-             return "Excluído";
-        }catch (Exception ex){
+            return "Excluído";
+        } catch (Exception ex) {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
 
-    private ProdutoDTO toDTO(Produto produto){
+    private ProdutoDTO toDTO(Produto produto) {
         ProdutoDTO dto = mapper.map(produto, ProdutoDTO.class);
         return dto;
     }
 
-    private Produto toEntity(ProdutoDTO dto){
+    private Produto toEntity(ProdutoDTO dto) {
         Produto entity = mapper.map(dto, Produto.class);
         return entity;
     }
 
-    private Page<ProdutoDTO> toPageDTO(Page<Produto> entities){
+    private Page<ProdutoDTO> toPageDTO(Page<Produto> entities) {
         List<ProdutoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,entities.getPageable(), entities.getTotalElements());
+        return new PageImpl<>(dtos, entities.getPageable(), entities.getTotalElements());
     }
 }

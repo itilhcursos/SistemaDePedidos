@@ -35,10 +35,6 @@ public class FormaPagamentoService {
                 .orElseThrow(() -> new IdInexistenteException("Forma de Pagamento", id)));
     }
 
-    // public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws
-    // Exception {
-    // return toDTO(repositorio.save(toEntity(origem)));
-    // }
 
     public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {
        if (repositorio.existsByDescricao(origem.getDescricao()))
@@ -51,10 +47,7 @@ public class FormaPagamentoService {
         }
     }
 
-    //public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
-     //   return toDTO(repositorio.save(toEntity(origem)));
-    //}
-
+    
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
         if (repositorio.existsByDescricao(origem.getDescricao()))
         throw new FormaPagamentoDuplicadoException(origem.getDescricao());

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public class FormaPagamentoDuplicadoException extends RuntimeException{
 
     public FormaPagamentoDuplicadoException(String nomeDescricao){
-        super("O estado :" + nomeDescricao + " já existe");
+        super("a forma de Pagamento :" + nomeDescricao + " já existe");
     }
 }
 
