@@ -37,11 +37,14 @@ public class ProdutoService {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {  
+        validarPreco(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        validarEstoque(origem);
+        validarPreco(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
