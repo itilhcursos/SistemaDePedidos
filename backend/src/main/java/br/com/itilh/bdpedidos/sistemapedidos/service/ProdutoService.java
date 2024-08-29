@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoQuantidadeEstoqueException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoUnidadeAtualException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -48,6 +51,17 @@ public class ProdutoService {
              return "Excluído";
         }catch (Exception ex){
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+        }
+    }
+    private void validarEstoque(ProdutoDTO origem) {
+        if (origem.getQuantidadeEstoque()!=null && origem.getQuantidadeEstoque() < 0) {
+            throw new ProdutoQuantidadeEstoqueException(origem.getQuantidadeEstoque());
+        }
+    }
+
+    private void validarPreco(ProdutoDTO origem) {
+        if (origem.getPrecoUnidadeAtual() != null && origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ProdutoPrecoUnidadeAtualException(origem.getPrecoUnidadeAtual());
         }
     }
 
