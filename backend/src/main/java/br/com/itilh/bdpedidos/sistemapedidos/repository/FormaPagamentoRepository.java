@@ -14,5 +14,6 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
     List<FormaPagamento> findByDescricao(String descricao);
 
     List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao);
+    boolean existsByDescricao(String descricao);
 
 }
