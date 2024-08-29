@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -42,6 +44,10 @@ public class ProdutoService {
     private void validar(ProdutoDTO origem) {
         if(repositorio.existsByDescricaoAndId(origem.getDescricao(), origem.getId()))
         throw new ProdutoDuplicadoException(origem.getDescricao());
+        if(repositorio.existsByQuantidadeEstoque(origem.getQuantidadeEstoque()))
+        throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+        if(repositorio.existsByPrecoUnidadeAtual(origem.getPrecoUnidadeAtual()))
+        throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {

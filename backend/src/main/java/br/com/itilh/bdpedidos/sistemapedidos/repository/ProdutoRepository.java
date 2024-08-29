@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.repository;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -20,7 +21,11 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     List<Produto> findByDescricaoContainingIgnoreCase(String descricao);
 
     boolean existsByDescricaoAndId(String descricao, BigInteger id);
+
+    boolean existsByQuantidadeEstoque(Double quantidadeEstoque );
     
+    boolean existsByPrecoUnidadeAtual(BigDecimal precoUnidadeAtual);
+
     @Query("FROM FormaPagamento e WHERE e.descricao like %?1")
     List<Produto> findByMinhaQuery(String descricao);
 
