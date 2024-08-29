@@ -10,21 +10,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
-
 @Service
 public class FormaPagamentoService {
-
     @Autowired
     private FormaPagamentoRepository repositorio;
 
     @Autowired
     private ModelMapper mapper;
-
 
     public Page<FormaPagamentoDTO> listarFormasPagamento(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
@@ -36,10 +33,17 @@ public class FormaPagamentoService {
     }
 
     public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
+    }
+//
+    private void validar(FormaPagamentoDTO origem) {
+        if(repositorio.existsByDescricao(origem.getDescricao()))
+          throw new FormaPagamentoDuplicadoException(origem.getDescricao());
     }
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
@@ -53,6 +57,8 @@ public class FormaPagamentoService {
     }
 
 
+
+
     private FormaPagamentoDTO toDTO(FormaPagamento formaPagamento){
         FormaPagamentoDTO dto = mapper.map(formaPagamento, FormaPagamentoDTO.class);
         return dto;
@@ -63,6 +69,7 @@ public class FormaPagamentoService {
         return entity;
     }
 
+    
     private Page<FormaPagamentoDTO> toPageDTO(Page<FormaPagamento> entities){
         List<FormaPagamentoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
         return new PageImpl<>(dtos,entities.getPageable(), entities.getTotalElements());
