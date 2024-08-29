@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,8 +12,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -34,11 +40,28 @@ public class ProdutoService {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {
+        if (origem.getQuantidadeEstoque() < 0) {
+            throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+        } else if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+        }
+        validar(origem);  
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
+    private void validar(ProdutoDTO origem) {
+        if(repositorio.existsByDescricao(origem.getDescricao()))
+          throw new ProdutoDuplicadoException(origem.getDescricao());
+    }
+
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        if (origem.getQuantidadeEstoque() < 0) {
+            throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+        } else if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+        }
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
