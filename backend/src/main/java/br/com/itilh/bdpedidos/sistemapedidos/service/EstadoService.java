@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.NomeEstadoInvalidoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 
@@ -27,10 +28,19 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
             () -> new Exception("ID inválido.")));
     }  
 
-    public EstadoDTO criarEstado(EstadoDTO entityDTO) throws Exception {           
-        if(repositorio.existsByNome(entityDTO.getNome()))   
-            throw new EstadoDuplicadoException(entityDTO.getNome());
+    private void validar (EstadoDTO dto) throws Exception {
 
+        if(dto.getNome().length() < 3 || dto.getNome().length() > 50)
+            throw new NomeEstadoInvalidoException(dto.getNome());
+        
+        if(repositorio.existsByNome(dto.getNome()))   
+            throw new EstadoDuplicadoException(dto.getNome());
+
+    }
+
+    public EstadoDTO criarEstado(EstadoDTO entityDTO) throws Exception {  
+        
+        validar(entityDTO);  
         try{    
             return toDTO(repositorio.save(toEntity(entityDTO)));
         }catch(Exception e){
@@ -38,9 +48,9 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
         }
     }
 
-    public EstadoDTO alterarEstado(BigInteger id, 
-                    EstadoDTO novosDados) throws Exception {
+    public EstadoDTO alterarEstado(BigInteger id, EstadoDTO novosDados) throws Exception {
 
+        validar(novosDados);
         if(repositorio.existsByNome(novosDados.getNome()))   
             throw new EstadoDuplicadoException(novosDados.getNome());
             
