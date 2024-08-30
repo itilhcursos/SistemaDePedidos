@@ -76,9 +76,9 @@ public class FormaPagamentoService {
         return entity;
     }
 
-    private Page<FormaPagamentoDTO> toPageDTO(Page<FormaPagamento> entities){
-        List<FormaPagamentoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,entities.getPageable(), entities.getTotalElements());
+    private Page<FormaPagamentoDTO> toPageDTO(Page<FormaPagamento> entity){
+        List<FormaPagamentoDTO> dtos = entity.stream().map(this::toDTO).collect(Collectors.toList());
+        return new PageImpl<>(dtos, entity.getPageable(), entity.getTotalElements());
     }
 
 }
