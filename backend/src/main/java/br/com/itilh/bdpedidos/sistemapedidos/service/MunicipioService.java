@@ -20,7 +20,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 @Service
 public class MunicipioService {
 
-
     @Autowired
     private MunicipioRepository repository;
 
@@ -44,51 +43,31 @@ public class MunicipioService {
                 .orElseThrow(() -> new IdInexistenteException("Município", id)));
     }
 
-<<<<<<< HEAD
     public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {
-=======
-    public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
->>>>>>> develop
         validar(origem);
         return toDTO(repository.save(toEntity(origem)));
     }
 
     private void validar(MunicipioDTO origem) {
-<<<<<<< HEAD
         if (repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
             throw new MunicipioDuplicadoException(origem.getNome());
-=======
-        // se já existe municipio com mesmo nome e no mesmo estado
-        if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
-          throw new MunicipioDuplicadoException(origem.getNome());
->>>>>>> develop
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
         validar(origem);
         return toDTO(repository.save(toEntity(origem)));
-<<<<<<< HEAD
-
-=======
->>>>>>> develop
     }
 
     public String excluirMunicipio(BigInteger id) throws Exception {
         try {
             repository.deleteById(id);
-<<<<<<< HEAD
             return "Excluído";
         } catch (Exception ex) {
-=======
-             return "Excluído com sucesso";
-        }catch (Exception ex){
->>>>>>> develop
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
 
     // Receber um Objeto Municipio e criar um MunicipioDTO
-<<<<<<< HEAD
     private MunicipioDTO toDTO(Municipio municipio) {
 
         MunicipioDTO dto = mapper.map(municipio, MunicipioDTO.class);
@@ -100,10 +79,6 @@ public class MunicipioService {
         // dto.setEstadoId(municipio.getEstado().getId());
         // dto.setEstadoNome(municipio.getEstado().getNome().toString());
 
-=======
-    private MunicipioDTO toDTO(Municipio municipio){
-        MunicipioDTO dto = mapper.map(municipio, MunicipioDTO.class);
->>>>>>> develop
         return dto;
     }
 
