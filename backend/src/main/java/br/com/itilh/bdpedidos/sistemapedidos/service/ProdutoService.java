@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -34,11 +36,20 @@ public class ProdutoService {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {   
+         validar(origem); 
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
+    private void validar(ProdutoDTO origem) {
+        if(repositorio.exexistsByDescricaoAndProdutoId(origem.getDescricao(), origem.getId()))
+        throw new ProdutoDuplicadoException(origem.getDescricao());
+        if(repositorio.exexistsByQuantidadeEstoque(origem.getQuantidadeEstoque()));
+        throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+    }
+
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
