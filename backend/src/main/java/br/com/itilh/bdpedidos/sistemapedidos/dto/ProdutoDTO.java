@@ -21,5 +21,11 @@ public class ProdutoDTO {
     private Double quantidadeEstoque;
     private BigDecimal precoUnidadeAtual;
     private Boolean ativo;
+    public void setPreco(BigDecimal valueOf) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setPreco'");
+    }
+   
+   
     
 }

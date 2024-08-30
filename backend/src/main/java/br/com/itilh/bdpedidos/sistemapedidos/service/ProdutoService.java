@@ -11,9 +11,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -26,8 +29,7 @@ public class ProdutoService {
     @Autowired
     private ModelMapper mapper;
     
-    //ProdutoDTO entityDTO;
-
+    
     public Page<ProdutoDTO> listarProdutos(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
     }
@@ -83,4 +85,21 @@ public class ProdutoService {
         List<ProdutoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
         return new PageImpl<>(dtos, entities.getPageable(), entities.getTotalElements());
     }
+
+    private void validarEstoqueNegativo(ProdutoDTO produto) {       
+        if(produto.getQuantidadeEstoque() < 0){
+          throw new ProdutoEstoqueNegativoException(produto.getDescricao());
+        }
+    }
+
+    private void validarValorNegativo(ProdutoDTO produto) {       
+        if(produto.getPrecoUnidadeAtual().floatValue() < 0){
+          throw new ProdutoPrecoNegativoException(produto.getDescricao());
+        }
+    }
+
+    public FormaPagamentoDTO ProdutoDTO(ProdutoDTO testeDTO) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'ProdutoDTO'");
+    } 
 }
