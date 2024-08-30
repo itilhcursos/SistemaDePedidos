@@ -93,7 +93,8 @@ public class MunicipioControllerTest {
     @DisplayName("Teste de post de novo Municipio")
     void TesteNovoMunicipio() throws Exception {
         setupEstado();
-        mockMvc.perform(post("/municipio").contentType("application/json")
+        mockMvc.perform(post("/municipio")
+                .contentType("application/json")
                 .content("{\r\n" + //
                         "  \"id\": 0,\r\n" + //
                         "  \"nome\": \"teste10\",\r\n" + //
