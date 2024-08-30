@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "SistemaDePedidos",
+			"path": "."
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic",
+		"java.configuration.updateBuildConfiguration": "disabled"
+	}
+}

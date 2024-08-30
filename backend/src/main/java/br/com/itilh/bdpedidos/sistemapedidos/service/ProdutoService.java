@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -38,14 +40,27 @@ public class ProdutoService {
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {   
          validar(origem); 
+         validarEstoqueNegativo(origem);
+         validarPrecoNegativo(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     private void validar(ProdutoDTO origem) {
-        if(repositorio.exexistsByDescricaoAndProdutoId(origem.getDescricao(), origem.getId()))
+        if(repositorio.exexistsByDescricaoAndId(origem.getDescricao(), origem.getId()))
         throw new ProdutoDuplicadoException(origem.getDescricao());
-        if(repositorio.exexistsByQuantidadeEstoque(origem.getQuantidadeEstoque()));
-        throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+        
+    }
+
+    private void validarEstoqueNegativo(ProdutoDTO origem) {
+        if (origem.getQuantidadeEstoque() < 0)
+          throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+
+    }
+
+     private void validarPrecoNegativo(ProdutoDTO origem) {
+     BigDecimal preco = origem.getPrecoUnidadeAtual();
+      if (preco != null && preco.compareTo(BigDecimal.ZERO) < 0) 
+        throw new ProdutoPrecoNegativoException(preco);
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {

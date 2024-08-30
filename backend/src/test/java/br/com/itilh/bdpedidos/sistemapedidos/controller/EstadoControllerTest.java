@@ -49,10 +49,12 @@ public class EstadoControllerTest {
         mockMvc.perform(
                 post("/estado")
                 .contentType("application/json")
-                .content("{" + //
-                            "  \"id\": null," + 
-                            "  \"nome\": \"Estado de teste\"" + 
-                        "}")
+                .content("""
+                        {\
+                          "id": null,\
+                          "nome": "Estado de teste"\
+                        }\
+                        """)
                         ).andExpect(status().isOk());
 
     }
