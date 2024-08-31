@@ -5,13 +5,15 @@ import java.math.BigInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+/* import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException; */
 import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
+@Service
 public class MunicipioService extends GenericService<Municipio, MunicipioDTO> {
 
     @Autowired
