@@ -99,7 +99,7 @@ public class MunicipioControllerTest {
     @DisplayName("teste de post de novo Municipio")
     void TestePostMunicipio() throws Exception{
         setupEstado();
-        mockMvc.perform( 
+        mockMvc.perform(
             post("/municipio")
             .contentType("application/json")
             .content("{\r\n" + //
@@ -108,7 +108,7 @@ public class MunicipioControllerTest {
                     "  \"entrega\": true,\r\n" + //
                     "  \"estadoId\": 1,\r\n" + //
                     "  \"estadoNome\": \"acre\"\r\n" + //
-                                "}")        
+                                "}")
         ).andExpect(status().isOk());
     }
 

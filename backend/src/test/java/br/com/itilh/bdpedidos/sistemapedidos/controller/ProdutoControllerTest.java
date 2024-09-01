@@ -25,6 +25,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 
 public class ProdutoControllerTest {
     
@@ -74,9 +75,13 @@ public class ProdutoControllerTest {
 
     }
 
-    Produto produto = new Produto(
-      BigInteger.ONE, "Produto teste", true );
-      ProdutoRepository.save(produto);
+    // void setUpProduto(){
+
+    //     Produto produto = new Produto(BigInteger.ONE, "Produto teste");
+    //     ProdutoRepository.save(produto);
+    // }
+
+    
 
     @Test
     @DisplayName("teste de post de novo Produto")

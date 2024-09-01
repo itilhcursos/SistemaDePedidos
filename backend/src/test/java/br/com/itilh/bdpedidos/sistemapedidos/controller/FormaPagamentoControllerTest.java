@@ -24,6 +24,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 
 public class FormaPagamentoControllerTest {
 
@@ -44,7 +45,7 @@ public class FormaPagamentoControllerTest {
 
     }
 
-    @Test
+    @Test 
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
 
@@ -55,7 +56,7 @@ public class FormaPagamentoControllerTest {
     @Test
     @DisplayName("teste de id existente ")
     void testGetIdExistente() throws Exception {
-        setupFormaPagamento();
+        testAlterarFormaPagamento();
         mockMvc.perform(get("/formapagamento/1")).andExpect(status().isOk())
         .andExpect(content().string(containsString("Formapagamento teste")));
     }
@@ -64,7 +65,7 @@ public class FormaPagamentoControllerTest {
     @DisplayName("Teste de id inexistente")
     void testGetIdInexistente() throws Exception {
 
-       mockMvc.perform(get("/forma-pagamento/9999999")).andExpect(status().isBadRequest())
+    mockMvc.perform(get("/forma-pagamento/9999999")).andExpect(status().isBadRequest())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof IdInexistenteException));
     }
 
