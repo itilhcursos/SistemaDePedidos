@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 
@@ -33,8 +34,8 @@ public class EstadoService {
     }
 
     public EstadoDTO getPorId( BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id).orElseThrow(
-          () -> new Exception("ID inválido."))
+        return toDTO(repositorio.findById(id)
+        .orElseThrow(() -> new IdInexistenteException("Estado", id))
         );
     } 
 
