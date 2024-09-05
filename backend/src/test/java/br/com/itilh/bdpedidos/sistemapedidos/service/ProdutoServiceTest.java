@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,5 +24,14 @@ import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoUnidadeAtualE
 @SpringBootTest
 @ActiveProfiles("teste")
 public class ProdutoServiceTest {
+    
+    @Autowired
+    private ProdutoService produtoService;
+
+    @Test
+    @DisplayName("Teste de negocio - Produto com estoque negativo")
+    void testCriarProdutoComEstoqueNegativo() throws Exception {
+        ProdutoDTO produtoDTO = new ProdutoDTO()null, "Produto Teste", -2.0,
+    }
 
 }
