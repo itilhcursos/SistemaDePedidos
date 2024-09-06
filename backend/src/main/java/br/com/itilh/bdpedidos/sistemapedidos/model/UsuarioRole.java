@@ -1,16 +1,15 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
 
 public enum UsuarioRole {
-    ADMIN("Admin"), USER("User");
+    ADMIN("Admin"),
+    USER("User");
 
     private String role;
-
     UsuarioRole(String role){
         this.role = role;
     }
 
-    public String getRole()
-    {
+    public String getRole(){
         return role;
     }
 

@@ -41,6 +41,17 @@ public class Usuario implements UserDetails {
     @Column(name = "tx_role")
     private UsuarioRole role;
 
+    public Usuario(String login, String senhaCriptografada, String role) {
+        super();
+        this.login = login;
+        this.senha = senhaCriptografada;
+        if("ADMIN".equals(role)){
+            this.role = UsuarioRole.ADMIN;
+        }else{
+            this.role = UsuarioRole.USER;
+        }
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
@@ -81,8 +92,6 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 }
 
 //CREATE TABLE public.tb_usuarios
