@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.FormaPagamentoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 public class FormaPagamentoController {
 
     @Autowired
