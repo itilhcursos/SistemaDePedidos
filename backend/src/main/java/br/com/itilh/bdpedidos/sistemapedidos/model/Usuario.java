@@ -92,6 +92,22 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+<<<<<<< HEAD
+=======
+
+    public Usuario(String login, String senhaCriptografada, String role) {
+        super();
+        this.login = login;
+        this.senha = senhaCriptografada;
+        if("ADMIN".equalsIgnoreCase(role)){
+            this.role = UsuarioRole.ADMIN;
+        }else{
+            this.role = UsuarioRole.USER;
+        }
+    }
+
+
+>>>>>>> develop
 }
 
 //CREATE TABLE public.tb_usuarios

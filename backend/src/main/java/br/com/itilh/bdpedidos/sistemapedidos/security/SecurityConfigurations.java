@@ -22,6 +22,7 @@ public class SecurityConfigurations {
     SecurityFilter securityFilter;
 
     @Bean
+<<<<<<< HEAD
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity.csrf(csrf-> csrf.disable())
         .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -46,6 +47,31 @@ public class SecurityConfigurations {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();   
+=======
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)throws Exception{
+        return httpSecurity.csrf(csrf->csrf.disable())
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests( authorize -> authorize
+                            .requestMatchers(HttpMethod.POST, "/auth/login").anonymous()
+                            .requestMatchers(HttpMethod.POST, "/auth/registro").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")            
+                            .anyRequest().anonymous())
+                            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                            .build();    
+    
+>>>>>>> develop
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
 
