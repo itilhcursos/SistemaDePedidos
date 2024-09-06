@@ -1,13 +1,9 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +13,10 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 @Service
-public class FormaPagamentoService {
+public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPagamentoDTO>{
 
     @Autowired
     private FormaPagamentoRepository repositorio;
-
-    @Autowired
-    private ModelMapper mapper;
 
 
     public Page<FormaPagamentoDTO> listarFormasPagamento(Pageable pageable) {
@@ -52,20 +45,5 @@ public class FormaPagamentoService {
         }
     }
 
-
-    private FormaPagamentoDTO toDTO(FormaPagamento formaPagamento){
-        FormaPagamentoDTO dto = mapper.map(formaPagamento, FormaPagamentoDTO.class);
-        return dto;
-    }
-
-    private FormaPagamento toEntity(FormaPagamentoDTO dto){
-        FormaPagamento entity = mapper.map(dto, FormaPagamento.class);
-        return entity;
-    }
-
-    private Page<FormaPagamentoDTO> toPageDTO(Page<FormaPagamento> entities){
-        List<FormaPagamentoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,entities.getPageable(), entities.getTotalElements());
-    }
 
 }

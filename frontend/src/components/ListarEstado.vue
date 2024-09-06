@@ -160,7 +160,12 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`);
+      let config = {
+        headers: {
+          'Authorization': 'Bearer ' +localStorage.getItem('token')
+        }
+      }
+      const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
       console.log(response.data);
       this.buscarEstados();
     },

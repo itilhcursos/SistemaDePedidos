@@ -15,6 +15,8 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/formas-pagamento">Formas de Pagamento</RouterLink>
       <RouterLink to="/Clientes">Clientes</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
+     
     </nav>
     <img src="./assets/carrinho.png" alt=""/>
   </div>

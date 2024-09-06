@@ -1,13 +1,9 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +14,11 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
 @Service
-public class MunicipioService {
-
+public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
 
     @Autowired
     private MunicipioRepository repository;
 
-    @Autowired
-    private ModelMapper mapper;
 
     public Page<MunicipioDTO> listarMunicipios(Pageable pageable) {
         return toPageDTO(repository.findAll(pageable));
@@ -67,24 +60,5 @@ public class MunicipioService {
         }catch (Exception ex){
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
-    }
-
-
-    // Receber um Objeto Municipio e criar um MunicipioDTO
-    private MunicipioDTO toDTO(Municipio municipio){
-        MunicipioDTO dto = mapper.map(municipio, MunicipioDTO.class);
-        return dto;
-    }
-    
-    // Receber um Objeto MuncipioDTO to Municipio
-    private Municipio toEntity(MunicipioDTO dto){
-        Municipio entity = mapper.map(dto, Municipio.class);
-        return entity;
-    }
-
-    private Page<MunicipioDTO> toPageDTO(Page<Municipio> municipios){
-        // Dever de Casa Estudar o ".stream" em java!!!!!!
-        List<MunicipioDTO> dtos = municipios.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(dtos,municipios.getPageable(), municipios.getTotalElements());
     }
 }

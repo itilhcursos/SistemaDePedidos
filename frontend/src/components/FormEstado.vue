@@ -68,13 +68,18 @@ export default {
         return;
       }
       this.isInvalido = false;
+      let config = {
+        headers: {
+          'Authorization': 'Bearer ' +localStorage.getItem('token')
+        }
+      }
 
       if (this.id === "") {
         //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/estado", {
           id: this.id,
           nome: this.nome,
-        });
+        }, config);
         this.listaEstados = response.data;
       } else {
         // alterar pelo PUT da API
@@ -84,7 +89,7 @@ export default {
             id: this.id,
             nome: this.nome,
           }
-        );
+        ,config );
         this.listaEstados = response.data;
       }
 
