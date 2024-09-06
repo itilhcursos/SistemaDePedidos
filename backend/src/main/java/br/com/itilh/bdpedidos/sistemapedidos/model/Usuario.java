@@ -79,6 +79,17 @@ public class Usuario implements UserDetails {
         return true;
     }
 
+    public Usuario(String login, String senhaCriptografada, String role) {
+      super();
+      this.login = login;
+      this.senha = senhaCriptografada;
+      if("ADMIN".equalsIgnoreCase(role)) {
+        this.role = UsuarioRole.ADMIN;
+      }else {
+        this.role = UsuarioRole.USER;
+      }
+    }
+
 }
 
 
