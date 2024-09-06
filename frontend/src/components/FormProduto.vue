@@ -101,7 +101,11 @@ export default {
                 return;
             }
             this.isInvalido = false;
-
+            let config = {
+                headers: {
+                'Authorization': 'Bearer ' +localStorage.getItem('token')
+                }
+            }
             if (this.id === "") {
                 const response = await axios.post("http://localhost:8080/produto", {
                     id: this.id, 
@@ -109,7 +113,7 @@ export default {
                     quantidadeEstoque: this.quantidadeEstoque, 
                     precoUnidadeAtual: this.precoUnidadeAtual, 
                     ativo: this.ativo
-                });
+                }, config);
                 this.listaProdutos = response.data;
             } else {
                 const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
@@ -119,7 +123,7 @@ export default {
                     quantidadeEstoque: this.quantidadeEstoque, 
                     precoUnidadeAtual: this.precoUnidadeAtual, 
                     ativo: this.ativo
-                });
+                }, config);
                 this.listaEstados = response.data;
             }
 

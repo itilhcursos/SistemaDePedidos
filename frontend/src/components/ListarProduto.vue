@@ -173,7 +173,12 @@
         this.formVisible = true;
       },
       async excluirProduto(id) {
-        const response = await axios.delete(`http://localhost:8080/produto/${id}`);
+        let config = {
+        headers: {
+          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          }
+        }
+        const response = await axios.delete(`http://localhost:8080/produto/${id}`,config);
         console.log(response.data);
         this.buscarProdutos();
       },
