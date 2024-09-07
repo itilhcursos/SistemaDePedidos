@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.AuthLoginDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.RegistroDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.SingUpDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Usuario;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.UsuarioRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.security.TokenService;
 
 @RestController
 @RequestMapping("auth")
@@ -24,13 +26,17 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
-    public String login (@RequestBody AuthLoginDTO dto){
+    public SingUpDTO login (@RequestBody AuthLoginDTO dto){
         UsernamePasswordAuthenticationToken loginSenha = new UsernamePasswordAuthenticationToken(dto.getLogin(), dto.getSenha());
 
         var auth = this.authenticationManager.authenticate(loginSenha);
+        var token = tokenService.generateToken((Usuario)auth.getPrincipal());
 
-        return auth.toString();
+        return new SingUpDTO(dto.getLogin(), token);
 
     }
 
