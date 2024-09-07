@@ -14,9 +14,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @Configuration
 @EnableWebSecurity
+@SecurityScheme(
+    name = "bearerAuth",
+    type = SecuritySchemeType.HTTP,
+    bearerFormat = "JWT",
+    scheme = "bearer"
+)
 public class SecurityConfigurations {
 
     @Autowired
@@ -28,12 +36,11 @@ public class SecurityConfigurations {
         .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests( authorize -> authorize                        
                         .requestMatchers(HttpMethod.POST, "/auth/login").anonymous()
-                        .requestMatchers(HttpMethod.POST, "/auth/registro").anonymous()
+                        .requestMatchers(HttpMethod.POST, "/auth/registro").permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-                        .anyRequest().anonymous()
-                        //.anyRequest().authenticated()
+                        .anyRequest().permitAll()
                         )
                         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                         .build();

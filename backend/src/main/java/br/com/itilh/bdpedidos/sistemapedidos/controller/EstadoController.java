@@ -1,7 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import java.math.BigInteger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,16 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.EstadoService;
-
-
-
-
-
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 public class EstadoController {
 
     @Autowired

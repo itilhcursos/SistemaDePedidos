@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.AuthLoginDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.RegistroDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.SingUpDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Usuario;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.UsuarioRepository;
-import br.com.itilh.bdpedidos.sistemapedidos.service.TokenService;
+import br.com.itilh.bdpedidos.sistemapedidos.security.TokenService;
 
 
 @RestController
@@ -30,18 +31,17 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthLoginDTO dto) {
+    public SingUpDTO login(@RequestBody AuthLoginDTO dto) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(dto.getLogin(), dto.getSenha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((Usuario)auth.getPrincipal());
-
-        return token;
+        return new SingUpDTO(dto.getLogin(), token);
     }
 
     @PostMapping("/registro")
     public String registro(@RequestBody RegistroDTO dto) {
         if(repository.findByLogin(dto.getLogin()) !=null)
-            throw new RuntimeException("Usario já existe");
+            throw new RuntimeException("Usuário já existe");
         String senhaCriptografado = new BCryptPasswordEncoder().encode(dto.getSenha());
 
         Usuario user = new Usuario(dto.getLogin(), senhaCriptografado, dto.role);
