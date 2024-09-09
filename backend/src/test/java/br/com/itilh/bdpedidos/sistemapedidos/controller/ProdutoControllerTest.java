@@ -48,12 +48,15 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
+        //esse path é válido
         mockMvc.perform(get("/produtos")).andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     @DisplayName("teste de id existente ")
     void TesteGetIdExistente() throws Exception{
+
+        //esse método está comentado!!!
         setupProduto();
         mockMvc.perform(get("/municipio/1")).andExpect(status().isOk())
         .andExpect(content().string(containsString("Municipio teste")));
@@ -74,7 +77,7 @@ public class ProdutoControllerTest {
         mockMvc.perform(get("/produtoxpto")).andExpect(status().isNotFound());
 
     }
-
+//// ??? por ues está comentado?
     // void setUpProduto(){
 
     //     Produto produto = new Produto(BigInteger.ONE, "Produto teste");
@@ -99,7 +102,7 @@ public class ProdutoControllerTest {
 
         @DisplayName ("teste de alterar um Produto")
     void testAlterarProduto() throws Exception {
-
+        //esse método está comentado!!!
         setUpProduto();
         mockMvc.perform(put("/produto/1").contentType("application/json").content(
             "{\r\n" + //
@@ -117,7 +120,7 @@ public class ProdutoControllerTest {
 
     @DisplayName ("teste de deletar Produto")
     void testDeleteProduto() throws Exception {
-
+        //esse método está comentado!!!
         setUpProduto();
         
         mockMvc.perform(delete("/produto/1")).andExpect(status().isOk())

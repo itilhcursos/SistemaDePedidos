@@ -35,10 +35,13 @@ public class ProdutoService {
     }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+
+        //teste para preço e quantidade
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+          //teste para preço e quantidade
         return toDTO(repositorio.save(toEntity(origem)));
     }
 

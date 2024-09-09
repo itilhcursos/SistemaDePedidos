@@ -39,6 +39,7 @@ public class FormaPagamentoControllerTest {
     @Test
     @DisplayName("teste path /formapagamento")
     void testGetTodosfomapagamento() throws Exception {
+        //mapeamento errado @GetMapping("/formas-pagamento")
         
        mockMvc.perform(get("/formapagamento")).andExpect(status().isOk())
        .andExpect(content().string(containsString("totalElements")));
@@ -48,7 +49,7 @@ public class FormaPagamentoControllerTest {
     @Test 
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
-
+ //mapeamento errado @GetMapping("/formas-pagamento")
         mockMvc.perform(get("/formapagamento")).andExpect(status().isMethodNotAllowed());
 
     }
@@ -57,6 +58,7 @@ public class FormaPagamentoControllerTest {
     @DisplayName("teste de id existente ")
     void testGetIdExistente() throws Exception {
         testAlterarFormaPagamento();
+         //mapeamento errado @GetMapping("/forma-pagamento/{id}")
         mockMvc.perform(get("/formapagamento/1")).andExpect(status().isOk())
         .andExpect(content().string(containsString("Formapagamento teste")));
     }
@@ -77,9 +79,11 @@ public class FormaPagamentoControllerTest {
 
     }
 
+    //código perdido no meio da classe
     FormaPagamento formaPagamento = new FormaPagamento(
     BigInteger.ONE, "Forma de pagamento teste", true);
     formaPagamentoRepository.save(formaPagamento);
+    //
 
 @Test
 @DisplayName("teste de post de novo FormaPagamento")
@@ -95,7 +99,8 @@ public class FormaPagamentoControllerTest {
     @Test
     @DisplayName("teste de put de novo formapagamento")
     void testAlterarFormaPagamento() throws Exception{
-        setUpFormaPagamento();
+        // onde esta esse método?
+        setUpFormaPagamento(); 
         mockMvc.perform(put("/forma-pagamento/1").contentType("application/json").content("{\r\n" + //
                         "  \"id\": 1,\r\n" + //
                         "  \"descricao\": \"Forma de pagamento Alterado\",\r\n" + //
@@ -109,6 +114,7 @@ public class FormaPagamentoControllerTest {
     @Test
     @DisplayName("Teste delete de Forma de Pagamento")
     void testDeletePorId() throws Exception {
+          // onde esta esse método?
         setUpFormaPagamento();
         mockMvc.perform(delete("/forma-pagamento/1"))
         .andExpect(status().isOk())

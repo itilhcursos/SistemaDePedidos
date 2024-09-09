@@ -36,10 +36,14 @@ public class FormaPagamentoService {
     }
 
     public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
+
+        //Faltou testar se a forma de pagamento já existe
+
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        //Faltou testar se a forma de pagamento já existe
         return toDTO(repositorio.save(toEntity(origem)));
     }
 

@@ -15,4 +15,6 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
 
     List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao);
 
+    // consulta para forma de pagamento duplicada
+
 }
