@@ -5,13 +5,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.AuthLoginDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.RegistroDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.SingUpDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Usuario;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.UsuarioRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.security.TokenService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.token.TokenService;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +38,7 @@ public class AuthenticationController {
         var auth = this.authenticationManager.authenticate(loginSenha);
         var token = tokenService.generateToken((Usuario)auth.getPrincipal());
 
-        return new SingUpDTO(dto.getLogin(), token);
+       return new SingUpDTO(dto.getLogin(), token);
 
     }
     @PostMapping("/registro")

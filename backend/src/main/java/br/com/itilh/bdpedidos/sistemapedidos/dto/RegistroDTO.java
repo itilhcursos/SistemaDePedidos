@@ -1,6 +1,5 @@
 package br.com.itilh.bdpedidos.sistemapedidos.dto;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
