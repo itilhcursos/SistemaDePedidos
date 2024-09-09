@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
@@ -38,23 +39,24 @@ public class EstadoService {
         .orElseThrow(() -> new IdInexistenteException("Estado", id))
         );
     } 
+    
 
-    public EstadoDTO criarEstado( EstadoDTO entityDTO) throws Exception { 
-        try{               
-            return toDTO(repositorio.save(toEntity(entityDTO)));
-        }catch(Exception e){
-            throw new Exception("Erro ao salvar o estado.");
-        }
+    public EstadoDTO criarEstado( EstadoDTO entityDTO) throws Exception {
+
+        validar(entityDTO);
+        return toDTO(repositorio.save(toEntity(entityDTO)));
+        
     }
 
-    public EstadoDTO alterarEstado( BigInteger id, 
-                                    EstadoDTO novosDados) throws Exception {
-        try{               
-            return toDTO(repositorio.save(toEntity(novosDados)));
-        }catch(Exception e){
-            throw new Exception("Alteração não foi realizada.");
-        }
-        
+    private void validar(EstadoDTO entityDTO) {
+       if(repositorio.existsByNome(entityDTO.getNome())){
+            throw new EstadoDuplicadoException(entityDTO.getNome());
+       }
+    }
+
+    public EstadoDTO alterarEstado( BigInteger id, EstadoDTO origem) throws Exception {
+        validar(origem); 
+        return toDTO(repositorio.save(toEntity(origem)));
     }
 
 

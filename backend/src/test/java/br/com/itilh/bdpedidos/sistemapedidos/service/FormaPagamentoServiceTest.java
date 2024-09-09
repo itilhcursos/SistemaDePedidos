@@ -10,7 +10,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 
 
@@ -24,8 +23,6 @@ public class FormaPagamentoServiceTest {
     @Autowired
     FormaPagamentoService formaPagamentoService;
 
-    @Autowired
-    FormaPagamentoRepository formaPagamentoRepository;
 
 
     @Test

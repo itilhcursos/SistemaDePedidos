@@ -30,4 +30,6 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
     
     @Override
     Page<Estado> findAll(Pageable pageable);
+
+    boolean existsByNome(String nome);
 }
