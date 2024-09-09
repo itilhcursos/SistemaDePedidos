@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 
 @SpringBootTest
 @ActiveProfiles("test")

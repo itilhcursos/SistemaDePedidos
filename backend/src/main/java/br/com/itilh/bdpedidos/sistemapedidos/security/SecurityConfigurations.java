@@ -14,8 +14,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+
 @Configuration
 @EnableWebSecurity
+@SecurityScheme(
+    name = "bearerAuth",
+    type = SecuritySchemeType.HTTP,
+    bearerFormat = "JWT",
+    scheme = "bearer"
+)
+
 public class SecurityConfigurations {
 
     @Autowired
