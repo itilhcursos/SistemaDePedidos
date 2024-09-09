@@ -2,6 +2,7 @@ package br.com.itilh.bdpedidos.sistemapedidos.model;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,9 +38,9 @@ public class Pedido {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    @OneToMany
+    @OneToMany // analisar se esta certo - se é OneToMany ou ManyToOne ou ManyToMany????
     @JoinColumn(name = "id_forma_pagamento")
-    private FormaPagamento formaPagamento;
+    private List<FormaPagamento> formasPagamento;
 
     @Column(name="int_numero")
     private BigInteger intNumero;
