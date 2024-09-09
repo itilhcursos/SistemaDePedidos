@@ -28,12 +28,12 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN");
+                .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
              // .requestMatchers(HttpMethod.GET, "/**").authenticated()
              // .anyRequest().anonymous())
-             //   .anyRequest().permitAll())
-             //   .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-             //   .build();
+                .anyRequest().permitAll())
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
