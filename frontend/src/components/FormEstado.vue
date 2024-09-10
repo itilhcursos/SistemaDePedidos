@@ -59,12 +59,14 @@ export default {
       id: "",
       nome: "",
       isInvalido: false,
+      mensagem: '',
     };
   },
   methods: {
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
+
         return;
       }
       this.isInvalido = false;
@@ -73,7 +75,9 @@ export default {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
+    try{
 
+     
       if (this.id === "") {
         //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/estado", {
@@ -91,7 +95,8 @@ export default {
           }
         ,config );
         this.listaEstados = response.data;
-      }
+      };
+   
 
       this.$emit("salvar_estado", {
         id: this.id,
@@ -100,24 +105,36 @@ export default {
 
       this.id = "";
       this.nome = "";
-    },
-    cancelar() {
+    
+      console.log (error);
+      console.log (error.response.status);
+      this.isInvalido = true;
+      if(error.response.status === 403){        
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      }else{
+        this.mensagem = error.message;
+      }
+  
+    cancelar(){
       this.id = "";
       this.nome = "";
       this.$emit("cancelar", true);
-    },
+    }
   },
+  
   mounted() {
     if (this.propsEstado) {
       this.id = this.propsEstado.id;
       this.nome = this.propsEstado.nome;
     }
   },
+
   computed: {
     getAcao() {
       return this.id === "" ? "Incluir" : "Alterar";
     },
   },
 };
+
 </script>
 
