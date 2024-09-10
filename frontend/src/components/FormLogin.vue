@@ -80,7 +80,8 @@ export default {
           });
         let dados = response.data;
         localStorage.setItem('token', dados.token);
-        this.$router.push('/');
+        localStorage.setItem('login', dados.login );
+        this.$router.push({path:'/'}).then(()=> {this.$router.go(0)});
      
       }catch(error){
         this.isInvalido = true;
@@ -97,7 +98,9 @@ export default {
     logout() {
       localStorage.setItem('token', "");
       localStorage.removeItem('token', "");
-      this.$router.push('/');
+      localStorage.setItem('login', "");
+      localStorage.removeItem('login', "");
+      this.$router.push({path:'/'}).then(()=> {this.$router.go(0)});
     },
   },
 
