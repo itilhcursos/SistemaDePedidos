@@ -13,11 +13,7 @@
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
-<<<<<<< HEAD
-        <div class="p-2">{{ menssagem }}</div>
-=======
         <div class="p-2">{{ mensagem }}</div>
->>>>>>> master
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarEstado">
@@ -44,11 +40,7 @@ export default {
       id: "",
       nome: "",
       isInvalido: false,
-<<<<<<< HEAD
-      menssagem: '',
-=======
       mensagem : '',
->>>>>>> master
     };
   },
   methods: {
@@ -63,13 +55,9 @@ export default {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
+     
       }
-      try {
-
-<<<<<<< HEAD
-=======
       try{
->>>>>>> master
         if (this.id === "") {
           //incluir pelo POST da API
           const response = await axios.post("http://localhost:8080/estado", {
@@ -85,31 +73,6 @@ export default {
               id: this.id,
               nome: this.nome,
             }
-<<<<<<< HEAD
-            , config);
-          this.listaEstados = response.data;
-        }
-
-        this.$emit("salvar_estado", {
-          id: this.id,
-          nome: this.nome,
-        });
-
-        this.id = "";
-        this.nome = "";
-      } catch (error) {
-        console.log(error);
-        console.log(error.response.status);
-        this.isInvalido = true;
-        if (error.response.status === 403) {
-          this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else {
-          this.mensagem = error.message;
-        }
-      }
-    },
-
-=======
           ,config );
           this.listaEstados = response.data;
         }
@@ -133,7 +96,6 @@ export default {
       }
     }
    },
->>>>>>> master
     cancelar() {
       this.id = "";
       this.nome = "";
