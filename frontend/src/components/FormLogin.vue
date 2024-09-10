@@ -78,9 +78,11 @@ export default {
             login: this.login,
             senha: this.senha,
           });
-        let dados = response.data;
+        const dados = response.data;
+        console.log(dados);
         localStorage.setItem('token', dados.token);
-        this.$router.push('/');
+        localStorage.setItem('login', dados.login);
+        this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
      
       }catch(error){
         this.isInvalido = true;
@@ -97,8 +99,9 @@ export default {
     logout() {
       localStorage.setItem('token', "");
       localStorage.removeItem('token', "");
+      localStorage.setItem('login', "");
+      localStorage.removeItem('login', "");
       this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
-
     },
   },
 
