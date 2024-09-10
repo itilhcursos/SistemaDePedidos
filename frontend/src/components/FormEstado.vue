@@ -115,26 +115,25 @@ export default {
         this.mensagem = error.message;
       }
   
-    cancelar(){
-      this.id = "";
-      this.nome = "";
-      this.$emit("cancelar", true);
-    }
-  },
-  
-  mounted() {
-    if (this.propsEstado) {
-      this.id = this.propsEstado.id;
-      this.nome = this.propsEstado.nome;
-    }
-  },
-
-  computed: {
-    getAcao() {
-      return this.id === "" ? "Incluir" : "Alterar";
+      cancelar(){
+        this.id = "";
+        this.nome = "";
+        this.$emit("cancelar", true);
+      }
     },
+    },
+    mounted() {
+      if (this.propsEstado) {
+        this.id = this.propsEstado.id;
+        this.nome = this.propsEstado.nome;
+      }
+    },
+    computed: {
+      getAcao() {
+        return this.id === "" ? "Incluir" : "Alterar";
+      },
+    },
+
   },
-};
-
+}
 </script>
-
