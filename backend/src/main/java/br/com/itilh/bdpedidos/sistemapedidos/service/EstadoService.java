@@ -65,5 +65,5 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
         repositorio.deleteById(id);
         return "Excluído";
     }  
-    
+     
 }

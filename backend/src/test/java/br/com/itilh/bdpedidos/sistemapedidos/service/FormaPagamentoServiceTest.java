@@ -37,7 +37,7 @@ public class FormaPagamentoServiceTest {
 
 
     @Test
-    @DisplayName("teste de alterar produto")
+    @DisplayName("teste de alterar forma-pagamento")
     void testAlterarFormaPagamento() throws Exception {
         setupFormaPagamento();
     FormaPagamentoDTO dtoDescricaoErrado = new FormaPagamentoDTO(BigInteger.ONE,"forma-pagamento errado", true);
@@ -48,7 +48,7 @@ public class FormaPagamentoServiceTest {
 }
 
 @Test
-@DisplayName("teste de produto duplicado por alteração")
+@DisplayName("teste de forma-pagamento duplicado por alteração")
 void testAlterarFormaPagamentoDuplicado() throws Exception {
     setupFormaPagamento();
         FormaPagamentoDTO dtoDescricaoErrado = new FormaPagamentoDTO(BigInteger.ONE,"forma-pagamento errado", true);
@@ -76,7 +76,7 @@ void testAlterarFormaPagamentoDuplicado() throws Exception {
     }
 
     @Test
-    @DisplayName("teste deforma-pagamento  id nao encontrado")
+    @DisplayName("teste de forma-pagamento  id nao encontrado")
     void testFormaPagamentoIdNaoEncontrado()throws Exception {
         setupFormaPagamento();
      
