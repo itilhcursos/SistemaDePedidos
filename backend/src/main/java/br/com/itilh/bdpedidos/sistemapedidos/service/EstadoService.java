@@ -19,11 +19,11 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
     @Autowired
     EstadoRepository repositorio;
 
-    public Page<EstadoDTO> getTodos(Pageable pageable ){
+    public Page<EstadoDTO> listarEstados(Pageable pageable ){
         return toPageDTO(repositorio.findAll(pageable));
     }
 
-    public EstadoDTO getPorId(BigInteger id) throws Exception {
+    public EstadoDTO buscarEstadoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")));
     }  
@@ -61,7 +61,7 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
         }                                   
     }
 
-    public String deletePorId(BigInteger id) throws Exception {
+    public String excluirEstadoPorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
     }  

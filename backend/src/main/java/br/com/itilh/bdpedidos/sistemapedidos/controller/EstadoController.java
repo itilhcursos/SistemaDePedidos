@@ -36,7 +36,7 @@ public class EstadoController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
-        return estadoService.getTodos(pageable);
+        return estadoService.listarEstados(pageable);
     }
 
     // @GetMapping("/estados/nome/{nome}")
@@ -55,7 +55,7 @@ public class EstadoController {
         
     @GetMapping("/estado/{id}")
     public EstadoDTO getPorId(@PathVariable BigInteger id) throws Exception {
-        return estadoService.getPorId(id);
+        return estadoService.buscarEstadoPorId(id);
     }    
 
     @PostMapping("/estado")
@@ -72,6 +72,6 @@ public class EstadoController {
 
     @DeleteMapping("/estado/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
-        return estadoService.deletePorId(id);
+        return estadoService.excluirEstadoPorId(id);
     }    
 }
