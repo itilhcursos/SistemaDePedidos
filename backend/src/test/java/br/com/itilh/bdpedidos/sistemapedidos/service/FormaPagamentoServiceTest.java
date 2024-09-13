@@ -41,4 +41,6 @@ public class FormaPagamentoServiceTest {
         FormaPagamentoDTO dtoNomeCorrigido = new FormaPagamentoDTO(dtoNomeErrado.getId(),"Nome corrigido", true);
         assertThrows(FormaPagamentoDuplicadoException.class, ()-> formaPagamentoService.alterarFormaPagamento(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
     }
+
+    //faltou os outros métodos da service
 }

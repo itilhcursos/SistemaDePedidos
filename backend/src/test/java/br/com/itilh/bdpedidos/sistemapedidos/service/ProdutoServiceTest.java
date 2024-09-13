@@ -88,4 +88,7 @@ public class ProdutoServiceTest {
         ProdutoDTO dtoNomeCorrigido = new ProdutoDTO(dtoNomeErrado.getId(),"Nome corrigido2",1.0, BigDecimal.valueOf(-10), true);
         assertThrows(ProdutoPrecoNegativoException.class, ()-> produtoService.alterarProduto(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
     }
+
+    
+    //faltou os outros métodos da service
 }
