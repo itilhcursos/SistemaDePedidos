@@ -56,12 +56,16 @@ public class ProdutoService {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
+
+    // erro de código
     private void validarEstoque(ProdutoDTO origem) {
         if (origem.getQuantidadeEstoque()!=null && origem.getQuantidadeEstoque() < 0) {
             throw new ProdutoQuantidadeEstoqueException(origem.getQuantidadeEstoque());
         }
     }
 
+
+    //erro de código
     private void validarPreco(ProdutoDTO origem) {
         if (origem.getPrecoUnidadeAtual() != null && origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
             throw new ProdutoPrecoUnidadeAtualException(origem.getPrecoUnidadeAtual());
