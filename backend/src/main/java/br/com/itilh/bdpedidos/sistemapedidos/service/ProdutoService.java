@@ -44,11 +44,13 @@ public class ProdutoService {
 
     private void validar(ProdutoDTO origem) {
         if(repositorio.existsByDescricaoAndId(origem.getDescricao(), origem.getId()))
-        throw new ProdutoDuplicadoException(origem.getDescricao());
+             throw new ProdutoDuplicadoException(origem.getDescricao());
+
         if(repositorio.existsByQuantidadeEstoque(origem.getQuantidadeEstoque()))
-        throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+            throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
+
         if(repositorio.existsByPrecoUnidadeAtual(origem.getPrecoUnidadeAtual()))
-        throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+            throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
