@@ -41,6 +41,7 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
     }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {
+        // jogar esse teste para o validar Assim só precisa escrever uma vez
         if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
             throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
         } else if (origem.getQuantidadeEstoque() < 0) {
@@ -51,6 +52,7 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+          // jogar esse teste para o validar Assim só precisa escrever uma vez
         if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
             throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
         } else if (origem.getQuantidadeEstoque() < 0) {
