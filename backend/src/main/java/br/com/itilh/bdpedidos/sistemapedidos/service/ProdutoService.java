@@ -86,18 +86,23 @@ public class ProdutoService {
         return new PageImpl<>(dtos, entities.getPageable(), entities.getTotalElements());
     }
 
+
+    // verificação não utilizada 
     private void validarEstoqueNegativo(ProdutoDTO produto) {       
         if(produto.getQuantidadeEstoque() < 0){
           throw new ProdutoEstoqueNegativoException(produto.getDescricao());
         }
     }
 
+      // verificação não utilizada 
     private void validarValorNegativo(ProdutoDTO produto) {       
         if(produto.getPrecoUnidadeAtual().floatValue() < 0){
           throw new ProdutoPrecoNegativoException(produto.getDescricao());
         }
     }
 
+
+      // Forma de pagamentoDTO????? 
     public FormaPagamentoDTO ProdutoDTO(ProdutoDTO testeDTO) {
         
         throw new UnsupportedOperationException("Unimplemented method 'ProdutoDTO'");

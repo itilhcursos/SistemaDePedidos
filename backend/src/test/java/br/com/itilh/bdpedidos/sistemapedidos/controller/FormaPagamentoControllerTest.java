@@ -56,6 +56,10 @@ public class FormaPagamentoControllerTest {
     void TesteGetPathErrado() throws Exception {
         mockMvc.perform(get("/forma-pagamento-xpto")).andExpect(status().isNotFound());
     }
+//Atenção!!!
+//cuidado com nomes de metodos muito parecidos
+//  setUpFormaPagamento() <--> setupFormaPagamento()
+//// isso pode confundir
 
     // criação das estidades necessárias parta os teste de existência de forma pagamento
     void setUpFormaPagamento() {

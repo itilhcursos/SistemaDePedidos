@@ -98,6 +98,8 @@ public class ProdutoControllerTest {
         ).andExpect(content().string(containsString("produto teste alterado")));
     }
 
+
+    // faltaram os teste como os valores negativos  (preço e quantidade)
     
    
 
