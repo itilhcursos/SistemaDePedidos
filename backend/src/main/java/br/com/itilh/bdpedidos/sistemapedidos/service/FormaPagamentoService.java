@@ -35,6 +35,7 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
     }
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        //faltou o teste de dupliciada na alteração
         return toDTO(repositorio.save(toEntity(origem)));
     }
 

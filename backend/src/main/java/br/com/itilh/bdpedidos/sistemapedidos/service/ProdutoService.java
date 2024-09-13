@@ -50,11 +50,13 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
 
     private void validarPrecoNegativo(ProdutoDTO origem) {
      BigDecimal preco = origem.getPrecoUnidadeAtual();
+     // você está aceitando produto com preço nulo? não deveria ser impedido?
       if (preco != null && preco.compareTo(BigDecimal.ZERO) < 0) 
         throw new ProdutoPrecoNegativoException(preco);
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        //só validou na criação !!! e nas alterações?
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
