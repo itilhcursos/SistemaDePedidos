@@ -37,5 +37,6 @@ public class FormaPagamentoServiceTest {
         assertThrows(FormaPagamentoDuplicadoException.class, ()-> formaPagamentoService.alterarFormaPagamento(dtoNomeCorrigido.getId(),dtoNomeCorrigido));
     }
 
+    // faltaram os outros casos de teste - lista, excluir ....
 }
 
