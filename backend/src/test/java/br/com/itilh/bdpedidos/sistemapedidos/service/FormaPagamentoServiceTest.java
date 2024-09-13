@@ -65,10 +65,12 @@ public class FormaPagamentoServiceTest {
         FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dtoNomeErrado);
         
         FormaPagamentoDTO dtoNomeCorrigido = new FormaPagamentoDTO(dtoRetorno.getId(),"Nome corrigido",true);
+        //tem um erro na linha abaixo
         dtoNomeCorrigido = formaPagamentoService.alterarFormaPagamento(dtoNomeCorrigido);
         assertEquals(true, dtoNomeCorrigido.getId().equals(dtoRetorno.getId()));
     }
 
+    // esse teste não é de alteração
     @Test
     @DisplayName("Teste de alteração de nome duplicado")
     void testCriarFormaPagamentoDuplicadoAlterar() throws Exception {

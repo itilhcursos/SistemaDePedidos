@@ -51,6 +51,7 @@ public class FormaPagamentoService {
 
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        //faltou o validaçao de duplidade aqui
         return toDTO(repositorio.save(toEntity(origem)));
     }
 

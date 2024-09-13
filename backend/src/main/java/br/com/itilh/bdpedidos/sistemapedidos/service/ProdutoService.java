@@ -61,9 +61,9 @@ public class ProdutoService {
             throw new Exception("Erro ao alterar produto");
         }
     }
-            
-
-    private void validarEstoque(ProdutoDTO origem) {
+          
+    // se forem null a quantidade e precisam ser inválidas
+      private void validarEstoque(ProdutoDTO origem) {
         if (origem.getQuantidadeEstoque() != null && origem.getQuantidadeEstoque() < 0)
             throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
     }

@@ -79,7 +79,9 @@ public class ProdutoServiceTest {
 
         // gerar erro ao tentar mudar o nome de um produto para outro já existente
         ProdutoDTO dtoNomeCorrigido = new ProdutoDTO(dtoNomeErrado.getId(),"Nome corrigido",1.0, BigDecimal.valueOf(10), true);
-        assertThrows(ProdutoDuplicadoException.class, ()-> produtoService.alterarProduto(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
+        assertThrows(ProdutoDuplicadoException.class, ()-> produtoService.
+    //linha com erro
+        alterarProduto(dtoNomeCorrigido.getId(), dtoNomeCorrigido));
     }
     
 
