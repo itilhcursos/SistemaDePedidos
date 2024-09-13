@@ -46,6 +46,9 @@ public class ProdutoService {
 
 
     private void validar(ProdutoDTO origem) {
+
+        // teste é para negativos!!! zero não é negativo
+
         if(origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) <= 0){
             throw new ProdutoPrecoNegativoException(origem.getPrecoUnidadeAtual());
         }
