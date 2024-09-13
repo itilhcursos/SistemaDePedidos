@@ -41,4 +41,6 @@ public class FormaPagamentoServiceTest {
     FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dtoPagamento);
       assertThrows(FormaPagamentoException.class, ()-> formaPagamentoService.criarFormaPagamento(dtoPagamento));
   }
+
+  //teste está incompleto - Criar - Alterar - excluir - listar -... - e outros casos
 }

@@ -59,12 +59,15 @@ public class ProdutoService {
 
      private void validarPrecoNegativo(ProdutoDTO origem) {
      BigDecimal preco = origem.getPrecoUnidadeAtual();
+//aqui você de deixa cadastrar preço nulo? Não seria o caso de impedir!!!!
       if (preco != null && preco.compareTo(BigDecimal.ZERO) < 0) 
         throw new ProdutoPrecoNegativoException(preco);
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
         validar(origem);
+//  quando eu altero o preço e a quantidade eu não devo testar novamente se eles ficaram negativo?
+
         return toDTO(repositorio.save(toEntity(origem)));
     }
 

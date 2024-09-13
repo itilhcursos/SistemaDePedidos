@@ -49,6 +49,8 @@ public class FormaPagamentoService {
     }
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+
+        // faltou validar a alteração
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
