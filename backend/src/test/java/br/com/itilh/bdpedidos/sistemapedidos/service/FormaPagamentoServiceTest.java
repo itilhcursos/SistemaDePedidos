@@ -59,4 +59,6 @@ public class FormaPagamentoServiceTest {
         FormaPagamentoDTO dtoDescricaoCorrigida = new FormaPagamentoDTO(dtoDescricaoErrada.getId(),"Descrição corrigida",true);
         assertThrows(FormaPagamentoDuplicadoException.class, ()-> formaPagamentoService.alterarFormaPagamento(dtoDescricaoCorrigida.getId(), dtoDescricaoCorrigida));
     }
+
+    //não criou testes para todos os métodos da service
 }

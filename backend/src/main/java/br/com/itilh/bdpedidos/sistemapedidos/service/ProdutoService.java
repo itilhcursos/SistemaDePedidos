@@ -41,6 +41,8 @@ public class ProdutoService {
     }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {
+
+        //levar esse teste para o validar e não assim evitar de fazer duas vezes
         if (origem.getQuantidadeEstoque() < 0) {
             throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
         } else if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {
@@ -56,6 +58,7 @@ public class ProdutoService {
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        //levar esse teste para o validar e não assim evitar de fazer duas vezes
         if (origem.getQuantidadeEstoque() < 0) {
             throw new ProdutoEstoqueNegativoException(origem.getQuantidadeEstoque());
         } else if (origem.getPrecoUnidadeAtual().compareTo(BigDecimal.ZERO) < 0) {

@@ -102,4 +102,5 @@ public class ProdutoServiceTest {
         ProdutoDTO dtoDescricaoCorrigida = new ProdutoDTO(dtoDescricaoErrada.getId(),"Descrição corrigida 2x",10.00,BigDecimal.valueOf(-100.00),true);
         assertThrows(ProdutoPrecoNegativoException.class, ()-> produtoService.alterarProduto(dtoDescricaoCorrigida.getId(), dtoDescricaoCorrigida));
     }
+    //demias teste dos métodos do service
 }
