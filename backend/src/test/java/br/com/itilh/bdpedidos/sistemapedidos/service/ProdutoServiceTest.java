@@ -118,5 +118,7 @@ public class ProdutoServiceTest {
     }
 
 
+    // você não criou os teste de duplicidade e dos valores negativos
+
     
 }
