@@ -66,6 +66,8 @@ public class ProdutoServiceTest {
     //  ProdutoDTO dtoRetorno = produtoService.criarProduto(dto);
 
         assertThrows(ProdutoDuplicadoException.class, () -> produtoService.criarProduto(dto));
-    }        
+    }     
+    
+    //faltou testar os outros métodos da service
 
 }

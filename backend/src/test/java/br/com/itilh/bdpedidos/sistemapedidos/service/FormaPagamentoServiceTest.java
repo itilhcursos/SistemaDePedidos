@@ -52,5 +52,5 @@ public class FormaPagamentoServiceTest {
 
         assertThrows(FormaPagamentoDuplicadoException.class, () -> formaPagamentoService.criarFormaPagamento(dto));
     }
-
+//faltou testar os outros métodos da service
 }
