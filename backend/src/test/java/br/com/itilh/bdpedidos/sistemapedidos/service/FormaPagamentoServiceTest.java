@@ -46,4 +46,7 @@ public class FormaPagamentoServiceTest {
         /* FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dto); */
         assertThrows(FormaPagamentoDuplicadaException.class, () -> formaPagamentoService.criarFormaPagamento(dto));
     }
+
+    //faltou os testes dos outros métodos da service
+    
 }

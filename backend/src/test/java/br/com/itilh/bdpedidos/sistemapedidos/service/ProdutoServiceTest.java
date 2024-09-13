@@ -105,4 +105,6 @@ public class ProdutoServiceTest {
        
         assertThrows(ProdutoPrecoNegativoException.class, ()-> produtoService.alterarProduto(dtoDescricaoCorrigida.getId(), dtoDescricaoCorrigida));
     }
+
+        //faltou os testes dos outros métodos da service
 }
