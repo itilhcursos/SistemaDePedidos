@@ -103,9 +103,6 @@ export default {
       this.id = "";
       this.nome = "";
     }catch(error){
-        // console.log (error);
-        // console.log (error.response.status);
-        // console.log (error.response.data.exception);
       this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
