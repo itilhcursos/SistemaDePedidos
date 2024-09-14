@@ -2,20 +2,20 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>FORMAS DE PAGAMENTO</h3>
+        <h3>Municípios</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormFormaPagamento
+          <FormMunicipio
             v-if="formVisible"
-            :propsFormaPagamento="formaPagamentoEscolhida"
+            :propsMunicipio="municipioEscolhido"
             @cancelar="limpar"
-            @salvar_formaPagamento="buscarFormaPagamento"
+            @salvar_municipio="buscar"
           />
         </div>
       </div>
@@ -25,33 +25,37 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Descrição</th>
-          <th scope="col">Ativo</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Entrega</th>
+          <th scope="col">Estado</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
+        <tr v-for="municipio in listaMunicipios" :key="municipio.id" scope="row">
           <th>
-            {{ formaPagamento.id }}
+            {{ municipio.id }}
           </th>
           <td>
-            {{ formaPagamento.descricao }}
+            {{ municipio.nome }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formatarEntrega(municipio.entrega) }}
+          </td>
+          <td>
+            {{ municipio.estadoNome }}
           </td>
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarFormaPagamento(formaPagamento)"
+              @click="alterarMunicipio(municipio)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
             <button
               class="btn btn-outline-danger m-2"
-              @click="excluirFormaPagamento(formaPagamento.id)"
+              @click="excluirMunicipio(municipio.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
@@ -96,7 +100,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="descricao">Descrição</option>
+            <option value="nome">Nome</option>
           </select>
         </div>
         <div class="col-auto">
@@ -106,7 +110,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
+          <button @click.prevent="buscar" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -118,17 +122,21 @@
 
 
 <script>
-import FormFormaPagamento from "./FormFormaPagamento.vue";
+import FormMunicipio from "./FormMunicipio.vue";
+import Logico from "@/utils/Logico.js";
 import axios from "axios";
+
 export default {
   components: {
-    FormFormaPagamento,
+    FormMunicipio,
   },
   data() {
     return {
-      listaFormasPagamento: [],
-      formaPagamentoEscolhida: null,
+      listaMunicipios: [],
+      municipioEscolhido: null,
       formVisible: false,
+      mode: import.meta.env.MODE,
+      url: import.meta.env.VITE_APP_URL_API,
       pageNumber: 1,
       pageSize: 10,
       direction: "ASC",
@@ -137,40 +145,45 @@ export default {
     };
   },
   methods: {
-    async buscarFormaPagamento() {
-      this.formaPagamentoEscolhida = null;
+    async buscar() {
+      this.municipioEscolhido = null;
       this.formVisible = false;
-
-      
       const response = await axios.get(
-        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
-      console.log(response.data);
-      this.listaFormasPagamento = response.data.content;
+      //console.log(response.data);
+      this.listaMunicipios = response.data.content;
       this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      //console.log(this.totalPages);
+    },
+    formatarEntrega(valor){
+      return Logico.toSimNao(valor);
     },
     limpar() {
-      this.formaPagamentoEscolhida = null;
+      this.municipioEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novaFormaPagamento() {
+    novoMunicipio() {
       this.formVisible = !this.formVisible;
     },
-    alterarFormaPagamento(formaPagamento) {
-      this.formaPagamentoEscolhida = formaPagamento;
+    alterarMunicipio(municipio) {
+      this.municipioEscolhido = municipio;
       this.formVisible = true;
     },
-    async excluirFormaPagamento(id) {
+    async excluirMunicipio(id) {
+      // if(localStorage.getItem('token') === null) {
+      //     alert("Usuário não identificado! Faça o login!!!");
+      //     return;
+      // }
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-    try{
-      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`,config);
-      console.log(response.data);
-    }catch(error){
+      try{
+          const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
+          console.log(response.data);
+      }catch(error){
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");
         }else if(error.response.status === 400 ){
@@ -178,16 +191,16 @@ export default {
         }else{
           alert(error.message);
         }
-      } 
-      this.buscarFormaPagamento();
+      }     
+      this.buscar();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarFormaPagamento();
+      this.buscar();
     },
   },
   mounted() {
-    this.buscarFormaPagamento();
+    this.buscar();
   },
 };
 </script>
