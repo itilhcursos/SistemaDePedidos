@@ -72,11 +72,11 @@ export default {
       this.isInvalido = false;
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
 
-      try{
+    try{
         if (this.id === "") {
           //incluir pelo POST da API
           const response = await axios.post("http://localhost:8080/estado", {
@@ -102,13 +102,15 @@ export default {
 
       this.id = "";
       this.nome = "";
-    }catch( error){
-      console.log (error);
-      console.log (error.response.status);
+    }catch(error){
+        // console.log (error);
+        // console.log (error.response.status);
+        // console.log (error.response.data.exception);
       this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 500){
+      }else if(error.response.status === 400 &&
+               error.response.data.exception === 'EstadoDuplicadoException'){
         this.mensagem = error.response.data.mensagem;     
       }else{
         this.mensagem = error.message;
