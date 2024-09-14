@@ -103,6 +103,7 @@ export default {
       this.id = "";
       this.nome = "";
     }catch(error){
+      //mesagens de erro
         // console.log (error);
         // console.log (error.response.status);
         // console.log (error.response.data.exception);
