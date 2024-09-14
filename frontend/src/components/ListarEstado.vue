@@ -160,13 +160,27 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
+      // if(localStorage.getItem('token') === null) {
+      //     alert("Usuário não identificado! Faça o login!!!");
+      //     return;
+      // }
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
-      console.log(response.data);
+      try{
+          const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
+          console.log(response.data);
+      }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
+        }
+      }     
       this.buscarEstados();
     },
     irPara(pagina) {
