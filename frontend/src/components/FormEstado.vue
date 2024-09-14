@@ -103,6 +103,13 @@ export default {
       this.id = "";
       this.nome = "";
     }catch(error){
+      //mesagens de erro
+       //exibe o objeto do error completo
+        // console.log (error);
+       //exibe o codigo do status de retorno       
+       // console.log (error.response.status);
+        //exibe o mensagem de erro personalidado do backend
+        // console.log (error.response.data.exception);
       this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
