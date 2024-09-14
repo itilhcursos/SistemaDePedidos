@@ -1,10 +1,11 @@
+
 <script setup>
-import FormLogin from '../components/FormLogin.vue'
+import ListarMunicipio from '../components/ListarMunicipio.vue'
 </script>
 
 <template>
  <main>
-   <FormLogin/>
+   <ListarMunicipio />
  </main>
 </template>
 

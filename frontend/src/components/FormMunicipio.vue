@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Estado</h4>
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Município</h4>
     <hr />
     <form>
       <div class="mb-3">
@@ -52,19 +52,21 @@
 import axios from "axios";
 export default {
   props: {
-    propsEstado: Object,
+    propsMunicipio: Object,
   },
   data() {
     return {
       id: "",
       nome: "",
       isInvalido: false,
+      mensagem : '',
     };
   },
   methods: {
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
+        this.mensagem = "Nome deve ser preenchido!!";
         return;
       }
       this.isInvalido = false;
@@ -74,33 +76,51 @@ export default {
         }
       }
 
-      if (this.id === "") {
-        //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/estado", {
-          id: this.id,
-          nome: this.nome,
-        }, config);
-        this.listaEstados = response.data;
-      } else {
-        // alterar pelo PUT da API
-        const response = await axios.put(
-          `http://localhost:8080/estado/${this.id}`,
-          {
+    try{
+        if (this.id === "") {
+          //incluir pelo POST da API
+          const response = await axios.post("http://localhost:8080/estado", {
             id: this.id,
             nome: this.nome,
-          }
-        ,config );
-        this.listaEstados = response.data;
-      }
-
-      this.$emit("salvar_estado", {
+          }, config);
+          this.listaEstados = response.data;
+        } else {
+          // alterar pelo PUT da API
+          const response = await axios.put(
+            `http://localhost:8080/estado/${this.id}`,
+            {
+              id: this.id,
+              nome: this.nome,
+            }
+          ,config );
+          this.listaEstados = response.data;
+        }
+        this.$emit("salvar_municipio", {
         id: this.id,
         nome: this.nome,
       });
 
       this.id = "";
       this.nome = "";
-    },
+    }catch(error){
+      //mesagens de erro
+       //exibe o objeto do error completo
+        // console.log (error);
+       //exibe o codigo do status de retorno       
+       // console.log (error.response.status);
+        //exibe o mensagem de erro personalidado do backend
+        // console.log (error.response.data.exception);
+      this.isInvalido = true;
+      if(error.response.status === 403){        
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      }else if(error.response.status === 400 &&
+               error.response.data.exception === 'EstadoDuplicadoException'){
+        this.mensagem = error.response.data.mensagem;     
+      }else{
+        this.mensagem = error.message;
+      }
+    }
+   },
     cancelar() {
       this.id = "";
       this.nome = "";

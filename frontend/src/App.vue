@@ -15,8 +15,8 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/formas-pagamento">Formas de Pagamento</RouterLink>
       <RouterLink to="/Clientes">Clientes</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
-      <RouterLink to="/login" v-if="!islogado">Login</RouterLink>
-      <RouterLink to="/logout" v-if="islogado">Usuário: {{ login }}</RouterLink>
+      <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
+      <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}</RouterLink>
      
     </nav>
     <img src="./assets/carrinho.png" alt=""/>
@@ -27,27 +27,6 @@ import { RouterLink, RouterView } from "vue-router";
   </main>
 </template>
 
-<script>
-export default{
-  data(){
-    return{
-      islogado : false,
-      login: '',
-    };
-  },
-  methods: {
-    checkLogin(){
-      const token = localStorage.getItem('token');
-      const login = localStorage.getItem('login');
-      this.islogado = (token !== null && login !== null);
-      this.login = login;
-      }
-    },
-  mounted() {
-    this.checkLogin();
-  }
-};
-</script>
 
 <style scoped>
 
