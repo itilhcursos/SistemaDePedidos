@@ -76,6 +76,7 @@ public class MunicipioControllerTest {
 
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de id inexitente")
     void TesteGetIdInexistente() throws Exception{
         mockMvc.perform(get("/municipio/9999999")).andExpect(status().isBadRequest())
