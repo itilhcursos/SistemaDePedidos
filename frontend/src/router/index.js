@@ -38,6 +38,11 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       component:()=>import('../views/LogoutView.vue')
+    },
+    {
+      path: '/municipios',
+      name: 'municipio',
+      component:()=>import('../views/MunicipioView.vue')
     }
   ]
 })
