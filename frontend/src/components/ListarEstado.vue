@@ -150,7 +150,7 @@ export default {
     },
     limpar() {
       this.estadoEscolhido = null;
-      this.formVisible = !this.formVisible;
+     
     },
     novoEstado() {
       this.formVisible = !this.formVisible;

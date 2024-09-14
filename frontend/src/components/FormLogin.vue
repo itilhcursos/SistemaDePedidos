@@ -78,9 +78,10 @@ export default {
             login: this.login,
             senha: this.senha,
           });
-        let dados = response.data;
+        const dados = response.data;
         console.log(dados);
         localStorage.setItem('token', dados.token);
+        this.$router.push('/');
         localStorage.setItem('login', dados.login);
         this.$router.push({path:'/'}).then(()=> {this.$router.go(0)});
      

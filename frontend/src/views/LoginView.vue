@@ -1,10 +1,10 @@
 <script setup>
-import FromLogin from '../components/FormLogin.vue'
+import FormLogin from '../components/FormLogin.vue'
 </script>
 
 <template>
  <main>
-   <FromLogin/>
+   <FormLogin/>
  </main>
 </template>
 

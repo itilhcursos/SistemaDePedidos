@@ -109,6 +109,8 @@
           this.isInvalido = true;
           if(error.response.status === 403){        
             this.mensagem = "Usuário não identificado! Faça o login!!!";
+          }else if(error.response.status === 500){ 
+            this.mensagem = error.response.data.message;
           }else{
             this.mensagem = error.message;
           }
