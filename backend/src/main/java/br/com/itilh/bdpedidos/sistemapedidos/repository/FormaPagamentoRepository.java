@@ -31,4 +31,6 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
 
     @Override
     Page<FormaPagamento> findAll(Pageable pageable);
+
+    boolean existsByDescricao (String descricao);
 }
