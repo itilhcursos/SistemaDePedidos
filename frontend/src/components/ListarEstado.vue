@@ -160,12 +160,30 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
+      if(localStorage.getItem('token')=== null){
+        alert("Usuário não identificado! Faça o Login!")
+        return;
+      }
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
+      try{
       const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
+      console.log(response.data);
+      }catch(error){
+        console.log(error)
+        console.log(error.response.status);
+        this.isInvalido = true;
+        if(error.response.status === 403){
+          alert("Usuário não identificado! Faça o login!");
+        }else if (error.response.status === 400) {
+          alert (error .response.data.mensagem);
+        }else{
+          alert (error.mensagem);
+        }
+      }
       console.log(response.data);
       this.buscarEstados();
     },

@@ -31,26 +31,24 @@ import { RouterLink, RouterView } from "vue-router";
   export default{
     data(){
       return{
-        isLogado: false,
-        login: ''
+        isLogado : false,
+        login : ''
       };
     },
     methods:{
       checkLogin(){
         const token = localStorage.getItem('token');
         const login = localStorage.getItem('login');
-        this.isLogado =(token !== null && login !==null);
+        this.isLogado = (token !== null && login !== null);
         this.login = login;
       }
 
     },
-
     mounted(){
       this.checkLogin();
-
     },
-  };
 
+  };
 </script>
 
 <style scoped>

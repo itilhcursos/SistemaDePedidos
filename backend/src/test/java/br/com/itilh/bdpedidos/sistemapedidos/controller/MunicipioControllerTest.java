@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,102 +47,97 @@ public class MunicipioControllerTest {
     @DisplayName("teste do path /municipios")
     void testGetMunicipios() throws Exception {
         mockMvc.perform(get("/municipios")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("totalElements")));
+                .andExpect(content().string(containsString("totalElements")));
 
     }
 
     @Test
     @DisplayName("teste de path inexistente")
-    void TesteGetPathInexistente() throws Exception{
+    void TesteGetPathInexistente() throws Exception {
         mockMvc.perform(get("/municipio")).andExpect(status().isMethodNotAllowed());
     }
 
     // criação das estidades necessárias parta os teste de existência de municipio
-    void setUpMunicipio(){
+    void setUpMunicipio() {
         setupEstado();
         Municipio municipio = new Municipio(
-            BigInteger.ONE,
-            "Municipio teste",
-            true,
-            estadoRepository.getReferenceById(BigInteger.ONE));
+                BigInteger.ONE,
+                "Municipio teste",
+                true,
+                estadoRepository.getReferenceById(BigInteger.ONE));
         municipioRepository.save(municipio);
     }
 
     @Test
     @DisplayName("teste de id existente ")
-    void TesteGetIdExistente() throws Exception{
+    void TesteGetIdExistente() throws Exception {
         setUpMunicipio();
         mockMvc.perform(get("/municipio/1")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("Municipio teste")));
+                .andExpect(content().string(containsString("Municipio teste")));
     }
-
 
     @Test
     @DisplayName("teste de id inexitente")
-    void TesteGetIdInexistente() throws Exception{
+    void TesteGetIdInexistente() throws Exception {
         mockMvc.perform(get("/municipio/9999999")).andExpect(status().isBadRequest())
-        .andExpect(result -> assertTrue(result.getResolvedException() instanceof IdInexistenteException));
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof IdInexistenteException));
     }
 
     @Test
     @DisplayName("teste de path errado")
-    void TesteGetPathErrado() throws Exception{
+    void TesteGetPathErrado() throws Exception {
         mockMvc.perform(get("/municipioxpto")).andExpect(status().isNotFound());
     }
 
     // função para criar um Estado na base H2 teste
-    void setupEstado(){
+    void setupEstado() {
         Estado estado = new Estado(BigInteger.ONE, "Estado teste");
         estadoRepository.save(estado);
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = { "USER", "ADMIN" })
     @DisplayName("teste de post de novo Municipio")
-    void TestePostMunicipio() throws Exception{
+    void TestePostMunicipio() throws Exception {
         setupEstado();
-        mockMvc.perform( 
-            post("/municipio")
-            .contentType("application/json")
-            .content("{\r\n" + //
-                    "  \"id\": 0,\r\n" + //
-                    "  \"nome\": \"Municipio teste\",\r\n" + //
-                    "  \"entrega\": true,\r\n" + //
-                    "  \"estadoId\": 1,\r\n" + //
-                    "  \"estadoNome\": \"acre\"\r\n" + //
-                                "}")        
-        ).andExpect(status().isOk());
+        mockMvc.perform(
+                post("/municipio")
+                        .contentType("application/json")
+                        .content("{\r\n" + //
+                                "  \"id\": 0,\r\n" + //
+                                "  \"nome\": \"Municipio teste\",\r\n" + //
+                                "  \"entrega\": true,\r\n" + //
+                                "  \"estadoId\": 1,\r\n" + //
+                                "  \"estadoNome\": \"acre\"\r\n" + //
+                                "}"))
+                .andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = { "USER", "ADMIN" })
     @DisplayName("teste de put de novo Municipio")
-    void TestePutMunicipio() throws Exception{
+    void TestePutMunicipio() throws Exception {
         setUpMunicipio();
-        mockMvc.perform( 
-            put("/municipio/1")
-            .contentType("application/json")
-            .content("{\r\n" + //
-                    "  \"id\": 1,\r\n" + //
-                    "  \"nome\": \"Municipio teste Alterado\",\r\n" + //
-                    "  \"entrega\": true,\r\n" + //
-                    "  \"estadoId\": 1,\r\n" + //
-                    "  \"estadoNome\": \"estado Teste\"\r\n" + //
-                                "}")        
-        ).andExpect(status().isOk()
-        ).andExpect(content().string(containsString("Municipio teste Alterado")));
+        mockMvc.perform(
+                put("/municipio/1")
+                        .contentType("application/json")
+                        .content("{\r\n" + //
+                                "  \"id\": 1,\r\n" + //
+                                "  \"nome\": \"Municipio teste Alterado\",\r\n" + //
+                                "  \"entrega\": true,\r\n" + //
+                                "  \"estadoId\": 1,\r\n" + //
+                                "  \"estadoNome\": \"estado Teste\"\r\n" + //
+                                "}"))
+                .andExpect(status().isOk()).andExpect(content().string(containsString("Municipio teste Alterado")));
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = { "USER", "ADMIN" })
     @DisplayName(" Teste do delete")
-    void testeDeleteMunicipio() throws Exception{
+    void testeDeleteMunicipio() throws Exception {
         setUpMunicipio();
-        mockMvc.perform( delete("/municipio/1")
-        ).andExpect(status().isOk()
-        ).andExpect(content().string(containsString("Excluído")));
+        mockMvc.perform(delete("/municipio/1")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Excluído")));
     }
-
-
-
-
-
 
 }

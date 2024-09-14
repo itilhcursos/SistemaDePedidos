@@ -59,7 +59,7 @@ export default {
       id: "",
       nome: "",
       isInvalido: false,
-      mensagem: "",
+      mensagem: '',
     };
   },
   methods: {
@@ -76,7 +76,6 @@ export default {
         }
       }
       try{
-
       if (this.id === "") {
         //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/estado", {
@@ -104,11 +103,12 @@ export default {
       this.id = "";
       this.nome = "";
       }catch(error){
+        console.log(error)
         console.log(error.response.status);
         this.isInvalido = true;
         if(error.response.status === 403){
           this.mensagem = "Usuário não identificado! Faça o login!";
-        }else if (error.re.status === 500) {
+        }else if (error.response.status === 400) {
           this.mensagem = error .response.data.mensagem;
         }else{
           this.mensagem = error.mensagem;
