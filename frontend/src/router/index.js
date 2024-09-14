@@ -22,7 +22,6 @@ const router = createRouter({
     {
       path: '/produtos',
       name: 'produtos',
-<<<<<<< HEAD
       component:()=>import('../views/ProdutosView.vue')
     },
     {
@@ -30,15 +29,16 @@ const router = createRouter({
       name: 'formas-pagamento',
       component:()=>import('../views/FormasPagamentoView.vue')
     },
-=======
-      component:()=>import('../views/ProdutoView.vue')
+    {
+      path: '/login',
+      name: 'login',
+      component:()=>import('../views/LoginView.vue')
     },
     {
-      path: '/formas-pagamento',
-      name: 'formaPagamento',
-      component:()=>import('../views/FormaPagamentoView.vue')
+      path: '/logout',
+      name: 'logout',
+      component:()=>import('../views/LogoutView.vue')
     }
->>>>>>> develop
 
   ]
 })

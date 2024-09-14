@@ -24,7 +24,7 @@
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
-        <div class="p-2">Nome deve ser preenchido!!</div>
+        <div class="p-2">{{ mensagem }}</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button
@@ -59,43 +59,63 @@ export default {
       id: "",
       nome: "",
       isInvalido: false,
+      mensagem: '',
     };
   },
   methods: {
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
+        this.mensagem = "Nome deve ser preenchido!!"
         return;
       }
       this.isInvalido = false;
-
-      if (this.id === "") {
-        //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/estado", {
-          id: this.id,
-          nome: this.nome,
-        });
-        this.listaEstados = response.data;
-      } else {
-        // alterar pelo PUT da API
-        const response = await axios.put(
-          `http://localhost:8080/estado/${this.id}`,
-          {
-            id: this.id,
-            nome: this.nome,
-          }
-        );
-        this.listaEstados = response.data;
+      let config = {
+        headers: {
+          'Authorization': 'Bearer ' +localStorage.getItem('token')
+        }
       }
 
-      this.$emit("salvar_estado", {
+      try{
+        if (this.id === "") {
+          //incluir pelo POST da API
+          const response = await axios.post("http://localhost:8080/estado",{
+            id: this.id,
+            nome: this.nome,
+          }, config);
+          this.listaEstados = response.data;
+        } else {
+          // alterar pelo PUT da API
+          const response = await axios.put(
+            `http://localhost:8080/estado/${this.id}`,
+            {
+              id: this.id,
+              nome: this.nome,
+            }
+          ,config);
+          this.listaEstados = response.data;
+        }
+
+        this.$emit("salvar_estado", {
         id: this.id,
         nome: this.nome,
       });
 
       this.id = "";
       this.nome = "";
-    },
+    }catch( error){
+      console.log (error);
+      console.log (error.response.status);
+      this.isInvalido = true;
+      if(error.response.status === 403){        
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      }else if(error.response.status === 500){
+        this.mensagem = error.response.data.mensagem;     
+      }else{
+        this.mensagem = error.message;
+      }
+    }
+   },
     cancelar() {
       this.id = "";
       this.nome = "";
@@ -115,4 +135,3 @@ export default {
   },
 };
 </script>
-
