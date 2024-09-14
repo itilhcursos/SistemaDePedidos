@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -38,6 +39,7 @@ public class FormaPagamentoControllerTest {
     FormaPagamentoRepository formaPagamentoRepository;
     
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("alterar forma Pagamento")
     void testAlterarFormaPagamento()throws Exception {
         setupFormaPagamento();
@@ -54,6 +56,7 @@ public class FormaPagamentoControllerTest {
     
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de criar forma-pagamento")
     void testCriarFormaPagamento()throws Exception {
         setupFormaPagamento();
@@ -70,6 +73,7 @@ public class FormaPagamentoControllerTest {
     
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de delete do forma-pagamrento")
     void testDeletePorId() throws Exception {
         setupFormaPagamento();
@@ -80,6 +84,7 @@ public class FormaPagamentoControllerTest {
     
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path /formas-pagamento por id")
     void testGetPorId() throws Exception{
         setupFormaPagamento();
@@ -97,6 +102,7 @@ public class FormaPagamentoControllerTest {
 
     }
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path /formas-pagamento")
     void testGetTodos() throws Exception {
         setupFormaPagamento();
@@ -113,6 +119,7 @@ void setupFormaPagamento(){
 
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path inexistente")
     void TesteGetPathInexistente() throws Exception{
         setupFormaPagamento();
@@ -120,6 +127,7 @@ void setupFormaPagamento(){
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path errado")
     void TesteGetPathErrado() throws Exception{
         setupFormaPagamento();
@@ -127,6 +135,7 @@ void setupFormaPagamento(){
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do id inexistente")
     void TesteGetIdInexistente() throws Exception{
         setupFormaPagamento();

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -43,6 +44,7 @@ public class MunicipioControllerTest {
     // criar banco de dados para teste do Controller
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste do path /municipios")
     void testGetMunicipios() throws Exception {
         mockMvc.perform(get("/municipios")).andExpect(status().isOk())
@@ -51,6 +53,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
         mockMvc.perform(get("/municipio")).andExpect(status().isMethodNotAllowed());
@@ -68,6 +71,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de id existente ")
     void TesteGetIdExistente() throws Exception{
         setUpMunicipio();
@@ -84,6 +88,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de path errado")
     void TesteGetPathErrado() throws Exception{
         mockMvc.perform(get("/municipioxpto")).andExpect(status().isNotFound());
@@ -96,6 +101,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de post de novo Municipio")
     void TestePostMunicipio() throws Exception{
         setupEstado();
@@ -113,6 +119,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de put de novo Municipio")
     void TestePutMunicipio() throws Exception{
         setUpMunicipio();
@@ -131,6 +138,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName(" Teste do delete")
     void testeDeleteMunicipio() throws Exception{
         setUpMunicipio();

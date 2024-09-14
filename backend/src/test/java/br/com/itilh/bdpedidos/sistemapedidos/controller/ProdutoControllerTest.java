@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -39,6 +40,7 @@ public class ProdutoControllerTest {
 
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
 @DisplayName("alterar produto")
     void testAlterarProduto() throws Exception{
         setupProduto();
@@ -56,6 +58,7 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de criar produto")
     void testCriarProduto()throws Exception {
         setupProduto();
@@ -71,6 +74,7 @@ public class ProdutoControllerTest {
         ).andExpect(status().isOk());
     }
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de delete do produto")
     void testDeleteProduto() throws Exception {
         setupProduto();
@@ -81,6 +85,8 @@ public class ProdutoControllerTest {
     
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
+    @DisplayName("teste de buscar produto por id")
     void testGetProdutoPorId()throws Exception {
         setupProduto();
         mockMvc.perform(get("/produto/1")).andExpect(status().isOk())
@@ -88,6 +94,7 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path /produtos")
     void testGetTodosProdutos() throws Exception {
         setupProduto();
@@ -104,6 +111,7 @@ public class ProdutoControllerTest {
 
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path inexistente")
     void TesteGetPathInexistente() throws Exception{
         setupProduto();
@@ -112,6 +120,7 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path errado")
     void TesteGetPathErrado() throws Exception{
         setupProduto();

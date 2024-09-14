@@ -12,7 +12,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException( Exception e){
         String err = String.format("{\"exception\": \"%s\",\"class\": \"%s\", \"mensagem\":\"%s\"}",e.getClass().getSimpleName(), e.getClass().toString(), e.getMessage() );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
 }
