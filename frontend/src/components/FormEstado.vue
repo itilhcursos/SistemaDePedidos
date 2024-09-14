@@ -59,23 +59,21 @@ export default {
       id: "",
       nome: "",
       isInvalido: false,
-      mensagem: '',
     };
   },
   methods: {
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
-        this.mensagem = 'Nome deve ser preenchido!!';
         return;
       }
       this.isInvalido = false;
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
-      try{
+
       if (this.id === "") {
         //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/estado", {
@@ -102,18 +100,6 @@ export default {
 
       this.id = "";
       this.nome = "";
-      }catch(error){
-        console.log(error)
-        console.log(error.response.status);
-        this.isInvalido = true;
-        if(error.response.status === 403){
-          this.mensagem = "Usuário não identificado! Faça o login!";
-        }else if (error.response.status === 400) {
-          this.mensagem = error .response.data.mensagem;
-        }else{
-          this.mensagem = error.mensagem;
-        }
-      }
     },
     cancelar() {
       this.id = "";
