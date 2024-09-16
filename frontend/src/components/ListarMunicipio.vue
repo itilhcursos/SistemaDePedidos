@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>MUNICIPIOS</h3>
+        <h3>Municípios</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
@@ -15,7 +15,7 @@
             v-if="formVisible"
             :propsMunicipio="municipioEscolhido"
             @cancelar="limpar"
-            @salvar_municipio="buscarMunicipios"
+            @salvar_municipio="buscar"
           />
         </div>
       </div>
@@ -26,6 +26,8 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome</th>
+          <th scope="col">Entrega</th>
+          <th scope="col">Estado</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -36,6 +38,12 @@
           </th>
           <td>
             {{ municipio.nome }}
+          </td>
+          <td>
+            {{ formatarEntrega(municipio.entrega) }}
+          </td>
+          <td>
+            {{ municipio.estadoNome }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -102,7 +110,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarMunicipios" class="btn btn-success">
+          <button @click.prevent="buscar" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -115,7 +123,9 @@
 
 <script>
 import FormMunicipio from "./FormMunicipio.vue";
+import Logico from "@/utils/Logico.js";
 import axios from "axios";
+
 export default {
   components: {
     FormMunicipio,
@@ -135,18 +145,19 @@ export default {
     };
   },
   methods: {
-    async buscarMunicipios() {
+    async buscar() {
       this.municipioEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de municipios no servidor
-      // http://localhost:8080/municipios
       const response = await axios.get(
         `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
-      console.log(response.data);
+      //console.log(response.data);
       this.listaMunicipios = response.data.content;
       this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      //console.log(this.totalPages);
+    },
+    formatarEntrega(valor){
+      return Logico.toSimNao(valor);
     },
     limpar() {
       this.municipioEscolhido = null;
@@ -160,22 +171,36 @@ export default {
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
+      // if(localStorage.getItem('token') === null) {
+      //     alert("Usuário não identificado! Faça o login!!!");
+      //     return;
+      // }
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-      const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
-      console.log(response.data);
-      this.buscarMunicipios();
+      try{
+          const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
+          console.log(response.data);
+      }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
+        }
+      }     
+      this.buscar();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarMunicipios();
+      this.buscar();
     },
   },
   mounted() {
-    this.buscarMunicipios();
+    this.buscar();
   },
 };
 </script>
