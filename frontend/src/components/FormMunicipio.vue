@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Estado</h4>
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Município</h4>
     <hr />
     <form>
       <div class="mb-3">
@@ -52,7 +52,7 @@
 import axios from "axios";
 export default {
   props: {
-    propsEstado: Object,
+    propsMunicipio: Object,
   },
   data() {
     return {
@@ -95,7 +95,7 @@ export default {
           ,config );
           this.listaEstados = response.data;
         }
-        this.$emit("salvar_estado", {
+        this.$emit("salvar_municipio", {
         id: this.id,
         nome: this.nome,
       });
