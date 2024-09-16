@@ -115,7 +115,7 @@
 
 <script>
 import FormEstado from "./FormEstado.vue";
-import axios from "axios";
+import estadoService from "@/services/estadoService";
 export default {
   components: {
     FormEstado,
@@ -140,13 +140,13 @@ export default {
       this.formVisible = false;
       //buscar a lista de estados no servidor
       // http://localhost:8080/estados
-      const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaEstados = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+
+      const response =  await estadoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
+
+   
+      this.listaEstados = response.content;
+      this.totalPages = response.totalPages;
+     
     },
     limpar() {
       this.estadoEscolhido = null;
@@ -160,12 +160,8 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
+         
+      const response = await estadoService.apagar(id);
       console.log(response.data);
       this.buscarEstados();
     },
