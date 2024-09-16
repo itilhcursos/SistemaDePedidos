@@ -78,9 +78,14 @@ export default {
             login: this.login,
             senha: this.senha,
           });
-        let dados = response.data;
+        const dados = response.data;
+        console.log(dados);
         localStorage.setItem('token', dados.token);
+<<<<<<< HEAD
         localStorage.setItem('login', dados.login);        
+=======
+        localStorage.setItem('login', dados.login);
+>>>>>>> master
         this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
      
       }catch(error){
@@ -99,10 +104,15 @@ export default {
       localStorage.setItem('token', "");
       localStorage.removeItem('token', "");
       localStorage.setItem('login', "");
+<<<<<<< HEAD
       localStorage.removeItem('login', "");      
       this.$router
           .push({ path: '/' })
           .then(() => { this.$router.go(0) })
+=======
+      localStorage.removeItem('login', "");
+      this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
+>>>>>>> master
     },
   },
 
