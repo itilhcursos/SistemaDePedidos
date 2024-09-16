@@ -75,6 +75,23 @@
                         this.mensagem = error.message;
                     }
                 }
+            },
+            cancelar(){
+                this.id = "";
+                this.nome = "";
+                this.entrega = "";
+                this.estadoId = "";
+                this.estadoNome = "";
+                this.$emit("cancelar", true);
+            },
+        },
+        mounted(){
+            if(this.propsMunicipio){
+                this.id = this.propsMunicipio.id;
+                this.nome =this.propsMunicipio.nome;
+                this.entrega = this.propsMunicipio.entrega;
+                this.estadoId = this.propsMunicipio.estado
+                this.estadoNome = ""
             }
         }
 
