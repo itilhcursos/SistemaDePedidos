@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import estadoService from '../services/estadoService';
 export default {
   props: {
     propsEstado: Object,
@@ -62,35 +62,25 @@ export default {
     };
   },
   methods: {
+    getDados(){
+      return {
+          id: this.id,
+          nome: this.nome,
+        }
+      },
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
         return;
       }
       this.isInvalido = false;
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }
 
       if (this.id === "") {
-        //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/estado", {
-          id: this.id,
-          nome: this.nome,
-        }, config);
-        this.listaEstados = response.data;
+        const response = await estadoService.criar(this.getDados);
+        this.listaEstados = response;
       } else {
-        // alterar pelo PUT da API
-        const response = await axios.put(
-          `http://localhost:8080/estado/${this.id}`,
-          {
-            id: this.id,
-            nome: this.nome,
-          }
-        ,config );
-        this.listaEstados = response.data;
+        const response = await estadoService.atualizar(this.getDados);
+        this.listaEstados = response;
       }
 
       this.$emit("salvar_estado", {
