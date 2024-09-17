@@ -116,11 +116,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})    
-=======
     @WithMockUser(username="admin",roles={"USER","ADMIN"})
->>>>>>> master
     @DisplayName("teste de put de novo Municipio")
     void TestePutMunicipio() throws Exception{
         setUpMunicipio();

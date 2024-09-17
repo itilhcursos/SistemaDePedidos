@@ -115,7 +115,9 @@
 
 <script>
 import FormEstado from "./FormEstado.vue";
-import axios from "axios";
+
+import estadoService from "@/services/estadoService";
+
 export default {
   components: {
     FormEstado,
@@ -125,8 +127,6 @@ export default {
       listaEstados: [],
       estadoEscolhido: null,
       formVisible: false,
-      mode: import.meta.env.MODE,
-      url: import.meta.env.VITE_APP_URL_API,
       pageNumber: 1,
       pageSize: 10,
       direction: "ASC",
@@ -138,16 +138,13 @@ export default {
     async buscarEstados() {
       this.estadoEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
-      const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaEstados = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+
+      const response = await estadoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);      
+
+      this.listaEstados = response.content;
+      this.totalPages = response.totalPages;
     },
+
     limpar() {
       this.estadoEscolhido = null;
       this.formVisible = !this.formVisible;
@@ -160,18 +157,12 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
+
       try{
-          const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
-          console.log(response.data);
+          
+          const response = await estadoService.apagar(id);
+          console.log(response);
+
       }catch(error){
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");

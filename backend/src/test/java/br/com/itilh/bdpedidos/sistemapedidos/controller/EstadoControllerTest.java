@@ -44,11 +44,7 @@ public class EstadoControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})     
-=======
     @WithMockUser(username="admin",roles={"USER","ADMIN"})
->>>>>>> master
     @DisplayName("teste do endPoint para criar estado")
     void testCriarEstado() throws Exception{
        

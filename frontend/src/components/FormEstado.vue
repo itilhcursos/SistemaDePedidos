@@ -49,7 +49,9 @@
 </template>
 
 <script>
-import axios from "axios";
+
+import estadoService from "@/services/estadoService";
+
 export default {
   props: {
     propsEstado: Object,
@@ -66,90 +68,34 @@ export default {
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
-<<<<<<< HEAD
-        this.mensagem = 'Nome deve ser preenchido!!';
-=======
         this.mensagem = "Nome deve ser preenchido!!";
->>>>>>> master
         return;
-      }
-      this.isInvalido = false;
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }
-
-<<<<<<< HEAD
-      try{
-
-      if (this.id === "") {
-        //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/estado", {
-          id: this.id,
-          nome: this.nome,
-        }, config);
-        this.listaEstados = response.data;
-      } else {
-        // alterar pelo PUT da API
-        const response = await axios.put(
-          `http://localhost:8080/estado/${this.id}`,
-          {
-            id: this.id,
-            nome: this.nome,
-          }
-        ,config );
-        this.listaEstados = response.data;
-      }
+      }     
       
-
-
-      this.$emit("salvar_estado", {
-=======
     try{
         if (this.id === "") {
           //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/estado", {
+          const response = await estadoService.criar( {
             id: this.id,
             nome: this.nome,
-          }, config);
-          this.listaEstados = response.data;
+          });
+          this.listaEstados = response;
         } else {
           // alterar pelo PUT da API
-          const response = await axios.put(
-            `http://localhost:8080/estado/${this.id}`,
+          const response = await estadoService.atualizar(this.id,
             {
               id: this.id,
               nome: this.nome,
-            }
-          ,config );
-          this.listaEstados = response.data;
+            });
+          this.listaEstados = response;
         }
         this.$emit("salvar_estado", {
->>>>>>> master
         id: this.id,
         nome: this.nome,
       });
 
       this.id = "";
       this.nome = "";
-<<<<<<< HEAD
-
-    }catch(error){
-      console.log(error.response.status);  
-      this.isInvalido = true;
-      if (error.response.status === 403){
-        this.mensagem = 'Usuário não Identificado!!!'
-      }else if (error.response.status === 500) {
-        this.mensagem = error.response.data.mensagem;
-      }else {
-        this.mensagem = error.mensagem;
-      }
-    }
-
-
-    },
-=======
     }catch(error){
       //mesagens de erro
        //exibe o objeto do error completo
@@ -169,7 +115,6 @@ export default {
       }
     }
    },
->>>>>>> master
     cancelar() {
       this.id = "";
       this.nome = "";
@@ -189,4 +134,3 @@ export default {
   },
 };
 </script>
-
