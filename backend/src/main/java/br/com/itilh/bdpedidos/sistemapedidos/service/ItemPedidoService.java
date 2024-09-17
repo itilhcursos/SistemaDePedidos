@@ -29,11 +29,11 @@ public Page<ItemPedidoDTO> listaritemPedidos(Pageable pageable){
     public Page<ItemPedidoDTO> listarItemPedidoPorProdutoNome(String nome, Pageable pageable) {
         return toPageDTO(itemPedidoRepository.findByprodutoNomeIgnoreCase(nome, pageable));
     }
-     public ItemPedidoDTO buscarItemPEdidoPorId(BigInteger id) throws Exception {
+     public ItemPedidoDTO buscarItemPedidoPorId(BigInteger id) throws Exception {
         return toDTO(itemPedidoRepository.findById(id)
         .orElseThrow(()-> new IdInexistenteException("ItemPedido", id)));
     }
-    public ItemPedidoDTO criarMunicipio(ItemPedidoDTO origem) throws Exception {    
+    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO origem) throws Exception {    
         return toDTO(itemPedidoRepository.save(toEntity(origem)));
     }
 public ItemPedidoDTO alterarItemPedido (BigInteger id, ItemPedidoDTO origem) throws Exception {
