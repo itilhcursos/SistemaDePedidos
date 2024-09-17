@@ -25,6 +25,7 @@
         <thead>
           <tr>
             <th scope="col">ID</th>
+            <th scope="col">Imagen</th>
             <th scope="col">Descrição</th>
             <th scope="col">Quantidade</th>
             <th scope="col">Preço</th>
@@ -37,6 +38,9 @@
             <th>
               {{ produto.id }}
             </th>
+            <td>
+              <img :src=produto.urlImagem height="100px">
+            </td>
             <td>
               {{ produto.descricao }}
             </td>
