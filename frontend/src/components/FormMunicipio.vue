@@ -72,7 +72,7 @@
                     }else if(error.response.status === 500){ 
                         this.mensagem = error.response.data.message;
                     }else{
-                        this.mensagem = error.message;
+                        this.mensagem = error.mensagem;
                     }
                 }
             },

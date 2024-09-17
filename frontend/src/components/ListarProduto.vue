@@ -25,6 +25,7 @@
         <thead>
           <tr>
             <th scope="col">ID</th>
+            <th scope="col">Imagem</th>
             <th scope="col">Descrição</th>
             <th scope="col">Quantidade</th>
             <th scope="col">Preço</th>
@@ -37,6 +38,9 @@
             <th>
               {{ produto.id }}
             </th>
+            <td>
+              <img :src=produto.urlImagem height ="100 px">
+            </td>
             <td>
               {{ produto.descricao }}
             </td>
@@ -130,7 +134,7 @@
   import Logico from "@/utils/Logico.js";
   import Monetario from "@/utils/Monetario.js";
   import Decimal from "@/utils/Decimal.js";
-  import axios from "axios";
+  import produtoService from "@/services/produtoService";
   export default {
     components: {
       FormProduto,
@@ -152,14 +156,11 @@
         this.produtoEscolhido = null;
         this.formVisible = false;
   
-      
-        const response = await axios.get(
-          `http://localhost:8080/produtos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-        );
-        console.log(response.data);
-        this.listaProdutos = response.data.content;
-        this.totalPages = response.data.totalPages;
-        console.log(this.totalPages);
+        const response = await produtoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
+    
+        this.listaProdutos = response.content;
+        this.totalPages = response.totalPages;
+  
       },
       limpar() {
         this.produtoEscolhido = null;
@@ -173,12 +174,8 @@
         this.formVisible = true;
       },
       async excluirProduto(id) {
-        let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-          }
-        }
-        const response = await axios.delete(`http://localhost:8080/produto/${id}`,config);
+        
+        const response = await produtoService.apagar(id);
         console.log(response.data);
         this.buscarProdutos();
       },
