@@ -14,6 +14,15 @@
                 />
             </div>
             <div class="mb-3">
+                <label class="form-label">URL Imagem</label>
+                <input
+                class="form-control"
+                type="text"
+                v-model="urlImagem"
+                placeholder="URL Imagem"
+                />
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Descrição</label>
                 <input
                 class="form-control"
@@ -88,6 +97,7 @@ export default {
     data() {
         return {
             id: "",
+            urlImagem: "",
             descricao: "",
             isInvalido: false,
             mensagem: "",
@@ -112,6 +122,7 @@ export default {
                 if (this.id === "") {
                     const response = await axios.post("http://localhost:8080/produto", {
                         id: this.id, 
+                        urlImagem: this.urlImagem,
                         descricao: this.descricao, 
                         quantidadeEstoque: this.quantidadeEstoque, 
                         precoUnidadeAtual: this.precoUnidadeAtual, 
@@ -122,6 +133,7 @@ export default {
                     const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
                     {
                         id: this.id,
+                        urlImagem: this.urlImagem,
                         descricao: this.descricao, 
                         quantidadeEstoque: this.quantidadeEstoque, 
                         precoUnidadeAtual: this.precoUnidadeAtual, 
@@ -132,12 +144,14 @@ export default {
 
                 this.$emit("salvar_produto", {
                     id: this.id,
+                    urlImagem: this.urlImagem,
                     descricao: this.descricao, 
                     quantidadeEstoque: this.quantidadeEstoque, 
                     precoUnidadeAtual: this.precoUnidadeAtual, 
                     ativo: this.ativo
                 });
                 this.id = "";
+                this.urlImagem = "";
                 this.descricao = "";
                 this.quantidadeEstoque = "";
                 this.precoUnidadeAtual = ""; 
@@ -156,6 +170,7 @@ export default {
 
         cancelar(){
             this.id = "";
+            this.urlImagem = "";
             this.descricao = "";
             this.quantidadeEstoque = "";
             this.precoUnidadeAtual = ""; 
@@ -168,6 +183,7 @@ export default {
     mounted(){
         if (this.propsProduto) {
             this.id = this.propsProduto.id;
+            this.urlImagem = this.propsProduto.urlImagem;
             this.descricao = this.propsProduto.descricao;
             this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
             this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual; 
