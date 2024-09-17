@@ -23,6 +23,15 @@
                 />
             </div>
             <div class="mb-3">
+                <label class="form-label">url Imagem</label>
+                <input
+                class="form-control"
+                type="text"
+                v-model="urlImagem"
+                placeholder="Descrição"
+                />
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Quantidade em Estoque</label>
                 <input
                 class="form-control"
@@ -49,7 +58,7 @@
             </div>
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
-                <div class="p-2">Nome deve ser preenchido</div>
+                <div class="p-2">{{ mensagem}}</div>
             </div>
             <div class="mb-3 d-flex justify-content-end">
 
@@ -89,7 +98,9 @@ export default {
         return {
             id: "",
             descricao: "",
+            urlImagem: "",
             isInvalido: false,
+            mensagem: "",
         };
     },
 
@@ -98,6 +109,7 @@ export default {
         async salvarProduto() {
             if (this.descricao === "") {
                 this.isInvalido = true;
+                this.mensagem = "Descrição do produto não pode ser vazia."
                 return;
             }
             this.isInvalido = false;
@@ -106,44 +118,60 @@ export default {
                 'Authorization': 'Bearer ' +localStorage.getItem('token')
                 }
             }
-            if (this.id === "") {
-                const response = await axios.post("http://localhost:8080/produto", {
-                    id: this.id, 
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
-                }, config);
-                this.listaProdutos = response.data;
-            } else {
-                const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
-                {
-                    id: this.id,
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
-                }, config);
-                this.listaEstados = response.data;
-            }
+            try{
+                if (this.id === "") {
+                    const response = await axios.post("http://localhost:8080/produto", {
+                        id: this.id, 
+                        urlImagem: this.urlImagem,
+                        descricao: this.descricao, 
+                        quantidadeEstoque: this.quantidadeEstoque, 
+                        precoUnidadeAtual: this.precoUnidadeAtual, 
+                        ativo: this.ativo
+                    }, config);
+                    this.listaProdutos = response.data;
+                } else {
+                    const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
+                    {
+                        id: this.id,
+                        urlImagem: this.urlImagem,
+                        descricao: this.descricao, 
+                        quantidadeEstoque: this.quantidadeEstoque, 
+                        precoUnidadeAtual: this.precoUnidadeAtual, 
+                        ativo: this.ativo
+                    }, config);
+                    this.listaEstados = response.data;
+                }
 
-            this.$emit("salvar_produto", {
-                id: this.id,
-                descricao: this.descricao, 
-                quantidadeEstoque: this.quantidadeEstoque, 
-                precoUnidadeAtual: this.precoUnidadeAtual, 
-                ativo: this.ativo
-            });
-            this.id = "";
-            this.descricao = "";
-            this.quantidadeEstoque = "";
-            this.precoUnidadeAtual = ""; 
-            this.ativo = "";
+                this.$emit("salvar_produto", {
+                    id: this.id,
+                    urlImagem: this.urlImagem,
+                    descricao: this.descricao, 
+                    quantidadeEstoque: this.quantidadeEstoque, 
+                    precoUnidadeAtual: this.precoUnidadeAtual, 
+                    ativo: this.ativo
+                });
+                this.id = "";
+                this.descricao = "";
+                this.urlImagem = "";
+                this.quantidadeEstoque = "";
+                this.precoUnidadeAtual = ""; 
+                this.ativo = "";
+            }catch(error){
+                this.isInvalido = true;
+                if(error.response.status === 403){        
+                    this.mensagem = "Usuário não identificado! Faça o login!!!";
+                }else if(error.response.status === 400 ){
+                    this.mensagem = error.response.data.mensagem;     
+                }else{
+                    this.mensagem = error.message;
+                }
+            }
         },
 
         cancelar(){
             this.id = "";
             this.descricao = "";
+            this.urlImagem = "";
             this.quantidadeEstoque = "";
             this.precoUnidadeAtual = ""; 
             this.ativo = "";
@@ -155,6 +183,7 @@ export default {
     mounted(){
         if (this.propsProduto) {
             this.id = this.propsProduto.id;
+            this.urlImagem = this.propsProduto.urlImagem;
             this.descricao = this.propsProduto.descricao;
             this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
             this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual; 
