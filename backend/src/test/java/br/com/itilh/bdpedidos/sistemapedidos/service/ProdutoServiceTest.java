@@ -50,5 +50,9 @@ public class ProdutoServiceTest {
         ProdutoDTO produtoDTO = new ProdutoDTO(BigInteger.ONE, "Produto Teste", 20.0, new BigDecimal("-100.00"), true);
         assertThrows(ProdutoPrecoUnidadeAtualException.class, () -> produtoService.alterarProduto(BigInteger.ONE, produtoDTO));
     }
+
+    //faltou testar os demais métodos da classe service
+    //faltou testar o produto duplicado
+
 }
 
