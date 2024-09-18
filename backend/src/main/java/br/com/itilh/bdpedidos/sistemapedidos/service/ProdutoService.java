@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoQuantidadeEstoqueException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoUnidadeAtualException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
@@ -38,12 +39,14 @@ public class ProdutoService {
     }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+        validarDuplicidade(origem);
         validarEstoque(origem);
         validarPreco(origem);
         return toDTO(repository.save(toEntity(origem)));
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        validarDuplicidade(origem);
         validarEstoque(origem);
         validarPreco(origem);
         return toDTO(repository.save(toEntity(origem)));
@@ -55,6 +58,13 @@ public class ProdutoService {
              return "Excluído";
         }catch (Exception ex){
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+        }
+    }
+
+    private void validarDuplicidade(ProdutoDTO origem) {
+        boolean exists = repository.existsByDescricao(origem.getDescricao());
+        if (exists) {
+            throw new ProdutoDuplicadoException(origem.getDescricao());
         }
     }
 
