@@ -33,32 +33,38 @@ public class ProdutoService {
         return toPageDTO(repository.findAll(pageable));
     }
 
-    public ProdutoDTO buscarProdutoPorId(BigInteger id) throws Exception {
+    public ProdutoDTO buscarProdutoPorId(BigInteger id) { //throws Exception {
         return toDTO(repository.findById(id)
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) { //throws Exception {    
         validarDuplicidade(origem);
         validarEstoque(origem);
         validarPreco(origem);
         return toDTO(repository.save(toEntity(origem)));
     }
 
-    public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+    public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) { //throws Exception {
         validarDuplicidade(origem);
         validarEstoque(origem);
         validarPreco(origem);
         return toDTO(repository.save(toEntity(origem)));
     }
 
-    public String excluirProduto(BigInteger id) throws Exception{
-        try{ 
-            repository.deleteById(id);
-             return "Excluído";
-        }catch (Exception ex){
-            throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+    public String excluirProduto(BigInteger id) {
+        if (!repository.existsById(id)) {
+            throw new IdInexistenteException("Produto", id);
         }
+        repository.deleteById(id);
+        return "Excluído";
+        // try{ 
+        //     repository.deleteById(id);
+        //      return "Excluído";
+        // }catch (Exception ex){
+        //     throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+        // }
+
     }
 
     private void validarDuplicidade(ProdutoDTO origem) {

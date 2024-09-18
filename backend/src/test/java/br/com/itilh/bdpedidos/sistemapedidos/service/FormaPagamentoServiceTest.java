@@ -51,4 +51,43 @@ void setupFormaPagamento() {
     }
 
 
+    @Test
+    @DisplayName("Teste de alteração de forma de pagamento")
+    void testAlterarFormaPagamento() throws Exception {
+        setupFormaPagamento();
+        FormaPagamentoDTO dtoCriado = new FormaPagamentoDTO(null, "Forma Pagamento Teste", true);
+        FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dtoCriado);
+
+        FormaPagamentoDTO dtoAlterado = new FormaPagamentoDTO(dtoRetorno.getId(), "Forma Pagamento Alterada", true);
+        FormaPagamentoDTO dtoAlteradoRetorno = formaPagamentoService.alterarFormaPagamento(dtoRetorno.getId(), dtoAlterado);
+
+        assertEquals("Forma Pagamento Alterada", dtoAlteradoRetorno.getDescricao());
+    }
+
+    @Test
+    @DisplayName("Teste de alteração de forma de pagamento duplicada")
+    void testAlterarFormaPagamentoDuplicada() throws Exception {
+        setupFormaPagamento();
+        FormaPagamentoDTO dtoCriado = new FormaPagamentoDTO(null, "Forma Pagamento Original", true);
+        FormaPagamentoDTO dtoCriado2 = new FormaPagamentoDTO(null, "Forma Pagamento Duplicada", true);
+        formaPagamentoService.criarFormaPagamento(dtoCriado);
+        formaPagamentoService.criarFormaPagamento(dtoCriado2);
+
+        dtoCriado.setDescricao("Forma Pagamento Duplicada");
+
+        assertThrows(FormaPagamentoDuplicadoException.class, () -> formaPagamentoService.alterarFormaPagamento(dtoCriado.getId(), dtoCriado));
+    }
+
+    @Test
+    @DisplayName("Teste de exclusão de forma de pagamento")
+    void testExcluirFormaPagamento() throws Exception {
+        setupFormaPagamento();
+        FormaPagamentoDTO dtoCriado = new FormaPagamentoDTO(null, "Forma Pagamento a Ser Excluída", true);
+        FormaPagamentoDTO dtoRetorno = formaPagamentoService.criarFormaPagamento(dtoCriado);
+
+        formaPagamentoService.excluirFormaPagamento(dtoRetorno.getId());
+
+        assertThrows(Exception.class, () -> formaPagamentoService.buscarFormaPagamentoPorId(dtoRetorno.getId()));
+    }
+
 }
