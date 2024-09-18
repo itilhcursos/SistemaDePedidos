@@ -21,8 +21,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.MunicipioService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-
-
 @RestController
 @SecurityRequirement(name = "bearerAuth")
 public class MunicipioController {
