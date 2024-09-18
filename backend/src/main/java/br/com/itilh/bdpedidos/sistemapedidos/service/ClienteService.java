@@ -1,5 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,5 +21,29 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
         return toPageDTO(repositorio.findAll(pageable));
     }
 
-    
+    public ClienteDTO getPorId(BigInteger id) throws Exception {
+        return toDTO(repositorio.findById(id)
+        
+        .orElseThrow(() -> new Exception("ID Inválido!")));
+    }
+
+    // TODO: Validar Duplicação
+
+    public ClienteDTO criar(ClienteDTO dto) throws Exception {
+        try {
+            return toDTO(repositorio.save(toEntity(dto)));
+
+        } catch (Exception e) {throw new Exception("Erro ao salvar o Cliente");}
+    }
+
+    public ClienteDTO alterar(BigInteger id, ClienteDTO novosDados) throws Exception {
+        try {
+            return toDTO(repositorio.save(toEntity(novosDados)));
+        } catch (Exception e) {throw new Exception("Erro ao alterar o Cliente");}
+    }
+
+    public String apagar(BigInteger id) throws Exception {
+        repositorio.deleteById(id);
+        return ("Cliente apagado!");
+    }
 }
