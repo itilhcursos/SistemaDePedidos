@@ -40,8 +40,8 @@
           type="submit"
           v-on:click.prevent="cancelar"
         >
-        <i class="bi bi-clipboard2-x"></i>
-          Cancelar
+           <i class="bi bi-clipboard2-x"></i>
+           Cancelar
         </button>
       </div>
     </form>
@@ -72,7 +72,7 @@
       async salvarEstado() {
         if (this.nome === "") {
           this.isInvalido = true;
-          this.mensagem = "Não deve ser preenchido!!";
+          this.mensagem = "O Nome deve ser preenchido!!";
           return;
         }
         this.isInvalido = false;
@@ -109,7 +109,7 @@
           }else if(error.response.status === 500){ 
             this.mensagem = error.response.data.message;
           }else{
-            this.mensagem = error.mensagem;
+            this.mensagem = error.message;
           }
         }
       },

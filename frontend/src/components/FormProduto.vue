@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import produtoService from '@/services/produtoService';
 export default {
 
 
@@ -103,9 +103,20 @@ export default {
             mensagem: "",
         };
     },
-
+    
 
     methods: {
+
+        getDados(){
+            return{
+                id: this.id, 
+                urlImagem: this.urlImagem,
+                descricao: this.descricao, 
+                quantidadeEstoque: this.quantidadeEstoque, 
+                precoUnidadeAtual: this.precoUnidadeAtual, 
+                ativo: this.ativo,
+            }
+        },
         async salvarProduto() {
             if (this.descricao === "") {
                 this.isInvalido = true;
@@ -113,30 +124,14 @@ export default {
                 return;
             }
             this.isInvalido = false;
-            let config = {
-                headers: {
-                'Authorization': 'Bearer ' +localStorage.getItem('token')
-                }
-            }
             try{
                 if (this.id === "") {
-                    const response = await axios.post("http://localhost:8080/produto", {
-                        id: this.id, 
-                        descricao: this.descricao, 
-                        quantidadeEstoque: this.quantidadeEstoque, 
-                        precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo
-                    }, config);
+                    const response = await produtoService.criar(
+                    this.getDados());
                     this.listaProdutos = response.data;
                 } else {
-                    const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
-                    {
-                        id: this.id,
-                        descricao: this.descricao, 
-                        quantidadeEstoque: this.quantidadeEstoque, 
-                        precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo
-                    }, config);
+                    const response = await produtoService.atualizar(
+                    this.getDados());
                     this.listaEstados = response.data;
                 }
 
@@ -158,10 +153,10 @@ export default {
                 this.isInvalido = true;
                 if(error.response.status === 403){
                     this.mensagem = "Usuario não identificado! faça o login!!!";
-                }else if(error.response.status === 400){
+                }else if(error.response.status === 500){
                     this.mensagem = error.response.data.mensagem;
                 }else{
-                    this.mensagem = error.mensagem;
+                    this.mensagem = error.message;
                 }     
             }
         },

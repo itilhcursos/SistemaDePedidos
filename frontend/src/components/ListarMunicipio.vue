@@ -170,6 +170,7 @@ export default {
         },
         limpar(){
             this.municipioEscolhido = null;
+            this.formVisible = !this.formVisible;
         },
         irPara(pagina){
             this.pageNumber = pagina;
