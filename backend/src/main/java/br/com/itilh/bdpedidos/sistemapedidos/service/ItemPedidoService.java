@@ -15,7 +15,7 @@ public class ItemPedidoService extends GenericService<ItemPedido,ItemPedidoDTO> 
 @Autowired
 private ItemPedidoRepository itemPedidoRepository;
 
-public Page<ItemPedidoDTO> listaritemPedidos(Pageable pageable){
+public Page<ItemPedidoDTO> listarItemPedidos(Pageable pageable){
      return toPageDTO(itemPedidoRepository.findAll(pageable));
 }
 

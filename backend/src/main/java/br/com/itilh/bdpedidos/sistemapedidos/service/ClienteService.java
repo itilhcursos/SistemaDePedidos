@@ -29,7 +29,7 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
     }
 
 
-    public Page<ClienteDTO> listarCLientePorMunicipioNome(String nome, Pageable pageable) {
+    public Page<ClienteDTO> listarClientePorMunicipioNome(String nome, Pageable pageable) {
         return toPageDTO(clienteRepository.findBymunicipioNomeIgnoreCase(nome, pageable));
     }
 
@@ -38,7 +38,7 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
         .orElseThrow(()-> new IdInexistenteException("Cliente", id)));
     }
 
-    public ClienteDTO criarCliete(ClienteDTO origem) throws Exception {    
+    public ClienteDTO criarCliente(ClienteDTO origem) throws Exception {    
         return toDTO(clienteRepository.save(toEntity(origem)));
     }
 public ClienteDTO alterarCliente (BigInteger id, ClienteDTO origem) throws Exception {
