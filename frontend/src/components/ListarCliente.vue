@@ -1,9 +1,6 @@
 <template>
-    Template
     <div class="container">
-        Container
         <div class="row">
-            Row
             <div class="col-10">
                 <h3>CLIENTES</h3>
             </div>
@@ -19,9 +16,11 @@
                     <FormCliente
                     v-if="formVisible"
                     @flip="flipFormVisible"
+                    @salvar="listarClientes"
                     />
                 </div>
             </div>
+
 
             <table class="table table-dark table-striped" v-if="!formVisible">
                 <thead>
@@ -77,12 +76,58 @@
                         </td>
                         <td class="d-flex justify-content-end">
                             <button class="btn btn-btn btn-primary m-2" @click="alterar()"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
-                            <button class="btn btn-btn btn-primary m-2" @click="excluir()"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
+                            <button class="btn btn-outline-danger m-2" @click="excluir()"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
                         </td>
 
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div v-if="!formVisible">
+            <hr />
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-auto">
+                        <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
+                            {{ pagina }}
+                        </button>
+                        <div class="col-auto">
+                            <input
+                                type="text"
+                                v-model="pageNumber"
+                                placeholder="Número da pagina"
+                                class="form-control w-25"
+                            />
+                        </div>
+                        <div class="col-auto">
+                            <select v-model="pageSize" class="form-select">
+                                <option value="2">2</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <select v-model="property" class="form-select">
+                                <option value="id">ID</option>
+                                <option value="nome">Nome</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <select v-model="direction" class="form-select">
+                                <option value="ASC">Crescente</option>
+                                <option value="DESC">Decrescente</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button @click.prevent="buscarEstados" class="btn btn-success">
+                                <i class="bi bi-binoculars"></i>
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -107,6 +152,17 @@ export default {
         }
     },
     methods: {
+        flipFormVisible(){
+            this.formVisible = !this.formVisible
+        },
+        limpar() {
+            this.estadoEscolhido = null;
+            this.formVisible = !this.formVisible;
+        },
+        irPara(pagina) {
+            this.pageNumber = pagina;
+            this.listarClientes();
+        },
         async listarClientes(){
             this.clienteEscolhido = null;
             this.formVisible = false;
@@ -117,18 +173,26 @@ export default {
             this.totalPages = response.totalPages;
             console.log(this.totalPages);
         },
-        novoCliente(){
-            alert("em construção")
+        alterar(cliente){
+            this.clienteEscolhido = cliente;
+            this.formVisible = true;
         },
-        alterar(){
-            alert("wip alterar")
-        },
-        async excluir(){
-            alert("wip excluir")
-        },
-        flipFormVisible(){
-            this.formVisible = !this.formVisible
+        async excluir(id){
+            try{
+                const response = await clienteService.apagar(id);
+                console.log(response);
+            }catch(error){
+                if(error.response.status === 403){        
+                alert("Usuário não identificado! Faça o login!!!");
+                }else if(error.response.status === 400 ){
+                alert(error.response.data.mensagem);     
+                }else{
+                alert(error.message);
+                }
+            }     
+            this.buscarEstados();
         }
+        
     },
     mounted(){
         this.listarClientes();
