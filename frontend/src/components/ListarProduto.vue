@@ -39,7 +39,7 @@
               {{ produto.id }}
             </th>
             <td>
-              <img :src=produto.urlImagem height="100px">
+              <img :src=produto.urlImagem height="50px">
             </td>
             <td>
               {{ produto.descricao }}

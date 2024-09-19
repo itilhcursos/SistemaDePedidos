@@ -18,5 +18,4 @@ public class ProdutoDTO {
     private BigDecimal precoUnidadeAtual;
     private Boolean ativo;
     private String urlImagem;
-    
 }
