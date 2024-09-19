@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ProdutoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 public class ProdutoController {
 
     @Autowired
