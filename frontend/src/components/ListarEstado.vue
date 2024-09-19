@@ -11,12 +11,8 @@
       </div>
       <div class="row">
         <div>
-          <FormEstado
-            v-if="formVisible"
-            :propsEstado="estadoEscolhido"
-            @cancelar="limpar"
-            @salvar_estado="buscarEstados"
-          />
+          <FormEstado v-if="formVisible" :propsEstado="estadoEscolhido" @cancelar="limpar"
+            @salvar_estado="buscarEstados" />
         </div>
       </div>
     </div>
@@ -38,17 +34,11 @@
             {{ estado.nome }}
           </td>
           <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
-            >
+            <button class="btn btn-btn btn-primary m-2" @click="alterarEstado(estado)">
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
-            >
+            <button class="btn btn-outline-danger m-2" @click="excluirEstado(estado.id)">
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
           </td>
@@ -62,24 +52,14 @@
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
 
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
             {{ pagina }}
           </button>
 
 
         </div>
         <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25" />
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -131,7 +111,7 @@ export default {
       pageSize: 10,
       direction: "ASC",
       property: "id",
-      totalPages: 0,
+      totalPages: 4,
     };
   },
   methods: {
@@ -162,7 +142,7 @@ export default {
     async excluirEstado(id) {
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
       const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 
-
 @Repository
-public interface MunicipioRepository extends JpaRepository<Municipio , BigInteger > {
+public interface MunicipioRepository extends JpaRepository<Municipio, BigInteger> {
 
     Page<Municipio> findByEstadoId(BigInteger id, Pageable pageable);
+
     Page<Municipio> findByEstadoNomeIgnoreCase(String nome, Pageable pageable);
 
     boolean existsByNomeAndEstadoId(String nome, BigInteger id);

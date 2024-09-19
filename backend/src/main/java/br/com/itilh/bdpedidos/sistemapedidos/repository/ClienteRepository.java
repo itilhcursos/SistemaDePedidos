@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 
 @Repository
-public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
+public interface ClienteRepository extends JpaRepository<Cliente, BigInteger> {
 
 }

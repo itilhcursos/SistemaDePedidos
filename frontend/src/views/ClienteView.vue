@@ -1,10 +1,10 @@
 <script setup>
-import ListarMunicipio from '../components/ListarMunicipio.vue'
+import ListarCliente from '@/components/ListarCliente.vue';
 </script>
 
 <template>
   <main>
-    <ListarMunicipio />
+    <ListarCliente />
   </main>
 </template>
 

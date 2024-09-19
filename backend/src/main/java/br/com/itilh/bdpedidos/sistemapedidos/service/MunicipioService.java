@@ -14,11 +14,10 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 
 @Service
-public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
+public class MunicipioService extends GenericService<Municipio, MunicipioDTO> {
 
     @Autowired
     private MunicipioRepository repository;
-
 
     public Page<MunicipioDTO> listarMunicipios(Pageable pageable) {
         return toPageDTO(repository.findAll(pageable));
@@ -34,18 +33,18 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
 
     public MunicipioDTO buscarMunicipioPorId(BigInteger id) throws Exception {
         return toDTO(repository.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Município", id)));
+                .orElseThrow(() -> new IdInexistenteException("Município", id)));
     }
 
-    public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
+    public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {
         validar(origem);
         return toDTO(repository.save(toEntity(origem)));
     }
 
     private void validar(MunicipioDTO origem) {
         // se já existe municipio com mesmo nome e no mesmo estado
-        if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
-          throw new MunicipioDuplicadoException(origem.getNome());
+        if (repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
+            throw new MunicipioDuplicadoException(origem.getNome());
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
@@ -53,11 +52,11 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
         return toDTO(repository.save(toEntity(origem)));
     }
 
-    public String excluirMunicipio(BigInteger id) throws Exception{
-        try{ 
+    public String excluirMunicipio(BigInteger id) throws Exception {
+        try {
             repository.deleteById(id);
-             return "Excluído com sucesso";
-        }catch (Exception ex){
+            return "Excluído com sucesso";
+        } catch (Exception ex) {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }

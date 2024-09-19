@@ -35,35 +35,34 @@ public class Cliente {
     @JoinColumn(name = "id_municipio")
     private Municipio municipio;
 
-    @Column(name="tx_nome_razao_social")
+    @Column(name = "tx_nome_razao_social")
     private String nomeRazaoSocial;
 
-    @Column(name="tx_cnpj")
+    @Column(name = "tx_cnpj")
     private String cnpj;
-    
-    @Column(name="tx_cpf")
+
+    @Column(name = "tx_cpf")
     private String cpf;
 
-    @Column(name="tx_telefone")
+    @Column(name = "tx_telefone")
     private String telefone;
 
-    @Column(name="tx_endereco")
+    @Column(name = "tx_endereco")
     private String endereco;
 
-    @Column(name="tx_bairro")
+    @Column(name = "tx_bairro")
     private String bairro;
 
-    @Column(name="tx_cep")
+    @Column(name = "tx_cep")
     private String cep;
 
-    @Column(name="tx_email")
+    @Column(name = "tx_email")
     private String email;
 
-    @Column(name="bo_ativo")
+    @Column(name = "bo_ativo")
     boolean ativo;
 
-    @Column(name="tx_informacoes")
+    @Column(name = "tx_informacoes")
     private String informacao;
-
 
 }
