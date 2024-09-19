@@ -42,12 +42,12 @@ private FormaPagamento formaPagamento;
 private Integer numero;
 
 @Column(name = "dt_compra")
-private Data compra;
+private String compra;
 
 @Column(name = "dt_entrega")
-private Data entrega;
+private String entrega;
 
 @Column(name = "dt_pagamento")
-private Data pagamento;
+private String pagamento;
 
 }
