@@ -20,5 +20,4 @@ import ListarMunicipio from '../components/ListarMunicipio.vue'
     display: block;
     width: 92%;
   }
-
 </style>

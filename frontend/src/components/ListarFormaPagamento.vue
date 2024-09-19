@@ -168,14 +168,14 @@ export default {
         }
       }
       try{
-      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`,config);
+        const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`,config);
       console.log(response.data);
-    }catch(error){
-        if(error.response.status === 403){        
+      } catch (error) {
+        if (error.response.status === 403) {        
          alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
+        } else if (error.response.status === 400 ) {
           alert(error.response.data.mensagem);     
-        }else{
+        } else {
           alert(error.message);
         }
       }

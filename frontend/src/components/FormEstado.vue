@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import estadoService from '@/services/estadoService';
 export default {
   props: {
     propsEstado: Object,
@@ -63,6 +63,12 @@ export default {
     };
   },
   methods: {
+    getDados(){
+      return {
+              id: this.id,
+              nome: this.nome,
+            };
+    },
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
@@ -72,51 +78,37 @@ export default {
       this.isInvalido = false;
       let config = {
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
 
-    try{
-        if (this.id === "") {
-          //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/estado", {
+      if (this.id === "") {
+        //incluir pelo POST da API
+        const response = await estadoService.post("http://localhost:8080/estado", {
+          id: this.id,
+          nome: this.nome,
+        }, config);
+        this.listaEstados = response.data;
+      } else {
+        // alterar pelo PUT da API
+        const response = await estadoService.put(
+          `http://localhost:8080/estado/${this.id}`,
+          {
             id: this.id,
             nome: this.nome,
-          }, config);
-          this.listaEstados = response.data;
-        } else {
-          // alterar pelo PUT da API
-          const response = await axios.put(
-            `http://localhost:8080/estado/${this.id}`,
-            {
-              id: this.id,
-              nome: this.nome,
-            }
-          ,config );
-          this.listaEstados = response.data;
-        }
-        this.$emit("salvar_estado", {
+          }
+        ,config );
+        this.listaEstados = response.data;
+      }
+
+      this.$emit("salvar_estado", {
         id: this.id,
         nome: this.nome,
       });
 
       this.id = "";
       this.nome = "";
-    }catch(error){
-        // console.log (error);
-        // console.log (error.response.status);
-        // console.log (error.response.data.exception);
-      this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'EstadoDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
-        this.mensagem = error.message;
-      }
-    }
-   },
+    },
     cancelar() {
       this.id = "";
       this.nome = "";
