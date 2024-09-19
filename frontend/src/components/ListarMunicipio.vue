@@ -122,10 +122,10 @@
 import FormMunicipio from './FormMunicipio.vue';
 import axios from 'axios';
 export default {
-   components:{
-    FormMunicipio,
-   },
-   data(){
+    components:{
+      FormMunicipio,
+    },
+    data(){
         return{
             listaMunicipios:[],
             municipioEscolhido: null,
@@ -142,7 +142,7 @@ export default {
     methods:{
         async buscarMunicipios(){
             this.municipioEscolhido = null;
-            this.FormVisible = false;
+            this.formVisible = false;
             const response = await axios.get(
                 `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}` 
             );
