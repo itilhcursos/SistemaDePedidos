@@ -81,7 +81,7 @@
             //incluir pelo POST da API
             const response = await axios.post("http://localhost:8080/cliente", {
               id: this.id,
-              nome: this.nome,
+              nomeRazaoSocial: this.nome.nomeRazaoSocial,
             }, config);
             this.listaClientes = response.data;
           } else {
