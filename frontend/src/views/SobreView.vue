@@ -7,4 +7,3 @@ import TelaSobre from '../components/TelaSobre.vue'
     <TelaSobre />
   </main>
 </template>
-

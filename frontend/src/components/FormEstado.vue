@@ -5,42 +5,23 @@
     <form>
       <div class="mb-3">
         <label class="form-label">Id</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="id"
-          :disabled="true"
-          placeholder="Id estado"
-        />
+        <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id estado" />
       </div>
       <div class="mb-3">
         <label class="form-label">Nome</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="nome"
-          placeholder="Nome"
-        />
+        <input class="form-control" type="text" v-model="nome" placeholder="Nome" />
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
-        <button
-          class="btn btn-primary m-2"
-          type="submit"
-          v-on:click.prevent="salvarEstado"
-        >
-        <i class="bi bi-clipboard2-check"></i>
+        <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarEstado">
+          <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
-        <button
-          class="btn btn-warning m-2"
-          type="submit"
-          v-on:click.prevent="cancelar"
-        >
-        <i class="bi bi-clipboard2-x"></i>
+        <button class="btn btn-warning m-2" type="submit" v-on:click.prevent="cancelar">
+          <i class="bi bi-clipboard2-x"></i>
           Cancelar
         </button>
       </div>
@@ -59,7 +40,7 @@ export default {
       id: "",
       nome: "",
       isInvalido: false,
-      mensagem : '',
+      mensagem: '',
     };
   },
   methods: {
@@ -72,11 +53,11 @@ export default {
       this.isInvalido = false;
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
 
-      try{
+      try {
         if (this.id === "") {
           //incluir pelo POST da API
           const response = await axios.post("http://localhost:8080/estado", {
@@ -92,29 +73,29 @@ export default {
               id: this.id,
               nome: this.nome,
             }
-          ,config );
+            , config);
           this.listaEstados = response.data;
         }
         this.$emit("salvar_estado", {
-        id: this.id,
-        nome: this.nome,
-      });
+          id: this.id,
+          nome: this.nome,
+        });
 
-      this.id = "";
-      this.nome = "";
-    }catch( error){
-      console.log (error);
-      console.log (error.response.status);
-      this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 500){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
-        this.mensagem = error.message;
+        this.id = "";
+        this.nome = "";
+      } catch (error) {
+        console.log(error);
+        console.log(error.response.status);
+        this.isInvalido = true;
+        if (error.response.status === 403) {
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        } else if (error.response.status === 500) {
+          this.mensagem = error.response.data.mensagem;
+        } else {
+          this.mensagem = error.message;
+        }
       }
-    }
-   },
+    },
     cancelar() {
       this.id = "";
       this.nome = "";
@@ -134,4 +115,3 @@ export default {
   },
 };
 </script>
-

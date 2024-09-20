@@ -5,47 +5,27 @@
         <form>
             <div class="mb-3">
                 <label class="form-label">Id</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="id"
-                :disabled="true"
-                placeholder="Id produto"
-                />
+                <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id produto" />
             </div>
             <div class="mb-3">
                 <label class="form-label">Descrição</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="descricao"
-                placeholder="Descrição"
-                />
+                <input class="form-control" type="text" v-model="descricao" placeholder="Descrição" />
             </div>
             <div class="mb-3">
                 <label class="form-label">Quantidade em Estoque</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="quantidadeEstoque"
-                placeholder="Quantidade em Estoque"
-                />
+                <input class="form-control" type="text" v-model="quantidadeEstoque"
+                    placeholder="Quantidade em Estoque" />
             </div>
             <div class="mb-3">
                 <label class="form-label">Preço Unitário</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="precoUnidadeAtual"
-                placeholder="Preço Unitário"
-                />
+                <input class="form-control" type="text" v-model="precoUnidadeAtual" placeholder="Preço Unitário" />
             </div>
             <div class="mb-3">
                 <label class="form-label">Ativo</label>
                 <select v-model="ativo" class="form-select">
-            <option :value="true">Sim</option>
-            <option :value="false">Não</option>
-          </select>
+                    <option :value="true">Sim</option>
+                    <option :value="false">Não</option>
+                </select>
             </div>
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
@@ -53,20 +33,12 @@
             </div>
             <div class="mb-3 d-flex justify-content-end">
 
-                <button
-                class="btn btn-primary m-2"
-                type="submit"
-                v-on:click.prevent="salvarProduto"
-                >
+                <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarProduto">
                     <i class="bi bi-clipboard2-check"></i>
                     {{ getAcao }}
                 </button>
 
-                <button
-                class="btn btn-warning m-2"
-                type="submit"
-                v-on:click.prevent="cancelar"
-                >
+                <button class="btn btn-warning m-2" type="submit" v-on:click.prevent="cancelar">
                     <i class="bi bi-clipboard2-x"></i>
                     Cancelar
                 </button>
@@ -103,68 +75,68 @@ export default {
             this.isInvalido = false;
             let config = {
                 headers: {
-                'Authorization': 'Bearer ' +localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             }
             if (this.id === "") {
                 const response = await axios.post("http://localhost:8080/produto", {
-                    id: this.id, 
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
+                    id: this.id,
+                    descricao: this.descricao,
+                    quantidadeEstoque: this.quantidadeEstoque,
+                    precoUnidadeAtual: this.precoUnidadeAtual,
                     ativo: this.ativo
                 }, config);
                 this.listaProdutos = response.data;
             } else {
-                const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
-                {
-                    id: this.id,
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
-                }, config);
+                const response = await axios.put(`http://localhost:8080/produto/${this.id}`,
+                    {
+                        id: this.id,
+                        descricao: this.descricao,
+                        quantidadeEstoque: this.quantidadeEstoque,
+                        precoUnidadeAtual: this.precoUnidadeAtual,
+                        ativo: this.ativo
+                    }, config);
                 this.listaEstados = response.data;
             }
 
             this.$emit("salvar_produto", {
                 id: this.id,
-                descricao: this.descricao, 
-                quantidadeEstoque: this.quantidadeEstoque, 
-                precoUnidadeAtual: this.precoUnidadeAtual, 
+                descricao: this.descricao,
+                quantidadeEstoque: this.quantidadeEstoque,
+                precoUnidadeAtual: this.precoUnidadeAtual,
                 ativo: this.ativo
             });
             this.id = "";
             this.descricao = "";
             this.quantidadeEstoque = "";
-            this.precoUnidadeAtual = ""; 
+            this.precoUnidadeAtual = "";
             this.ativo = "";
         },
 
-        cancelar(){
+        cancelar() {
             this.id = "";
             this.descricao = "";
             this.quantidadeEstoque = "";
-            this.precoUnidadeAtual = ""; 
+            this.precoUnidadeAtual = "";
             this.ativo = "";
             this.$emit("cancelar", true);
         },
     },
 
 
-    mounted(){
+    mounted() {
         if (this.propsProduto) {
             this.id = this.propsProduto.id;
             this.descricao = this.propsProduto.descricao;
             this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
-            this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual; 
+            this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual;
             this.ativo = this.propsProduto.ativo;
         }
     },
 
 
     computed: {
-        getAcao(){
+        getAcao() {
             return this.id === "" ? "Incluir" : "Alterar";
         },
     }
