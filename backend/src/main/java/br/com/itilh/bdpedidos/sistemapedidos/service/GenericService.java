@@ -11,8 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 public class GenericService<T,D> {
-    // T -  "table" ou seja a ENTIDADE
-    // D -  "dados entrada e saída" ou seja DTO
+    
 
     @Autowired
     protected ModelMapper mapper;

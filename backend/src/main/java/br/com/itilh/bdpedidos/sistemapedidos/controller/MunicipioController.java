@@ -63,7 +63,7 @@ public class MunicipioController {
         try {
             return service.buscarMunicipioPorId(id);
         } catch (IdInexistenteException e) {
-            // tratar a exceção de forma personalizada
+
             throw e;
         }
 

@@ -13,7 +13,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
 @Service
-public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
+public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
 
     @Autowired
     private ProdutoRepository repositorio;
@@ -24,10 +24,10 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
 
     public ProdutoDTO buscarProdutoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Produto", id)));
+                .orElseThrow(() -> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
@@ -35,11 +35,11 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
-    public String excluirProduto(BigInteger id) throws Exception{
-        try{ 
+    public String excluirProduto(BigInteger id) throws Exception {
+        try {
             repositorio.deleteById(id);
-             return "Excluído";
-        }catch (Exception ex){
+            return "Excluído";
+        } catch (Exception ex) {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }

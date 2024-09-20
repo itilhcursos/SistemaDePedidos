@@ -13,11 +13,10 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 @Service
-public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPagamentoDTO>{
+public class FormaPagamentoService extends GenericService<FormaPagamento, FormaPagamentoDTO> {
 
     @Autowired
     private FormaPagamentoRepository repositorio;
-
 
     public Page<FormaPagamentoDTO> listarFormasPagamento(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
@@ -25,10 +24,10 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
 
     public FormaPagamentoDTO buscarFormaPagamentoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Forma de Pagamento", id)));
+                .orElseThrow(() -> new IdInexistenteException("Forma de Pagamento", id)));
     }
 
-    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
+    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
@@ -36,14 +35,13 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
-    public String excluirFormaPagamento(BigInteger id) throws Exception{
-        try{ 
+    public String excluirFormaPagamento(BigInteger id) throws Exception {
+        try {
             repositorio.deleteById(id);
-             return "Excluído";
-        }catch (Exception ex){
+            return "Excluído";
+        } catch (Exception ex) {
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
-
 
 }

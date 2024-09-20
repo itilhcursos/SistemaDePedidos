@@ -5,11 +5,12 @@ public enum UsuarioRole {
     USER("User");
 
     private String role;
-    UsuarioRole(String role){
+
+    UsuarioRole(String role) {
         this.role = role;
     }
 
-    public String getRole(){
+    public String getRole() {
         return role;
     }
 }

@@ -29,11 +29,10 @@ public class EstadoController {
 
     @GetMapping("/estados")
     public Page<EstadoDTO> getTodos(
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
         return estadoService.getTodos(pageable);
@@ -42,30 +41,30 @@ public class EstadoController {
     // @GetMapping("/estados/nome/{nome}")
     // public List<Estado> getEstadosPorNome(@PathVariable String nome,
     // @RequestParam(required = true) ModoBusca modoBusca) {
-    //     if(modoBusca.equals(ModoBusca.EXATO)){
-    //         return repositorio.findByNome(nome);
-    //     }else if (modoBusca.equals(ModoBusca.INICIADO)){
-    //         return repositorio.findByNomeStartingWithIgnoreCase(nome);
-    //     }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
-    //         return repositorio.findByNomeEndingWithIgnoreCase(nome);
-    //     }else{
-    //         return repositorio.findByNomeContainingIgnoreCase(nome);
-    //     }       
+    // if(modoBusca.equals(ModoBusca.EXATO)){
+    // return repositorio.findByNome(nome);
+    // }else if (modoBusca.equals(ModoBusca.INICIADO)){
+    // return repositorio.findByNomeStartingWithIgnoreCase(nome);
+    // }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
+    // return repositorio.findByNomeEndingWithIgnoreCase(nome);
+    // }else{
+    // return repositorio.findByNomeContainingIgnoreCase(nome);
     // }
-        
+    // }
+
     @GetMapping("/estado/{id}")
     public EstadoDTO getPorId(@PathVariable BigInteger id) throws Exception {
         return estadoService.getPorId(id);
-    }    
+    }
 
     @PostMapping("/estado")
-    public EstadoDTO criarEstado(@RequestBody EstadoDTO entityDTO) throws Exception { 
-       return estadoService.criarEstado(entityDTO);
+    public EstadoDTO criarEstado(@RequestBody EstadoDTO entityDTO) throws Exception {
+        return estadoService.criarEstado(entityDTO);
     }
 
     @PutMapping("/estado/{id}")
-    public EstadoDTO alterarEstado(@PathVariable BigInteger id, 
-                                @RequestBody EstadoDTO novosDados) throws Exception {
+    public EstadoDTO alterarEstado(@PathVariable BigInteger id,
+            @RequestBody EstadoDTO novosDados) throws Exception {
 
         return estadoService.alterarEstado(id, novosDados);
     }
@@ -73,5 +72,5 @@ public class EstadoController {
     @DeleteMapping("/estado/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return estadoService.deletePorId(id);
-    }    
+    }
 }

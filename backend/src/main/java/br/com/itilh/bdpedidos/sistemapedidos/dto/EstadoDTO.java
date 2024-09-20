@@ -14,7 +14,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class EstadoDTO {
-    
+
     private BigInteger id;
     private String nome;
 

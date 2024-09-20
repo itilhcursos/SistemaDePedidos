@@ -11,18 +11,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 public class SistemapedidosApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SistemapedidosApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SistemapedidosApplication.class, args);
+    }
 
-	@Bean
+    @Bean
     public WebMvcConfigurer forwardToIndex() {
         return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController( "/" )
+                registry.addViewController("/")
                         .setViewName("forward:/app/dist/index.html");
             }
+
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedMethods("*");
@@ -32,7 +33,7 @@ public class SistemapedidosApplication {
     }
 
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 }
