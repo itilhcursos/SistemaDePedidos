@@ -5,7 +5,7 @@
         <h3>MUNICÍPIOS</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novomunicipio" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
@@ -145,8 +145,6 @@ export default {
     async buscarMunicipios() {
       this.municipioEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de municipios no servidor
-      // http://localhost:8080/municipios
       const response = await axios.get(
         `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
@@ -167,10 +165,6 @@ export default {
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')

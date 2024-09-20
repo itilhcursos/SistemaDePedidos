@@ -7,28 +7,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.service.EstadoService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 
 @RestController
 @SecurityRequirement(name = "bearerAuth")
-public class EstadoController {
+public class ClienteController {
 
     @Autowired
-    EstadoService estadoService;
+    ClienteService clienteService;
 
-    @GetMapping("/estados")
-    public Page<EstadoDTO> getTodos(
+    @GetMapping("/clientes")
+    public Page<ClienteDTO> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -36,28 +39,30 @@ public class EstadoController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
-        return estadoService.getTodos(pageable);
+        return clienteService.getTodos(pageable);
     }
+
+    @GetMapping("/cliente/{id}")
+    public ClienteDTO getPorId(@PathVariable BigInteger id) throws Exception {
+
+        return clienteService.getPorId(id);
+    }
+
+    @PostMapping("/cliente")
+    public ClienteDTO criarCliente(@RequestBody ClienteDTO entityDTO) throws Exception {
         
-    @GetMapping("/estado/{id}")
-    public EstadoDTO getPorId(@PathVariable BigInteger id) throws Exception {
-        return estadoService.getPorId(id);
-    }    
+        return clienteService.criarCliente(entityDTO);
+    }
+    
+    @PutMapping("/cliente/{id}")
+    public ClienteDTO alterarCliente(@PathVariable BigInteger id, 
+                                @RequestBody ClienteDTO novosDados) throws Exception {
 
-    @PostMapping("/estado")
-    public EstadoDTO criarEstado(@RequestBody EstadoDTO entityDTO) throws Exception { 
-       return estadoService.criarEstado(entityDTO);
+        return clienteService.alterarCliente(id, novosDados);
     }
 
-    @PutMapping("/estado/{id}")
-    public EstadoDTO alterarEstado(@PathVariable BigInteger id, 
-                                @RequestBody EstadoDTO novosDados) throws Exception {
-
-        return estadoService.alterarEstado(id, novosDados);
-    }
-
-    @DeleteMapping("/estado/{id}")
+    @DeleteMapping("/cliente/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
-        return estadoService.deletePorId(id);
-    }    
+        return clienteService.deletePorId(id);
+    }
 }
