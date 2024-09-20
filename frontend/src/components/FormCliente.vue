@@ -68,18 +68,25 @@
                     placeholder="E-mail"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Ativo</label>
-                <select v-model="ativo" class="form-select">
-                    <option value="true">true</option>
-                    <option value="false">false</option>
-                </select>
-            </div>
-            <div class="mb-3">
                 <label class="form-label">Informações</label>
                 <input class="form-control"
                     type="text"
                     v-model="informacao"
                     placeholder="Informações"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Ativo?</label>
+                <select v-model="ativo" class="form-select">
+                    <option value="true">Sim (true)</option>
+                    <option value="false">Não (false)</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Municipio (ID)</label>
+                <input class="form-control"
+                    type="text"
+                    v-model="municipioId"
+                    placeholder="Preencha com o ID do Municipio do Cliente"/>
             </div>
 
 
@@ -99,7 +106,7 @@
 import clienteService from '@/services/clienteService';
 export default {
     props:{
-        propsCliente: Object
+        propsCliente: Object,
     },
     data(){
         return {
@@ -115,8 +122,9 @@ export default {
             bairro: "",
             cep: "",
             email: "",
+            informacao: "",
             ativo: "",
-            informacao: ""
+            municipioId: ""
         }
     },
     mounted(){
@@ -130,13 +138,27 @@ export default {
         this.bairro = this.propsCliente.id;
         this.cep= this.propsCliente.cep;
         this.email= this.propsCliente.email;
-        this.ativo=this.propsCliente.ativo;
         this.informacao= this.propsCliente.informacao;
+        this.ativo=this.propsCliente.ativo;
+        this.municipioId= this.propsCliente.municipioId;
     }
     },
     methods:{
         getDados(){
-
+            return{
+                id: this.id,
+                nomeRazaoSocial: this.nomeRazaoSocial,
+                cnpj: this.cnpj,
+                cpf: this.cpf,
+                telefone: this.telefone,
+                endereco: this.endereco,
+                bairro: this.bairro,
+                cep: this.cep,
+                email: this.email,
+                informacao: this.informacao,
+                ativo: this.ativo,
+                municipioId: this.municipioId
+             };
         },
         cancelar(){
             this.id = "";
@@ -148,8 +170,9 @@ export default {
             this.bairro = "";
             this.cep = "";
             this.email= "";
-            this.ativo = "";
             this.informacao = "";
+            this.ativo = "";
+            this.municipioId = "";
             this.$emit("flip", true)
         },
         async salvar(){
@@ -158,6 +181,7 @@ export default {
                 this.mensagem = "Nome deve ser preenchido!";
                 return;
             }
+            this.isInvalido = false;
             try{
                 if (this.id === ""){
                     const response = await clienteService.criar(this.getDados());
@@ -176,8 +200,9 @@ export default {
                 bairro: this.bairro,
                 cep: this.cep,
                 email: this.email,
+                informacao: this.informacao,
                 ativo: this.ativo,
-                informacao: this.informacao
+                municipioId: this.municipioId
                 });
 
                 this.id = "";
@@ -189,8 +214,9 @@ export default {
                 this.bairro= "";
                 this.cep= "";
                 this.email= "";
-                this.ativo="";
                 this.informacao= "";
+                this.ativo="";
+                this.municipioId= "";
 
             } catch (error) {
                 this.isInvalido = true;

@@ -15,6 +15,7 @@
                 <div>
                     <FormCliente
                     v-if="formVisible"
+                    :propsCliente="clienteEscolhido"
                     @flip="flipFormVisible"
                     @salvar="listarClientes"
                     />
@@ -36,6 +37,7 @@
                         <th scope="col">E-mail</th>
                         <th scope="col">Informações</th>
                         <th scope="col">Ativo</th>
+                        <th scope="col">ID Municipio</th>
                         <th scope="col" class="d-flex justify-content-end">Ações</th>
                     </tr>
                 </thead>
@@ -66,7 +68,7 @@
                             {{ cliente.cep }}
                         </td>
                         <td>
-                            {{ cliente.e-mail }}
+                            {{ cliente.email }}
                         </td>
                         <td>
                             {{ cliente.informacao }}
@@ -74,9 +76,12 @@
                         <td>
                             {{ cliente.ativo }}
                         </td>
+                        <td>
+                            {{ cliente.municipioId }}
+                        </td>
                         <td class="d-flex justify-content-end">
-                            <button class="btn btn-btn btn-primary m-2" @click="alterar()"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
-                            <button class="btn btn-outline-danger m-2" @click="excluir()"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
+                            <button class="btn btn-btn btn-primary m-2" @click="alterar(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar </button>
+                            <button class="btn btn-outline-danger m-2" @click="excluir(cliente.id)"><i class="bi bi-clipboard2-minus"></i> Excluir </button>
                         </td>
 
                     </tr>
@@ -153,11 +158,11 @@ export default {
     },
     methods: {
         flipFormVisible(){
-            this.formVisible = !this.formVisible
+            this.formVisible = !this.formVisible;
         },
         limpar() {
-            this.estadoEscolhido = null;
-            this.formVisible = !this.formVisible;
+            this.clienteEscolhido = null;
+            this.flipFormVisible();
         },
         irPara(pagina) {
             this.pageNumber = pagina;
@@ -175,7 +180,7 @@ export default {
         },
         alterar(cliente){
             this.clienteEscolhido = cliente;
-            this.formVisible = true;
+            this.flipFormVisible();
         },
         async excluir(id){
             try{
@@ -190,7 +195,7 @@ export default {
                 alert(error.message);
                 }
             }     
-            this.buscarEstados();
+            this.listarClientes();
         }
         
     },
