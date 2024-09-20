@@ -38,28 +38,121 @@
                     <th scope="col" class="d-flex justify-content-end">Ações</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
+                    <th>
+                        {{ cliente.id }} <!--diferença entre td e th -->
+                    </th>
+                    <td>
+                        {{ cliente.municipio}}
+                    </td>
+                    <td>
+                        {{ cliente.nomeRazaoSocial}}
+                    </td>
+                    <td>
+                        {{ cliente.cnpj}}
+                    </td>
+                    <td>
+                        {{ cliente.cpf}}
+                    </td>
+                    <td>
+                        {{ cliente.telefone}}
+                    </td>
+                    <td>
+                        {{ cliente.endereco}}
+                    </td>
+                    <td>
+                        {{ cliente.bairro}}
+                    </td>
+                    <td>
+                        {{ cliente.cep}}
+                    </td>
+                    <td>
+                        {{ cliente.email}}
+                    </td>
+                    <td>
+                        {{ cliente.ativo}}
+                    </td>
+                    <td>
+                        {{ cliente.informacao}}
+                    </td>
+
                     <td class="d-flex justify-content-end">
                         <button
-                        class="btn btn-btn btn-primary m-2"
-                        @click="alterarCliente(cliente)"
+                            class="btn btn-btn btn-primary m-2"
+                            @click="alterarCliente(cliente)"
                         >
-                        <i class="bi bi-clipboard-pulse"></i> Alterar
+                            <i class="bi bi-clipboard-pulse"></i> Alterar
                         </button>
 
                         <button
-                        class="btn btn-outline-danger m-2"
-                        @click="excluirCliente(cliente.id)"
+                            class="btn btn-outline-danger m-2"
+                            @click="excluirCliente(cliente.id)"
                         >
-                        <i class="bi bi-clipboard2-minus"></i> Excluir
+                            <i class="bi bi-clipboard2-minus"></i> Excluir
                         </button>
                     </td>
-                </tr>  
+                </tr>
             </tbody>
 
         </table>
     </div>
+
+    <div v-if="!formVisible">
+    <hr />
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-auto">
+
+          <button
+            v-for="pagina in totalPages"
+            :key="pagina"
+            @click.prevent="irPara(pagina)"
+            class="btn btn-light ms-1"
+          >
+            {{ pagina }}
+          </button>
+        </div>
+
+        <div class="col-auto">
+          <input
+            type="text"
+            v-model="pageNumber"
+            placeholder="Número da pagina"
+            class="form-control w-25"
+          />
+        </div>
+
+        <div class="col-auto">
+          <select v-model="pageSize" class="form-select">
+            <option value="2">2</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+
+        <div class="col-auto">
+          <select v-model="property" class="form-select">
+            <option value="id">ID</option>
+            <option value="nome">Nome</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <select v-model="direction" class="form-select">
+            <option value="ASC">Crescente</option>
+            <option value="DESC">Decrescente</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <button @click.prevent="buscarClientes" class="btn btn-success">
+            <i class="bi bi-binoculars"></i>
+            Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
     import FormCliente from './FormCliente.vue';
