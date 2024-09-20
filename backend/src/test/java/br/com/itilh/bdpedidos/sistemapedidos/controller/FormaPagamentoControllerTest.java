@@ -84,7 +84,6 @@ public class FormaPagamentoControllerTest {
     
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path /formas-pagamento por id")
     void testGetPorId() throws Exception{
         setupFormaPagamento();
@@ -102,7 +101,6 @@ public class FormaPagamentoControllerTest {
 
     }
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path /formas-pagamento")
     void testGetTodos() throws Exception {
         setupFormaPagamento();
@@ -119,7 +117,6 @@ void setupFormaPagamento(){
 
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path inexistente")
     void TesteGetPathInexistente() throws Exception{
         setupFormaPagamento();
@@ -127,7 +124,6 @@ void setupFormaPagamento(){
     }
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path errado")
     void TesteGetPathErrado() throws Exception{
         setupFormaPagamento();
@@ -135,7 +131,6 @@ void setupFormaPagamento(){
     }
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do id inexistente")
     void TesteGetIdInexistente() throws Exception{
         setupFormaPagamento();

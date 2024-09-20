@@ -28,7 +28,7 @@ public class EstadoController {
     EstadoService estadoService;
 
     @GetMapping("/estados")
-    public Page<EstadoDTO> getTodos(
+    public Page<EstadoDTO> getEstados(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -54,7 +54,7 @@ public class EstadoController {
     // }
         
     @GetMapping("/estado/{id}")
-    public EstadoDTO getPorId(@PathVariable BigInteger id) throws Exception {
+    public EstadoDTO getEstadoPorId(@PathVariable BigInteger id) throws Exception {
         return estadoService.buscarEstadoPorId(id);
     }    
 

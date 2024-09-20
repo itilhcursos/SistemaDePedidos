@@ -85,7 +85,6 @@ public class ProdutoControllerTest {
     
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de buscar produto por id")
     void testGetProdutoPorId()throws Exception {
         setupProduto();
@@ -94,7 +93,6 @@ public class ProdutoControllerTest {
     }
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path /produtos")
     void testGetTodosProdutos() throws Exception {
         setupProduto();
@@ -111,7 +109,6 @@ public class ProdutoControllerTest {
 
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path inexistente")
     void TesteGetPathInexistente() throws Exception{
         setupProduto();
@@ -120,7 +117,6 @@ public class ProdutoControllerTest {
     }
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("Teste do path errado")
     void TesteGetPathErrado() throws Exception{
         setupProduto();

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
@@ -48,7 +49,8 @@ public class PedidoControllerTest {
 void setupPedido(){
     setupCliente();
     setupFormaPagamento();
-        Pedido pedido = new Pedido(BigInteger.ONE, null, null, Integer.valueOf(5), "01/01/2001", "02/01/2001", "01/01/2001");
+        Pedido pedido = new Pedido(BigInteger.ONE, clienteRepository.getReferenceById(BigInteger.ONE), formaPagamentoRepository.getReferenceById(BigInteger.ONE), 
+        Integer.valueOf(5), "01/01/2001", "02/01/2001", "01/01/2001");
         pedidoRepository.save(pedido);
 }
 
@@ -65,46 +67,91 @@ void setupCliente(){
 }
 
     @Test
-    void testBuscarPedidoPorId() {
-
+    @DisplayName("teste de buscar pedido por id")
+    void testBuscarPedidoPorId() throws Exception{
+setupPedido();
+mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
+.andExpect(content().string(containsString("1")));
     }
 
     @Test
-    void testBuscarPedidos() {
-
+    void testBuscarPedidos() throws Exception{
+        setupPedido();
+        mockMvc.perform(get("/pedidos")).andExpect(status().isOk())
+        .andExpect(content().string(containsString(" cliente")));
     }
 
     @Test
-    void testBuscarPedidosPorClienteId() {
-
+    void testBuscarPedidosPorClienteId() throws Exception{
+        setupPedido();
+        mockMvc.perform(get("/cliente/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
     }
 
     @Test
-    void testBuscarPedidosPorClienteNome() {
-
+    void testBuscarPedidosPorClienteNome()throws Exception {
+        setupPedido();
+        mockMvc.perform(get("/cliente/Cliente teste")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("Cliente teste")));
     }
 
     @Test
-    void testBuscarPedidosPorFormaPagamentoNome() {
-
+    void testBuscarPedidosPorFormaPagamentoNome()throws Exception {
+        setupPedido();
+        mockMvc.perform(get("/formas-pagamento/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
+    
     }
 
     @Test
-    void testBuscarPedidosPorformaPagamentoId() {
-
+    void testBuscarPedidosPorformaPagamentoId()throws Exception {
+        setupPedido();
+        mockMvc.perform(get("/fomas-pagamento/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
+    
     }
 
     @Test
-    void testAlterarItemPedido() {
-
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
+    @DisplayName("teste de criar pedido")
+    void testAlterarItemPedido() throws Exception{
+    setupPedido();
+    mockMvc.perform(put("/pedido/1")
+    .contentType("application/json")
+    .content("{\r\n" + //
+    "  \"id\": 1, \r\n" + //
+    " \"cliente\": \"25\",\r\n" + //
+    " \"numero\": \"98\",\r\n" + //
+    " \"compra\": \"18/48/2001\",\r\n" + //
+    " \"entrega\": \"10/10/2100\",\r\n" + //  
+    " \"pagamento\": \"78/18/1297\",\r\n" + //  
+    " \"formaPagamento\": \"5089\",\r\n" + //  
+    "}")
+    ).andExpect(status().isOk())
+    .andExpect(content().string(containsString("25")));
     }
 
     @Test
-    void testCriarPedido() {
-
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
+    @DisplayName("teste de criar pedido")
+    void testCriarPedido()throws Exception {
+        setupPedido();
+        mockMvc.perform(post("/pedido/1")
+        .contentType("application/json")
+        .content("{\r\n" + //
+        "  \"id\": 1, \r\n" + //
+        " \"cliente\": \"1\",\r\n" + //
+        " \"numero\": \"5\",\r\n" + //
+        " \"compra\": \"01/01/2001\",\r\n" + //
+        " \"entrega\": \"02/01/2001\",\r\n" + //  
+        " \"pagamento\": \"01/01/2001\",\r\n" + //  
+        " \"formaPagamento\": \"1\",\r\n" + //  
+        "}")
+        ).andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName(" Teste do delete")
     void testDeletePedido() throws Exception{
         setupPedido();
@@ -113,4 +160,39 @@ void setupCliente(){
         ).andExpect(content().string(containsString("Excluído")));
 
     }
+
+
+    @Test
+    @DisplayName(" Teste do path inexistente")
+    void TesteGetPathInexistente() throws Exception{
+        setupPedido();
+        mockMvc.perform(get("/pedido")).andExpect(status().isMethodNotAllowed());
+    }
+
+    
+    @Test
+    @DisplayName(" Teste do path errado")
+    void TesteGetPathErrado() throws Exception{
+        setupPedido();
+        mockMvc.perform(get("/peidasf")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Teste do id existente")
+    void testIdExistente() throws Exception {
+        setupPedido();
+        mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
+    }
+
+
+
+    @Test
+    @DisplayName("Teste do id inexistente")
+    void TesteGetIdInexistente() throws Exception{
+        setupPedido();
+         mockMvc.perform(get("/pedido/2065184")).andExpect(status().isBadRequest())
+         .andExpect(result -> assertTrue(result.getResolvedException()instanceof IdInexistenteException));
+    }
+
 }

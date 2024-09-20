@@ -44,7 +44,6 @@ public class MunicipioControllerTest {
     // criar banco de dados para teste do Controller
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste do path /municipios")
     void testGetMunicipios() throws Exception {
         mockMvc.perform(get("/municipios")).andExpect(status().isOk())
@@ -53,7 +52,6 @@ public class MunicipioControllerTest {
     }
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
         mockMvc.perform(get("/municipio")).andExpect(status().isMethodNotAllowed());
@@ -71,7 +69,6 @@ public class MunicipioControllerTest {
     }
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de id existente ")
     void TesteGetIdExistente() throws Exception{
         setUpMunicipio();
@@ -88,7 +85,6 @@ public class MunicipioControllerTest {
     }
 
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de path errado")
     void TesteGetPathErrado() throws Exception{
         mockMvc.perform(get("/municipioxpto")).andExpect(status().isNotFound());

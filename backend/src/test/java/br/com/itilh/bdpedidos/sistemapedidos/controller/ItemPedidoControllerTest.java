@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
@@ -46,28 +48,44 @@ public class ItemPedidoControllerTest {
 
 
     @Test
-    void testBuscarItemPedidoPorId() {
-
+    @DisplayName("teste de buscar ItemPedido por id")
+    void testBuscarItemPedidoPorId()throws Exception {
+setupItemPedido();
+mockMvc.perform(get("/ItemPedido/1")).andExpect(status().isOk())
+.andExpect(content().string(containsString("1")));
     }
 
     @Test
-    void testBuscarItemPedidos() {
-
+    @DisplayName("teste de buscar ItemPedido ")
+    void testBuscarItemPedidos()throws Exception  {
+        setupItemPedido();
+        
+        mockMvc.perform(get("/ItemPedidos")).andExpect(status().isOk())
+        .andExpect(content().string(containsString(" produto")));
     }
 
     @Test
-    void testBuscarItemPedidosPorPedidoId() {
-
+    @DisplayName("teste de buscar ItemPedido por pedido id ")
+    void testBuscarItemPedidosPorPedidoId()throws Exception  {
+        setupItemPedido();
+        mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
     }
 
     @Test
-    void testBuscarItemPedidosPorProdutoId() {
+    @DisplayName("teste de buscar ItemPedido por produto id ")
+    void testBuscarItemPedidosPorProdutoId()throws Exception  {
+        setupItemPedido();
 
+        mockMvc.perform(get("/produto/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
     }
 
     @Test
-    void testBuscarItemPedidosPorProdutoNome() {
-
+    void testBuscarItemPedidosPorProdutoNome()throws Exception  {
+        setupItemPedido();
+        mockMvc.perform(get("/produto/produto teste")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("produto teste")));
     }
 
     void setupItemPedido(){
@@ -91,16 +109,42 @@ void setupProduto(){
 
 
     @Test
-    void testAlterarItemPedido() {
-
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
+    @DisplayName("teste de alterar itemPedido")
+    void testAlterarItemPedido()throws Exception  {
+    setupItemPedido();
+    mockMvc.perform(put("/ItemPedido/1")
+    .contentType("application/json")
+    .content("{\r\n" + //
+    "  \"id\": 1, \r\n" + //
+    " \"pedido\": \"2\",\r\n" + //
+    " \"quantidadeEstoque\": \"489\",\r\n" + //
+    " \"precoUnidadeAtual\": \"789\",\r\n" + //
+    " \"produto\": \"50\",\r\n" + //  
+    "}")
+    ).andExpect(status().isOk())
+    .andExpect(content().string(containsString("489")));
     }
 
     @Test
-    void testCriarItemPedido() {
-
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
+    @DisplayName("teste de criar itemPedido")
+    void testCriarItemPedido()throws Exception  {
+        setupItemPedido();
+        mockMvc.perform(post("/ItemPedido/1")
+        .contentType("application/json")
+        .content("{\r\n" + //
+        "  \"id\": 1, \r\n" + //
+        " \"pedido\": \"1\",\r\n" + //
+        " \"quantidadeEstoque\": \"1\",\r\n" + //
+        " \"precoUnidadeAtual\": \"1\",\r\n" + //
+        " \"produto\": \"1\",\r\n" + //  
+        "}")
+        ).andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName(" Teste do delete")
     void testDeleteItemPedido()throws Exception {
         setupItemPedido();
@@ -109,4 +153,40 @@ void setupProduto(){
         ).andExpect(content().string(containsString("Excluído")));
 
     }
+
+    
+    @Test
+    @DisplayName(" Teste do path inexistente")
+    void TesteGetPathInexistente() throws Exception{
+        setupItemPedido();
+        mockMvc.perform(get("/ItemPedido")).andExpect(status().isMethodNotAllowed());
+    }
+
+    
+    @Test
+    @DisplayName(" Teste do path errado")
+    void TesteGetPathErrado() throws Exception{
+        setupItemPedido();
+        mockMvc.perform(get("/Itempedisao")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Teste do id existente")
+    void testIdExistente() throws Exception {
+        setupItemPedido();
+        mockMvc.perform(get("/ItemPedido/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
+    }
+
+
+    @Test
+    @DisplayName("Teste do id inexistente")
+    void TesteGetIdInexistente() throws Exception{
+        setupItemPedido();
+         mockMvc.perform(get("/ItemPedido/684135841")).andExpect(status().isBadRequest())
+         .andExpect(result -> assertTrue(result.getResolvedException()instanceof IdInexistenteException));
+    }
+
+
+
 }
