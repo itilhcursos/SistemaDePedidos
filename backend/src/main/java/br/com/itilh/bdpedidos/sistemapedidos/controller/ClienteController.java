@@ -44,19 +44,6 @@ public class ClienteController {
         return clienteService.getTodos(pageable);
     }
 
-    //  @GetMapping("/clientes/nome/{nome}")
-    //  public List<Cliente> getClientesPorNome(@PathVariable String nome,
-    //      @RequestParam(required = true) ModoBusca modoBusca) {
-    //     if(modoBusca.equals(ModoBusca.EXATO)){
-    //      return repositorio.findByNome(nome);
-    //     }else if (modoBusca.equals(ModoBusca.INICIADO)){
-    //      return repositorio.findByNomeStartingWithIgnoreCase(nome);
-    //     }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
-    //      return repositorio.findByNomeEndingWithIgnoreCase(nome);
-    //      }else{
-    //         return repositorio.findByNomeContainingIgnoreCase(nome);
-    //     }       
-    //  }
         
     @GetMapping("/cliente/{id}")
     public ClienteDTO getPorId(@PathVariable BigInteger id) throws Exception {

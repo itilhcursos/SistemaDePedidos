@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
@@ -27,58 +28,42 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
             () -> new Exception("ID inválido.")));
     }
 
-    public ClienteDTO criarCliente(ClienteDTO entityDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'criarCliente'");
-    }
+   
 
-    public ClienteDTO alterarCliente(BigInteger id, ClienteDTO novosDados) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'alterarCliente'");
-    }
+         private void validar (ClienteDTO dto) throws Exception {
 
-    public String deletePorId(BigInteger id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deletePorId'");
-    }  
-
-         //     private void validar (ClienteDTO dto) throws Exception {
-
-        // if(dto.getNomeRazaoSocial().length() < 3 || dto.getNomeRazaoSocial().length() > 50)
-        //     throw new NomeEstadoInvalidoException(dto.getNome());
         
-        // if(repositorio.existsByNome(dto.getNome()))   
-        //     throw new EstadoDuplicadoException(dto.getNome());
+         if(repositorio.existsByNomeRazaoSocial(dto.getNomeRazaoSocial()))   
+             throw new ClienteDuplicadoException(dto.getNomeRazaoSocial());
 
-//     }
+     }
 
-//     public EstadoDTO criarEstado(EstadoDTO entityDTO) throws Exception {  
-        
-//         validar(entityDTO);  
-//         try{    
-//             return toDTO(repositorio.save(toEntity(entityDTO)));
-//         }catch(Exception e){
-//             throw new Exception("Erro ao salvar o estado.");
-//         }
-//     }
+     public ClienteDTO criarCliente(ClienteDTO entityDTO) throws Exception {  
+         
+         try{    
+             return toDTO(repositorio.save(toEntity(entityDTO)));
+         }catch(Exception e){
+             throw new Exception("Erro ao salvar o cliente.");
+         }
+     }
 
-//     public EstadoDTO alterarEstado(BigInteger id, EstadoDTO novosDados) throws Exception {
+     public ClienteDTO alterarCliente(BigInteger id, ClienteDTO novosDados) throws Exception {
 
-//         validar(novosDados);
-//         if(repositorio.existsByNome(novosDados.getNome()))   
-//             throw new EstadoDuplicadoException(novosDados.getNome());
+         validar(novosDados);
+         if(repositorio.existsByNomeRazaoSocial(novosDados.getNomeRazaoSocial()))   
+             throw new ClienteDuplicadoException(novosDados.getNomeRazaoSocial());
             
-//         try{     
-//          return toDTO(repositorio.save(toEntity(novosDados)));
-//         }catch(Exception e){
-//             throw new Exception("Alteração não foi realizada.");
-//         }                                   
-//     }
+         try{     
+          return toDTO(repositorio.save(toEntity(novosDados)));
+         }catch(Exception e){
+            throw new Exception("Alteração não foi realizada.");
+         }                                   
+    }
 
-//     public String deletePorId(BigInteger id) throws Exception {
-//         repositorio.deleteById(id);
-//         return "Excluído";
-//     }  
+     public String deletePorId(BigInteger id) throws Exception {
+         repositorio.deleteById(id);
+         return "Excluído";
+     }  
     
 }
 

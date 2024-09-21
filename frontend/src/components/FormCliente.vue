@@ -13,6 +13,7 @@
             placeholder="Id cliente"
           />
         </div>
+
         <div class="mb-3">
           <label class="form-label">NOME</label>
           <input
@@ -22,6 +23,27 @@
             placeholder="Nome"
           />
         </div>
+
+        <div class="mb-3">
+          <label class="form-label">CNPJ</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="cnpj"
+            placeholder="cnpj cliente"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">CPF</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="cpf"
+            placeholder="cpf cliente"
+          />
+        </div>
+
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
           <i class="bi bi-exclamation-triangle-fill"></i>
           <div class="p-2">{{ mensagem }}</div>
@@ -64,7 +86,7 @@
     },
     methods: {
       async salvarCliente() {
-        if (this.nome === "") {
+        if (this.nomeRazaoSocial === "") {
           this.isInvalido = true;
           this.mensagem = "Nome deve ser preenchido!!";
           return;
@@ -81,27 +103,28 @@
             //incluir pelo POST da API
             const response = await axios.post("http://localhost:8080/cliente", {
               id: this.id,
-              nomeRazaoSocial: this.nome.nomeRazaoSocial,
+              nomeRazaoSocial: this.nomeRazaoSocial,
+              cnpj: this.cnpj,
+              cpf: this.cpf,
             }, config);
             this.listaClientes = response.data;
           } else {
             // alterar pelo PUT da API
-            const response = await axios.put(
-              `http://localhost:8080/cliente/${this.id}`,
+            const response = await axios.put(`http://localhost:8080/cliente/${this.id}`,
               {
                 id: this.id,
-                nome: this.nome,
+                nomeRazaoSocial: this.nomeRazaoSocial,
               }
             ,config );
             this.listaCliente = response.data;
           }
           this.$emit("salvar_cliente", {
           id: this.id,
-          nome: this.nome,
+          nomeRazaoSocial: this.nomeRazaoSocial,
         });
   
         this.id = "";
-        this.nome = "";
+        this.nomeRazaoSocial = "";
       }catch(error){
         //mesagens de erro
          //exibe o objeto do error completo
@@ -123,14 +146,14 @@
      },
       cancelar() {
         this.id = "";
-        this.nome = "";
+        this.nomeRazaoSocial = "";
         this.$emit("cancelar", true);
       },
     },
     mounted() {
       if (this.propsCliente) {
-        this.id = this.propsEstado.id;
-        this.nome = this.propsEstado.nome;
+        this.id = this.propsCliente.id;
+        this.nome = this.propsCliente.nomeRazaoSocial;
       }
     },
     computed: {
