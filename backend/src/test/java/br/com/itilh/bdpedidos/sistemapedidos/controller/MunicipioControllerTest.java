@@ -1,30 +1,29 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
+import java.math.BigInteger;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.math.BigInteger;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;;
 
 @SpringBootTest
 @AutoConfigureMockMvc // só para controller
@@ -95,7 +94,12 @@ public class MunicipioControllerTest {
         estadoRepository.save(estado);
     }
 
+    // para os metodos post, put e delete ao usar o security tem que usar nos teste 
+    // o  @WithMockUser(username="admin", roles={"USER","ADMIN"}) isso pois somente o ADMIN 
+    // pode ter todas as permisões.
+
     @Test
+    @WithMockUser(username="admin", roles={"USER","ADMIN"})
     @DisplayName("teste de post de novo Municipio")
     void TestePostMunicipio() throws Exception{
         setupEstado();
@@ -113,6 +117,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin", roles={"USER","ADMIN"})
     @DisplayName("teste de put de novo Municipio")
     void TestePutMunicipio() throws Exception{
         setUpMunicipio();
@@ -131,6 +136,7 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @WithMockUser(username="admin", roles={"USER","ADMIN"})
     @DisplayName(" Teste do delete")
     void testeDeleteMunicipio() throws Exception{
         setUpMunicipio();
