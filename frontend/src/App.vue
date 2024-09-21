@@ -28,7 +28,7 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <script>
-  export default{
+  export default {
     data(){
       return{
         isLogado : false,

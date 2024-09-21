@@ -1,4 +1,4 @@
-package br.com.itilh.bdpedidos.sistemapedidos.model;
+package br.com.itilh.bdpedidos.sistemapedidos.util;
 
 public enum UsuarioRole {
     ADMIN("Admin"),

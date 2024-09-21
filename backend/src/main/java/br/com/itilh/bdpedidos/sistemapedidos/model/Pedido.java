@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,46 +24,32 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "tb_clientes")
-public class Cliente {
+@Table(name = "tb_pedidos")
+public class Pedido {
 
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_clientes_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
-    
+
     private BigInteger id;
 
     @ManyToOne
-    @JoinColumn(name = "id_municipio")
-    private Municipio municipio;
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 
-    @Column(name="tx_nome_razao_social")
-    private String nomeRazaoSocial;
+    @ManyToOne
+    @JoinColumn(name = "id_forma_de_pagamento")
+    private FormaPagamento formaPagamento;
 
-    @Column(name="tx_cnpj")
-    private String cnpj;
-    
-    @Column(name="tx_cpf")
-    private String cpf;
+    @Column(name = "int_numero")
+    private BigInteger numero;
 
-    @Column(name="tx_telefone")
-    private String telefone;
+    @Column(name = "dt_compra")
+    private LocalDate compra;
 
-    @Column(name="tx_endereco")
-    private String endereco;
+    @Column(name = "dt_entrega")
+    private LocalDate entrega;
 
-    @Column(name="tx_bairro")
-    private String bairro;
-
-    @Column(name="tx_cep")
-    private String cep;
-
-    @Column(name="tx_email")
-    private String email;
-
-    @Column(name="tx_informacoes")
-    private String informacao;
-
-    @Column(name="bo_ativo")
-    boolean ativo;
+    @Column(name = "dt_pagamento")
+    private LocalDate pagamento;
 }

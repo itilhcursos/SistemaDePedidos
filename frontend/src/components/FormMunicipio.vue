@@ -25,14 +25,6 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Entrega</label>
-        <select v-model="entrega" class="form-select">
-          <option :value="true">Sim</option>
-          <option :value="false">Não</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
         <label class="form-label">Estado</label>
         <input
           class="form-control"
@@ -41,6 +33,15 @@
           placeholder="Nome do Estado"
         />
       </div>
+
+      <div class="mb-3">
+        <label class="form-label">Entrega</label>
+        <select v-model="entrega" class="form-select">
+          <option :value="true">Sim</option>
+          <option :value="false">Não</option>
+        </select>
+      </div>
+
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
