@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-10">
-                <h3>CLIENTES</h3>
+                <h3>PEDIDOS</h3>
             </div>
 
 
@@ -13,11 +13,11 @@
             </div>
             <div class="row">
                 <div>
-                    <FormCliente
+                    <FormPedido
                     v-if="formVisible"
-                    :propsCliente="clienteEscolhido"
+                    :propsPedido="pedidoEscolhido"
                     @flip="flipFormVisible"
-                    @salvar="listarClientes"
+                    @salvar="listarPedidos"
                     />
                 </div>
             </div>
@@ -27,61 +27,62 @@
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">CNPJ</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Endereço</th>
-                        <th scope="col">Bairro</th>
-                        <th scope="col">CEP</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Informações</th>
-                        <th scope="col">Ativo</th>
-                        <th scope="col">ID Municipio</th>
-                        <th scope="col" class="d-flex justify-content-end">Ações</th>
+                        <th scope="col">Nome do Cliente</th>
+                        <th scope="col">Forma de Pagamento</th>
+                        <th scope="col">Numero</th>
+                        <th scope="col">Data da Compra</th>
+                        <th scope="col">Data da Entrega</th>
+                        <th scope="col">Data do Pagamento</th>
+                        <th scope="col" class="d-flex justify-content-end">Itens</th>
+                        <!-- <th scope="col" class="d-flex justify-content-end">Ações</th> -->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
+                    <tr v-for="pedido in listaPedidos" :key="pedido.id" scope="row">
                         <th>
-                            {{ cliente.id }}
+                            {{ pedido.id }}
                         </th>
                         <td>
-                            {{ cliente.nomeRazaoSocial }}
+                            {{ pedido.clienteNomeRazaoSocial }}
                         </td>
                         <td>
-                            {{ cliente.cnpj }}
+                            {{ pedido.formaPagamentoDescricao }}
                         </td>
                         <td>
-                            {{ cliente.cpf }}
+                            {{ pedido.numero }}
                         </td>
                         <td>
-                            {{ cliente.telefone }}
+                            {{ formatar(pedido.dataCompra) }}
                         </td>
                         <td>
-                            {{ cliente.endereco }}
+                            {{ pedido.dataEntrega }}
                         </td>
                         <td>
-                            {{ cliente.bairro }}
+                            {{ pedido.dataPagamento }}
                         </td>
-                        <td>
-                            {{ cliente.cep }}
-                        </td>
-                        <td>
-                            {{ cliente.email }}
-                        </td>
-                        <td>
-                            {{ cliente.informacao }}
-                        </td>
-                        <td>
-                            {{ cliente.ativo }}
-                        </td>
-                        <td>
-                            {{ cliente.municipioId }}
-                        </td>
+                        <!-- <td class="d-flex justify-content-end">
+                            <button class="btn btn-btn btn-primary m-2" @click="alterar(pedido)"><i class="bi bi-clipboard-pulse"></i> Alterar </button>
+                            <button class="btn btn-outline-danger m-2" @click="excluir(pedido.id)"><i class="bi bi-clipboard2-minus"></i> Excluir </button>
+                        </td> -->
                         <td class="d-flex justify-content-end">
-                            <button class="btn btn-btn btn-primary m-2" @click="alterar(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar </button>
-                            <button class="btn btn-outline-danger m-2" @click="excluir(cliente.id)"><i class="bi bi-clipboard2-minus"></i> Excluir </button>
+                            <table class="table table-dark table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Imagem</th>
+                                        <th scope="col">Descricao</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="itens in pedido.itens" :key="itens.id" scope="row">
+                                        <th>
+                                            <img :src=itens.produtoUrlImagem width="50px"/>
+                                        </th>
+                                        <th>
+                                            {{ itens.produtoDescricao }}
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </td>
 
                     </tr>
@@ -115,7 +116,8 @@
                         <div class="col-auto">
                             <select v-model="property" class="form-select">
                                 <option value="id">ID</option>
-                                <option value="nome">Nome</option>
+                                <option value="cliente.nomeRazaoSocial">Nome ou Razao Social</option>
+                                <option value="formaPagamento.descricao">Forma de Pagamento</option>
                             </select>
                         </div>
                         <div class="col-auto">
@@ -125,7 +127,7 @@
                             </select>
                         </div>
                         <div class="col-auto">
-                            <button @click.prevent="listarClientes" class="btn btn-success">
+                            <button @click.prevent="listarPedidos" class="btn btn-success">
                                 <i class="bi bi-binoculars"></i>
                                 Buscar
                             </button>
@@ -138,16 +140,17 @@
 </template>
 
 <script>
-import FormCliente from './FormCliente.vue';
-import clienteService from '@/services/clienteService';
+import Data from '@/utils/Data';
+import FormPedido from './FormPedido.vue';
+import pedidoService from '@/services/pedidoService';
 export default {
     components:{
-        FormCliente
+        FormPedido
     },
     data() {
         return{
-            listaClientes: [],
-            clienteEscolhido: null,
+            listaPedidos: [],
+            pedidoEscolhido: null,
             formVisible: false,
             pageNumber: 1,
             pageSize: 10,
@@ -157,34 +160,37 @@ export default {
         }
     },
     methods: {
+        formatar(data){
+            return Data.formatoDMA(data);
+        },
         flipFormVisible(){
             this.formVisible = !this.formVisible;
         },
         limpar() {
-            this.clienteEscolhido = null;
+            this.pedidoEscolhido = null;
             this.flipFormVisible();
         },
         irPara(pagina) {
             this.pageNumber = pagina;
-            this.listarClientes();
+            this.listarPedidos();
         },
-        async listarClientes(){
-            this.clienteEscolhido = null;
+        async listarPedidos(){
+            this.pedidoEscolhido = null;
             this.formVisible = false;
       
-            const response = await clienteService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
+            const response = await pedidoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
 
-            this.listaClientes = response.content;
+            this.listaPedidos = response.content;
             this.totalPages = response.totalPages;
             console.log(this.totalPages);
         },
-        alterar(cliente){
-            this.clienteEscolhido = cliente;
+        alterar(pedido){
+            this.pedidoEscolhido = pedido;
             this.flipFormVisible();
         },
         async excluir(id){
             try{
-                const response = await clienteService.apagar(id);
+                const response = await pedidoService.apagar(id);
                 console.log(response);
             }catch(error){
                 if(error.response.status === 403){        
@@ -195,12 +201,12 @@ export default {
                 alert(error.message);
                 }
             }     
-            this.listarClientes();
+            this.listarPedidos();
         }
         
     },
     mounted(){
-        this.listarClientes();
+        this.listarPedidos();
     },
 };
 </script>
