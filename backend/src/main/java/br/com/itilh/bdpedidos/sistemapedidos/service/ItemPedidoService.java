@@ -5,11 +5,13 @@ import java.math.BigInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ItemPedidoRepository;
-
+@Service
 public class ItemPedidoService extends GenericService<ItemPedido,ItemPedidoDTO> {
 
 @Autowired

@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.dto;
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +13,9 @@ public class PedidoDTO {
 
     private BigInteger id;
     private Integer numero;
-    private Data compra;
-    private Data entrega;
-    private Data pagamento;
+    private LocalDate compra;
+    private LocalDate entrega;
+    private LocalDate pagamento;
 
     private BigInteger clienteId;
     private String clienteNome;

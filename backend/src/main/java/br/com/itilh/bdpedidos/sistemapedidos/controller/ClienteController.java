@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
+
 import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
