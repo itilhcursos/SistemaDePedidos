@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
 
 public enum UsuarioRole {
+    
     ADMIN("Admin"),
     USER("User");
 

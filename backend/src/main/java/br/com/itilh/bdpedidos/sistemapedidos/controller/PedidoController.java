@@ -35,7 +35,6 @@ public class PedidoController {
         @RequestParam(required = false, defaultValue = "id") String property
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-
         return pedidoService.getTodos(pageable);
     }
         
@@ -50,8 +49,7 @@ public class PedidoController {
     }
 
     @PutMapping("/pedido/{id}")
-    public PedidoDTO alterarPedido(@PathVariable BigInteger id, 
-                                @RequestBody PedidoDTO novosDados) throws Exception {
+    public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO novosDados) throws Exception {
 
         return pedidoService.alterarPedido(id, novosDados);
     }

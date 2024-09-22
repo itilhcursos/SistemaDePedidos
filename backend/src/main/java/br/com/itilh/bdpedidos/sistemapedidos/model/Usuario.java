@@ -38,8 +38,6 @@ public class Usuario implements UserDetails {
     @Column(name = "tx_role")
     private UsuarioRole role;
 
-    
-
     public Usuario(String login, String senha, String role) {
         this.login = login;
         this.senha = senha;

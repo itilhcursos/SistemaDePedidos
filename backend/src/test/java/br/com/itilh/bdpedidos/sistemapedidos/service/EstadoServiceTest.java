@@ -39,7 +39,8 @@ public class EstadoServiceTest {
 
         EstadoDTO testeDTO = new EstadoDTO(null, "estado de teste duplicado");
 
-        EstadoDTO retono = service.criarEstado(testeDTO);
+        @SuppressWarnings("unused")
+        EstadoDTO retorno = service.criarEstado(testeDTO);
         assertThrows(EstadoDuplicadoException.class, ()-> service.criarEstado(testeDTO));
     }
 

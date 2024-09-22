@@ -45,8 +45,8 @@ public class MunicipioServiceTest {
     void testCriarMunicipioDuplicado() throws Exception {
         setUpEstado();
         MunicipioDTO dto = new MunicipioDTO(null,"Municipio teste duplicado",true, BigInteger.ONE, "estado teste");
+        @SuppressWarnings("unused")
         MunicipioDTO dtoRetorno = municipioService.criarMunicipio(dto);
-        
         assertThrows(MunicipioDuplicadoException.class, ()-> municipioService.criarMunicipio(dto));
     }
 

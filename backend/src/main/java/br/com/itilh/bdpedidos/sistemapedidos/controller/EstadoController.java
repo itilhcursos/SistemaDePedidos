@@ -35,23 +35,8 @@ public class EstadoController {
         @RequestParam(required = false, defaultValue = "id") String property
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-
         return estadoService.getTodos(pageable);
     }
-
-    // @GetMapping("/estados/nome/{nome}")
-    // public List<Estado> getEstadosPorNome(@PathVariable String nome,
-    // @RequestParam(required = true) ModoBusca modoBusca) {
-    //     if(modoBusca.equals(ModoBusca.EXATO)){
-    //         return repositorio.findByNome(nome);
-    //     }else if (modoBusca.equals(ModoBusca.INICIADO)){
-    //         return repositorio.findByNomeStartingWithIgnoreCase(nome);
-    //     }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
-    //         return repositorio.findByNomeEndingWithIgnoreCase(nome);
-    //     }else{
-    //         return repositorio.findByNomeContainingIgnoreCase(nome);
-    //     }       
-    // }
         
     @GetMapping("/estado/{id}")
     public EstadoDTO getPorId(@PathVariable BigInteger id) throws Exception {
@@ -64,9 +49,7 @@ public class EstadoController {
     }
 
     @PutMapping("/estado/{id}")
-    public EstadoDTO alterarEstado(@PathVariable BigInteger id, 
-                                @RequestBody EstadoDTO novosDados) throws Exception {
-
+    public EstadoDTO alterarEstado(@PathVariable BigInteger id, @RequestBody EstadoDTO novosDados) throws Exception {
         return estadoService.alterarEstado(id, novosDados);
     }
 

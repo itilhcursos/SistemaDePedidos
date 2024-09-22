@@ -30,7 +30,6 @@ public class Cliente {
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_clientes_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
     private BigInteger id;
-
     @ManyToOne
     @JoinColumn(name = "id_municipio")
     private Municipio municipio;

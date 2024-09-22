@@ -33,7 +33,6 @@ public class ItemPedido {
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_itens_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
     private BigInteger id;
-
     @ManyToOne
     @JoinColumn(name = "id_produto")
     private Produto produto;

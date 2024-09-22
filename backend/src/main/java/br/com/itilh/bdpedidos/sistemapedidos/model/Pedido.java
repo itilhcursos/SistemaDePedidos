@@ -4,8 +4,6 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +30,6 @@ import lombok.ToString;
 @Entity
 @Table(name = "tb_pedidos")
 public class Pedido {
-
     
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_pedidos_id_seq", allocationSize = 1)

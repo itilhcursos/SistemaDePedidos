@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class ProdutoDuplicadoException extends RuntimeException {
 
     public ProdutoDuplicadoException(String produto ){
-        super("O produto :" + produto + " já existe");
+        super("O produto :" + produto + " já foi cadastrado");
     }
 }
