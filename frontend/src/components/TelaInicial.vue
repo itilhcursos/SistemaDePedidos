@@ -10,16 +10,13 @@ defineProps({
   }
 })
 </script>
-
 <template>
   <div>
     <h1 class="cor">{{ msg }}</h1>
     <h2 >{{ msg2 }}</h2>
     <div><img src="../assets/carrinho.png" alt=""></div>
-    
   </div>
 </template>
-
 <style scoped>
 .cor {
   color: rgb(255, 174, 0)
@@ -45,6 +42,4 @@ h2 {
   font-family: serif;
   text-align: center;
 }
-
-
 </style>

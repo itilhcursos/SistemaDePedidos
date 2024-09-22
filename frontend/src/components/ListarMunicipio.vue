@@ -11,16 +11,10 @@
       </div>
       <div class="row">
         <div>
-          <FormMunicipio
-            v-if="formVisible"
-            :propsMunicipio="municipioEscolhido"
-            @cancelar="limpar"
-            @salvar_municipio="buscar"
-          />
+          <FormMunicipio v-if="formVisible" :propsMunicipio="municipioEscolhido" @cancelar="limpar" @salvar_municipio="buscar"/>
         </div>
       </div>
     </div>
-
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
@@ -33,32 +27,13 @@
       </thead>
       <tbody>
         <tr v-for="municipio in listaMunicipios" :key="municipio.id" scope="row">
-          <th>
-            {{ municipio.id }}
-          </th>
-          <td>
-            {{ municipio.nome }}
-          </td>
-          <td>
-            {{ formatarEntrega(municipio.entrega) }}
-          </td>
-          <td>
-            {{ municipio.estadoNome }}
-          </td>
+          <th>{{ municipio.id }}</th>
+          <td>{{ municipio.nome }}</td>
+          <td>{{ formatarEntrega(municipio.entrega) }}</td>
+          <td>{{ municipio.estadoNome }}</td>
           <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterarMunicipio(municipio)"
-            >
-              <i class="bi bi-clipboard-pulse"></i> Alterar
-            </button>
-
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirMunicipio(municipio.id)"
-            >
-              <i class="bi bi-clipboard2-minus"></i> Excluir
-            </button>
+            <button class="btn btn-btn btn-primary m-2" @click="alterarMunicipio(municipio)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
+            <button class="btn btn-outline-danger m-2" @click="excluirMunicipio(municipio.id)"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
           </td>
         </tr>
       </tbody>
@@ -69,26 +44,9 @@
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
-
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
-            {{ pagina }}
-          </button>
-
-
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">{{ pagina }}</button>
         </div>
-        <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
-        </div>
+        <div class="col-auto"><input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25"/></div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
             <option value="2">2</option>
@@ -119,7 +77,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import FormMunicipio from "./FormMunicipio.vue";

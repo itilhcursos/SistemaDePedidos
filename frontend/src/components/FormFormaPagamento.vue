@@ -5,22 +5,11 @@
     <form>
       <div class="mb-3">
         <label class="form-label">Id</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="id"
-          :disabled="true"
-          placeholder="ID Pagamento"
-        />
+        <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="ID Pagamento"/>
       </div>
       <div class="mb-3">
         <label class="form-label">Descrição</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="descricao"
-          placeholder="Descrição"
-        />
+        <input class="form-control" type="text" v-model="descricao" placeholder="Descrição"/>
       </div>
       <div class="mb-3">
         <label class="form-label">Ativo</label>
@@ -34,22 +23,10 @@
         <div class="p-2">Descrição e ativo devem ser preenchidos!</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
-        <button
-          class="btn btn-primary m-2"
-          type="submit"
-          v-on:click.prevent="salvarFormaPagamento"
-        >
-        <i class="bi bi-clipboard2-check"></i>
-          {{ getAcao }}
-        </button>
-        <button
-          class="btn btn-warning m-2"
-          type="submit"
-          v-on:click.prevent="cancelar"
-        >
-        <i class="bi bi-clipboard2-x"></i>
-          Cancelar
-        </button>
+        <button class="btn btn-primary m-2" type="submit" @click.prevent="salvarFormaPagamento">
+        <i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
+        <button class="btn btn-warning m-2" type="submit" @click.prevent="cancelar">
+        <i class="bi bi-clipboard2-x"></i>Cancelar</button>
       </div>
     </form>
   </div>

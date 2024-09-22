@@ -5,22 +5,14 @@
           <h3>PRODUTOS</h3>
         </div>
         <div class="col-2 d-flex justify-content-end">
-          <button v-if="!formVisible" @click="novoProduto" class="btn btn-success">
-            <i class="bi bi-clipboard-plus"></i> Novo
-          </button>
+          <button v-if="!formVisible" @click="novoProduto" class="btn btn-success"><i class="bi bi-clipboard-plus"></i> Novo</button>
         </div>
         <div class="row">
           <div>
-            <FormProduto
-              v-if="formVisible"
-              :propsProduto="produtoEscolhido"
-              @cancelar="limpar"
-              @salvar_produto="buscarProdutos"
-            />
+            <FormProduto v-if="formVisible" :propsProduto="produtoEscolhido" @cancelar="limpar" @salvar_produto="buscarProdutos"/>
           </div>
         </div>
       </div>
-  
       <table class="table table-dark table-striped" v-if="!formVisible">
         <thead>
           <tr>
@@ -35,38 +27,15 @@
         </thead>
         <tbody>
           <tr v-for="produto in listaProdutos" :key="produto.id" scope="row">
-            <th>
-              {{ produto.id }}
-            </th>
-            <td>
-              <img :src=produto.urlImagem height="100px">
-            </td>
-            <td>
-              {{ produto.descricao }}
-            </td>
-            <td>
-              {{ formatarQuantidade(produto.quantidadeEstoque) }}
-            </td>
-            <td>
-              {{ formatarPreco(produto.precoUnidadeAtual) }}
-            </td>
-            <td>
-              {{ formatarLogico(produto.ativo) }}
-            </td>
+            <th>{{ produto.id }}</th>
+            <td><img :src=produto.urlImagem height="100px"></td>
+            <td>{{ produto.descricao }}</td>
+            <td>{{ formatarQuantidade(produto.quantidadeEstoque) }}</td>
+            <td>{{ formatarPreco(produto.precoUnidadeAtual) }}</td>
+            <td>{{ formatarLogico(produto.ativo) }}</td>
             <td class="d-flex justify-content-end">
-              <button
-                class="btn btn-btn btn-primary m-2"
-                @click="alterarProduto(produto)"
-              >
-                <i class="bi bi-clipboard-pulse"></i> Alterar
-              </button>
-  
-              <button
-                class="btn btn-outline-danger m-2"
-                @click="excluirProduto(produto.id)"
-              >
-                <i class="bi bi-clipboard2-minus"></i> Excluir
-              </button>
+            <button class="btn btn-btn btn-primary m-2" @click="alterarProduto(produto)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
+            <button class="btn btn-outline-danger m-2" @click="excluirProduto(produto.id)"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
             </td>
           </tr>
         </tbody>
@@ -77,25 +46,10 @@
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-auto">
-  
-            <button
-              v-for="pagina in totalPages"
-              :key="pagina"
-              @click.prevent="irPara(pagina)"
-              class="btn btn-light ms-1"
-            >
-              {{ pagina }}
-            </button>
-  
-  
+            <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">{{ pagina }}</button>
           </div>
           <div class="col-auto">
-            <input
-              type="text"
-              v-model="pageNumber"
-              placeholder="Número da pagina"
-              class="form-control w-25"
-            />
+            <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25"/>
           </div>
           <div class="col-auto">
             <select v-model="pageSize" class="form-select">
@@ -118,16 +72,12 @@
             </select>
           </div>
           <div class="col-auto">
-            <button @click.prevent="buscarProdutos" class="btn btn-success">
-              <i class="bi bi-binoculars"></i>
-              Buscar
-            </button>
+            <button @click.prevent="buscarProdutos" class="btn btn-success"><i class="bi bi-binoculars"></i>Buscar</button>
           </div>
         </div>
       </div>
     </div>
   </template>
-  
   
   <script>
   import FormProduto from "./FormProduto.vue";
@@ -155,7 +105,6 @@
       async buscarProdutos() {
         this.produtoEscolhido = null;
         this.formVisible = false;
-  
       
         const response = await axios.get(
           `http://localhost:8080/produtos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
