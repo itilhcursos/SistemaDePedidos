@@ -40,8 +40,84 @@
             class="form-control"
             type="text"
             v-model="cpf"
-            placeholder="cpf cliente"
+            placeholder="Insira o Cpf"
           />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">TELEFONE</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="telefone"
+            placeholder="Insira o Telefone"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">ENDEREÇO</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="endereco"
+            placeholder="Insira o Endereço"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">BAIRRO</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="bairro"
+            placeholder="Insira o Bairro"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">CEP</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="cep"
+            placeholder="Insira o Cep"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">EMAIL</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="email"
+            placeholder="Insira o Email"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">INFORMAÇÕES</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="informacao"
+            placeholder="Insira as Informações"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Ativo</label>
+          <select v-model="ativo" class="form-select">
+            <option :value="true">Sim</option>
+            <option :value="false">Não</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">ID MUNICÍPIO</label>
+          <input class="form-control"
+           type="text"
+           v-model="municipioId"
+          placeholder="Preencha o ID do Municipio do Cliente"/>
         </div>
 
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -78,10 +154,22 @@
     },
     data() {
       return {
+
         id: "",
         nomeRazaoSocial: "",
+        cnpj: "",
+        telefone: "",
+        endereco: "",
+        bairro: "",
+        cep: "",
+        email: "",
+        informacao: "",
+        ativo: "",
+        municipioId: "",
+
         isInvalido: false,
         mensagem : '',
+
       };
     },
     methods: {
@@ -102,10 +190,19 @@
           if (this.id === "") {
             //incluir pelo POST da API
             const response = await axios.post("http://localhost:8080/cliente", {
-              id: this.id,
-              nomeRazaoSocial: this.nomeRazaoSocial,
-              cnpj: this.cnpj,
-              cpf: this.cpf,
+                id: this.id,
+                nomeRazaoSocial: this.nomeRazaoSocial,
+                cnpj: this.cnpj,
+                cpf: this.cpf,
+                telefone: this.telefone,
+                endereco: this.endereco,
+                bairro: this.bairro,
+                cep: this.cep,
+                email: this.email,
+                informacao: this.informacao,
+                ativo: this.ativo,
+                municipioId: this.municipioId
+
             }, config);
             this.listaClientes = response.data;
           } else {
@@ -114,18 +211,49 @@
               {
                 id: this.id,
                 nomeRazaoSocial: this.nomeRazaoSocial,
+                cnpj: this.cnpj,
+                cpf: this.cpf,
+                telefone: this.telefone,
+                endereco: this.endereco,
+                bairro: this.bairro,
+                cep: this.cep,
+                email: this.email,
+                informacao: this.informacao,
+                ativo: this.ativo,
+                municipioId: this.municipioId
               }
             ,config );
             this.listaCliente = response.data;
           }
           this.$emit("salvar_cliente", {
-          id: this.id,
-          nomeRazaoSocial: this.nomeRazaoSocial,
+                id: this.id,
+                nomeRazaoSocial: this.nomeRazaoSocial,
+                cnpj: this.cnpj,
+                cpf: this.cpf,
+                telefone: this.telefone,
+                endereco: this.endereco,
+                bairro: this.bairro,
+                cep: this.cep,
+                email: this.email,
+                informacao: this.informacao,
+                ativo: this.ativo,
+                municipioId: this.municipioId
+
         });
   
-        this.id = "";
-        this.nomeRazaoSocial = "";
-      }catch(error){
+                this.id = "";
+                this.nomeRazaoSocial = "";
+                this.cnpj= "";
+                this.cpf= "";
+                this.telefone= "";
+                this.endereco= "";
+                this.bairro= "";
+                this.cep= "";
+                this.email= "";
+                this.informacao= "";
+                this.ativo="";
+                this.municipioId= "";
+        }catch(error){
         //mesagens de erro
          //exibe o objeto do error completo
           // console.log (error);
