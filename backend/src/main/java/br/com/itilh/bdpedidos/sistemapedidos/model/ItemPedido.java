@@ -28,6 +28,7 @@ import lombok.ToString;
 @Table(name = "tb_itens_pedidos")
 public class ItemPedido {
 
+    
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_itens_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
@@ -46,5 +47,5 @@ public class ItemPedido {
 
     @Column(name = "nu_preco_unidade_atual")
     private BigDecimal precoUnidadeAtual;
-
+    
 }

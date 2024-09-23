@@ -52,7 +52,7 @@ const router = createRouter({
     {
       path: '/pedidos',
       name: 'pedidos',
-      component: () => import('../views/PedidoView.vue')
+      component:()=>import('../views/PedidoView.vue')
     }
   ]
 })

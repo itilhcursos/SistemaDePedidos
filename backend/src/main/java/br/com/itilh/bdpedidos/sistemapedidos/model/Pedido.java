@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,6 +33,7 @@ import lombok.ToString;
 @Table(name = "tb_pedidos")
 public class Pedido {
 
+    
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
@@ -52,7 +55,7 @@ public class Pedido {
 
     @Column(name = "dt_entrega")
     private LocalDate dataEntrega;
-
+    
     @Column(name = "dt_pagamento")
     private LocalDate dataPagamento;
 
