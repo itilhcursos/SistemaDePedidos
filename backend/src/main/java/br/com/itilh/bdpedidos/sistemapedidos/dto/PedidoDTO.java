@@ -2,7 +2,9 @@ package br.com.itilh.bdpedidos.sistemapedidos.dto;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
+import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,8 +21,11 @@ public class PedidoDTO {
     private Date dataPagamento; 
     
     private BigInteger clienteId;
-    private String clienteNome;
+    private String clienteNomeRazaoSocial;
+
     private BigInteger formaPagamentoId;
-    private String formaPagamentoNome; 
+    private String formaPagamentoDescricao; 
+
+    private List<ItemPedido> itens;
 }
 
