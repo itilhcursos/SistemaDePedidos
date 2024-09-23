@@ -215,9 +215,10 @@
                 this.pageNumber = pagina;
                 this.buscarClientes();
             },
-            mounted(){
-                this.buscarClientes();
-            }
-        }
-    }
+           
+        },
+        mounted(){
+            this.buscarClientes();
+        },
+    };
 </script>
