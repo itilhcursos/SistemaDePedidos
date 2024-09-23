@@ -10,4 +10,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 @Repository
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
 
+    boolean existsByNomeRazaoSocial(String nomeRazaoSocial);
+
 }
