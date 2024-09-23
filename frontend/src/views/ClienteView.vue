@@ -1,5 +1,5 @@
 <script setup>
-import ListarCliente from '@/components/ListarCliente.vue';
+import ListarCliente from '../components/ListarCliente.vue'
 </script>
 
 <template>

@@ -15,6 +15,7 @@ import lombok.ToString;
 @ToString
 public class ClienteDTO {
 
+
     private BigInteger id;
     private String nomeRazaoSocial;
     private String cnpj;
@@ -24,9 +25,9 @@ public class ClienteDTO {
     private String bairro;
     private String cep;
     private String email;
-    private String informacao;
     private Boolean ativo;
+    private String informacao;
+    private BigInteger estadoId;
+    private String estadoNome;
 
-    private BigInteger municipioId;
-    private String municipioNome;
 }

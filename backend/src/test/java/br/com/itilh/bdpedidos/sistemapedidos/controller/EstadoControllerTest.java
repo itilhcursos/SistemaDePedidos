@@ -29,33 +29,32 @@ public class EstadoControllerTest {
 
     @Test
     @DisplayName("testando o retorno da busca da lista de estados pelo endPoint /estados")
-    void testGetEstados() throws Exception{
+    void testGetEstados() throws Exception {
 
         mockMvc.perform(get("/estados")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("totalElements")));
+                .andExpect(content().string(containsString("totalElements")));
 
     }
 
     @Test
     @DisplayName("testando path inexistente")
-    void testPathInexistente() throws Exception{
+    void testPathInexistente() throws Exception {
         mockMvc.perform(get("/estado")).andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     @DisplayName("teste do endPoint para criar estado")
-    void testCriarEstado() throws Exception{
-       
+    void testCriarEstado() throws Exception {
+
         mockMvc.perform(
                 post("/estado")
-                .contentType("application/json")
-                .content("{" + //
-                            "  \"id\": null," + 
-                            "  \"nome\": \"Estado de teste\"" + 
-                        "}")
-                        ).andExpect(status().isOk());
+                        .contentType("application/json")
+                        .content("{" + //
+                                "  \"id\": null," +
+                                "  \"nome\": \"Estado de teste\"" +
+                                "}"))
+                .andExpect(status().isOk());
 
     }
-
 
 }

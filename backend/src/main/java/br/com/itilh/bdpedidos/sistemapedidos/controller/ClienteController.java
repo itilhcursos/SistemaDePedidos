@@ -10,15 +10,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+
+import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
 
 @RestController
 @SecurityRequirement(name = "bearerAuth")
@@ -34,6 +35,7 @@ public class ClienteController {
             @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false, defaultValue = "id") String property) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+
         return clienteService.getTodos(pageable);
     }
 
@@ -43,17 +45,20 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente")
-    public ClienteDTO criar(@RequestBody ClienteDTO dto) throws Exception {
-        return clienteService.criar(dto);
+    public ClienteDTO criarCliente(@RequestBody ClienteDTO entityDTO) throws Exception {
+        return clienteService.criarCliente(entityDTO);
     }
 
     @PutMapping("/cliente/{id}")
-    public ClienteDTO alterar(@PathVariable BigInteger id, @RequestBody ClienteDTO novosDados) throws Exception {
-        return clienteService.alterar(id, novosDados);
+    public ClienteDTO alterarCliente(@PathVariable BigInteger id,
+            @RequestBody ClienteDTO novosDados) throws Exception {
+
+        return clienteService.alterarCliente(id, novosDados);
     }
 
     @DeleteMapping("/cliente/{id}")
-    public String apagar(@PathVariable BigInteger id) throws Exception {
-        return clienteService.apagar(id);
+    public String deletePorId(@PathVariable BigInteger id) throws Exception {
+        return clienteService.deletePorId(id);
     }
+
 }
