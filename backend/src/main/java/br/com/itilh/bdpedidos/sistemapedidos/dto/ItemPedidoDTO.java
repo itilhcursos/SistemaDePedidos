@@ -5,18 +5,25 @@ import java.math.BigInteger;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoDTO {
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class ItemPedidoDTO {
 
     private BigInteger id;
-    private String descricao;
+    private BigInteger pedidoId;
+    private BigInteger produtoId;
+    private String produtoDescricao;
+    private String produtoUrlImagem;
     private Double quantidadeEstoque;
     private BigDecimal precoUnidadeAtual;
-    private Boolean ativo;
-    private String urlImagem;
     
+
 }

@@ -2,9 +2,9 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>ESTADOS</h3>
+        <h3>Pedidos</h3>
       </div>
-      <div class="col-2 d-flex justify-content-end">
+      <!-- <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
@@ -18,36 +18,56 @@
             @salvar_estado="buscarEstados"
           />
         </div>
-      </div>
+      </div> -->
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col">Número</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Forma Pagamento</th>
+          <th scope="col">data Compra</th>
+          <th scope="col">data Entrega</th>
+          <th scope="col">data Pagamento</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="estado in listaEstados" :key="estado.id" scope="row">
+        <tr v-for="pedido in listaPedidos" :key="pedido.id" scope="row">
           <th>
-            {{ estado.id }}
+            {{ pedido.id }}
           </th>
           <td>
-            {{ estado.nome }}
+            {{ pedido.numero }}
           </td>
+          <td>
+            {{ pedido.clienteNome }}
+          </td>          
+          <td>
+            {{ pedido.formaPagamentoDescricao }}
+          </td>          
+          <td>
+            {{ pedido.dataCompra }}
+          </td>          
+          <td>
+            {{ pedido.dataEntrega }}
+          </td>  
+          <td>
+            {{ pedido.dataPagamento }}
+          </td>         
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
+              @click="alterar(pedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
             <button
               class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
+              @click="exclui(pedido.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
@@ -114,16 +134,16 @@
 
 
 <script>
-import FormEstado from "./FormEstado.vue";
-import estadoService from "@/services/estadoService";
+// import FormEstado from "./FormEstado.vue";
+import pedidoService from "@/services/pedidoService";
 export default {
   components: {
-    FormEstado,
+   // FormEstado,
   },
   data() {
     return {
-      listaEstados: [],
-      estadoEscolhido: null,
+      listaPedidos: [],
+      pedidoEscolhido: null,
       formVisible: false,
       pageNumber: 1,
       pageSize: 10,
@@ -133,27 +153,27 @@ export default {
     };
   },
   methods: {
-    async buscarEstados() {
-      this.estadoEscolhido = null;
+    async buscar() {
+      this.pedidoEscolhido = null;
       this.formVisible = false;
-      const response = await estadoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
-      this.listaEstados = response.content;
+      const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      this.listaPedidos = response.content;
       this.totalPages = response.totalPages;   
     },
     limpar() {
-      this.estadoEscolhido = null;
+      this.pedidoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
     novoEstado() {
       this.formVisible = !this.formVisible;
     },
-    alterarEstado(estado) {
-      this.estadoEscolhido = estado;
+    alterar(estado) {
+      this.pedidoEscolhido = estado;
       this.formVisible = true;
     },
-    async excluirEstado(id) {
+    async excluir(id) {
       try{
-          const response = await estadoService.apagar(id);
+          const response = await pedidoService.apagar(id);
           console.log(response);
       }catch(error){
         if(error.response.status === 403){        
@@ -164,15 +184,15 @@ export default {
           alert(error.message);
         }
       }     
-      this.buscarEstados();
+      this.buscar();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarEstados();
+      this.buscar();
     },
   },
   mounted() {
-    this.buscarEstados();
+    this.buscar();
   },
 };
 </script>
