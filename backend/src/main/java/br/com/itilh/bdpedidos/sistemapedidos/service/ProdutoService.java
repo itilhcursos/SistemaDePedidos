@@ -43,12 +43,12 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
     private void validar(ProdutoDTO dto) throws Exception {
 
         if (repositorio.existsByDescricao(dto.getDescricao())){
-            if(dto.getId() == null){ //criando um produto
+            if(dto.getId() == null){ // Criando um produto
                 throw new ProdutoDuplicadoException(dto.getDescricao());
             }else{
-                // produto já existe
+                // Alterando um Produto
                 Produto p = repositorio.getReferenceById(dto.getId());
-                if(!p.getDescricao().equalsIgnoreCase(dto.getDescricao())){
+                if(!p.getDescricao().equalsIgnoreCase(dto.getDescricao())){ // Negação de (Se a Descrição for igual a que estava antes). Ou seja, "se a Descrição for diferente, sem contar letras maiúsculas ou minusculas:"
                     throw new ProdutoDuplicadoException(dto.getDescricao());
                 }
             }            

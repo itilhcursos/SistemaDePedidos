@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
@@ -27,19 +28,35 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
         .orElseThrow(() -> new Exception("ID Inválido!")));
     }
 
-    // TODO: Validar Duplicação
+    private void validar(ClienteDTO dto) throws Exception{
+        if (repositorio.existsByCpf(dto.getCpf()) || repositorio.existsByCnpj(dto.getCnpj()) || repositorio.existsByEmail(dto.getEmail())){
+            if(dto.getId() == null){
+                if (repositorio.existsByCpf(dto.getCpf()))
+                    throw new ClienteDuplicadoException("CPF");
 
-    public ClienteDTO criar(ClienteDTO dto) throws Exception {
-        try {
-            return toDTO(repositorio.save(toEntity(dto)));
+                if (repositorio.existsByCnpj(dto.getCnpj()))
+                    throw new ClienteDuplicadoException("CNPJ");
 
-        } catch (Exception e) {throw new Exception("Erro ao salvar o Cliente");}
+                if (repositorio.existsByEmail(dto.getEmail()))
+                    throw new ClienteDuplicadoException("E-mail");
+            } else {
+                Cliente c = repositorio.getReferenceById(dto.getId());
+                if(!c.getCpf().equalsIgnoreCase(dto.getCpf()) || !c.getCnpj().equalsIgnoreCase(dto.getCnpj()) || !c.getEmail().equalsIgnoreCase(dto.getEmail())){
+                    throw new Exception("Não altere CPF, CNPJ ou Email.");
+                }
+            }
+        }
     }
 
-    public ClienteDTO alterar(BigInteger id, ClienteDTO novosDados) throws Exception {
-        try {
-            return toDTO(repositorio.save(toEntity(novosDados)));
-        } catch (Exception e) {throw new Exception("Erro ao alterar o Cliente");}
+    public ClienteDTO criar(ClienteDTO dto) throws Exception {
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
+    }
+
+    public ClienteDTO alterar(BigInteger id, ClienteDTO dto) throws Exception {
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
+        
     }
 
     public String apagar(BigInteger id) throws Exception {
