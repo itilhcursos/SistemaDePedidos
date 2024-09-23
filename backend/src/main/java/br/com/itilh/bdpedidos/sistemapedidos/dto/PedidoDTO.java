@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

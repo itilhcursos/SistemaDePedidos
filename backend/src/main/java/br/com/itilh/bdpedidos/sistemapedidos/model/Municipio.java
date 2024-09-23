@@ -25,6 +25,10 @@ import lombok.ToString;
 @Entity
 @Table(name = "tb_municipios")
 public class Municipio {
+    public Municipio(BigInteger one, String string, Object object) {
+        //TODO Auto-generated constructor stub
+    }
+
     @Id
     @SequenceGenerator(name = "seqMunicipio", sequenceName = "tb_municipios_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqMunicipio")
