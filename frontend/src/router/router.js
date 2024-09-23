@@ -47,7 +47,7 @@ const router = createRouter({
     {
       path: '/clientes',
       name: 'clientes',
-      component: () => import('c:/Users/vitor/SistemaDePedidos/SistemaDePedidos/frontend/src/views/MunicipiosView.vue')
+      component:()=>import('../views/ClienteView.vue')
     }
   ]
 })

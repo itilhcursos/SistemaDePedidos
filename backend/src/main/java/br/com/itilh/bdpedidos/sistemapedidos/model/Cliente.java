@@ -60,7 +60,7 @@ public class Cliente {
     private String email;
 
     @Column(name = "bo_ativo")
-    boolean ativo;
+    private Boolean ativo;
 
     @Column(name = "tx_informacoes")
     private String informacao;

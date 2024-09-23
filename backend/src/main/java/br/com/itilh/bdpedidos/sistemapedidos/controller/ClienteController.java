@@ -1,17 +1,24 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @SecurityRequirement(name = "bearerAuth")
@@ -30,4 +37,23 @@ public class ClienteController {
         return clienteService.getTodos(pageable);
     }
 
+    @GetMapping("/cliente/{id}")
+    public ClienteDTO getPorId(@PathVariable BigInteger id) throws Exception {
+        return clienteService.getPorId(id);
+    }
+
+    @PostMapping("/cliente")
+    public ClienteDTO criar(@RequestBody ClienteDTO dto) throws Exception {
+        return clienteService.criar(dto);
+    }
+
+    @PutMapping("/cliente/{id}")
+    public ClienteDTO alterar(@PathVariable BigInteger id, @RequestBody ClienteDTO novosDados) throws Exception {
+        return clienteService.alterar(id, novosDados);
+    }
+
+    @DeleteMapping("/cliente/{id}")
+    public String apagar(@PathVariable BigInteger id) throws Exception {
+        return clienteService.apagar(id);
+    }
 }

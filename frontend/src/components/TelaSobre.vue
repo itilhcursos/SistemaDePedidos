@@ -15,13 +15,13 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #heading>Orientações</template>
 
     <p>
-      navegação intuitiva e fácil de usar <br>
+      Navegação intuitiva e fácil de usar. <br>
       <br>
-      descrições detalhadas para ajudar os clientes a tomar uma decisão de compra.
+      Descrições detalhadas para ajudar os clientes a tomar uma decisão de compra.
       <br>
-      pagamento seguras e variadas para atender às preferências dos clientes.
+      Pagamento seguros e variados para atender às preferências dos clientes.
       <br>
-      e muitas outras. acesse e veja mais <a href="/">Orientações</a>
+      Acesse e veja mais <a href="/">Orientações.com.br</a>
 
     </p>
   </SobreItem>
@@ -32,15 +32,15 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Ferramentas</template>
 
-    Plataforma de e-commerce (ex: Shopify, Magento, WooCommerce)
+    Plataforma de e-commerce (ex: Shopify, Magento, WooCommerce).
     <br>
-    Gateway de pagamento (ex: PayPal, PagSeguro)
+    Gateway de pagamento (ex: PayPal, PagSeguro).
     <br>
-    Sistema de gestão de estoque
-    CRM (Customer Relationship Management)
+    Sistema de gestão de estoque.
+    CRM (Customer Relationship Management).
     <br>
     Ferramentas de marketing digital (ex: Google Analytics, Facebook Ads)
-    e muitos outros.
+    e muitas outras.
   </SobreItem>
 
   <SobreItem>
@@ -55,7 +55,7 @@ import SupportIcon from './icons/IconSupport.vue'
     <br>
     Design e usabilidade do site: uma boa experiência do usuário é essencial para atrair e reter clientes.
     O design do site, a navegação fácil e a responsividade são aspectos importantes a serem considerados.
-    acesse e saiba mais sobre o ecossistema do Sys Vendas.
+    Acesse e saiba mais sobre o ecossistema do Sys Vendas.
   </SobreItem>
 
   <SobreItem>
@@ -78,7 +78,7 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #heading>Suporte</template>
 
     Tenha o Suporte do Sys Vendas, pelas Redes Sociais, facebook, whatsapp, instagram e outros. <br>
-    Tenha acesso tambem pelo Numero de Contato (xx) xxxxxxxxxxx.
+    Tenha acesso tambem pelo Numero de Contato (27) 99229-6187.
   </SobreItem>
 </template>
 
