@@ -49,6 +49,15 @@ const router = createRouter({
       name: 'municipios',
       component:()=>import('../views/MunicipioView.vue')
     }
+
+    ,
+    {
+      path: '/pedidos',
+      name: 'pedidos',
+      component:()=>import('../views/PedidoView.vue')
+    }
+
+    
   ]
 })
 
