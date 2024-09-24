@@ -20,29 +20,31 @@
             class="form-control"
             type="text"
             v-model="nomeRazaoSocial"
-            placeholder="Nome"
+            placeholder="Insira o Nome"
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">CNPJ</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cnpj"
-            placeholder="cnpj cliente"
-          />
-        </div>
+          <div class="mb-3" v-if="getCnpj">
+                <label class="form-label">CNPJ</label>
+                <input
+                class="form-control"
+                type="text"
+                v-model="cnpj"
+                placeholder="CNPJ"
+                disable="!getCnpj"
+                />
+            </div>
 
-        <div class="mb-3">
-          <label class="form-label">CPF</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cpf"
-            placeholder="Insira o Cpf"
-          />
-        </div>
+            <div class="mb-3" v-if="getCpf">
+                <label class="form-label">CPF</label>
+                <input
+                class="form-control"
+                type="text"
+                v-model="cpf"
+                placeholder="CPF"
+                disable="!getCpf"
+                />
+            </div>
 
         <div class="mb-3">
           <label class="form-label">TELEFONE</label>
@@ -158,6 +160,7 @@
         id: "",
         nomeRazaoSocial: "",
         cnpj: "",
+        cpf: "",
         telefone: "",
         endereco: "",
         bairro: "",
@@ -220,7 +223,7 @@
                 email: this.email,
                 informacao: this.informacao,
                 ativo: this.ativo,
-                municipioId: this.municipioId
+                municipioId: this.municipioId,
               }
             ,config );
             this.listaCliente = response.data;
@@ -237,7 +240,7 @@
                 email: this.email,
                 informacao: this.informacao,
                 ativo: this.ativo,
-                municipioId: this.municipioId
+                municipioId: this.municipioId,
 
         });
   
@@ -281,13 +284,32 @@
     mounted() {
       if (this.propsCliente) {
         this.id = this.propsCliente.id;
-        this.nome = this.propsCliente.nomeRazaoSocial;
+        this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
+        this.cnpj = this.propsCliente.cnpj;
+        this.cpf = this.propsCliente.cpf;
+        this.telefone = this.propsCliente.telefone;
+        this.endereco = this.propsCliente.endereco;
+        this.bairro = this.propsCliente.bairro;
+        this.cep = this.propsCliente.cep;
+        this.email = this.propsCliente.email;
+        this.informacao = this.propsCliente.informacao;
+        this.ativo = this.propsCliente.ativo;
+        this.municipioId = this.propsCliente.municipio;
+       
       }
     },
     computed: {
       getAcao() {
         return this.id === "" ? "Incluir" : "Alterar";
       },
+
+     
+      getCnpj(){
+            return this.cpf === '' ? true : false;
+        },
+        getCpf(){
+            return this.cnpj === '' ? true : false;
+        }
     },
   };
   </script>

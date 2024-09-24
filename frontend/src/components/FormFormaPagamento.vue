@@ -29,6 +29,21 @@
             <option :value="false">Não</option>
           </select>
       </div>
+
+      <!-- <div class="mb-3">
+  <label class="form-label">Ativo</label>
+  <div>
+    <label class="btn btn-outline-primary" :class="{ active: ativo === true }">
+      <input type="radio" v-model="ativo" :value="true" autocomplete="off"> Sim
+    </label>
+    <label class="btn btn-outline-primary" :class="{ active: ativo === false }">
+      <input type="radio" v-model="ativo" :value="false" autocomplete="off"> Não
+    </label>
+  </div>
+</div> -->
+
+
+      
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">Descrição e ativo devem ser preenchidos!</div>

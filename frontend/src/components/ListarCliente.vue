@@ -65,7 +65,7 @@
               {{ cliente.informacao }}
               </td> -->
             <td>
-        {{ cliente.ativo }}
+        {{ formatarLogico(cliente.ativo) }}
           </td>
 
 
@@ -147,6 +147,7 @@
 
 <script>
 import FormCliente from "./FormCliente.vue";
+import Logico from "@/utils/Logico";
 import axios from "axios";
 export default {
   components: {
@@ -219,6 +220,10 @@ export default {
       this.pageNumber = pagina;
       this.buscarClientes();
     },
+
+    formatarLogico(valor){
+        return Logico.toSimNao(valor);
+      },
   },
   mounted() {
     this.buscarClientes();

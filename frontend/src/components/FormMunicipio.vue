@@ -22,6 +22,17 @@
           placeholder="Nome"
         />
       </div>
+
+      <!-- <div class="mb-3">
+          <label class="form-label">Estado</label>
+          <select v-model="estadoSelected">
+              <option v-for="estado in estados" :value="estado.id" :key="estado.id">
+                {{ estado.nome }}
+              </option>
+          </select>
+        </div> -->
+
+
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
@@ -30,7 +41,7 @@
         <button
           class="btn btn-primary m-2"
           type="submit"
-          v-on:click.prevent="salvarEstado"
+          v-on:click.prevent="salvarMunicipio"
         >
         <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
@@ -50,6 +61,7 @@
 
 <script>
 import axios from "axios";
+//import estadoService from "@/services/estadoService";
 export default {
   props: {
     propsMunicipio: Object,
@@ -58,12 +70,14 @@ export default {
     return {
       id: "",
       nome: "",
+      estadoSelect:"",
+      estados:[],
       isInvalido: false,
       mensagem : '',
     };
   },
   methods: {
-    async salvarEstado() {
+    async salvarMunicipio() {
       if (this.nome === "") {
         this.isInvalido = true;
         this.mensagem = "Nome deve ser preenchido!!";
@@ -79,21 +93,21 @@ export default {
     try{
         if (this.id === "") {
           //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/estado", {
+          const response = await axios.post("http://localhost:8080/municipio", {
             id: this.id,
             nome: this.nome,
           }, config);
-          this.listaEstados = response.data;
+          this.listaMunicipios = response.data;
         } else {
           // alterar pelo PUT da API
           const response = await axios.put(
-            `http://localhost:8080/estado/${this.id}`,
+            `http://localhost:8080/municipio/${this.id}`,
             {
               id: this.id,
               nome: this.nome,
             }
           ,config );
-          this.listaEstados = response.data;
+          this.listaMunicipios = response.data;
         }
         this.$emit("salvar_municipio", {
         id: this.id,
@@ -126,11 +140,18 @@ export default {
       this.nome = "";
       this.$emit("cancelar", true);
     },
+
+    async buscarMunicipios(){
+      const response = await estadoService.listar(1,1000, 'ASC', 'id');
+      this.municipios = response.content;
+    }
+
   },
   mounted() {
-    if (this.propsEstado) {
-      this.id = this.propsEstado.id;
-      this.nome = this.propsEstado.nome;
+    if (this.propsMunicipio) {
+      this.id = this.propsMunicipio.id;
+      this.nome = this.propsMunicipio.nome;
+      this.estadoSelected = this.propsMunicipio.estadoNome;
     }
   },
   computed: {
