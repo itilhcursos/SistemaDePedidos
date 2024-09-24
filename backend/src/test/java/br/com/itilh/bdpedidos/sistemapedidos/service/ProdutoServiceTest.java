@@ -45,7 +45,7 @@ void setupProduto(){
         ProdutoDTO dtoDescricaoErrado = new ProdutoDTO(BigInteger.ONE,"produto errado",Double.valueOf(1), BigDecimal.valueOf(1), true);
          dtoDescricaoErrado =produtoService.criarProduto(dtoDescricaoErrado);
     
-        ProdutoDTO dtoDescricaoCorrigido = new ProdutoDTO(null,"produto corrigido",Double.valueOf(1), BigDecimal.valueOf(1), true);
+        ProdutoDTO dtoDescricaoCorrigido = new ProdutoDTO(BigInteger.ONE,"produto corrigido",Double.valueOf(1), BigDecimal.valueOf(1), true);
         dtoDescricaoCorrigido = produtoService.criarProduto(dtoDescricaoCorrigido);
    
         ProdutoDTO dtoCorrigido = new ProdutoDTO(dtoDescricaoErrado.getId(),"produto corrigido",Double.valueOf(1), BigDecimal.valueOf(1), true);

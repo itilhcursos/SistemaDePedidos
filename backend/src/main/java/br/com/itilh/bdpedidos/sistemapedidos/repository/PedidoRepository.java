@@ -17,6 +17,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, BigInteger>{
     Page<Pedido> findByclienteNomeIgnoreCase(String nome,Pageable pageable);
     Page<Pedido> findByformaPagamentoNomeIgnoreCase(String nome,Pageable pageable);
 
+    boolean existsByNumero (Integer numero);
+
     @SuppressWarnings("null")
     @Override
     Page<Pedido> findAll(Pageable pageable);

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
-
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
@@ -23,6 +23,11 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
      return toPageDTO(clienteRepository.findAll(pageable));
     }
 
+    private void validar(ClienteDTO origem){
+        if(clienteRepository.existsByNomeRazaoSocial(origem.getNomeRazaoSocial()))
+        throw new ClienteDuplicadoException(origem.getNomeRazaoSocial());
+
+    }
 
     
  public Page<ClienteDTO> listarClientePorMunicipioId(BigInteger id, Pageable pageable) {
@@ -40,10 +45,12 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
     }
 
     public ClienteDTO criarCliente(ClienteDTO origem) throws Exception {    
+       validar(origem);
         return toDTO(clienteRepository.save(toEntity(origem)));
     }
 public ClienteDTO alterarCliente (BigInteger id, ClienteDTO origem) throws Exception {
-        return toDTO(clienteRepository.save(toEntity(origem)));
+     validar(origem);
+    return toDTO(clienteRepository.save(toEntity(origem)));
     }
 
     public String excluirCliente(BigInteger id) throws Exception{

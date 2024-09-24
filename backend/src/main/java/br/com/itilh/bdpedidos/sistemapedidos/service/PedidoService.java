@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.PedidoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.PedidoRepository;
 @Service
@@ -37,16 +38,19 @@ public class PedidoService extends GenericService<Pedido,PedidoDTO> {
     public Page<PedidoDTO> listarPedidoPorFormaPagamentoNome(String nome, Pageable pageable) {
         return toPageDTO(pedidoRepository.findByformaPagamentoNomeIgnoreCase(nome, pageable));
     }
+    
 
      public PedidoDTO buscarPedidoPorId(BigInteger id) throws Exception {
         return toDTO(pedidoRepository.findById(id)
         .orElseThrow(()-> new IdInexistenteException("Pedido", id)));
     }
     public PedidoDTO criarPedido(PedidoDTO origem) throws Exception {    
+       validar(origem);
         return toDTO(pedidoRepository.save(toEntity(origem)));
     }
 public PedidoDTO alterarPedido (BigInteger id, PedidoDTO origem) throws Exception {
-        return toDTO(pedidoRepository.save(toEntity(origem)));
+        validar(origem);
+    return toDTO(pedidoRepository.save(toEntity(origem)));
     }
 
     public String excluirPedido(BigInteger id) throws Exception{
@@ -57,5 +61,10 @@ public PedidoDTO alterarPedido (BigInteger id, PedidoDTO origem) throws Exceptio
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
     }
+
+private void validar(PedidoDTO origem){
+    if(pedidoRepository.existsByNumero(origem.getNumero()))
+    throw new PedidoDuplicadoException(origem.getNumero()); 
+}
 
 }

@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ItemPedidoRepository;
 @Service
@@ -35,11 +39,24 @@ public Page<ItemPedidoDTO> listarItemPedidos(Pageable pageable){
         return toDTO(itemPedidoRepository.findById(id)
         .orElseThrow(()-> new IdInexistenteException("ItemPedido", id)));
     }
+
+private void validar(ItemPedidoDTO origem){
+    if(itemPedidoRepository.existsByPedidoId(origem.getPedidoId()))
+    throw new ItemPedidoDuplicadoException(origem.getPedidoId());
+    if(itemPedidoRepository.existsByQuantidadeEstoque(origem.getQuantidadeEstoque()))
+    throw new ItemPedidoEstoqueNegativoException(origem.getQuantidadeEstoque());
+    if(itemPedidoRepository.existsByPrecoUnidadeAtual(origem.getPrecoUnidadeAtual()))
+    throw new ItemPedidoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+}
+
     public ItemPedidoDTO criarItemPedido(ItemPedidoDTO origem) throws Exception {    
+        validar(origem);
         return toDTO(itemPedidoRepository.save(toEntity(origem)));
+
     }
 public ItemPedidoDTO alterarItemPedido (BigInteger id, ItemPedidoDTO origem) throws Exception {
-        return toDTO(itemPedidoRepository.save(toEntity(origem)));
+        validar(origem);
+    return toDTO(itemPedidoRepository.save(toEntity(origem)));
     }
 
     public String excluirItemPedido(BigInteger id) throws Exception{
@@ -49,6 +66,16 @@ public ItemPedidoDTO alterarItemPedido (BigInteger id, ItemPedidoDTO origem) thr
         }catch (Exception ex){
             throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
+    }
+
+    public Object testAlterarItemPedidoPrecoNegativo(BigDecimal precoUnidadeAtual, ItemPedidoDTO origem) {
+    validar(origem);
+    return toDTO( itemPedidoRepository.save(toEntity(origem)));
+    }
+
+    public Object alterarItemPedidoEstoqueNegativo(Double quantidadeEstoque, ItemPedidoDTO origem) {
+        validar(origem);
+        return toDTO( itemPedidoRepository.save(toEntity(origem)));
     }
 
 }

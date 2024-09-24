@@ -1,5 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.exception;
 
+import java.math.BigDecimal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -7,8 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ItemPedidoPrecoNegativoException extends RuntimeException{
 
 
-    public ItemPedidoPrecoNegativoException(Double quantidadeEstoque){
+    public ItemPedidoPrecoNegativoException(BigDecimal  precoUnidadeAtual){
 
-        super("ItemPedido = " + quantidadeEstoque + "Negativo");
+        super("ItemPedido = " +  precoUnidadeAtual + "Negativo");
     }
 }
