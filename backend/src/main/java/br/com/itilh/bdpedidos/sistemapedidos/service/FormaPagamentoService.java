@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
@@ -29,11 +30,20 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
     }
 
     public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
+    }
+
+    private void validar (FormaPagamentoDTO dto) throws Exception {
+
+        if(repositorio.existsByDescricao(dto.getDescricao()))   
+            throw new FormaPagamentoDuplicadoException(dto.getDescricao());
+
     }
 
     public String excluirFormaPagamento(BigInteger id) throws Exception{
