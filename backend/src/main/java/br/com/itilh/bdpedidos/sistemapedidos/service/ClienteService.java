@@ -29,6 +29,12 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
     }
 
     private void validar(ClienteDTO dto) throws Exception{
+        // Verifica se o usuario Cadastrou um CPF E um CNPJ, para garantir que só seja cadastrado ou um ou outro.
+        if (dto.getCpf() != null && dto.getCnpj() != null){
+            throw new Exception ("Cadastre ou um CPF ou um CNPJ.");
+        }
+
+        // Verifica duplicações.
         if (repositorio.existsByCpf(dto.getCpf()) || repositorio.existsByCnpj(dto.getCnpj()) || repositorio.existsByEmail(dto.getEmail())){
             if(dto.getId() == null){
                 if (repositorio.existsByCpf(dto.getCpf()))

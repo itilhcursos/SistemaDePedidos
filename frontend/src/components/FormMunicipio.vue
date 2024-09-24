@@ -22,6 +22,12 @@
           placeholder="Nome"
         />
       </div>
+      <div class="mb-3">
+        <label class="form-label">Selecione o Estado </label>
+        <select v-model="estadoSelected">
+          <option v-for="estado in estados" :value="estado.id" :key="estado.id"> {{ estado.nome }}</option>
+        </select>
+      </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
@@ -50,6 +56,7 @@
 
 <script>
 import axios from "axios";
+import estadoService from "@/services/estadoService";
 export default {
   props: {
     propsMunicipio: Object,
@@ -58,6 +65,8 @@ export default {
     return {
       id: "",
       nome: "",
+      estadoSelected: "",
+      estados: [],
       isInvalido: false,
       mensagem : '', 
     };
@@ -82,6 +91,7 @@ export default {
           const response = await axios.post("http://localhost:8080/municipio", {
             id: this.id,
             nome: this.nome,
+            estadoId: this.estadoSelected,
           }, config);
           this.listaMunicipios = response.data;
         } else {
@@ -91,6 +101,7 @@ export default {
             {
               id: this.id,
               nome: this.nome,
+              estadoId: this.estadoSelected,
             }
           ,config );
           this.listaMunicipios = response.data;
@@ -98,10 +109,12 @@ export default {
         this.$emit("salvar_municipio", {
         id: this.id,
         nome: this.nome,
+        estadoId: this.estadoSelected.id,
       });
 
       this.id = "";
       this.nome = "";
+      
     }catch( error){
       console.log (error);
       console.log (error.response.status);
@@ -109,8 +122,11 @@ export default {
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
       }else if(error.response.status === 500){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
+        this.mensagem = error.response.data.mensagem;
+      }else if(error.response.status === 400){
+        this.mensagem = error.response.data.mensagem;
+      }     
+      else{
         this.mensagem = error.message;
       }
     }
@@ -120,12 +136,19 @@ export default {
       this.nome = "";
       this.$emit("cancelar", true);
     },
+
+    async buscarEstados(){
+      const response = await estadoService.listar(1, 1000, 'ASC', 'id');
+      this.estados = response.content;
+    }
   },
   mounted() {
     if (this.propsMunicipio) {
       this.id = this.propsMunicipio.id;
       this.nome = this.propsMunicipio.nome;
+      this.estadoSelected = this.propsMunicipio.estadoId;
     }
+    this.buscarEstados();
   },
   computed: {
     getAcao() {

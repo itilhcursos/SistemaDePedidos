@@ -2,6 +2,7 @@
     <div class="container">
         <h4 class="p-1 mb-1 bg-success text-white"> {{ getAcao }} Cliente</h4>
         <hr />
+        <div>Campos marcados com * são obrigatórios.</div> <div>Campos marcados com ** significa que somente um deles é obrigatório.</div> <hr />
         <form>
             <div class="mb-3" >
                 <label class="form-label">ID</label>
@@ -9,70 +10,86 @@
                     type="text"
                     v-model="id"
                     :disabled="true"
-                    placeholder="ID do Cliente"/>
+                    placeholder="ID do Cliente. (Automático)"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Nome ou Razão Social</label>
+                <label class="form-label">Nome ou Razão Social*</label>
                 <input class="form-control"
                     type="text"
                     v-model="nomeRazaoSocial"
-                    placeholder="Nome ou Razão Social"/>
+                    placeholder="Nome ou Razão Social da empresa..."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">CNPJ</label>
+                <label class="form-label">CNPJ*</label>
                 <input class="form-control"
                     type="text"
                     v-model="cnpj"
-                    placeholder="CNPJ"/>
+                    placeholder="CNPJ..."
+                    :disabled= "setCnpjState"
+                    v-if="!setCnpjState"/>
+                <input class="form-control"
+                    type="text"
+                    v-model="cnpj"
+                    placeholder="CADASTRANDO USANDO CPF."
+                    :disabled= "setCnpjState"
+                    v-if="setCnpjState"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">CPF</label>
+                <label class="form-label">CPF*</label>
                 <input class="form-control"
                     type="text"
                     v-model="cpf"
-                    placeholder="CPF"/>
+                    placeholder="CPF..."
+                    :disabled= "setCpfState"
+                    v-if="!setCpfState"/>
+                <input class="form-control"
+                    type="text"
+                    v-model="cpf"
+                    placeholder="CADASTRANDO USANDO CNPJ."
+                    :disabled= "setCpfState"
+                    v-if="setCpfState"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Telefone</label>
+                <label class="form-label">Telefone**</label>
                 <input class="form-control"
                     type="text"
                     v-model="telefone"
-                    placeholder="Número de Telefone"/>
+                    placeholder="Número de Telefone..."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Endereço</label>
+                <label class="form-label">Endereço*</label>
                 <input class="form-control"
                     type="text"
                     v-model="endereco"
-                    placeholder="Endereço"/>
+                    placeholder="Endereço..."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Bairro</label>
+                <label class="form-label">Bairro*</label>
                 <input class="form-control"
                     type="text"
                     v-model="bairro"
-                    placeholder="Bairro"/>
+                    placeholder="Bairro de residência..."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">CEP</label>
+                <label class="form-label">CEP*</label>
                 <input class="form-control"
                     type="text"
                     v-model="cep"
-                    placeholder="CEP"/>
+                    placeholder="CEP..."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">E-mail</label>
+                <label class="form-label">E-mail**</label>
                 <input class="form-control"
                     type="text"
                     v-model="email"
-                    placeholder="E-mail"/>
+                    placeholder="E-mail..."/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Informações</label>
                 <input class="form-control"
                     type="text"
                     v-model="informacao"
-                    placeholder="Informações"/>
+                    placeholder="Informações sobre o Cliente..."/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Ativo?</label>
@@ -82,11 +99,11 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Municipio (ID)</label>
+                <label class="form-label">Municipio (ID)*</label>
                 <input class="form-control"
                     type="text"
                     v-model="municipioId"
-                    placeholder="Preencha com o ID do Municipio do Cliente"/>
+                    placeholder="Insira o ID do Municipio do Cliente."/>
             </div>
 
 
@@ -176,9 +193,19 @@ export default {
             this.$emit("flip", true)
         },
         async salvar(){
-            if (this.nome === ""){
+            if (this.nome === "" || this.cep === "" || this.bairro === "" || this.endereco === "" || this.municipioId === ""){
                 this.isInvalido = true;
-                this.mensagem = "Nome deve ser preenchido!";
+                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
+                return;
+            }
+            if (this.cpf === "" && this.cnpj === ""){
+                this.isInvalido = true;
+                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
+                return;
+            }
+            if (this.email === "" && this.telefone === ""){
+                this.isInvalido = true;
+                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
                 return;
             }
             this.isInvalido = false;
@@ -235,6 +262,12 @@ export default {
         getAcao() {
             return this.id === "" ? "Incluir" : "Alterar";
         },
-    },
-}
+        setCnpjState(){
+            return this.cpf === '' ? false : true;
+        },
+        setCpfState(){
+            return this.cnpj === '' ? false : true;
+        },
+    }
+}   
 </script>
