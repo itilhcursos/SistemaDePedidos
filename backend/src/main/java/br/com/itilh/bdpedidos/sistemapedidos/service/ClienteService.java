@@ -65,7 +65,12 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO>{
     public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
-    }  
+    }
+
+    public String apagar(BigInteger id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'apagar'");
+    }
 
 
 }
