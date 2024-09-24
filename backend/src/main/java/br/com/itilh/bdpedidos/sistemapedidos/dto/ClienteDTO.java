@@ -26,5 +26,6 @@ public class ClienteDTO {
 
     private BigInteger municipioId;
     private String municipioNome;
+    private String municipioEstadoNome;
 
 }
