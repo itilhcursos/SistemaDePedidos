@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,8 +29,8 @@ public class EstadoServiceTest {
     void testCriarEstado() throws Exception {
 
         EstadoDTO testeDTO = new EstadoDTO(null, "estado de teste");
-        EstadoDTO retono = service.criarEstado(testeDTO);
-        assertEquals(true, retono.getId()!=null);
+        EstadoDTO retorno = service.criarEstado(testeDTO);
+        assertEquals(true, retorno.getId()!=null);
     }
 
     @Test
@@ -40,7 +39,7 @@ public class EstadoServiceTest {
 
         EstadoDTO testeDTO = new EstadoDTO(null, "estado de teste duplicado");
 
-        EstadoDTO retono = service.criarEstado(testeDTO);
+        EstadoDTO retorno = service.criarEstado(testeDTO);
         assertThrows(EstadoDuplicadoException.class, ()-> service.criarEstado(testeDTO));
     }
 
