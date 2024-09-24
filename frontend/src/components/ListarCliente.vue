@@ -17,6 +17,7 @@
                     v-if="formVisible"
                     :propsCliente="clienteEscolhido"
                     @flip="flipFormVisible"
+                    @cancelar="limpar"
                     @salvar="listarClientes"
                     />
                 </div>
@@ -33,11 +34,11 @@
                         <th scope="col">Telefone</th>
                         <th scope="col">Endereço</th>
                         <th scope="col">Bairro</th>
+                        <th scope="col">Municipio</th>
                         <th scope="col">CEP</th>
                         <th scope="col">E-mail</th>
                         <th scope="col">Informações</th>
-                        <th scope="col">Ativo</th>
-                        <th scope="col">ID Municipio</th>
+                        <th scope="col">Ativo/Inativo</th>
                         <th scope="col" class="d-flex justify-content-end">Ações</th>
                     </tr>
                 </thead>
@@ -65,6 +66,9 @@
                             {{ cliente.bairro }}
                         </td>
                         <td>
+                            {{ cliente.municipioNome }}
+                        </td>
+                        <td>
                             {{ cliente.cep }}
                         </td>
                         <td>
@@ -74,10 +78,7 @@
                             {{ cliente.informacao }}
                         </td>
                         <td>
-                            {{ cliente.ativo }}
-                        </td>
-                        <td>
-                            {{ cliente.municipioId }}
+                            {{ formatarAtivo(cliente.ativo) }}
                         </td>
                         <td class="d-flex justify-content-end">
                             <button class="btn btn-btn btn-primary m-2" @click="alterar(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar </button>
@@ -96,40 +97,40 @@
                         <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
                             {{ pagina }}
                         </button>
-                        <div class="col-auto">
-                            <input
-                                type="text"
-                                v-model="pageNumber"
-                                placeholder="Número da pagina"
-                                class="form-control w-25"
-                            />
-                        </div>
-                        <div class="col-auto">
-                            <select v-model="pageSize" class="form-select">
-                                <option value="2">2</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <select v-model="property" class="form-select">
-                                <option value="id">ID</option>
-                                <option value="nome">Nome</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <select v-model="direction" class="form-select">
-                                <option value="ASC">Crescente</option>
-                                <option value="DESC">Decrescente</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <button @click.prevent="listarClientes" class="btn btn-success">
-                                <i class="bi bi-binoculars"></i>
-                                Buscar
-                            </button>
-                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <input
+                            type="text"
+                            v-model="pageNumber"
+                            placeholder="Número da pagina"
+                            class="form-control w-25"
+                        />
+                    </div>
+                    <div class="col-auto">
+                        <select v-model="pageSize" class="form-select">
+                            <option value="2">2</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <select v-model="property" class="form-select">
+                            <option value="id">ID</option>
+                            <option value="nome">Nome</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <select v-model="direction" class="form-select">
+                            <option value="ASC">Crescente</option>
+                            <option value="DESC">Decrescente</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button @click.prevent="listarClientes" class="btn btn-success">
+                            <i class="bi bi-binoculars"></i>
+                            Buscar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -140,6 +141,7 @@
 <script>
 import FormCliente from './FormCliente.vue';
 import clienteService from '@/services/clienteService';
+import Logico from '@/utils/Logico';
 export default {
     components:{
         FormCliente
@@ -167,6 +169,9 @@ export default {
         irPara(pagina) {
             this.pageNumber = pagina;
             this.listarClientes();
+        },
+        formatarAtivo(valorBool){
+            return Logico.toAtivoInativo(valorBool)
         },
         async listarClientes(){
             this.clienteEscolhido = null;

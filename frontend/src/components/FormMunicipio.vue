@@ -109,7 +109,7 @@ export default {
         this.$emit("salvar_municipio", {
         id: this.id,
         nome: this.nome,
-        estadoId: this.estadoSelected.id,
+        estadoId: this.estadoSelected,
       });
 
       this.id = "";

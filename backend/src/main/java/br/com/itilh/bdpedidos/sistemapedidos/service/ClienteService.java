@@ -29,14 +29,14 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
     }
 
     private void validar(ClienteDTO dto) throws Exception{
-        // Verifica se o usuario Cadastrou um CPF E um CNPJ, para garantir que só seja cadastrado ou um ou outro.
-        if (dto.getCpf() != null && dto.getCnpj() != null){
-            throw new Exception ("Cadastre ou um CPF ou um CNPJ.");
-        }
-
         // Verifica duplicações.
         if (repositorio.existsByCpf(dto.getCpf()) || repositorio.existsByCnpj(dto.getCnpj()) || repositorio.existsByEmail(dto.getEmail())){
             if(dto.getId() == null){
+
+                // Verifica se o usuario Cadastrou um CPF E um CNPJ, para garantir que só seja cadastrado ou um ou outro.
+                if (dto.getCpf() != "" && dto.getCnpj() != ""){
+                    throw new Exception ("Cadastre ou um CPF ou um CNPJ.");
+                }
                 if (repositorio.existsByCpf(dto.getCpf()))
                     throw new ClienteDuplicadoException("CPF");
 
@@ -45,12 +45,12 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
 
                 if (repositorio.existsByEmail(dto.getEmail()))
                     throw new ClienteDuplicadoException("E-mail");
-            } else {
+            } /* else {
                 Cliente c = repositorio.getReferenceById(dto.getId());
                 if(!c.getCpf().equalsIgnoreCase(dto.getCpf()) || !c.getCnpj().equalsIgnoreCase(dto.getCnpj()) || !c.getEmail().equalsIgnoreCase(dto.getEmail())){
                     throw new Exception("Não altere CPF, CNPJ ou Email.");
                 }
-            }
+            } */
         }
     }
 

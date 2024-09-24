@@ -48,7 +48,7 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
             }else{
                 // Alterando um Produto
                 Produto p = repositorio.getReferenceById(dto.getId());
-                if(!p.getDescricao().equalsIgnoreCase(dto.getDescricao())){ // Negação de (Se a Descrição for igual a que estava antes). Ou seja, "se a Descrição for diferente, sem contar letras maiúsculas ou minusculas:"
+                if(!p.getDescricao().equalsIgnoreCase(dto.getDescricao())){ // Negação de (Se a Descrição for igual a que estava antes). Ou seja, "se a Descrição for diferente:"
                     throw new ProdutoDuplicadoException(dto.getDescricao());
                 }
             }            
