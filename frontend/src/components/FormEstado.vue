@@ -107,7 +107,7 @@ export default {
         this.isInvalido = true;
         if (error.response.status === 403) {
           this.mensagem = "Usuário não identificado! Faça o Login!!!"
-        }else if(error.response.status === 500){
+        }else if(error.response.status === 400){
           this.mensagem = error.response.data.mensagem;
         } else {
           this.mensagem = error.mensagem;
