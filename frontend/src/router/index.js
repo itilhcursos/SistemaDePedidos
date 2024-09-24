@@ -29,11 +29,11 @@ const router = createRouter({
       name: 'formaPagamento',
       component:()=>import('../views/FormaPagamentoView.vue')
     },
-    {
-      path: '/municipios',
-      name: 'municipios',
-      component:()=>import('../views/MunicipioView.vue')
-    },
+    // {
+    //   path: '/municipios',
+    //   name: 'municipios',
+    //   component:()=>import('../views/MunicipioView.vue')
+    // },
     {
       path: '/pedidos',
       name: 'pedidos',
