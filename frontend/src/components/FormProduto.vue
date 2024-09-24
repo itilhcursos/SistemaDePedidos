@@ -99,6 +99,8 @@ export default {
             id: "",
             descricao: "",
             urlImagem: "",
+            quantidadeEstoque: "",
+            precoUnidadeAtual: "",
             isInvalido: false,
             mensagem: "",
         };

@@ -2,7 +2,6 @@ package br.com.itilh.bdpedidos.sistemapedidos.dto;
 
 import java.math.BigInteger;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +18,11 @@ public class ClienteDTO {
 
     private BigInteger id;
 
-    private Municipio municipio;
+    private BigInteger municipioId;
+
+    private String municipioNome;
+
+    private String municipioEstadoNome;
 
     private String nomeRazaoSocial;
 

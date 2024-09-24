@@ -14,8 +14,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.math.BigInteger;
-
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
@@ -41,23 +39,24 @@ public class ClienteControllerTest {
     MunicipioRepository municipioRepository;
 
 
-    // void setUpCliente(){
-    //     setUpMunicipio();
-    //     Cliente cliente = new Cliente(
-    //         BigInteger.ONE,
-    //         "test",
-    //         "30.829.641/0001-14",
-    //         "111.111.111-02",
-    //         "73988175153",
-    //         "Rua serra capa bode",
-    //         "Ozeias de Freitas",
-    //         "45270-000",
-    //         "Mikael-sl@hotmail.com",
-    //         true,
-    //         "ele esta bem",
-    //         municipioRepository.getReferenceById(BigInteger.ONE));
-    //     clienteRepository.save(cliente);
-    // }
+    void setUpCliente(){
+        setUpMunicipio();
+        Cliente cliente = new Cliente(
+           BigInteger.ONE,
+           municipioRepository.getReferenceById(BigInteger.ONE),
+           "test",
+           "30.829.641/0001-14",
+           "111.111.111-02",
+           "73988175153",
+           "Rua serra capa bode",
+           "Ozeias de Freitas",
+           "45270-000",
+           "Mikael-sl@hotmail.com",
+           true,
+           "ele esta bem"
+        );
+          clienteRepository.save(cliente);
+     }
 
     void setUpMunicipio(){
         setUpEstado();

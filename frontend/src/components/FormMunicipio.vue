@@ -33,23 +33,14 @@
                 placeholder="Entrega"
             />
         </div>
+
         <div class="mb-3">
-            <label class="form-label">Estado Id</label>
-            <input
-                class="form-control"
-                type="text"
-                v-model="estadoId"
-                placeholder="Estado Id"
-            />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Estado Nome</label>
-            <input
-                class="form-control"
-                type="text"
-                v-model="estadoNome"
-                placeholder="Estado Nome"
-            />
+            <label class="form-label">Estado</label>
+            <select v-model="estadoSelected">
+                <option v-for="estado in estados" :value="estado.id" :key="estado.id">
+                    {{ estado.nome }}
+                </option>
+            </select>
         </div>
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
             <i class="bi bi-exclamation-triangle-fill"></i>
@@ -78,6 +69,7 @@
 </template>
 <script>
     import municipioService from '@/services/municipioService';
+    import estadoService from '@/services/estadoService';
     export default {
         props:{
             propsMunicipio: Object,
@@ -87,8 +79,8 @@
                 id: "",
                 nome: "",
                 entrega: "",
-                estadoId: "",
-                estadoNome: "",
+                estadoSelected: "",
+                estados: [],
                 isInvalido: false,
                 mensagem: '',
             };
@@ -99,8 +91,7 @@
                     id: this.id,
                     nome: this.nome,
                     entrega: this.entrega,
-                    estadoId: this.estadoId,
-                    estadoNome: this.estadoNome,
+                    estadoId: this.estadoSelected,
                 }
             },
             async salvarMunicipio() {
@@ -124,15 +115,13 @@
                         id: this.id,
                         nome: this.nome,
                         entrega:  this.entrega,
-                        estadoId: this.estadoId,
-                        estadoNome: this.estadoNome,
+                        estadoSelected: this.estadoSelected,
                     });
 
                     this.id = "";
                     this.nome = "";
                     this.entrega = "";
-                    this.estadoId = "";
-                    this.estadoNome = "";
+                    this.estadoSelected = "";
                 }catch(error){
                     console.log (error);
                     console.log (error.response.status);
@@ -150,19 +139,24 @@
                 this.id = "";
                 this.nome = "";
                 this.entrega = "";
-                this.estadoId = "";
-                this.estadoNome = "";
+                this.estadoSelected = "";
                 this.$emit("cancelar", true);
             },
+
+            async buscarEstados(){
+                const response = await estadoService.listar(1,1000,'ASC', 'id');
+                this.estados = response.content;
+            }
+
         },
         mounted(){
             if(this.propsMunicipio){
                 this.id = this.propsMunicipio.id;
                 this.nome =this.propsMunicipio.nome;
                 this.entrega = this.propsMunicipio.entrega;
-                this.estadoId = this.propsMunicipio.estadoId;
-                this.estadoNome = this.propsMunicipio.estadoNome;
+                this.estadoSelected = this.propsMunicipio.estadoId;
             }
+           this.buscarEstados();
         },
         computed:{
             getAcao(){

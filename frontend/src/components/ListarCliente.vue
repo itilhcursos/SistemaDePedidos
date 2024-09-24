@@ -25,7 +25,6 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">Cliente id</th>
                     <th scope="col">CNPJ</th>
                     <th scope="col">CPF</th>
                     <th scope="col">Telefone</th>
@@ -43,9 +42,9 @@
                     <th>
                         {{ cliente.id }} <!--diferença entre td e th -->
                     </th>
-                    <td>
+                    <!-- <td>
                         {{ cliente.municipio}}
-                    </td>
+                    </td> -->
                     <td>
                         {{ cliente.nomeRazaoSocial}}
                     </td>
