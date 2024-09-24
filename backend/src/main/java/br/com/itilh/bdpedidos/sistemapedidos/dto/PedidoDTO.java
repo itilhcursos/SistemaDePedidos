@@ -1,16 +1,13 @@
 package br.com.itilh.bdpedidos.sistemapedidos.dto;
-
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
-
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,5 +25,4 @@ public class PedidoDTO {
     private LocalDate dataEntrega;  
     private LocalDate dataPagamento;
     private List<ItemPedidoDTO> itens;
-
 }

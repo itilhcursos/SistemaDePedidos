@@ -1,14 +1,11 @@
-
 <script setup>
 import ListarPedido from '../components/ListarPedido.vue'
 </script>
-
 <template>
  <main>
    <ListarPedido />
  </main>
 </template>
-
 <style scoped>
   main{
     background-color: #23232e;
@@ -21,5 +18,4 @@ import ListarPedido from '../components/ListarPedido.vue'
     display: block;
     width: 92%;
   }
-
 </style>
