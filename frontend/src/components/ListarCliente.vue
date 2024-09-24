@@ -29,11 +29,9 @@
                     <th scope="col">CPF</th>
                     <th scope="col">Telefone</th>
                     <th scope="col">Endereço</th>
-                    <th scope="col">Bairro</th>
-                    <th scope="col">Cep</th>
+                    <!-- <th scope="col">Cep</th> -->
                     <th scope="col">Email</th>
                     <th scope="col">Ativo</th>
-                    <th scope="col">Informação</th>
                     <th scope="col" class="d-flex justify-content-end">Ações</th>
                 </tr>
             </thead>
@@ -42,9 +40,6 @@
                     <th>
                         {{ cliente.id }} <!--diferença entre td e th -->
                     </th>
-                    <!-- <td>
-                        {{ cliente.municipio}}
-                    </td> -->
                     <td>
                         {{ cliente.nomeRazaoSocial}}
                     </td>
@@ -60,21 +55,17 @@
                     <td>
                         {{ cliente.endereco}}
                     </td>
-                    <td>
-                        {{ cliente.bairro}}
-                    </td>
-                    <td>
+    
+                    <!-- <td>
                         {{ cliente.cep}}
-                    </td>
+                    </td> -->
                     <td>
                         {{ cliente.email}}
                     </td>
                     <td>
                         {{ cliente.ativo}}
                     </td>
-                    <td>
-                        {{ cliente.informacao}}
-                    </td>
+
 
                     <td class="d-flex justify-content-end">
                         <button

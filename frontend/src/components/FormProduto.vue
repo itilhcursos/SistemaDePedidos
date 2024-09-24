@@ -63,18 +63,18 @@
             <div class="mb-3 d-flex justify-content-end">
 
                 <button
-                class="btn btn-primary m-2"
-                type="submit"
-                v-on:click.prevent="salvarProduto"
+                    class="btn btn-primary m-2"
+                    type="submit"
+                    v-on:click.prevent="salvarProduto"
                 >
                     <i class="bi bi-clipboard2-check"></i>
                     {{ getAcao }}
                 </button>
 
                 <button
-                class="btn btn-warning m-2"
-                type="submit"
-                v-on:click.prevent="cancelar"
+                    class="btn btn-warning m-2"
+                    type="submit"
+                    v-on:click.prevent="cancelar"
                 >
                     <i class="bi bi-clipboard2-x"></i>
                     Cancelar
@@ -99,8 +99,6 @@ export default {
             id: "",
             descricao: "",
             urlImagem: "",
-            quantidadeEstoque: "",
-            precoUnidadeAtual: "",
             isInvalido: false,
             mensagem: "",
         };
@@ -133,6 +131,7 @@ export default {
                     this.listaProdutos = response.data;
                 } else {
                     const response = await produtoService.atualizar(
+                    this.id,
                     this.getDados());
                     this.listaEstados = response.data;
                 }
@@ -146,8 +145,9 @@ export default {
                     ativo: this.ativo
                 });
                 this.id = "";
+                 this.descricao = "";
                 this.urlImagem = "";
-                this.descricao = "";
+               
                 this.quantidadeEstoque = "";
                 this.precoUnidadeAtual = ""; 
                 this.ativo = "";

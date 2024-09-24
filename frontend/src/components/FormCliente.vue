@@ -18,7 +18,25 @@
         <input
           class="form-control"
           type="text"
-          v-model="nome"
+          v-model="nomeRazaoSocial"
+          placeholder="Nome"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">CNPJ</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="cnpj"
+          placeholder="Nome"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">CPF</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="cpf"
           placeholder="Nome"
         />
       </div>
@@ -57,7 +75,9 @@
     data() {
       return {
         id: "",
-        nome: "",
+        nomeRazaoSocial: "",
+        cnpj: "",
+        cpf: "",
         isInvalido: false,
         mensagem: '',
       };
@@ -66,11 +86,13 @@
       getDados(){
         return{
             id: this.id,
-            nome: this.nome,
+            nomeRazaoSocial: this.nomeRazaoSocial,
+            cnpj: this.cnpj,
+            cpf: this.cpf,
         }
       },
       async salvarCliente() {
-        if (this.nome === "") {
+        if (this.nomeRazaoSocial === "") {
           this.isInvalido = true;
           this.mensagem = "O Nome deve ser preenchido!!";
           return;
@@ -93,11 +115,15 @@
           }
           this.$emit("salvar_cliente", {
             id: this.id,
-            nome: this.nome,
+            nomeRazaoSocial: this.nomeRazaoSocial,
+            cnpj: this.cnpj,
+            cpf: this.cpf,
           });
 
           this.id = "";
-          this.nome = "";
+          this.nomeRazaoSocial = "";
+          this.cnpj = "";
+          this.cpf ="";
         
         }catch(error){
         
@@ -116,14 +142,18 @@
 
       cancelar(){
         this.id = "";
-        this.nome = "";
+        this.nomeRazaoSocial = "";
+        this.cnpj ="";
+        this.cpf ="";
         this.$emit("cancelar", true);
       },
     },   
     mounted() {
       if (this.propsCliente) {
         this.id = this.propsCliente.id;
-        this.nome = this.propsCliente.nome;
+        this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
+        this.cnpj = this.propsCliente.cnpj;
+        this.cpf = this.propsCliente.cpf;
       }
     },
     computed: {

@@ -108,6 +108,7 @@
                         this.listaMunicipio = response.data;
                     }else{
                         const response = await municipioService.atualizar(
+                        this.id,
                         this.getDados());
                         this.listaMunicipio = response.data;
                     }
@@ -115,7 +116,7 @@
                         id: this.id,
                         nome: this.nome,
                         entrega:  this.entrega,
-                        estadoSelected: this.estadoSelected,
+                        estadoId: this.estadoSelected,
                     });
 
                     this.id = "";
