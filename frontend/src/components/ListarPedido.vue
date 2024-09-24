@@ -4,21 +4,21 @@
       <div class="col-10">
         <h3>Pedidos</h3>
       </div>
-      <!-- <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novo" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormPedido
             v-if="formVisible"
-            :propsEstado="estadoEscolhido"
+            :propsPedido="pedidoEscolhido"
             @cancelar="limpar"
-            @salvar_estado="buscarEstados"
+            @salvar_pedido="buscar"
           />
         </div>
-      </div> -->
+      </div> 
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
@@ -140,12 +140,12 @@
 
 
 <script>
-//import FormEstado from "./FormEstado.vue";
+import FormPedido from "./FormPedido.vue";
 import Data from "../utils/Data"
 import pedidoService from "@/services/pedidoService";
 export default {
   components: {
-   // FormEstado,
+    FormPedido,
   },
   data() {
     return {

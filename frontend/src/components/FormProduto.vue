@@ -14,6 +14,29 @@
                 />
             </div>
             <div class="mb-3">
+                <label class="form-label">CPF</label>
+                <input
+                class="form-control"
+                type="text"
+                v-model="cpf"
+                placeholder="CPF"
+                :disabled="!getCpf"
+                />
+            </div>
+
+            <div class="mb-3" >
+                <label class="form-label">CNPJ</label>
+                <input
+                class="form-control"
+                type="text"
+                v-model="cnpj"
+                placeholder="CNPJ"
+                :disabled="!getCnpj"
+                />
+            </div>
+
+
+            <div class="mb-3">
                 <label class="form-label">Descrição</label>
                 <input
                 class="form-control"
@@ -101,6 +124,8 @@ export default {
             urlImagem: "",
             isInvalido: false,
             mensagem: "",
+            cpf:"",
+            cnpj:""
         };
     },
 
@@ -196,6 +221,12 @@ export default {
         getAcao(){
             return this.id === "" ? "Incluir" : "Alterar";
         },
+        getCnpj(){
+            return this.cpf === '' ? true : false;
+        },
+        getCpf(){
+            return this.cnpj === '' ? true : false;
+        }
     }
 }
 </script>

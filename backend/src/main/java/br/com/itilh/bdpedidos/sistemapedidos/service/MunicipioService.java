@@ -49,7 +49,7 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
-        validar(origem);
+      //  validar(origem);
         return toDTO(repository.save(toEntity(origem)));
     }
 
