@@ -38,7 +38,28 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       component:()=>import('../views/LogoutView.vue')
-    }
+    },
+    {
+    path: '/clientes',
+    name: 'clientes',
+    component:()=>import('../views/ClienteView.vue')
+    },
+    {
+      path: '/pedidos',
+      name: 'pedidos',
+      component:()=>import('../views/PedidoView.vue')
+      },
+      {
+        path: '/item-pedidos',
+        name: 'item-pedidos',
+        component:()=>import('../views/ItemPedidoView.vue')
+        },
+        {
+          path: '/municipios',
+          name: 'municipios',
+          component:()=>import('../views/MunicipioView.vue')
+          },
+        
   ]
 })
 
