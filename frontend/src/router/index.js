@@ -20,6 +20,11 @@ const router = createRouter({
       component:()=>import('../views/EstadosView.vue')
     },
     {
+      path: '/municipios',
+      name: 'municipios',
+      component:()=>import('../views/MunicipioView.vue')
+    },
+    {
       path: '/produtos',
       name: 'produtos',
       component:()=>import('../views/ProdutoView.vue')
@@ -30,9 +35,9 @@ const router = createRouter({
       component:()=>import('../views/FormaPagamentoView.vue')
     },
     // {
-    //   path: '/municipios',
-    //   name: 'municipios',
-    //   component:()=>import('../views/MunicipioView.vue')
+    //   path: '/clientes',
+    //   name: 'clientes',
+    //   component:()=>import('../views/ClienteView.vue')
     // },
     {
       path: '/pedidos',
