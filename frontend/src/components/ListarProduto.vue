@@ -38,6 +38,9 @@
               {{ produto.id }}
             </th>
             <td>
+              <img :src=produto.urlImagem height="100px">
+            </td>
+            <td>
               {{ produto.descricao }}
             </td>
             <td>

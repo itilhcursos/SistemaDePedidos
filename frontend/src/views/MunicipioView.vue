@@ -1,6 +1,6 @@
 
 <script setup>
-import ListarEstado from '../components/ListarMunicipio.vue'
+import ListarMunicipio from '../components/ListarMunicipio.vue'
 </script>
 
 <template>

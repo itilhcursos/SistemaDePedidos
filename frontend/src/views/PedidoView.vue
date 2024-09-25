@@ -1,6 +1,6 @@
 
 <script setup>
-import ListarEstado from '../components/ListarPedido.vue'
+import ListarPedido from '../components/ListarPedido.vue'
 </script>
 
 <template>

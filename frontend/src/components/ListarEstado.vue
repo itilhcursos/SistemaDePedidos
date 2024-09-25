@@ -115,7 +115,7 @@
 
 <script>
 import FormEstado from "./FormEstado.vue";
-import axios from "axios";
+import estadoService from "@/services/estadoService";
 export default {
   components: {
     FormEstado,
@@ -138,15 +138,12 @@ export default {
     async buscarEstados() {
       this.estadoEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
-      const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
+     
+      const response = await estadoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);   
+   
       this.listaEstados = response.data.content;
       this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      
     },
     limpar() {
       this.estadoEscolhido = null;
@@ -160,13 +157,19 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+      try{
+          const response = await estadoService.apagar(id);
+          console.log(response);
+      }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
         }
-      }
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
-      console.log(response.data);
+      }     
+      
       this.buscarEstados();
     },
     irPara(pagina) {

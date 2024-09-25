@@ -167,8 +167,19 @@ export default {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
+      try{
       const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`,config);
       console.log(response.data);
+        }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
+        }
+      } 
+      
       this.buscarFormaPagamento();
     },
     irPara(pagina) {

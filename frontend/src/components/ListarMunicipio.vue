@@ -2,20 +2,20 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>ESTADOS</h3>
+        <h3>Municípios</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormMunicipio
             v-if="formVisible"
-            :propsEstado="estadoEscolhido"
+            :propsMunicipio="municipioEscolhido"
             @cancelar="limpar"
-            @salvar_estado="buscarEstados"
+            @salvar_municipio="buscar"
           />
         </div>
       </div>
@@ -26,28 +26,36 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome</th>
+          <th scope="col">Entrega</th>
+          <th scope="col">Estado</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="estado in listaEstados" :key="estado.id" scope="row">
+        <tr v-for="municipio in listaMunicipios" :key="municipio.id" scope="row">
           <th>
-            {{ estado.id }}
+            {{ municipio.id }}
           </th>
           <td>
-            {{ estado.nome }}
+            {{ municipio.nome }}
+          </td>
+          <td>
+            {{ formatarEntrega(municipio.entrega) }}
+          </td>
+          <td>
+            {{ municipio.estadoNome }}
           </td>
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
+              @click="alterarMunicipio(municipio)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
             <button
               class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
+              @click="excluirMunicipio(municipio.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
@@ -102,7 +110,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
+          <button @click.prevent="buscar" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -114,16 +122,18 @@
 
 
 <script>
-import FormEstado from "./FormEstado.vue";
+import FormMunicipio from "./FormMunicipio.vue";
+import Logico from "@/utils/Logico.js";
 import axios from "axios";
+
 export default {
   components: {
-    FormEstado,
+    FormMunicipio,
   },
   data() {
     return {
-      listaEstados: [],
-      estadoEscolhido: null,
+      listaMunicipios: [],
+      municipioEscolhido: null,
       formVisible: false,
       mode: import.meta.env.MODE,
       url: import.meta.env.VITE_APP_URL_API,
@@ -135,47 +145,55 @@ export default {
     };
   },
   methods: {
-    async buscarEstados() {
-      this.estadoEscolhido = null;
+    async buscar() {
+      this.municipioEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
       const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
-      console.log(response.data);
-      this.listaEstados = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      this.listaMunicipios = response.data.content;
+      this.totalPages = response.data.totalPages; },
+    formatarEntrega(valor){
+      return Logico.toSimNao(valor);
     },
     limpar() {
-      this.estadoEscolhido = null;
+      this.municipioEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoEstado() {
+    novoMunicipio() {
       this.formVisible = !this.formVisible;
     },
-    alterarEstado(estado) {
-      this.estadoEscolhido = estado;
+    alterarMunicipio(municipio) {
+      this.municipioEscolhido = municipio;
       this.formVisible = true;
     },
-    async excluirEstado(id) {
+    async excluirMunicipio(id) {
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
-      console.log(response.data);
-      this.buscarEstados();
+      try{
+          const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
+          console.log(response.data);
+      }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
+        }
+      }     
+      this.buscar();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarEstados();
+      this.buscar();
     },
   },
   mounted() {
-    this.buscarEstados();
+    this.buscar();
   },
 };
 </script>
