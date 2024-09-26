@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
@@ -23,14 +24,22 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
 
     public ClienteDTO getPorId(BigInteger id) throws Exception{
         return toDTO(repositorio.findById(id).orElseThrow(
-            ()-> new Exception("ID Invalido.")));
+            ()-> new IdInexistenteException("Cliente", id)));
     }
 
-   public ClienteDTO criarCliente(ClienteDTO origem) throws Exception{
+    // public Page<ClienteDTO> listarClientesPorMunicipioId(BigInteger id, Pageable pageable) {
+    //     return toPageDTO(repositorio.findByClienteId(id, pageable));
+    // }
+
+    // public Page<ClienteDTO> listarClientesPorMunicipioNome(String nome, Pageable pageable) {
+    //     return toPageDTO(repositorio.findByClienteNomeIgnoreCase(nome, pageable));
+    // }
+
+    public ClienteDTO criarCliente(ClienteDTO origem) throws Exception{
         return toDTO(repositorio.save(toEntity(origem)));
-   }
+    }
    
-   public ClienteDTO alterarCliente(BigInteger id, ClienteDTO origem) throws Exception {
+    public ClienteDTO alterarCliente(BigInteger id, ClienteDTO origem) throws Exception {
         try{     
          return toDTO(repositorio.save(toEntity(origem)));
         }catch(Exception e){

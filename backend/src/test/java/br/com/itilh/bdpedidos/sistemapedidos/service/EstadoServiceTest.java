@@ -2,7 +2,6 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,8 +28,8 @@ public class EstadoServiceTest {
     void testCriarEstado() throws Exception {
 
         EstadoDTO testeDTO = new EstadoDTO(null, "estado de teste");
-        EstadoDTO retono = service.criarEstado(testeDTO);
-        assertEquals(true, retono.getId()!=null);
+        EstadoDTO retorno = service.criarEstado(testeDTO);
+        assertEquals(true, retorno.getId()!=null);
     }
 
     @Test

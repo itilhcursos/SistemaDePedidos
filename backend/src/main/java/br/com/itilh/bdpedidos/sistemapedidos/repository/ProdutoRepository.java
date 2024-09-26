@@ -25,4 +25,5 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     @Override
     Page<Produto> findAll(Pageable pageable);
 
+    boolean existsByDescricao(String Descricao);
 }

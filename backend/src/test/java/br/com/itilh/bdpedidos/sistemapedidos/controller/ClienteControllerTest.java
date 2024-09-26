@@ -3,6 +3,7 @@ package br.com.itilh.bdpedidos.sistemapedidos.controller;
 import java.math.BigInteger;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
@@ -91,10 +93,18 @@ public class ClienteControllerTest {
     @Test
     @DisplayName("testando o retorno da busca de cliente pelo Id")
     void testGetClientesPorId() throws Exception{
+        setUpCliente();
         mockMvc.perform(get("/cliente/1")).andExpect(status().isOk())
-        .andExpect(content().string(containsString("totalElements")));
+        .andExpect(content().string(containsString("test")));
 
     }
+    @Test
+    @DisplayName("testando o retorno da busca de cliente pelo Id")
+    void testGetClientesPorIdInexistente() throws Exception{
+        setUpCliente();
+        mockMvc.perform(get("/cliente/99999")).andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof IdInexistenteException));
 
+    }
 
 }
