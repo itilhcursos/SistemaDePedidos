@@ -28,7 +28,7 @@
         <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
           <th>{{ formaPagamento.id }}</th>
           <td>{{ formaPagamento.descricao }}</td>
-          <td>{{ formaPagamento.ativo }}</td>
+          <td>{{ formatarAtivo(formaPagamento.ativo) }}</td>
           <td class="d-flex justify-content-end">
             <button class="btn btn-btn btn-primary m-2" @click="alterarFormaPagamento(formaPagamento)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
             <button class="btn btn-outline-danger m-2" @click="excluirFormaPagamento(formaPagamento.id)"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
@@ -78,6 +78,7 @@
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
+import Logico from "@/utils/Logico.js";
 export default {
   components: {
     FormFormaPagamento,
@@ -141,6 +142,9 @@ export default {
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarFormaPagamento();
+    },
+    formatarAtivo(valor){
+      return Logico.toSimNao(valor);
     },
   },
   mounted() {

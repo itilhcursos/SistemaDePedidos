@@ -27,9 +27,9 @@
           <th scope="col">Número</th>
           <th scope="col">Cliente</th>
           <th scope="col">Forma Pagamento</th>
-          <th scope="col">data Compra</th>
-          <th scope="col">data Entrega</th>
-          <th scope="col">data Pagamento</th>
+          <th scope="col">Data Compra</th>
+          <th scope="col">Data Entrega</th>
+          <th scope="col">Data Pagamento</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>

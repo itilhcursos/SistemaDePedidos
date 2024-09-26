@@ -12,8 +12,8 @@
             <input class="form-control" type="text" v-model="descricao" placeholder="Descrição"/>
         </div>
         <div class="mb-3">
-            <label class="form-label">url Imagem</label>
-            <input class="form-control" type="text" v-model="urlImagem" placeholder="Descrição"/>
+            <label class="form-label">URL Imagem</label>
+            <input class="form-control" type="text" v-model="urlImagem" placeholder="URL da Imagem"/>
         </div>
         <div class="mb-3">
             <label class="form-label">Quantidade em Estoque</label>
@@ -35,7 +35,7 @@
             <div class="p-2">{{ mensagem}}</div>
         </div>
         <div class="mb-3 d-flex justify-content-end">
-            <button class="btn btn-primary m-2" type="submit" @:click.prevent="salvarProduto">
+            <button class="btn btn-primary m-2" type="button" @:click.prevent="salvarProduto">
                 <i class="bi bi-clipboard2-check"></i>{{ getAcao }}
             </button>
             <button class="btn btn-warning m-2" type="submit" @:click.prevent="cancelar"><i class="bi bi-clipboard2-x"></i>Cancelar</button>
@@ -57,6 +57,9 @@ export default {
             id: "",
             descricao: "",
             urlImagem: "",
+            quantidadeEstoque: "",
+            precoUnidadeAtual: "",
+            ativo: "",
             isInvalido: false,
             mensagem: "",
         };
@@ -72,7 +75,7 @@ export default {
         this.isInvalido = false;
         let config = {
             headers: {
-            'Authorization': 'Bearer ' +localStorage.getItem('token')
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         }
         try{

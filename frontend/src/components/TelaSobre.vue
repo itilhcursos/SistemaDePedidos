@@ -9,7 +9,7 @@ import SupportIcon from './icons/IconSupport.vue'
 <template>
   <SobreItem class="n1">
     <template #icon>
-      <DocumentationIcon />
+      <DocumentationIcon/>
     </template>
       <template #heading>Orientações</template>
     <p>
