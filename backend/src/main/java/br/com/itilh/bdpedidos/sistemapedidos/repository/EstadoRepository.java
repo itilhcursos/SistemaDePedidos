@@ -3,8 +3,6 @@ package br.com.itilh.bdpedidos.sistemapedidos.repository;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,9 +25,6 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
 
     @Query("FROM Estado e WHERE e.nome like %?1")
     List<Estado> findByMinhaQuery(String nome);
-    
-    @Override
-    Page<Estado> findAll(Pageable pageable);
 
     boolean existsByNome (String nome);
 }

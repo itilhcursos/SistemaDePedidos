@@ -157,14 +157,25 @@
     data() {
       return {
         id: "",
-        nome: "",
+        nomeRazaoSocial: "",
+        municipioNome: "",
+        cnpj: "",
+        cpf: "",
+        telefone: "",
+        endereco: "",
+        bairro: "",
+        cep: "",
+        email: "",
+        informacao: "",
+        ativo: "",
+
         isInvalido: false,
         mensagem : '',
       };
     },
     methods: {
       async salvarCliente() {
-        if (this.nome === "") {
+        if (this.nomeRazaoSocial === "") {
           this.isInvalido = true;
           this.mensagem = "Nome deve ser preenchido!!";
           return;

@@ -1,18 +1,15 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDate;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,37 +23,29 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+
 @Entity
-@Table(name = "tb_pedidos")
-public class Pedido {
+@Table(name = "tb_itens_pedidos")
+public class ItemPedido {
 
     @Id
-    @SequenceGenerator(name = "sequencial", sequenceName = "tb_clientes_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "sequencial", sequenceName = "tb_itens_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
 
     private BigInteger id;
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
+    @JoinColumn(name = "id_produto")
+    private Produto produto;
 
     @ManyToOne
-    @JoinColumn(name = "id_forma_de_pagamento")
-    private FormaPagamento formaPagamento;
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
 
-    @Column(name = "int_numero")
-    private BigInteger numero;
+    @Column(name = "dbl_quantidade_estoque")
+    private Double quantidadeEstoque;
 
-    @Column(name = "dt_compra")
-    private LocalDate compra;
-
-    @Column(name = "dt_entrega")
-    private LocalDate entrega;
-
-    @Column(name = "dt_pagamento")
-    private LocalDate pagamento;
-
-    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
-    private List<ItemPedido> itens;
+    @Column(name = "nu_preco_unidade_atual")
+    private BigDecimal precoUnidadeAtual;
     
 }
