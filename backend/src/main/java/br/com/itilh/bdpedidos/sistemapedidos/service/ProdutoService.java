@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -31,8 +32,10 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
     private void validar(ProdutoDTO origem ) throws Exception{
         if(repositorio.existsByDescricao(origem.getDescricao()));
             throw new ProdutoDuplicadoException(origem.getDescricao());
-        if(origem.getPrecoUnidadeAtual() == null || origem.getPrecoUnidadeAtual().floatValue() > 0.0)
+            
+        if (origem.getPrecoUnidadeAtual() == null || origem.getPrecoUnidadeAtual().floatValue() < 0.0)
             throw new ProdutoPrecoNegativoException(origem.getDescricao());
+        
     } 
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
