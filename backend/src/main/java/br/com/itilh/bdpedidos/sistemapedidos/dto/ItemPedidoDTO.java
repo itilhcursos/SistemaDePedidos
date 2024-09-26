@@ -16,8 +16,8 @@ public class ItemPedidoDTO {
     private BigDecimal precoUnidadeAtual;
 
     private BigInteger pedidoId;
-    
+
     private BigInteger produtoId;
-    private String produtoNome;
+    private String produtoDescricao;
 
 }

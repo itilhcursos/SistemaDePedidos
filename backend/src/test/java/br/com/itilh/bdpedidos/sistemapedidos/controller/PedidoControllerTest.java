@@ -114,7 +114,7 @@ mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
     @Test
     @WithMockUser(username="admin",roles={"USER","ADMIN"})
     @DisplayName("teste de criar pedido")
-    void testAlterarItemPedido() throws Exception{
+    void testAlterarPedido() throws Exception{
     setupPedido();
     mockMvc.perform(put("/pedido/1")
     .contentType("application/json")

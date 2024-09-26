@@ -157,10 +157,10 @@ assertNull(itemPedidoDTO);
        assertEquals("produto teste", itemPedidoList);
         ItemPedidoDTO itemPedido1 = null ;
         for(ItemPedidoDTO itemPedido : itemPedidoList){
-         if(itemPedido.getProdutoNome().equals("produto teste")){
+         if(itemPedido.getProdutoDescricao().equals("produto teste")){
         itemPedido1 = itemPedido;}}
         assertNull(itemPedido1);
-        assertEquals("produto teste", itemPedido1.getProdutoNome());
+        assertEquals("produto teste", itemPedido1.getProdutoDescricao());
 }
 
     @Test
@@ -177,7 +177,7 @@ assertNull(itemPedidoDTO);
        assertEquals(BigInteger.ONE, itemPedido1.getId());
        assertEquals(BigInteger.ONE, itemPedido1.getPedidoId());
        assertEquals(BigInteger.ONE, itemPedido1.getProdutoId());
-       assertEquals("produto teste", itemPedido1.getProdutoNome());
+       assertEquals("produto teste", itemPedido1.getProdutoDescricao());
        assertEquals(Double.valueOf(1L), itemPedido1.getQuantidadeEstoque());
        assertEquals(BigDecimal.valueOf(5L), itemPedido1.getPrecoUnidadeAtual());
     

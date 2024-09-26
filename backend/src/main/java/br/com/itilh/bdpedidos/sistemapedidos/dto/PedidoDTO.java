@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class PedidoDTO {
 
     private BigInteger id;
@@ -21,5 +23,5 @@ public class PedidoDTO {
     private String clienteNome;
 
     private BigInteger formaPagamentoId;
-    private String formaPagamentoNome;
+    private String formaPagamentoDescricao;
 }
