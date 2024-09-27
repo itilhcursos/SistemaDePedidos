@@ -24,7 +24,7 @@
       </div>
         <div class="mb-3">
           <label class="form-label">Estado</label>
-          <select v-model="estadoSelected">
+          <select v-model="estadoSelected" class="form-select">
               <option v-for="estado in estados" :value="estado.id" :key="estado.id">
                 {{ estado.nome }}
               </option>
@@ -94,7 +94,7 @@ export default {
           const response = await axios.post("http://localhost:8080/municipio", {
             id: this.id,
             nome: this.nome,
-            estadoId : this.estadoSelected.id,
+            estadoId : this.estadoSelected,
           }, config);
           this.listaEstados = response.data;
         } else {
