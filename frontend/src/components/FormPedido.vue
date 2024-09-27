@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h4 class="p-1 mb-1 bg-success text-white"> {{ getAcao }} Cliente</h4>
+        <h4 class="p-1 mb-1 bg-success text-white"> {{ getAcao }} Pedido</h4>
         <hr />
         <form>
             <div class="mb-3" >
@@ -9,86 +9,57 @@
                     type="text"
                     v-model="id"
                     :disabled="true"
-                    placeholder="ID do Cliente"/>
+                    placeholder="ID do Pedido (Automático)"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Nome ou Razão Social</label>
+                <label class="form-label">Número</label>
                 <input class="form-control"
                     type="text"
-                    v-model="nomeRazaoSocial"
-                    placeholder="Nome ou Razão Social"/>
+                    v-model="numero"
+                    placeholder="Número"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">CNPJ</label>
+                <label class="form-label">Data de Compra</label>
                 <input class="form-control"
                     type="text"
-                    v-model="cnpj"
-                    placeholder="CNPJ"/>
+                    v-model="dataCompra"
+                    placeholder="Dia que a compra foi feita."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">CPF</label>
+                <label class="form-label">Data de Pagamento</label>
                 <input class="form-control"
                     type="text"
-                    v-model="cpf"
-                    placeholder="CPF"/>
+                    v-model="dataPagamento"
+                    placeholder="Dia que o pagamento foi efetuado."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Telefone</label>
+                <label class="form-label">Data de Entrega</label>
                 <input class="form-control"
                     type="text"
-                    v-model="telefone"
-                    placeholder="Número de Telefone"/>
+                    v-model="dataEntrega"
+                    placeholder="Dia que a entrega foi concluída."/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Endereço</label>
+                <label class="form-label">Cliente</label>
                 <input class="form-control"
                     type="text"
-                    v-model="endereco"
-                    placeholder="Endereço"/>
+                    v-model="clienteSelecionado"
+                    placeholder="Quem fez o pedido?"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Bairro</label>
+                <label class="form-label">Forma de Pagamento</label>
                 <input class="form-control"
                     type="text"
-                    v-model="bairro"
-                    placeholder="Bairro"/>
+                    v-model="formaPagamentoSelecionada"
+                    placeholder="Qual foi a Forma de Pagamento utilizada?"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">CEP</label>
+                <label class="form-label">Itens do Pedido</label>
                 <input class="form-control"
                     type="text"
-                    v-model="cep"
-                    placeholder="CEP"/>
+                    v-model="itemPedidoSelecionado"
+                    placeholder="Selecione a lista de produtos pedidos pelo cliente."/>
             </div>
-            <div class="mb-3">
-                <label class="form-label">E-mail</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="email"
-                    placeholder="E-mail"/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Informações</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="informacao"
-                    placeholder="Informações"/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Ativo?</label>
-                <select v-model="ativo" class="form-select">
-                    <option value="true">Sim (true)</option>
-                    <option value="false">Não (false)</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Municipio (ID)</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="municipioId"
-                    placeholder="Preencha com o ID do Municipio do Cliente"/>
-            </div>
-
 
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
@@ -103,10 +74,13 @@
 </template>
 
 <script>
+import pedidoService from '@/services/pedidoService';
 import clienteService from '@/services/clienteService';
+import formaPagamentoService from '@/services/formaPagamentoService';
+import itemPedidoService from '@/services/itemPedidoService';
 export default {
     props:{
-        propsCliente: Object,
+        propsPedido: Object,
     },
     data(){
         return {
@@ -114,65 +88,74 @@ export default {
             mensagem: '',
 
             id: "",
-            nomeRazaoSocial: "",
-            cnpj: "",
-            cpf: "",
-            telefone: "",
-            endereco: "",
-            bairro: "",
-            cep: "",
-            email: "",
-            informacao: "",
-            ativo: "",
-            municipioId: ""
+            numero: "",
+            dataCompra: "",
+            dataEntrega: "",
+            dataPagamento: "",
+            clienteId: "",
+            clienteSelecionado: "",
+            clientes: [],
+            formaPagamentoId: "",
+            formaPagamentoSelecionada: "",
+            formasPagamento: [],
+            itemPedidoId: "",
+            itemPedidoSelecionado: "",
+            itensPedidos: []
         }
     },
     mounted(){
-        if (this.propsCliente) {
-        this.id = this.propsCliente.id;
-        this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
-        this.cnpj = this.propsCliente.cnpj;
-        this.cpf = this.propsCliente.nome;
-        this.telefone = this.propsCliente.id;
-        this.endereco = this.propsCliente.nome;
-        this.bairro = this.propsCliente.id;
-        this.cep= this.propsCliente.cep;
-        this.email= this.propsCliente.email;
-        this.informacao= this.propsCliente.informacao;
-        this.ativo=this.propsCliente.ativo;
-        this.municipioId= this.propsCliente.municipioId;
-    }
+        if (this.propsPedido) {
+            this.id = this.propsPedido.id;
+            this.numero = this.propsPedido.numero;
+            this.dataCompra = this.propsPedido.dataCompra;
+            this.dataEntrega = this.propsPedido.dataEntrega;
+            this.dataPagamento = this.propsPedido.dataPagamento;
+            this.clienteSelecionado = this.propsPedido.clienteSelecionado;
+            this.formaPagamentoSelecionada = this.propsPedido.formaPagamentoSelecionada;
+            this.itemPedidoSelecionado = this.propsPedido.itemPedidoSelecionado;
+        }
+        this.buscarClientes();
+        this.buscarFormasPagamento();
+        this.buscarItensPedidos();
     },
     methods:{
+        async buscarClientes(){
+            const response = await clienteService.listar(1, 1000, 'ASC', 'nome');
+            this.clientes = response.content;
+        },
+        async buscarFormasPagamento(){
+            const response = await formaPagamentoService.listar(1, 1000, 'ASC', 'nome');
+            this.formasPagamento = response.content;
+        },
+        async buscarItensPedidos(){
+            const response = await itemPedidoService.listar(1, 1000, 'ASC', 'nome');
+            this.itensPedidos = response.content;
+        },
         getDados(){
             return{
                 id: this.id,
-                nomeRazaoSocial: this.nomeRazaoSocial,
-                cnpj: this.cnpj,
-                cpf: this.cpf,
-                telefone: this.telefone,
-                endereco: this.endereco,
-                bairro: this.bairro,
-                cep: this.cep,
-                email: this.email,
-                informacao: this.informacao,
-                ativo: this.ativo,
-                municipioId: this.municipioId
-             };
+                numero: this.numero,
+                dataCompra: this.dataCompra,
+                dataEntrega: this.dataEntrega,
+                dataPagamento: this.dataPagamento,
+                clienteId: this.clienteSelecionado,
+                formaPagamentoId: this.formaPagamentoSelecionada,
+                itemPedidoId: this.itemPedidoSelecionado
+            };
+        },
+        limparCampos(){
+            this.id = "";
+            this.numero = "";
+            this.dataCompra = "";
+            this.dataEntrega = "";
+            this.dataPagamento = "";
+            this.clienteId = "";
+            this.formaPagamentoId = "";
+            this.itemPedidoId = "";
+            this.municipioId = "";
         },
         cancelar(){
-            this.id = "";
-            this.nomeRazaoSocial = "";
-            this.cnpj = "";
-            this.cpf = "";
-            this.telefone = "";
-            this.endereco = "";
-            this.bairro = "";
-            this.cep = "";
-            this.email= "";
-            this.informacao = "";
-            this.ativo = "";
-            this.municipioId = "";
+            this.limparCampos();
             this.$emit("flip", true)
         },
         async salvar(){
@@ -184,46 +167,23 @@ export default {
             this.isInvalido = false;
             try{
                 if (this.id === ""){
-                    const response = await clienteService.criar(this.getDados());
-                    this.listaClientes = response;
+                    const response = await pedidoService.criar(this.getDados());
+                    this.listaPedidos = response;
                 } else {
-                    const response = await clienteService.atualizar(this.id, this.getDados());
-                    this.listaClientes = response;
+                    const response = await pedidoService.atualizar(this.id, this.getDados());
+                    this.listaPedidos = response;
                 }
                 this.$emit("salvar", {
-                id: this.id,
-                nomeRazaoSocial: this.nomeRazaoSocial,
-                cnpj: this.cnpj,
-                cpf: this.cpf,
-                telefone: this.telefone,
-                endereco: this.endereco,
-                bairro: this.bairro,
-                cep: this.cep,
-                email: this.email,
-                informacao: this.informacao,
-                ativo: this.ativo,
-                municipioId: this.municipioId
                 });
 
-                this.id = "";
-                this.nomeRazaoSocial = "";
-                this.cnpj= "";
-                this.cpf= "";
-                this.telefone= "";
-                this.endereco= "";
-                this.bairro= "";
-                this.cep= "";
-                this.email= "";
-                this.informacao= "";
-                this.ativo="";
-                this.municipioId= "";
+                this.limparCampos();
 
             } catch (error) {
                 this.isInvalido = true;
                 if(error.response.status === 403){        
                     this.mensagem = "Usuário não identificado! Faça o login!!!";
                 }else if(error.response.status === 400 &&
-                    error.response.data.exception === 'ClienteDuplicadoException'){
+                    error.response.data.exception === 'PedidoDuplicadoException'){
                     this.mensagem = error.response.data.mensagem;     
                 }else{
                     this.mensagem = error.message;

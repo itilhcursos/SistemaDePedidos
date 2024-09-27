@@ -97,41 +97,41 @@
                         <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
                             {{ pagina }}
                         </button>
-                        <div class="col-auto">
-                            <input
-                                type="text"
-                                v-model="pageNumber"
-                                placeholder="Número da pagina"
-                                class="form-control w-25"
-                            />
-                        </div>
-                        <div class="col-auto">
-                            <select v-model="pageSize" class="form-select">
-                                <option value="2">2</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <select v-model="property" class="form-select">
-                                <option value="id">ID</option>
-                                <option value="cliente.nomeRazaoSocial">Nome ou Razao Social</option>
-                                <option value="formaPagamento.descricao">Forma de Pagamento</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <select v-model="direction" class="form-select">
-                                <option value="ASC">Crescente</option>
-                                <option value="DESC">Decrescente</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <button @click.prevent="listarPedidos" class="btn btn-success">
-                                <i class="bi bi-binoculars"></i>
-                                Buscar
-                            </button>
-                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <input
+                            type="text"
+                            v-model="pageNumber"
+                            placeholder="Número da pagina"
+                            class="form-control w-25"
+                        />
+                    </div>
+                    <div class="col-auto">
+                        <select v-model="pageSize" class="form-select">
+                            <option value="2">2</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <select v-model="property" class="form-select">
+                            <option value="id">ID</option>
+                            <option value="cliente.nomeRazaoSocial">Nome ou Razao Social</option>
+                            <option value="formaPagamento.descricao">Forma de Pagamento</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <select v-model="direction" class="form-select">
+                            <option value="ASC">Crescente</option>
+                            <option value="DESC">Decrescente</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button @click.prevent="listarPedidos" class="btn btn-success">
+                            <i class="bi bi-binoculars"></i>
+                            Buscar
+                        </button>
                     </div>
                 </div>
             </div>
