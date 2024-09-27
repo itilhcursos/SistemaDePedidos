@@ -4,59 +4,22 @@
     <hr />
     <form>
       <div class="mb-3">
-        <multiselect
-          v-model="selectedValues"
-          id="ajax"
-          label="name"
-          track-by="code"
-          placeholder="Type to search"
-          open-direction="bottom"
-          :options="values"
-          :multiple="true"
-          :searchable="true"
-          :loading="isLoading"
-          :internal-search="false"
-          :clear-on-select="false"
-          :close-on-select="false"
-          :options-limit="300"
-          :limit="3"
-          :limit-text="limitText"
-          :max-height="600"
-          :show-no-results="false"
-          :hide-selected="true"
-          @search-change="find"
-        >
-          <template #tag="{ option, remove }"
-            ><span class="custom__tag"
-              ><span> asasas {{ option.nome }}</span
-              ><span class="custom__remove" @click="remove(option)"
-                >❌</span
-              ></span
-            ></template
-          >
-          <template #clear="props">
-            <div
-              class="multiselect__clear"
-              v-if="selectedValues.length"
-              @mousedown.prevent.stop="clearAll(props.search)"
-            ></div>
+
+        <v-select class="form-control" label="Produto" :filterable="false"
+          v-model="produtoSelecionado" :options="optProdutos" @search="onSearchProdutos">
+          <template v-slot:no-options>
+            Sem produtos para exibir.
           </template>
-          <template #noResult>
-            <span
-              >Oops! No elements found. Consider changing the search
-              query.</span
-            >
+          <template v-slot:option="option" >
+              <img :src='option.urlImagem'/> 
+              {{ option.descricao }}
           </template>
-        </multiselect>
-        <pre class="language-json"><code>{{ selectedValues}}</code></pre>
-        <label class="form-label">Id</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="id"
-          :disabled="true"
-          placeholder="Id estado"
-        />
+          <template v-slot:selected-option="option" >
+              <img :src='option.urlImagem'/> 
+              {{ option.descricao }}
+          </template>
+        </v-select>
+
       </div>
       <div class="mb-3">
         <label class="form-label">Nome</label>
@@ -98,12 +61,9 @@
 </template>
 
 <script>
-import Multiselect from "vue-multiselect";
 import estadoService from "@/services/estadoService";
+import produtoService from "@/services/produtoService";
 export default {
-  components: {
-    Multiselect,
-  },
   props: {
     propsPedido: Object,
   },
@@ -113,26 +73,23 @@ export default {
       nome: "",
       isInvalido: false,
       mensagem: "",
-      selectedValues: [],
-      values: [],
       isLoading: false,
+      produtoSelecionado: '',
+      optProdutos: [],
     };
   },
   methods: {
-    limitText(count) {
-      return `and ${count} other countries`;
-    },
-    async find(query) {
-      this.isLoading = true;
-      await estadoService.listar(query).then((response) => {
-        console.log(response);
-        this.values = response.content;
-        this.isLoading = false;
+    async onSearchProdutos(search, loading) {
+      if(search.length) {
+        loading(true);
+        await produtoService.buscar(search).then((response) => {
+        //console.log(response);
+        this.optProdutos = response.content;
+        loading(false);
       });
+      }
     },
-    clearAll() {
-      this.selectedValues = [];
-    },
+
     getDados() {
       return {
         id: this.id,
