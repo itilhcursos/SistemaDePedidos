@@ -159,12 +159,35 @@ export default {
       this.estadoEscolhido = estado;
       this.formVisible = true;
     },
+    
     async excluirEstado(id) {
-         
-      const response = await estadoService.apagar(id);
-      console.log(response.data);
+      // primeiro tipo de validação
+      //
+      // if(localStorage.getItem('token') === null) {
+      //   alert("Usuário não identificado! faça o login!!!");
+      //   return
+      // } o if testa antes - ele manda uma mensagem e evitando que o sujeito faça a tentativa de mandar uma mensagem sem ele estar logado
+      //O try testa depois - primeiro ele execulta e depois quando ele ve que vai dar errado ele faz o tratamento
+      
+
+      //segundo tipo de validação.
+      
+      try {
+        const response = await estadoService.apagar(id);
+        console.log(response.data);
+      
+      }catch(error){
+          if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
+            alert( "Usuário não identificado! Faça o login!!!");
+          }else if(error.response.status === 400){ 
+            alert(error.response.data.mensagem);
+          }else{
+            alert( error.message);
+          }
+      }
       this.buscarEstados();
     },
+
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarEstados();

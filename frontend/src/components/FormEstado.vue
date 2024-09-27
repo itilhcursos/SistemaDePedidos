@@ -74,7 +74,7 @@
           this.isInvalido = true;
           this.mensagem = "O Nome deve ser preenchido!!";
           return;
-        }
+        } 
         this.isInvalido = false;
 
         try{
@@ -101,13 +101,15 @@
         
         }catch(error){
         
-          console.log (error);
-          console.log (error.response.status);
+          // console.log (error);
+          // console.log (error.response.status);
+          // console.log (error.response.data.exception);
           this.isInvalido = true;
-          if(error.response.status === 403){        
+          if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
             this.mensagem = "Usuário não identificado! Faça o login!!!";
-          }else if(error.response.status === 500){ 
-            this.mensagem = error.response.data.message;
+          }else if(error.response.status === 400 &&
+                   error.response.data.exception === 'EstadoDuplicadoException'){ 
+            this.mensagem = error.response.data.mensagem;
           }else{
             this.mensagem = error.message;
           }

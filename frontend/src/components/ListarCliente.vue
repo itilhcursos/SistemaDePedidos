@@ -27,7 +27,7 @@
                     <th scope="col">Nome</th>
                     <th scope="col">CNPJ</th>
                     <th scope="col">CPF</th>
-                    <th scope="col">Telefone</th>
+                    <!-- <th scope="col">Telefone</th> -->
                     <th scope="col">Endereço</th>
                     <!-- <th scope="col">Cep</th> -->
                     <th scope="col">Email</th>
@@ -49,9 +49,9 @@
                     <td>
                         {{ cliente.cpf}}
                     </td>
-                    <td>
+                    <!-- <td>
                         {{ cliente.telefone}}
-                    </td>
+                    </td> -->
                     <td>
                         {{ cliente.endereco}}
                     </td>
