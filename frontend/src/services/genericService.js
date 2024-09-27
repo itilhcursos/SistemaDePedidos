@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const mode= import.meta.env.MODE;
+// const mode= import.meta.env.MODE;
 const url= import.meta.env.VITE_APP_URL_API;
 
 const getConfig = (
