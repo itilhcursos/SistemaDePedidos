@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class ClienteDuplicadoException extends RuntimeException{
 
     public ClienteDuplicadoException(String nomeCliente){
-        super("O estado :" + nomeCliente + " já existe");
+        super("O cliente:" + nomeCliente + " já existe");
     }
 }
