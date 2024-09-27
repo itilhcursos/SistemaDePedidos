@@ -71,25 +71,39 @@ export default {
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
+        this.mensagem = "Nome Deve ser Preenchido";
         return;
       }
       this.isInvalido = false;
 
-      if (this.id === "") {
-        const response = await estadoService.criar(this.getDados);
-        this.listaEstados = response;
-      } else {
-        const response = await estadoService.atualizar(this.getDados);
-        this.listaEstados = response;
+      try{
+          if (this.id === "") {
+            const response = await estadoService.criar(this.getDados());
+            this.listaEstados = response;
+          } else {
+            const response = await estadoService.atualizar(
+              this.id,
+              this.getDados());
+            this.listaEstados = response;
+          }
+          this.$emit("salvar_estado", {
+          id: this.id,
+          nome: this.nome,
+        });
+
+        this.id = "";
+        this.nome = "";
+      }catch(error){
+        this.isInvalido = true;
+        if(error.response.status === 403){        
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        }else if(error.response.status === 400 &&
+                error.response.data.exception === 'EstadoDuplicadoException'){
+        this.mensagem = error.response.data.mensagem;     
+      }else{
+        this.mensagem = error.message;
       }
-
-      this.$emit("salvar_estado", {
-        id: this.id,
-        nome: this.nome,
-      });
-
-      this.id = "";
-      this.nome = "";
+    }
     },
     cancelar() {
       this.id = "";
