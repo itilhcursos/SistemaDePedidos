@@ -15,7 +15,7 @@
             v-if="formVisible"
             :propsFormaPagamento="formaPagamentoEscolhida"
             @cancelar="limpar"
-            @salvar_formaPagamento="buscarFormaPagamento"
+            @salvar_formaPagamento="buscarFormasPagamento"
           />
         </div>
       </div>
@@ -106,7 +106,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
+          <button @click.prevent="buscarFormasPagamento" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -119,7 +119,7 @@
 
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
-import axios from "axios";
+import formaPagamentoService from"@/services/formaPagamentoService";
 export default {
   components: {
     FormFormaPagamento,
@@ -137,18 +137,13 @@ export default {
     };
   },
   methods: {
-    async buscarFormaPagamento() {
+    async buscarFormasPagamento() {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;
-
-      
-      const response = await axios.get(
-        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaFormasPagamento = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      const response = await formaPagamentoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      this.listaFormasPagamento = response.content;
+      this.totalPages = response.totalPages; 
+     
     },
     limpar() {
       this.formaPagamentoEscolhida = null;
@@ -162,22 +157,27 @@ export default {
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+      try{
+          const response = await formaPagamentoService.apagar(id);
+          console.log(response);
+      }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
         }
-      }
-      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`,config);
-      console.log(response.data);
-      this.buscarFormaPagamento();
+      }     
+      this.buscarFormasPagamento();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarFormaPagamento();
+      this.buscarFormasPagamento();
     },
   },
   mounted() {
-    this.buscarFormaPagamento();
+    this.buscarFormasPagamento();
   },
 };
 </script>
