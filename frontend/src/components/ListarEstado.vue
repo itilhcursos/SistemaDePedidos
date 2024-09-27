@@ -168,7 +168,7 @@ export default {
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");
         }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
+          alert(error.response.mensagem);     
         }else{
           alert(error.message);
         }
