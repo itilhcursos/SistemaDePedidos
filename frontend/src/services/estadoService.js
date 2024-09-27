@@ -8,8 +8,8 @@ const criar = async (objeto) => {
     return data;
 }
 
-const atualizar = async (id, objeto) => {
-    const {data} = await genericService.alterar(path, objeto, id);
+const atualizar = async(id, objeto) =>{
+    const {data} = await genericService.alterar(path, id, objeto);
     return data;
 }
 
