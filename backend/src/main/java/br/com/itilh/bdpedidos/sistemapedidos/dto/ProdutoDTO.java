@@ -17,5 +17,6 @@ public class ProdutoDTO {
     private Double quantidadeEstoque;
     private BigDecimal precoUnidadeAtual;
     private Boolean ativo;
+    private String urlImagem;
 
 }

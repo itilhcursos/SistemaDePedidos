@@ -42,4 +42,8 @@ public class Produto {
     @Column(name = "bo_ativo")
     private Boolean ativo;
 
+    @Column(name = "tx_url_imagem")
+    private String urlImagem;
+
+
 }
