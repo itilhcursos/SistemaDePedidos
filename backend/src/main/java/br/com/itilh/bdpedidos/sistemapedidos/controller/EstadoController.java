@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.EstadoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 public class EstadoController {
 
     @Autowired
