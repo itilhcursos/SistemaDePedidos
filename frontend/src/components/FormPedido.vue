@@ -11,11 +11,11 @@
             Sem produtos para exibir.
           </template>
           <template v-slot:option="option" >
-              <img :src='option.urlImagem'/> 
+              <img class="mini" :src='option.urlImagem'/> 
               {{ option.descricao }}
           </template>
           <template v-slot:selected-option="option" >
-              <img :src='option.urlImagem'/> 
+              <img class="mini" :src='option.urlImagem'/> 
               {{ option.descricao }}
           </template>
         </v-select>
@@ -155,3 +155,11 @@ export default {
   },
 };
 </script>
+
+<style >
+  .mini{
+    height: auto;
+    max-width: 2.5rem;
+    margin-right: 1rem;
+  }
+</style>
