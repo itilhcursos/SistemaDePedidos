@@ -12,11 +12,19 @@ import lombok.NoArgsConstructor;
 public class ClienteDTO {
 
     private BigInteger id;
-    private String nome;
+    private String nomeRazaoSocial;
+    private String cnpj;
+    private String telefone;
+    private String endereco;
+    private String bairro;
+    private String cep;
+    private String email;
     private Boolean ativo;
+    private String informacoes;
+    private String cpf;
 
     private BigInteger municipioId;
-    private String estadoNome;
+    private String municipioNome;
 
 
 }
