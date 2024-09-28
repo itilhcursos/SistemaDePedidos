@@ -23,14 +23,14 @@
         />
       </div>
 
-      <!-- <div class="mb-3">
+      <div class="mb-3">
           <label class="form-label">Estado</label>
-          <select v-model="estadoSelected">
+          <select v-model="estadoSelected" class="form-select">
               <option v-for="estado in estados" :value="estado.id" :key="estado.id">
                 {{ estado.nome }}
               </option>
           </select>
-        </div> -->
+        </div>
 
 
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -61,7 +61,7 @@
 
 <script>
 import axios from "axios";
-//import estadoService from "@/services/estadoService";
+
 export default {
   props: {
     propsMunicipio: Object,
@@ -70,7 +70,7 @@ export default {
     return {
       id: "",
       nome: "",
-      estadoSelect:"",
+      estadoSelected:"",
       estados:[],
       isInvalido: false,
       mensagem : '',
@@ -96,6 +96,8 @@ export default {
           const response = await axios.post("http://localhost:8080/municipio", {
             id: this.id,
             nome: this.nome,
+            estadoId : this.estadoSelected,
+
           }, config);
           this.listaMunicipios = response.data;
         } else {
@@ -105,6 +107,7 @@ export default {
             {
               id: this.id,
               nome: this.nome,
+              estadoId : this.estadoSelected,
             }
           ,config );
           this.listaMunicipios = response.data;
@@ -112,10 +115,12 @@ export default {
         this.$emit("salvar_municipio", {
         id: this.id,
         nome: this.nome,
+        
       });
 
       this.id = "";
       this.nome = "";
+      
     }catch(error){
       //mesagens de erro
        //exibe o objeto do error completo
@@ -141,9 +146,11 @@ export default {
       this.$emit("cancelar", true);
     },
 
-    async buscarMunicipios(){
-      const response = await estadoService.listar(1,1000, 'ASC', 'id');
-      this.municipios = response.content;
+    async buscarEstados(){
+      const response = await axios.get(
+        `http://localhost:8080/estados?pageNumber=1&pageSize=100&direction=ASC&property=id`
+      );
+      this.estados = response.data.content;
     }
 
   },
@@ -151,8 +158,10 @@ export default {
     if (this.propsMunicipio) {
       this.id = this.propsMunicipio.id;
       this.nome = this.propsMunicipio.nome;
-      this.estadoSelected = this.propsMunicipio.estadoNome;
+      this.estadoSelected = this.propsMunicipio.estadoId;
     }
+
+    this.buscarEstados();
   },
   computed: {
     getAcao() {

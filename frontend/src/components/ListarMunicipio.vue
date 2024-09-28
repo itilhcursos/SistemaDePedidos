@@ -101,6 +101,8 @@
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
             <option value="nome">Nome</option>
+            <th scope="col">Entrega</th>
+          <th scope="col">Estado</th>
           </select>
         </div>
         <div class="col-auto">
