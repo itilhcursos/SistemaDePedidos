@@ -25,6 +25,10 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
         return toPageDTO(repositorio.findAll(pageable));
     }
 
+    public Page<ProdutoDTO> buscar(Pageable pageable, String txtBusca ) {
+        return toPageDTO(repositorio.findAll(pageable));
+    }
+
     public ProdutoDTO buscarProdutoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id)
                 .orElseThrow(() -> new IdInexistenteException("Produto", id)));
