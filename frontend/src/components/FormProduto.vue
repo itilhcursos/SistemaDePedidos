@@ -1,62 +1,63 @@
 <template>
-    <div class="container">
-        <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produto</h4>
-        <hr />
-        <form>
-            <div class="mb-3">
-                <label class="form-label">Id</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="id"
-                :disabled="true"
-                placeholder="Id produto"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Descrição</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="descricao"
-                placeholder="Descrição"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Imagem</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="urlImagem"
-                placeholder="Link da Imagem"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Quantidade em Estoque</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="quantidadeEstoque"
-                placeholder="Quantidade em Estoque"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Preço Unitário</label>
-                <input
-                class="form-control"
-                type="text"
-                v-model="precoUnidadeAtual"
-                placeholder="Preço Unitário"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Ativo</label>
-                <select v-model="ativo" class="form-select">
+  <div class="container">
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produto</h4>
+    <hr />
+    <form>
+      <div class="mb-3">
+        <label class="form-label">Id</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="id"
+          :disabled="true"
+          placeholder="Id produto"
+        />
+      </div>
+        <div class="mb-3">
+          <label class="form-label">Descrição</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="descricao"
+            placeholder="Descrição"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Imagem</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="urlImagem"
+            placeholder="Link da Imagem"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Quantidade em Estoque</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="quantidadeEstoque"
+            placeholder="Quantidade em Estoque"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Preço Unitário</label>
+            <input
+              class="form-control"
+              type="text"
+              v-model="precoUnidadeAtual"
+              placeholder="Preço Unitário"
+            />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ativo</label>
+          <select v-model="ativo" class="form-select">
             <option :value="true">Sim</option>
             <option :value="false">Não</option>
           </select>
-            </div>
-            <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
+        </div>
+
+        <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
                 <div class="p-2">{{ mensagem}}</div>
             </div>
@@ -85,7 +86,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import produtoService from "@/services/produtoService";
 export default {
 
 
@@ -113,32 +114,18 @@ export default {
                 return;
             }
             this.isInvalido = false;
-            let config = {
-                headers: {
-                'Authorization': 'Bearer ' +localStorage.getItem('token')
-                }
-            }
-            if (this.id === "") {
-                const response = await axios.post("http://localhost:8080/produto", {
-                    id: this.id, 
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
-                }, config);
-                this.listaProdutos = response.data;
-            } else {
-                const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
-                {
-                    id: this.id,
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
-                }, config);
+            
+            try {
+                if (this.id === "") {
+                    const response = await produtoService.criar(this.getDados());
+                    this.listaProdutos = response.data;
+                } else {
+                    const response = await produtoService.atualizar(
+                    this.id,
+                    this.getDados()
+                );
                 this.listaEstados = response.data;
             }
-
             this.$emit("salvar_produto", {
                 id: this.id,
                 descricao: this.descricao, 
@@ -151,9 +138,23 @@ export default {
             this.quantidadeEstoque = "";
             this.precoUnidadeAtual = ""; 
             this.ativo = "";
-        },
+        } catch (error) {this.isInvalido = true;
+            
+            if (error.response.status === 403) {
+                this.mensagem = "Usuário não identificado! Faça o login!!!";
+            } else if (
+                error.response.status === 400 &&
+                error.response.data.exception === "PedidoDuplicadoException"
+            ) {
+                this.mensagem = error.response.data.mensagem;
+            } else {
+                this.mensagem = error.message;
+            }
+        }
+        
+    },
 
-        cancelar(){
+        cancelar() {
             this.id = "";
             this.descricao = "";
             this.urlImagem = "";

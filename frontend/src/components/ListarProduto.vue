@@ -126,83 +126,82 @@
         </div>
       </div>
     </div>
-  </template>
+</template>
   
-  
-  <script>
-  import FormProduto from "./FormProduto.vue";
-  import Logico from "@/utils/Logico.js";
-  import Monetario from "@/utils/Monetario.js";
-  import Decimal from "@/utils/Decimal.js";
-  import axios from "axios";
-  export default {
-    components: {
-      FormProduto,
+<script>
+import FormProduto from "./FormProduto.vue";
+import Logico from "@/utils/Logico.js";
+import Monetario from "@/utils/Monetario.js";
+import Decimal from "@/utils/Decimal.js";
+import produtoService from "@/services/produtoService";
+export default {
+  components: {
+    FormProduto,
+  },
+  data() {
+    return {
+      listaProdutos: [],
+      produtoEscolhido: null,
+      formVisible: false,
+      pageNumber: 1,
+      pageSize: 10,
+      direction: "ASC",
+      property: "id",
+      totalPages: 0,
+    };
+  },
+  methods: {
+    async buscarProdutos() {
+      this.produtoEscolhido = null;
+      this.formVisible = false;
+      const response = await produtoService.listar(this.pageNumber,
+      this.pageSize, this.pageSize, this.direction, this.direction, 
+      this.property, this.property);
+      this.listaProdutos = response.content;
+      this.totalPages = response.totalPages;
     },
-    data() {
-      return {
-        listaProdutos: [],
-        produtoEscolhido: null,
-        formVisible: false,
-        pageNumber: 1,
-        pageSize: 10,
-        direction: "ASC",
-        property: "id",
-        totalPages: 0,
-      };
+    limpar() {
+      this.produtoEscolhido = null;
+      this.formVisible = !this.formVisible;
     },
-    methods: {
-      async buscarProdutos() {
-        this.produtoEscolhido = null;
-        this.formVisible = false;
-  
-      
-        const response = await axios.get(
-          `http://localhost:8080/produtos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-        );
-        console.log(response.data);
-        this.listaProdutos = response.data.content;
-        this.totalPages = response.data.totalPages;
-        console.log(this.totalPages);
-      },
-      limpar() {
-        this.produtoEscolhido = null;
-        this.formVisible = !this.formVisible;
-      },
-      novoProduto() {
-        this.formVisible = !this.formVisible;
-      },
-      alterarProduto(produto) {
-        this.produtoEscolhido = produto;
-        this.formVisible = true;
-      },
-      async excluirProduto(id) {
-        let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-          }
+    novoProduto() {
+      this.formVisible = !this.formVisible;
+    },
+    alterarProduto(produto) {
+      this.produtoEscolhido = produto;
+      this.formVisible = true;
+    },
+    async excluirProduto(id) {
+      try{
+        const response = await produtoService.apagar(id);
+        console.log(response);
+      } catch (error) {
+        if(error.response.status === 403){        
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response.status === 400 ) {
+          alert(error.response.data.mensagem);     
+        } else {
+          alert(error.message);
         }
-        const response = await axios.delete(`http://localhost:8080/produto/${id}`,config);
-        console.log(response.data);
-        this.buscarProdutos();
-      },
-      irPara(pagina) {
-        this.pageNumber = pagina;
-        this.buscarProdutos();
-      },
-      formatarLogico(valor){
-        return Logico.toSimNao(valor);
-      },
-      formatarPreco(valor){
-        return Monetario.toTela(valor);
-      },
-      formatarQuantidade(valor){
-        return Decimal.toTela(valor);
-      }
+      }     
+      this.buscar();
     },
-    mounted() {
-      this.buscarProdutos();
+    irPara(pagina) {
+      this.pageNumber = pagina;
+      this.buscar();
     },
-  };
-  </script>
-  
+    formatarLogico(valor) {
+      return Logico.toSimNao(valor);
+    },
+    formatarPreco(valor){
+      return Monetario.toTela(valor);
+    },
+    formatarQuantidade(valor){
+      return Decimal.toTela(valor);
+    },
+  },
+  mounted() {
+    this.buscarProdutos();
+  },
+};
+</script>

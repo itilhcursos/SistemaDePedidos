@@ -4,7 +4,7 @@
         <div class="col-10">
           <h3>Pedidos</h3>
         </div>
-        <!-- <div class="col-2 d-flex justify-content-end">
+        <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoPedido" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
@@ -18,7 +18,7 @@
             @salvar_pedido="buscarPedidos"
           />
         </div>
-      </div> -->
+      </div>
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
@@ -110,7 +110,7 @@
           <div class="col-auto">
             <select v-model="property" class="form-select">
                 <option value="id">ID</option>
-                <!-- <option value="nome">Nome</option> -->
+                <option value="nome">Nome</option>
             </select>
           </div>
           <div class="col-auto">
@@ -132,12 +132,10 @@
 
 <script>
 import pedidoService from '@/services/pedidoService';
-
-// import FormPedido from "./FormPedido.vue";
-// import pedidoService from "@/services/pedidoService";
+import FormPedido from "./FormPedido.vue";
 export default {
   components: {
-   // FormPedido
+   FormPedido
   },
   data() {
     return {

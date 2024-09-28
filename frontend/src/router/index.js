@@ -16,12 +16,12 @@ const router = createRouter({
     },
     {
       path: '/estados',
-      name: 'estados',
+      name: 'estado',
       component:()=>import('../views/EstadosView.vue')
     },
     {
       path: '/produtos',
-      name: 'produtos',
+      name: 'produto',
       component:()=>import('../views/ProdutoView.vue')
     },
     {

@@ -4,7 +4,7 @@ import ListarProduto from '../components/ListarProduto.vue'
 
 <template>
     <main>
-        <ListarProduto/>
+      <ListarProduto/>
     </main>
 </template>
 
