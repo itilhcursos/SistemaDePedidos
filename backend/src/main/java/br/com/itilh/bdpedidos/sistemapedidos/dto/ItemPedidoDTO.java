@@ -24,6 +24,4 @@ public class ItemPedidoDTO {
     private String produtoUrlImagem;
     private Double quantidadeEstoque;
     private BigDecimal precoUnidadeAtual;
-    
-
 }
