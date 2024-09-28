@@ -16,7 +16,8 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/Clientes">Clientes</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
       <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
-      <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}</RouterLink>
+      <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}
+      </RouterLink>
      
     </nav>
     <img src="./assets/carrinho.png" alt=""/>
@@ -28,8 +29,8 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <script>
-  export default{
-    data(){
+export default {
+    data() {
       return{
         isLogado : false,
         login : ''
