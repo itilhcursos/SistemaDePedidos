@@ -32,6 +32,14 @@
           </select>
         </div>
 
+        <div class="mb-3">
+                <label class="form-label">ENTREGA</label>
+                <select v-model="entrega" class="form-select">
+            <option :value="true">Sim</option>
+            <option :value="false">Não</option>
+          </select>
+            </div>
+
 
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -70,6 +78,7 @@ export default {
     return {
       id: "",
       nome: "",
+      entrega: "",
       estadoSelected:"",
       estados:[],
       isInvalido: false,
@@ -96,6 +105,7 @@ export default {
           const response = await axios.post("http://localhost:8080/municipio", {
             id: this.id,
             nome: this.nome,
+            entrega: this.entrega,
             estadoId : this.estadoSelected,
 
           }, config);
@@ -107,6 +117,7 @@ export default {
             {
               id: this.id,
               nome: this.nome,
+              entrega: this.entrega,
               estadoId : this.estadoSelected,
             }
           ,config );
@@ -115,11 +126,13 @@ export default {
         this.$emit("salvar_municipio", {
         id: this.id,
         nome: this.nome,
+        entrega: this.entrega,
         
       });
 
       this.id = "";
       this.nome = "";
+      this.entrega = "";
       
     }catch(error){
       //mesagens de erro
@@ -143,6 +156,7 @@ export default {
     cancelar() {
       this.id = "";
       this.nome = "";
+      this.entrega = "";
       this.$emit("cancelar", true);
     },
 
@@ -158,6 +172,7 @@ export default {
     if (this.propsMunicipio) {
       this.id = this.propsMunicipio.id;
       this.nome = this.propsMunicipio.nome;
+      this.entrega = this.propsMunicipio.entrega;
       this.estadoSelected = this.propsMunicipio.estadoId;
     }
 

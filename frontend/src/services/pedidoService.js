@@ -1,7 +1,7 @@
 import genericService from "./genericService";
 
-const path ='/cliente';
-const pathGet ='/cliente';
+const path ='/pedido';
+const pathGet ='/pedidos';
 
 const criar = async(objeto) =>{
 
