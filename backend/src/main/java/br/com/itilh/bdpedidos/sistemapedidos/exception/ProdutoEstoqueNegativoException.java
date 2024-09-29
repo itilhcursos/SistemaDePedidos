@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ProdutoEstoqueNegativoException extends RuntimeException {
     public ProdutoEstoqueNegativoException(String Descricao){
-        super("O Estoque do " + Descricao + "está Negativo");
+        super("O Produto: " + Descricao + " não pode ter o Estoque Negativo");
     }
 }

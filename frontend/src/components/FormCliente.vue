@@ -40,6 +40,46 @@
           placeholder="Nome"
         />
       </div>
+
+      <div class="mb-3">
+        <label class="form-label">Telefone</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="telefone"
+          placeholder="Telefone"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Endereco</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="endereco"
+          placeholder="Endereco"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">CPF</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="cpf"
+          placeholder="Nome"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">CPF</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="cpf"
+          placeholder="Nome"
+        />
+      </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>

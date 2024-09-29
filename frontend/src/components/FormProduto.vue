@@ -122,7 +122,12 @@ export default {
                 this.isInvalido = true;
                 this.mensagem = "Descrição do Produto não pode ser vazia"
                 return;
+            } if(this.urlImagem === ""){
+                this.isInvalido = true;
+                this.mensagem = "O Imagem do Produto esta vazia! "
+                return;
             }
+            
             this.isInvalido = false;
             try{
                 if (this.id === "") {
@@ -194,3 +199,4 @@ export default {
     }
 }
 </script>
+ 

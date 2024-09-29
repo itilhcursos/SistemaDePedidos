@@ -27,11 +27,11 @@
                     <th scope="col">Nome</th>
                     <th scope="col">CNPJ</th>
                     <th scope="col">CPF</th>
-                    <!-- <th scope="col">Telefone</th> -->
+                    <th scope="col">Telefone</th> 
                     <th scope="col">Endereço</th>
-                    <!-- <th scope="col">Cep</th> -->
-                    <th scope="col">Email</th>
-                    <th scope="col">Ativo</th>
+                    <th scope="col">Bairro</th> 
+                    <!-- <th scope="col">Email</th> -->
+                    <!-- <th scope="col">Ativo</th> -->
                     <th scope="col" class="d-flex justify-content-end">Ações</th>
                 </tr>
             </thead>
@@ -49,23 +49,22 @@
                     <td>
                         {{ cliente.cpf}}
                     </td>
-                    <!-- <td>
+                    <td>
                         {{ cliente.telefone}}
-                    </td> -->
+                    </td> 
                     <td>
                         {{ cliente.endereco}}
                     </td>
     
+                     <td>
+                        {{ cliente.bairro}}
+                    </td> 
                     <!-- <td>
-                        {{ cliente.cep}}
+                        {{ cliente.email}} 
                     </td> -->
-                    <td>
-                        {{ cliente.email}}
-                    </td>
-                    <td>
+                    <!-- <td>
                         {{ cliente.ativo}}
-                    </td>
-
+                    </td> -->
 
                     <td class="d-flex justify-content-end">
                         <button
