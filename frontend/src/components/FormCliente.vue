@@ -72,7 +72,7 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Cep</label>
+        <label class="form-label">cep</label>
         <input
           class="form-control"
           type="text"
@@ -112,17 +112,6 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Municipio</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="municipioNome"
-          placeholder="MUNICIPIO"
-        />
-      </div>
-      
-
-      <div class="mb-3">
         <label class="form-label">Estado</label>
         <input
           class="form-control"
@@ -132,10 +121,10 @@
         />
       </div>
       <div class="mb-3">
-            <label class="form-label">Cliente</label>
-            <select v-model="estadoSelected" class="">
-                <option v-for="estado in estados" :value="estado.id" :key="estado.id">
-                    {{ estado.nome }}
+            <label class="form-label">Municipio</label>
+            <select v-model="municipioSelected" class="form-control">
+                <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
+                    {{ municipio.nome }}
                 </option>
             </select>
         </div>
@@ -167,6 +156,7 @@
 
 <script>
   import clienteService from '@/services/clienteService';
+import municipioService from '@/services/municipioService';
   export default {
     props: {
       propsCliente: Object,
@@ -184,6 +174,8 @@
         informacao: "",
         municipioNome:"",
         municipioEstadoNome:"",
+        municipioSelected: "",
+        municipios:[],
         isInvalido: false,
         mensagem: '',
       };
@@ -201,7 +193,7 @@
           email: this.email,
           ativo: this.ativo,
           informacao: this.informacao,
-          municipioNome: this.municipioNome,
+          municipioId: this.municipioSelected,
           municipioEstadoNome: this.municipioEstadoNome,
         }
       },
@@ -235,10 +227,11 @@
             telefone: this.telefone,
             endereco: this.endereco,
             bairro: this.bairro,
+            cep: this.cep,
             email: this.email,
             ativo: this.ativo,
             informacao: this.informacao,
-            municipioNome: this.municipioNome,
+            municipioId: this.municipioSelected,
             municipioEstadoNome: this.municipioEstadoNome,
           });
 
@@ -248,10 +241,12 @@
           this.cpf ="";
           this.telefone="";
           this.bairro = "";
+          this.endereco ="";
+          this.cep = "";
           this.email = "";
           this.ativo = "";
           this.informacao = "";
-          this.municipioNome = "";
+          this.municipioSelected = "";
           this.municipioEstadoNome = "";
         
         }catch(error){
@@ -276,12 +271,19 @@
         this.cpf ="";
         this.telefone="";
         this.bairro = "";
+        this.endereco ="";
+        this.cep = "";
         this.email = "";
         this.ativo = "";
         this.informacao = "";
-        this.municipioNome = "";
+        this.municipioSelected = "";
         this.municipioEstadoNome = "";
         this.$emit("cancelar", true);
+      },
+
+      async buscarMunicipios(){
+        const response = await municipioService.listar(1,1000, 'ASC', 'id');
+        this.municipios = response.content;
       }
     },   
     mounted() {
@@ -292,13 +294,15 @@
         this.cpf = this.propsCliente.cpf;
         this.telefone = this.propsCliente.telefone;
         this.bairro = this.propsCliente.bairro;
+        this.endereco = this.propsCliente.endereco;
+        this.cep =  this.propsCliente.cep;
         this.email = this.propsCliente.email;
         this.ativo = this.propsCliente.ativo;
         this.informacao = this.propsCliente.informacao;
-        this.municipioNome = this.propsCliente.municipioNome;
+        this.municipioSelected = this.propsCliente.municipioId;
         this.municipioEstadoNome = this.propsCliente.municipioEstadoNome;
       }
-      this.buscarCliente();
+      
     },
     computed: {
       getAcao() {
