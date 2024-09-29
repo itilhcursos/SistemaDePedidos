@@ -96,6 +96,7 @@ export default {
         this.$emit("salvar_formaPagamento", {
         id: this.id,
         descricao: this.descricao,
+        ativo: this.ativo,
       });
 
       this.id = "";
@@ -106,7 +107,7 @@ export default {
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
       }else if(error.response.status === 400 &&
-               error.response.data.exception === 'EstadoDuplicadoException'){
+               error.response.data.exception === 'FormaPagamentoDuplicadoException'){
         this.mensagem = error.response.data.mensagem;     
       }else{
         this.mensagem = error.message;
