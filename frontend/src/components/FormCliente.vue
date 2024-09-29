@@ -19,7 +19,7 @@
           class="form-control"
           type="text"
           v-model="nomeRazaoSocial"
-          placeholder="Nome"
+          placeholder="NOME"
         />
       </div>
       <div class="mb-3">
@@ -28,7 +28,7 @@
           class="form-control"
           type="text"
           v-model="cnpj"
-          placeholder="Nome"
+          placeholder="CNPJ"
         />
       </div>
       <div class="mb-3">
@@ -37,7 +37,7 @@
           class="form-control"
           type="text"
           v-model="cpf"
-          placeholder="Nome"
+          placeholder="CPF"
         />
       </div>
 
@@ -47,7 +47,7 @@
           class="form-control"
           type="text"
           v-model="telefone"
-          placeholder="Telefone"
+          placeholder="TELEFONE"
         />
       </div>
 
@@ -57,29 +57,88 @@
           class="form-control"
           type="text"
           v-model="endereco"
-          placeholder="Endereco"
+          placeholder="ENDEREÇO"
         />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">CPF</label>
+        <label class="form-label">Bairro</label>
         <input
           class="form-control"
           type="text"
-          v-model="cpf"
-          placeholder="Nome"
+          v-model="bairro"
+          placeholder="Bairro"
         />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">CPF</label>
+        <label class="form-label">Cep</label>
         <input
           class="form-control"
           type="text"
-          v-model="cpf"
-          placeholder="Nome"
+          v-model="cep"
+          placeholder="CEP"
         />
       </div>
+
+      <div class="mb-3">
+        <label class="form-label">email</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="email"
+          placeholder="EMAIL"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Ativo</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="ativo"
+          placeholder="Ativo"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Informacao</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="informacao"
+          placeholder="Informacao"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Municipio</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="municipioNome"
+          placeholder="MUNICIPIO"
+        />
+      </div>
+      
+
+      <div class="mb-3">
+        <label class="form-label">Estado</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="municipioEstadoNome"
+          placeholder="Estado"
+        />
+      </div>
+      <div class="mb-3">
+            <label class="form-label">Cliente</label>
+            <select v-model="estadoSelected" class="">
+                <option v-for="estado in estados" :value="estado.id" :key="estado.id">
+                    {{ estado.nome }}
+                </option>
+            </select>
+        </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
@@ -118,6 +177,13 @@
         nomeRazaoSocial: "",
         cnpj: "",
         cpf: "",
+        telefone:"",
+        bairro:"",
+        email: "",
+        ativo: "",
+        informacao: "",
+        municipioNome:"",
+        municipioEstadoNome:"",
         isInvalido: false,
         mensagem: '',
       };
@@ -125,10 +191,18 @@
     methods: {
       getDados(){
         return{
-            id: this.id,
-            nomeRazaoSocial: this.nomeRazaoSocial,
-            cnpj: this.cnpj,
-            cpf: this.cpf,
+          id: this.id,
+          nomeRazaoSocial: this.nomeRazaoSocial,
+          cnpj: this.cnpj,
+          cpf: this.cpf,
+          telefone: this.telefone,
+          endereco: this.endereco,
+          bairro: this.bairro,
+          email: this.email,
+          ativo: this.ativo,
+          informacao: this.informacao,
+          municipioNome: this.municipioNome,
+          municipioEstadoNome: this.municipioEstadoNome,
         }
       },
       async salvarCliente() {
@@ -158,12 +232,27 @@
             nomeRazaoSocial: this.nomeRazaoSocial,
             cnpj: this.cnpj,
             cpf: this.cpf,
+            telefone: this.telefone,
+            endereco: this.endereco,
+            bairro: this.bairro,
+            email: this.email,
+            ativo: this.ativo,
+            informacao: this.informacao,
+            municipioNome: this.municipioNome,
+            municipioEstadoNome: this.municipioEstadoNome,
           });
 
           this.id = "";
           this.nomeRazaoSocial = "";
-          this.cnpj = "";
+          this.cnpj ="";
           this.cpf ="";
+          this.telefone="";
+          this.bairro = "";
+          this.email = "";
+          this.ativo = "";
+          this.informacao = "";
+          this.municipioNome = "";
+          this.municipioEstadoNome = "";
         
         }catch(error){
         
@@ -185,16 +274,31 @@
         this.nomeRazaoSocial = "";
         this.cnpj ="";
         this.cpf ="";
+        this.telefone="";
+        this.bairro = "";
+        this.email = "";
+        this.ativo = "";
+        this.informacao = "";
+        this.municipioNome = "";
+        this.municipioEstadoNome = "";
         this.$emit("cancelar", true);
-      },
+      }
     },   
     mounted() {
-      if (this.propsCliente) {
+      if(this.propsCliente){
         this.id = this.propsCliente.id;
         this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
         this.cnpj = this.propsCliente.cnpj;
         this.cpf = this.propsCliente.cpf;
+        this.telefone = this.propsCliente.telefone;
+        this.bairro = this.propsCliente.bairro;
+        this.email = this.propsCliente.email;
+        this.ativo = this.propsCliente.ativo;
+        this.informacao = this.propsCliente.informacao;
+        this.municipioNome = this.propsCliente.municipioNome;
+        this.municipioEstadoNome = this.propsCliente.municipioEstadoNome;
       }
+      this.buscarCliente();
     },
     computed: {
       getAcao() {

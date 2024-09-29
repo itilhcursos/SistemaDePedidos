@@ -31,7 +31,7 @@
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
-        <div class="p-2">Descrição e ativo devem ser preenchidos!</div>
+        <div class="p-2">{{ mensagem }}</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import formaPagamentoService from '@/services/formaPagamentoService';
 export default {
   props: {
     propsFormaPagamento: Object,
@@ -67,53 +67,62 @@ export default {
       descricao: "",
       ativo: "",
       isInvalido: false,
+      mensagem: ""
     };
   },
   methods: {
+    
+    getDados(){
+      return{
+        id: this.id,
+        descricao: this.descricao,
+        ativo: this.ativo,
+      }
+    },
     async salvarFormaPagamento() {
-      if (this.descricao === "") {
-        this.isInvalido = true;
-        return;
-      }
-      this.isInvalido = false;
-
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+        if (this.descricao === "") {
+          this.isInvalido = true;
+          this.mensagem = "A Descrição deve ser Preenchida"
+          return;
         }
-      }
+        this.isInvalido = false;
 
-      if (this.id === "") {
-        //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/forma-pagamento", {
-          id: this.id,
-          descricao: this.descricao,
-          ativo: this.ativo
-        }, config);
-        this.listaFormasPagamento = response.data;
-      } else {
-        // alterar pelo PUT da API
-        const response = await axios.put(
-          `http://localhost:8080/forma-pagamento/${this.id}`,
-          {
+        try{
+
+          if(this.id === "") {
+            //incluir pelo POST da API
+            const response = await formaPagamentoService.criar(
+              this.getDados());
+              this.listaFormasPagamento = response.data;
+          }else {
+            // alterar pelo PUT da API
+            const response = await formaPagamentoService.atualizar(
+              this.id.
+              this.getDados());
+              this.listaFormasPagamento = response.data;
+          }
+
+          this.$emit("salvar_formaPagamento", {
             id: this.id,
             descricao: this.descricao,
             ativo: this.ativo
-          }, config
-        );
-        this.listaFormasPagamento = response.data;
-      }
+          });
+          this.id = "";
+          this.descricao = "";
+          this.ativo = "";
 
-      this.$emit("salvar_formaPagamento", {
-        id: this.id,
-        descricao: this.descricao,
-        ativo: this.ativo
-      });
-
-      this.id = "";
-      this.descricao = "";
-      this.ativo = "";
+        }catch(error){
+          this.isInvalido = true;
+          if(error.response.status === 403){
+            this.mensagem = "Usuario não identificado! faça o login!!!";
+          }else if(error.response.status === 400){
+            this.mensagem = error.response.data.mensagem;
+          }else{
+            this.mensagem = error.message;
+          }     
+        }
     },
+      
     cancelar() {
       this.id = "";
       this.descricao = "";
@@ -123,9 +132,9 @@ export default {
   },
   mounted() {
     if (this.propsFormaPagamento) {
-      this.id = this.propsFormaPagamento.id;
-      this.descricao = this.propsFormaPagamento.descricao;
-      this.ativo = this.propsFormaPagamento.ativo;
+        this.id = this.propsFormaPagamento.id;
+        this.descricao = this.propsFormaPagamento.descricao;
+        this.ativo = this.propsFormaPagamento.ativo;
     }
   },
   computed: {

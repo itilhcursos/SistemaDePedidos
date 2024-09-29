@@ -174,9 +174,18 @@
         this.formVisible = true;
       },
       async excluirProduto(id) {
-        
+        try{
         const response = await produtoService.apagar(id);
         console.log(response.data);
+        }catch(error){
+          if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
+            alert( "Usuário não identificado! Faça o login!!!");
+          }else if(error.response.status === 400){ 
+            alert(error.response.data.mensagem);
+          }else{
+            alert( error.message);
+          }
+        }
         this.buscarProdutos();
       },
       irPara(pagina) {

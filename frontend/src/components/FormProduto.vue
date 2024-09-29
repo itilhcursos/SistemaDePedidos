@@ -155,6 +155,7 @@ export default {
                 this.quantidadeEstoque = "";
                 this.precoUnidadeAtual = ""; 
                 this.ativo = "";
+                
             }catch(error){
                 this.isInvalido = true;
                 if(error.response.status === 403){

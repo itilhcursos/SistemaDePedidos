@@ -145,7 +145,7 @@
 </template>
 <script>
     import FormCliente from './FormCliente.vue';
-    import axios from 'axios';
+    import clienteService from '@/services/clienteService';
     export default{
         components:{
             FormCliente,
@@ -168,13 +168,13 @@
             async buscarClientes(){
                 this.clienteEscolhido = null;
                 this.formVisible = false;
-                const response = await axios.get(  
-                    `http://localhost:8080/clientes?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}` 
+                const response = await clienteService.listar(  
+                   this.pageNumber, this.pageSize, this.direction, this.property 
                 );
-                console.log(response.data);
-                this.listaClientes = response.data.content;
-                this.totalPages = response.data.totalPages;
-                console.log(this.totalPages);
+                
+                this.listaClientes = response.content;
+                this.totalPages = response.totalPages;
+              
             },
             novoCliente(){
                 this.formVisible = !this.formVisible;
@@ -184,16 +184,20 @@
                 this.formVisible = true;
             },
             async excluirCliente(id){
-                let config = {
-                    headers:{
-                        'Authorization': 'Bearer ' +localStorage.getItem('token')
+               
+                try{
+                    const response = await clienteService.apagar(id);
+                    console.log(response.data);
+                }catch(error){
+                     if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
+                        alert( "Usuário não identificado! Faça o login!!!");
+                    }else if(error.response.status === 400){ 
+                        alert(error.response.data.mensagem);
+                    }else{
+                        alert( error.message);
                     }
                 }
-                const response = await axios.delete(
-                    `http://localhost:8080/cliente/${id}`
-                    , config
-                );
-                console.log(response.data);
+                
                 this.buscarClientes();
             },
             limpar(){

@@ -119,7 +119,7 @@
 
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
-import axios from "axios";
+import formaPagamentoService from "@/services/formaPagamentoService";
 export default {
   components: {
     FormFormaPagamento,
@@ -142,13 +142,13 @@ export default {
       this.formVisible = false;
 
       
-      const response = await axios.get(
-        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+      const response = await formaPagamentoService.listar(
+          this.pageNumber, this.pageSize, this.direction, this.property
       );
-      console.log(response.data);
-      this.listaFormasPagamento = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+    
+      this.listaFormasPagamento = response.content;
+      this.totalPages = response.totalPages;
+     
     },
     limpar() {
       this.formaPagamentoEscolhida = null;
@@ -161,14 +161,21 @@ export default {
       this.formaPagamentoEscolhida = formaPagamento;
       this.formVisible = true;
     },
+
     async excluirFormaPagamento(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+      try{
+        const response = await formaPagamentoService.apagar(id);
+        console.log(response.data);
+      }catch(error){
+        if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
+          alert( "Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400){ 
+          alert(error.response.data.mensagem);
+        }else{
+          alert( error.message);
         }
       }
-      const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`,config);
-      console.log(response.data);
+     
       this.buscarFormaPagamento();
     },
     irPara(pagina) {
