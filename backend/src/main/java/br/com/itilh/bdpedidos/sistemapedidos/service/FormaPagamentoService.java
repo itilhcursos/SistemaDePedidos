@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
+import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 @Service
@@ -41,8 +43,14 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
 
     private void validar (FormaPagamentoDTO dto) throws Exception {
 
-        if(repositorio.existsByDescricao(dto.getDescricao()))   
+        if(repositorio.existsByDescricao(dto.getDescricao())){
             throw new FormaPagamentoDuplicadoException(dto.getDescricao());
+            }else{
+                FormaPagamento f = repositorio.getReferenceById(dto.getId());
+                if(!f.getDescricao().equalsIgnoreCase(dto.getDescricao())){
+                    throw new FormaPagamentoDuplicadoException(dto.getDescricao());
+                }
+            }        
 
     }
 
