@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formatarLogico(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -120,6 +120,7 @@
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import formaPagamentoService from"@/services/formaPagamentoService";
+import Logico from "@/utils/Logico.js";
 export default {
   components: {
     FormFormaPagamento,
@@ -175,6 +176,9 @@ export default {
       this.pageNumber = pagina;
       this.buscarFormasPagamento();
     },
+    formatarLogico(valor){
+        return Logico.toSimNao(valor);
+      },
   },
   mounted() {
     this.buscarFormasPagamento();
