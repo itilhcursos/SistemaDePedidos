@@ -31,5 +31,7 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
     @Override
     Page<Estado> findAll(Pageable pageable);
 
+    Page<Estado> findByNomeStartingWithIgnoreCase(Pageable pageable, String nome);
+
     boolean existsByNome (String nome);
 }

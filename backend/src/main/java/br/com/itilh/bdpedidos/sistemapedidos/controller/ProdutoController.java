@@ -39,7 +39,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/produtos/{txtBusca}")
-    public Page<ProdutoDTO> getBusca(
+    public Page<ProdutoDTO> getTodosProdutos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,

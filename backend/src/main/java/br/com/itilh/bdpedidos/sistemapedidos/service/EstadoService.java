@@ -23,6 +23,10 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
         return toPageDTO(repositorio.findAll(pageable));
     }
 
+    public Page<EstadoDTO> buscar (Pageable pageable, String txtBusca ){
+        return toPageDTO(repositorio.findByNomeStartingWithIgnoreCase(pageable , txtBusca));
+    }
+
     public EstadoDTO getPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")));

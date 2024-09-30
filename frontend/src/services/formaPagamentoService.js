@@ -1,7 +1,7 @@
 import genericService from "./genericService";
 
-//const path ='/cliente';
-const pathGet ='/clientes';
+//const path ='/forma-pagamento';
+const pathGet ='/formas-pagamento';
 
 const buscar = async (txtBusca, pageNumber = 1, pageSize = 10000000, direction = 'ASC', property ='id') =>{
 
