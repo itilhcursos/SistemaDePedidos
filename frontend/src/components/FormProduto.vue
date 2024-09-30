@@ -127,7 +127,7 @@ export default {
                         precoUnidadeAtual: this.precoUnidadeAtual, 
                         ativo: this.ativo
                     }, config);
-                    this.listaEstados = response.data;
+                    this.listaProdutos = response.data;
                 }
 
                 this.$emit("salvar_produto", {
@@ -162,6 +162,13 @@ export default {
             this.ativo = "";
             this.$emit("cancelar", true);
         },
+
+        async buscarProdutos(){
+      const response = await axios.get(
+        `http://localhost:8080/produtos?pageNumber=1&pageSize=100&direction=ASC&property=id`
+      );
+      this.produtos = response.data.content;
+    }
     },
 
 
