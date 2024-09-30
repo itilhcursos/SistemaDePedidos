@@ -57,7 +57,13 @@
           <td>
             {{ formatar(pedido.dataPagamento) }}
           </td>
-          <td class="d-flex justify-content-end">
+          <td class="d-flex justify-content-end">            
+            <button
+              class="btn btn-btn btn-primary m-2"
+              @click="alterar(pedido)"
+            >
+              <i class="bi bi-clipboard-pulse"></i> Alterar
+            </button>
             <table class="table table-dark table-striped">
               <thead>
                 <tr>
