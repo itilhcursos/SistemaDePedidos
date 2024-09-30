@@ -10,7 +10,7 @@
           type="text"
           v-model="id"
           :disabled="true"
-          placeholder="Id municipio"
+          placeholder="Id município"
         />
       </div>
       <div class="mb-3">
@@ -19,8 +19,16 @@
           class="form-control"
           type="text"
           v-model="nome"
-          placeholder="Nome"
+          placeholder="Nome do município"
         />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Estado</label>
+        <select v-model="estadoSelected" class="form-select">
+          <option v-for="estado in estados" :key="estado.id" :value="estado.id">
+            {{ estado.nome }}
+          </option>
+        </select>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -50,6 +58,7 @@
 
 <script>
 import municipioService from '@/services/municipioService';
+import estadoService from '@/services/estadoService';
 export default {
   props: {
     propsMunicipio: Object,
@@ -58,6 +67,8 @@ export default {
     return {
       id: "",
       nome: "",
+      estadoSelected: null,
+      estados: [],
       isInvalido: false,
       mensagem : '',
     };
@@ -67,12 +78,13 @@ export default {
       return {
               id: this.id,
               nome: this.nome,
+              estadoId: this.estadoSelected,
             };
     },
     async salvarMunicipio() {
-      if (this.nome === "") {
+      if (this.nome === "" || this.estadoSelected === null) {
         this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
+        this.mensagem = "Nome do Município e Estado devem ser preenchidos!";
         return;
       }
       this.isInvalido = false;
@@ -92,10 +104,10 @@ export default {
         this.$emit("salvar_municipio", {
         id: this.id,
         nome: this.nome,
+        estadoId: this.estadoSelected,
       });
 
-      this.id = "";
-      this.nome = "";
+      this.resetForm();
     }catch(error){
       this.isInvalido = true;
       if(error.response.status === 403){        
@@ -109,16 +121,30 @@ export default {
     }
    },
     cancelar() {
-      this.id = "";
-      this.nome = "";
+      this.resetForm();
       this.$emit("cancelar", true);
     },
+    async carregarEstados() {
+      try {
+      const response = await estadoService.listar(1, 100, 'ASC', 'id');
+      this.estados = response.content;
+    } catch (error) {
+        console.error("Erro ao carregar estados:", error);
+      }
+    },
+    resetForm() {
+      this.id = "";
+      this.nome = "";
+      this.estadoSelected = null;
+    }
   },
   mounted() {
     if (this.propsMunicipio) {
       this.id = this.propsMunicipio.id;
       this.nome = this.propsMunicipio.nome;
+      this.estadoSelected = this.propsMunicipio.estadoId;
     }
+    this.carregarEstados();
   },
   computed: {
     getAcao() {
@@ -127,3 +153,10 @@ export default {
   },
 };
 </script>
+
+<!-- <style>
+.form-select {
+  max-height: 100px;
+  overflow-y: auto;
+}
+</style> -->
