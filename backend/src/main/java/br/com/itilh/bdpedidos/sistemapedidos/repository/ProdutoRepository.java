@@ -19,7 +19,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     List<Produto> findByDescricaoStartingWithIgnoreCase(String descricao);
     List<Produto> findByDescricaoEndingWithIgnoreCase(String descricao);
     List<Produto> findByDescricaoContainingIgnoreCase(String descricao);
-
+    Page<Produto> findByDescricaoContainingIgnoreCase(Pageable pageable, String descricao);
    boolean existsByDescricaoAndId(String descricao, BigInteger id);
 
     boolean existsByQuantidadeEstoque(Double quantidadeEstoque );

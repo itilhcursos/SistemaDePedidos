@@ -35,6 +35,9 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
         return toDTO(repositorio.findById(id)
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
+    public Page<ProdutoDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
+    }
 
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
         validar(origem);
