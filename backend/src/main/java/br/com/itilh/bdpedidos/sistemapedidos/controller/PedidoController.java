@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.PedidoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

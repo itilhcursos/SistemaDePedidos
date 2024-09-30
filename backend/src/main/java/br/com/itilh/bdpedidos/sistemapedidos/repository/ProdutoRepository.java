@@ -25,7 +25,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     List<Produto> findByMinhaQuery(String descricao);
 
 
-    Page<Produto> findByDescricaoContainingIgnoreCase(Pageable pageable, String descricao);
 
     boolean existsByDescricao (String descricao);
 }

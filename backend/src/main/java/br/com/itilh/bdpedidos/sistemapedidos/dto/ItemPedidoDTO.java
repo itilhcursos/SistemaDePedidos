@@ -3,11 +3,7 @@ package br.com.itilh.bdpedidos.sistemapedidos.dto;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
