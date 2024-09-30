@@ -3,33 +3,20 @@
         <h4 class="p-1 mb-1 bg-success text-white"> {{ getAcao }} Pedido</h4>
         <hr />
         <form>
-            <v-select label="Produto" :filterable="false"
-                v-model="produtoSelecionado" :options="produtos" @search="onSearchProdutos">
-                <template v-slot:no-options>
-                    Sem produtos para exibir.
-                </template>
-                <template v-slot:option="option" >
-                    <img :src='option.urlImagem'/> 
-                    {{ option.descricao }}
-                </template>
-                <template v-slot:selected-option="option" >
-                    <img :src='option.urlImagem'/> 
-                    {{ option.descricao }}
-                </template>
-                </v-select>
+            <div class="mb-3" >
+                <label class="form-label">ID</label>
+                <input class="form-control" style="background-color:rgb(150, 150, 150)"
+                    type="text"
+                    v-model="id"
+                    :disabled="true"
+                    placeholder="ID do Pedido (Automático)"/>
+            </div>
             <div class="mb-3">
                 <label class="form-label">Número</label>
                 <input class="form-control"
                     type="text"
                     v-model="numero"
                     placeholder="Número"/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Data de Compra</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="dataCompra"
-                    placeholder="Dia que a compra foi feita."/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Data de Pagamento</label>

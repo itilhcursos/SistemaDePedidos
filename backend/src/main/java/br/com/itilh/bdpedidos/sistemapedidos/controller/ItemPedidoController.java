@@ -16,19 +16,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.service.PedidoService;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.service.ItemPedidoService;
 
+//import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-/* @SecurityRequirement(name= "bearerAuth") */
-public class PedidoController {
+//@SecurityRequirement(name="bearerAuth")
+public class ItemPedidoController {
 
     @Autowired
-    PedidoService service;
+    ItemPedidoService service;
 
-    @GetMapping("/pedidos")
-    public Page<PedidoDTO> getTodos(
+    @GetMapping("/itensPedidos")
+    public Page<ItemPedidoDTO> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -38,25 +39,24 @@ public class PedidoController {
 
         return service.getTodos(pageable);
     }
-    
-    @GetMapping("/pedido/{id}")
-    public PedidoDTO getPedidoPorId(@PathVariable BigInteger id) throws Exception {
+
+    @GetMapping("/itemPedido/{id}")
+    public ItemPedidoDTO getItemPedidoPorId(@PathVariable BigInteger id) throws Exception {
         return service.getPorId(id);
     }    
 
-    @PostMapping("/pedido")
-    public PedidoDTO criarPedido(@RequestBody PedidoDTO entity) throws Exception {
-        return service.criarPedido(entity);
+    @PostMapping("/itemPedido")
+    public ItemPedidoDTO criarItemPedido(@RequestBody ItemPedidoDTO entity) throws Exception {
+        return service.criarItemPedido(entity);
     }
     
-    @PutMapping("/pedido/{id}")
-    public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO novosDados) throws Exception {
-        return service.alterarPedido(id, novosDados);
+    @PutMapping("/itemPedido/{id}")
+    public ItemPedidoDTO alterarItemPedido(@PathVariable BigInteger id, @RequestBody ItemPedidoDTO novosDados) throws Exception {
+        return service.alterarItemPedido(id, novosDados);
     }
 
-    @DeleteMapping("/pedido/{id}")
-    public String deletePedido(@PathVariable BigInteger id) throws Exception {
-        return service.excluirPedido(id);
+    @DeleteMapping("/itemPedido/{id}")
+    public String deleteItemPedido(@PathVariable BigInteger id) throws Exception {
+        return service.excluirItemPedido(id);
     }
-
 }

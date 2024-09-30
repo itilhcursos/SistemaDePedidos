@@ -26,7 +26,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
-          <th scope="col">Ativo</th>
+          <th scope="col">Ativo/Inativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formatarAtivo(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -118,6 +118,7 @@
 
 
 <script>
+import Logico from "@/utils/Logico";
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
 export default {
@@ -137,6 +138,10 @@ export default {
     };
   },
   methods: {
+    formatarAtivo(valorBool){
+            return Logico.toAtivoInativo(valorBool)
+    },
+
     async buscarFormaPagamento() {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;

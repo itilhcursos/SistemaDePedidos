@@ -59,7 +59,7 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO>{
         }                                   
     }
 
-    public String deletePorId(BigInteger id) throws Exception {
+    public String excluirPedido(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
     }  

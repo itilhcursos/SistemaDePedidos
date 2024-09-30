@@ -25,14 +25,7 @@
                     type="text"
                     v-model="cnpj"
                     placeholder="CNPJ..."
-                    :disabled= "setCnpjState"
-                    v-if="!setCnpjState"/>
-                <input class="form-control"
-                    type="text"
-                    v-model="cnpj"
-                    placeholder="CADASTRANDO USANDO CPF."
-                    :disabled= "setCnpjState"
-                    v-if="setCnpjState"/>
+                    :disabled= "setCnpjState"/>  
             </div>
             <div class="mb-3">
                 <label class="form-label">CPF*</label>
@@ -40,14 +33,7 @@
                     type="text"
                     v-model="cpf"
                     placeholder="CPF..."
-                    :disabled= "setCpfState"
-                    v-if="!setCpfState"/>
-                <input class="form-control"
-                    type="text"
-                    v-model="cpf"
-                    placeholder="CADASTRANDO USANDO CNPJ."
-                    :disabled= "setCpfState"
-                    v-if="setCpfState"/>
+                    :disabled= "setCpfState"/>              
             </div>
             <div class="mb-3">
                 <label class="form-label">Telefone**</label>
@@ -272,10 +258,10 @@ export default {
             return this.id === "" ? "Incluir" : "Alterar";
         },
         setCnpjState(){
-            return this.cpf === '' ? false : true;
+            return this.cpf ? true : false;
         },
         setCpfState(){
-            return this.cnpj === '' ? false : true;
+            return this.cnpj ? true : false;
         },
     }
 }   
