@@ -13,6 +13,26 @@
           placeholder="Id estado"
         />
       </div>
+
+      <div class="mb-3">
+            <label class="form-label">Municipio</label>
+            <select v-model="municipioSelected" class="form-control">
+                <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
+                    {{ municipio.nome }}
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+        <label class="form-label">Estado</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="municipioEstadoNome"
+          placeholder="Estado"
+        />
+      </div>
+
       <div class="mb-3">
         <label class="form-label">Nome</label>
         <input
@@ -111,23 +131,7 @@
         />
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Estado</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="municipioEstadoNome"
-          placeholder="Estado"
-        />
-      </div>
-      <div class="mb-3">
-            <label class="form-label">Municipio</label>
-            <select v-model="municipioSelected" class="form-control">
-                <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
-                    {{ municipio.nome }}
-                </option>
-            </select>
-        </div>
+      
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
@@ -156,7 +160,7 @@
 
 <script>
   import clienteService from '@/services/clienteService';
-import municipioService from '@/services/municipioService';
+  import municipioService from '@/services/municipioService';
   export default {
     props: {
       propsCliente: Object,
@@ -172,7 +176,6 @@ import municipioService from '@/services/municipioService';
         email: "",
         ativo: "",
         informacao: "",
-        municipioNome:"",
         municipioEstadoNome:"",
         municipioSelected: "",
         municipios:[],
