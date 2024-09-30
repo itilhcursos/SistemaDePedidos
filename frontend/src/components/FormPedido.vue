@@ -5,9 +5,22 @@
       <form>
         <div class="row">
             <div class="col">
-                <label class="form-label">Id</label>
+                <label class="form-label">ID</label>
                 <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id" />
             </div>
+            <label class="form-label">Cliente</label>
+            <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
+            @search="onSearch">
+            <template v-slot:no-options>
+                Não encontrado.
+            </template>
+            <template v-slot:option="option">
+                {{ option.nomeRazaoSocial }}
+            </template>
+            <template v-slot:selected-option="option">
+                {{ option.nomeRazaoSocial }}
+            </template>
+            </v-select>
             <div class="col">
                 <label class="form-label">Número</label>
                 <input class="form-control" type="text" v-model="numero" placeholder="Número" />
@@ -43,21 +56,6 @@
             </div>
         </div>
         <div class="mb-3">
-
-            <label class="form-label">Cliente</label>
-            <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
-            @search="onSearch">
-            <template v-slot:no-options>
-                Não encontrado.
-            </template>
-            <template v-slot:option="option">
-                {{ option.nomeRazaoSocial }}
-            </template>
-            <template v-slot:selected-option="option">
-                {{ option.nomeRazaoSocial }}
-            </template>
-            </v-select>
-            
             <div class="row">
                 <div class="col-8">
                     <label class="form-label">Novo Produto</label>
@@ -180,16 +178,17 @@ export default {
         getDados() {
             return {
                 id: this.id,
-                nome: this.nome,
+                nome: this.número,
             };
         },
         async salvarPedido() {
-            if (this.nome === "") {
+          console.log(this.selectedCliente, this.selectedProduto);
+            /* if (this.nome === "") {
                 this.isInvalido = true;
                 this.mensagem = "Nome deve ser preenchido!!";
                 return;
             }
-            this.isInvalido = false;
+            this.isInvalido = false; */
             
             try {
                 if (this.id === "") {
@@ -213,8 +212,7 @@ export default {
             if (error.response.status === 403) {
                 this.mensagem = "Usuário não identificado! Faça o login!!!";
             } else if (
-                error.response.status === 400 &&
-                error.response.data.exception === "PedidoDuplicadoException"
+                error.response.status === 400
             ) {
                 this.mensagem = error.response.data.mensagem;
             } else {

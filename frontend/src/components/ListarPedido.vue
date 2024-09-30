@@ -25,9 +25,9 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Número</th>
           <th scope="col">Cliente</th>
           <th scope="col">Forma Pagamento</th>
+          <th scope="col">Número</th>
           <th scope="col">data Compra</th>
           <th scope="col">data Entrega</th>
           <th scope="col">data Pagamento</th>
@@ -40,14 +40,14 @@
                 {{ pedido.id }}
             </th>
             <td>
-                {{ pedido.numero }}
+                {{ pedido.idCliente }}
             </td>
             <td>
-                {{ pedido.idCliente }}
-            </td>          
-            <td>
                 {{ pedido.idFormaPagamento }}
-            </td>          
+            </td> 
+            <td>
+                {{ pedido.numero }}
+            </td>                   
             <td>
                 {{ pedido.dataCompra }}
             </td>          
@@ -110,7 +110,6 @@
           <div class="col-auto">
             <select v-model="property" class="form-select">
                 <option value="id">ID</option>
-                <option value="nome">Nome</option>
             </select>
           </div>
           <div class="col-auto">
