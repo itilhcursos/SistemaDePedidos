@@ -1,7 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
 
 import java.math.BigInteger;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -46,13 +46,13 @@ public class Pedido {
     private BigInteger numero;
 
     @Column(name = "dt_compra")
-    private Date dataCompra;
+    private LocalDate dataCompra;
 
     @Column(name = "dt_entrega")
-    private Date dataEntrega;
+    private LocalDate dataEntrega;
 
     @Column(name = "dt_pagamento")
-    private Date dataPagamento;
+    private LocalDate dataPagamento;
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
     private List<ItemPedido> itens;
