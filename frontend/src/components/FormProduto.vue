@@ -28,7 +28,7 @@
                 class="form-control"
                 type="text"
                 v-model="urlImagem"
-                placeholder="Descrição"
+                placeholder="Link da Imagem"
                 />
             </div>
             <div class="mb-3">

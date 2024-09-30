@@ -10,7 +10,7 @@
           type="text"
           v-model="id"
           :disabled="true"
-          placeholder="ID Pagamento"
+          placeholder="Id Pagamento"
         />
       </div>
       <div class="mb-3">
