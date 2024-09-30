@@ -4,21 +4,21 @@
       <div class="col-10">
         <h3>Pedidos</h3>
       </div>
-      <!-- <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+       <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novoPedido" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
-      <div class="row">
+     <div class="row">
         <div>
-          <FormEstado
+          <FormPedido
             v-if="formVisible"
-            :propsEstado="estadoEscolhido"
+            :propsPedido="pedidoEscolhido"
             @cancelar="limpar"
-            @salvar_estado="buscarEstados"
+            @salvar_pedido="buscarPedidos"
           />
         </div>
-      </div> -->
+      </div>
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
@@ -28,9 +28,9 @@
           <th scope="col">Número</th>
           <th scope="col">Cliente</th>
           <th scope="col">Forma Pagamento</th>
-          <th scope="col">data Compra</th>
-          <th scope="col">data Entrega</th>
-          <th scope="col">data Pagamento</th>
+          <th scope="col">Data Compra</th>
+          <th scope="col">Data Entrega</th>
+          <th scope="col">Data Pagamento</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -43,19 +43,19 @@
             {{ pedido.numero }}
           </td>
           <td>
-            {{ pedido.clienteNome }}
+            {{ pedido.clienteNomeRazaoSocial }}
           </td>          
           <td>
             {{ pedido.formaPagamentoDescricao }}
           </td>          
           <td>
-            {{ pedido.dataCompra }}
+            {{ formatar(pedido.dataCompra) }}
           </td>          
           <td>
-            {{ pedido.dataEntrega }}
+            {{ formatar(pedido.dataEntrega) }}
           </td>  
           <td>
-            {{ pedido.dataPagamento }}
+            {{ formatar(pedido.dataPagamento) }}
           </td>         
           <td class="d-flex justify-content-end">
             <button
@@ -122,7 +122,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
+          <button @click.prevent="buscarPedidos" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -134,11 +134,10 @@
 
 
 <script>
-// import FormEstado from "./FormEstado.vue";
 import pedidoService from "@/services/pedidoService";
+import Data from "@/utils/Data";
 export default {
   components: {
-   // FormEstado,
   },
   data() {
     return {
@@ -167,8 +166,8 @@ export default {
     novoEstado() {
       this.formVisible = !this.formVisible;
     },
-    alterar(estado) {
-      this.pedidoEscolhido = estado;
+    alterar(pedido) {
+      this.pedidoEscolhido = pedido;
       this.formVisible = true;
     },
     async excluir(id) {
@@ -189,6 +188,9 @@ export default {
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscar();
+    },
+    formatar(data) {
+      return Data.formatoDMA(data);
     },
   },
   mounted() {
