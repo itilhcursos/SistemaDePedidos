@@ -43,10 +43,10 @@
                 {{ pedido.numero }}
             </td>
             <td>
-                {{ pedido.clienteNome }}
+                {{ pedido.idCliente }}
             </td>          
             <td>
-                {{ pedido.formaPagamentoDescricao }}
+                {{ pedido.idFormaPagamento }}
             </td>          
             <td>
                 {{ pedido.dataCompra }}
@@ -120,7 +120,7 @@
             </select>
           </div>
           <div class="col-auto">
-            <button @click.prevent="buscarEstados" class="btn btn-success">
+            <button @click.prevent="buscarPedidos" class="btn btn-success">
               <i class="bi bi-binoculars"></i>
               Buscar
             </button>
@@ -135,7 +135,7 @@ import pedidoService from '@/services/pedidoService';
 import FormPedido from "./FormPedido.vue";
 export default {
   components: {
-   FormPedido
+   FormPedido,
   },
   data() {
     return {
@@ -161,11 +161,11 @@ export default {
       this.pedidoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoEstado() {
+    novoPedido() {
       this.formVisible = !this.formVisible;
     },
-    alterar(estado) {
-      this.pedidoEscolhido = estado;
+    alterar(pedido) {
+      this.pedidoEscolhido = pedido;
       this.formVisible = true;
     },
     async excluir(id) {

@@ -154,9 +154,7 @@ export default {
     async buscarProdutos() {
       this.produtoEscolhido = null;
       this.formVisible = false;
-      const response = await produtoService.listar(this.pageNumber,
-      this.pageSize, this.pageSize, this.direction, this.direction, 
-      this.property, this.property);
+      const response = await produtoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
       this.listaProdutos = response.content;
       this.totalPages = response.totalPages;
     },

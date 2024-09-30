@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import formaPagamentoService from '@/services/formaPagamentoService';
 export default {
   props: {
     propsFormaPagamento: Object,
@@ -85,7 +85,7 @@ export default {
 
       if (this.id === "") {
         //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/forma-pagamento", {
+        const response = await formaPagamentoService.post("http://localhost:8080/forma-pagamento", {
           id: this.id,
           descricao: this.descricao,
           ativo: this.ativo
@@ -93,7 +93,7 @@ export default {
         this.listaFormasPagamento = response.data;
       } else {
         // alterar pelo PUT da API
-        const response = await axios.put(
+        const response = await formaPagamentoService.put(
           `http://localhost:8080/forma-pagamento/${this.id}`,
           {
             id: this.id,

@@ -16,12 +16,11 @@
 
         <div class="mb-3">
           <label class="form-label">Município</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="municipioNome"
-            placeholder="Nome do Município"
-          />
+          <select v-model="municipioSelected" class="form-constrol">
+              <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
+                  {{ municipio.nome }}
+              </option>
+          </select>
         </div>
 
         <div class="mb-3">
