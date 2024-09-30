@@ -36,7 +36,7 @@ public class PedidoService extends GenericService <Pedido,PedidoDTO> {
         try{    
             return toDTO(repositorio.save(toEntity(entityDTO)));
         }catch(Exception e){
-            throw new Exception("Erro ao salvar o estado.");
+            throw new Exception("Erro ao salvar o pedido.");
         }
     }
 
