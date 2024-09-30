@@ -160,6 +160,13 @@ export default {
     },
     novoMunicipio() {
       this.formVisible = !this.formVisible;
+      this.municipioEscolhido = {
+        id: "",
+        nome: "",
+        entrega: false,
+        estadoId: null,
+        estadoNome: "",
+      };
     },
     alterarMunicipio(municipio) {
       this.municipioEscolhido = municipio;
