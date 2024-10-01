@@ -113,7 +113,7 @@
             </div>
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
-                <div class="p-2">Nome deve ser preenchido</div>
+                <div class="p-2">{{ mensagem }}</div>
             </div>
             <div class="mb-3 d-flex justify-content-end">
 

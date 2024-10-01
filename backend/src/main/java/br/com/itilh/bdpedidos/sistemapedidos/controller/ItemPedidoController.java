@@ -27,7 +27,7 @@ public class ItemPedidoController {
 @Autowired
 ItemPedidoService itemPedidoService;
 
- @GetMapping("/ItemPedidos")
+ @GetMapping("/itemPedidos")
     public Page<ItemPedidoDTO> BuscarItemPedidos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -37,7 +37,7 @@ ItemPedidoService itemPedidoService;
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return itemPedidoService.listarItemPedidos(pageable);
     }
-     @GetMapping("/ItemPedidos/pedido-id/{id}")
+     @GetMapping("/itemPedidos/pedido-id/{id}")
     public Page<ItemPedidoDTO> BuscarItemPedidosPorPedidoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -48,7 +48,7 @@ ItemPedidoService itemPedidoService;
         return itemPedidoService.listarItemPedidoPorPedidoId(id, pageable);
     }
 
-    @GetMapping("/ItemPedidos/produto-nome/{nome}")
+    @GetMapping("/itemPedidos/produto-nome/{nome}")
     public Page<ItemPedidoDTO> BuscarItemPedidosPorProdutoNome(@PathVariable String nome,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -58,7 +58,7 @@ ItemPedidoService itemPedidoService;
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return itemPedidoService.listarItemPedidoPorProdutoNome(nome, pageable);
     }
-    @GetMapping("/ItemPedidos/produto-id/{id}")
+    @GetMapping("/itemPedidos/produto-id/{id}")
     public Page<ItemPedidoDTO> BuscarItemPedidosPorProdutoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -68,22 +68,22 @@ ItemPedidoService itemPedidoService;
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return itemPedidoService.listarItemPedidoPorProdutoId(id, pageable);
     }
-    @GetMapping("/ItemPedido/{id}")
+    @GetMapping("/itemPedido/{id}")
     public ItemPedidoDTO BuscarItemPedidoPorId(@PathVariable BigInteger id) throws Exception {
         return itemPedidoService.buscarItemPedidoPorId(id);
     }    
 
-    @PostMapping("/ItemPedido")
+    @PostMapping("/itemPedido")
     public ItemPedidoDTO criarItemPedido(@RequestBody ItemPedidoDTO entity) throws Exception {
         return itemPedidoService.criarItemPedido(entity);
     }
     
-    @PutMapping("/ItemPedido/{id}")
+    @PutMapping("/itemPedido/{id}")
     public ItemPedidoDTO alterarItemPedido(@PathVariable BigInteger id, @RequestBody ItemPedidoDTO origem) throws Exception {
         return itemPedidoService.alterarItemPedido(id,origem);
     }
 
-    @DeleteMapping("/ItemPedido/{id}")
+    @DeleteMapping("/itemPedido/{id}")
     public String deleteItemPedido(@PathVariable BigInteger id) throws Exception {
         return itemPedidoService.excluirItemPedido(id);
     }
