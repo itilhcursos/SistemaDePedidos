@@ -84,7 +84,7 @@ export default {
       };
     },
     async salvarMunicipio() {
-      if (this.nome === "") {
+      if (!this.nome) {
         this.isInvalido = true;
         this.mensagem = "Nome deve ser preenchido!!";
         return;
@@ -92,7 +92,7 @@ export default {
       this.isInvalido = false;
 
       try {
-        if (this.id === "") {
+        if (!this.nome) {
           const response = await municipioService.criar(this.getDados());
           this.listaMunicipios = response;
         } else {
