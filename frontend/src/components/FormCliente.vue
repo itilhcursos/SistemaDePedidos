@@ -139,66 +139,94 @@ export default {
     return {
       id: "",
       nomeRazaoSocial: "",
+      cnpj: "",
+      cpf: "",
+      telefone: "",
+      endereco: "",
+      bairro: "",
+      cep: "",
+      email: "",
+      ativo: false,
+      informacao: "",
       isInvalido: false,
       mensagem : '',
     };
   },
   methods: {
-    getDados(){
+    getDados() {
       return {
-              id: this.id,
-              nomeRazaoSocial: this.nomeRazaoSocial,
-            };
+        id: this.id,
+        nomeRazaoSocial: this.nomeRazaoSocial,
+        cnpj: this.cnpj,
+        cpf: this.cpf,
+        telefone: this.telefone,
+        endereco: this.endereco,
+        bairro: this.bairro,
+        cep: this.cep,
+        email: this.email,
+        ativo: this.ativo,
+        informacao: this.informacao,
+      };
     },
     async salvarCliente() {
-      if (this.nomeRazaoSocial === "") {
+      if (this.nomeRazaoSocial === "" || this.cpf === "" || this.cnpj === "") {
         this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
+        this.mensagem = "Nome, CPF e CNPJ devem ser preenchidos!";
         return;
       }
       this.isInvalido = false;
       
-    try{
+      try {
+        let response;
         if (this.id === "") {
-          const response = await clienteService.criar(
-            this.getDados());
-          this.listaClientes = response;
+          response = await clienteService.criar(this.getDados());
         } else {
-          const response = await clienteService.atualizar(
-            this.id,
-            this.getDados()
-          );
-          this.listaClientes = response;
+          response = await clienteService.atualizar(this.id, this.getDados());
         }
-        this.$emit("salvar_cliente", {
-        id: this.id,
-        nomeRazaoSocial: this.nomeRazaoSocial,
-      });
-
-      this.id = "";
-      this.nomeRazaoSocial = "";
-    }catch(error){
-      this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'ClienteDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
-        this.mensagem = error.message;
+        this.$emit("salvar_cliente", response);
+        this.limparCampos();
+      } catch (error) {
+        this.isInvalido = true;
+        if (error.response.status === 403) {        
+          this.mensagem = "Usuário não identificado! Faça o login!";
+        } else if (error.response.status === 400 && error.response.data.exception === 'ClienteDuplicadoException') {
+          this.mensagem = error.response.data.mensagem;     
+        } else {
+          this.mensagem = error.message;
+        }
       }
-    }
-   },
+    },
     cancelar() {
-      this.id = "";
-      this.nomeRazaoSocial = "";
+      this.limparCampos();
       this.$emit("cancelar", true);
     },
+    limparCampos() {
+      this.id = "";
+      this.nomeRazaoSocial = "";
+      this.cnpj = "";
+      this.cpf = "";
+      this.telefone = "";
+      this.endereco = "";
+      this.bairro = "";
+      this.cep = "";
+      this.email = "";
+      this.ativo = false;
+      this.informacao = "";
+    }
   },
   mounted() {
     if (this.propsCliente) {
       this.id = this.propsCliente.id;
       this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
+      this.cnpj = this.propsCliente.cnpj;
+      this.cpf = this.propsCliente.cpf;
+      this.telefone = this.propsCliente.telefone;
+      this.endereco = this.propsCliente.endereco;
+      this.bairro = this.propsCliente.bairro;
+      this.cep = this.propsCliente.cep;
+      this.email = this.propsCliente.email;
+      this.ativo = this.propsCliente.ativo;
+      this.informacao = this.propsCliente.informacao;
     }
   },
   computed: {
@@ -208,4 +236,3 @@ export default {
   },
 };
 </script>
-

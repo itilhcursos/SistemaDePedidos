@@ -13,18 +13,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 
 @Repository
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
-
-    List<Cliente> findByNomeRazaoSocial(String nomeRazaoSocial);
-
-    List<Cliente> findByNomeRazaoSocialStartingWithIgnoreCase(String nomeRazaoSocial);
-
-    List<Cliente> findByNomeRazaoSocialEndingWithIgnoreCase(String nomeRazaoSocial);
-
-    List<Cliente> findByNomeRazaoSocialContainingIgnoreCase(String nomeRazaoSocial);
-
-    @Query("FROM Cliente e WHERE e.nome like %?1")
-    List<Cliente> findByMinhaQuery(String nomeRazaoSocial);
-    
     @Override
     Page<Cliente> findAll(Pageable pageable);
 

@@ -5,7 +5,7 @@
         <h3>CLIENTES</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
@@ -25,12 +25,12 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col">Nome/Razão Social</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="cliente in listaCliente" :key="cliente.id" scope="row">
+        <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
           <th>
             {{ cliente.id }}
           </th>
@@ -47,7 +47,7 @@
 
             <button
               class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
+              @click="excluirCliente(cliente.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
@@ -61,7 +61,6 @@
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
-
           <button
             v-for="pagina in totalPages"
             :key="pagina"
@@ -70,14 +69,12 @@
           >
             {{ pagina }}
           </button>
-
-
         </div>
         <div class="col-auto">
           <input
             type="text"
             v-model="pageNumber"
-            placeholder="Número da pagina"
+            placeholder="Número da página"
             class="form-control w-25"
           />
         </div>
@@ -92,7 +89,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="nomeRazaoSocial">Nome/Razão Social</option>
           </select>
         </div>
         <div class="col-auto">
@@ -102,9 +99,8 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
-            <i class="bi bi-binoculars"></i>
-            Buscar
+          <button @click.prevent="buscarClientes" class="btn btn-success">
+            <i class="bi bi-binoculars"></i> Buscar
           </button>
         </div>
       </div>
@@ -112,19 +108,18 @@
   </div>
 </template>
 
-
 <script>
 import FormCliente from "./FormCliente.vue";
-import FormEstado from "./FormEstado.vue";
-import estadoService from "@/services/estadoService";
+import clienteService from "@/services/clienteService";
+
 export default {
   components: {
-    FormEstado,
+    FormCliente,
   },
   data() {
     return {
-      listaEstados: [],
-      estadoEscolhido: null,
+      listaClientes: [],
+      clienteEscolhido: null,
       formVisible: false,
       pageNumber: 1,
       pageSize: 10,
@@ -134,46 +129,51 @@ export default {
     };
   },
   methods: {
-    async buscarEstados() {
-      this.estadoEscolhido = null;
+    async buscarClientes() {
+      this.clienteEscolhido = null;
       this.formVisible = false;
-      const response = await estadoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
-      this.listaEstados = response.content;
-      this.totalPages = response.totalPages;   
+      const response = await clienteService.listar(
+        this.pageNumber,
+        this.pageSize,
+        this.direction,
+        this.property
+      );
+      this.listaClientes = response.content;
+      this.totalPages = response.totalPages;
     },
     limpar() {
-      this.estadoEscolhido = null;
+      this.clienteEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoEstado() {
+    novoCliente() {
       this.formVisible = !this.formVisible;
     },
-    alterarEstado(estado) {
-      this.estadoEscolhido = estado;
+    alterarCliente(cliente) {
+      this.clienteEscolhido = cliente;
       this.formVisible = true;
     },
-    async excluirEstado(id) {
-      try{
-          const response = await estadoService.apagar(id);
-          console.log(response);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
+    async excluirCliente(id) {
+      try {
+        const response = await clienteService.apagar(id);
+        console.log(response);
+      } catch (error) {
+        if (error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
           alert(error.message);
         }
-      }     
-      this.buscarEstados();
+      }
+      this.buscarClientes();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarEstados();
+      this.buscarClientes();
     },
   },
   mounted() {
-    this.buscarEstados();
+    this.buscarClientes();
   },
 };
 </script>
