@@ -18,6 +18,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     List<Produto> findByDescricaoStartingWithIgnoreCase(String descricao);
     List<Produto> findByDescricaoEndingWithIgnoreCase(String descricao);
     List<Produto> findByDescricaoContainingIgnoreCase(String descricao);
+    Page<Produto> findByDescricaoContainingIgnoreCase(Pageable pageable, String descricao);
 
     @Query("FROM FormaPagamento e WHERE e.descricao like %?1")
     List<Produto> findByMinhaQuery(String descricao);
