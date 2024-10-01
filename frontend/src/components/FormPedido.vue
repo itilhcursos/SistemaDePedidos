@@ -76,14 +76,7 @@
                 </div>
                 <div class="col-2">
                     <label class="form-label">Quantidade</label>
-                    <input class="form-control" type="text" v-model="nome" placeholder="Nome" />
-                </div>
-                <div class="col-2 position-relative">
-                
-                    <button class="btn btn-primary position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="">
-                        <i class="bi bi-clipboard2-check"></i>
-                        Incluir
-                    </button>
+                    <input class="form-control" type="text" v-model="nome" placeholder="quantidade" />
                 </div>
             </div>
         </div>

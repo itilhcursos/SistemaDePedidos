@@ -15,6 +15,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/formas-pagamento">Formas de Pagamento</RouterLink>
       <RouterLink to="/clientes">Clientes</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
+      <RouterLink to="/cadastros">Cadastro</RouterLink>
       <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
       <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}</RouterLink>
      

@@ -14,14 +14,30 @@
           />
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label class="form-label">Município</label>
-          <select v-model="municipioSelected" class="form-constrol">
-              <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
-                  {{ municipio.nome }}
-              </option>
-          </select>
-        </div>
+          <input
+            class="form-control"
+            type="text"
+            v-model="municipioNome"
+            placeholder="Nome do Municipio"
+          />
+        </div> -->
+
+        <label class="form-label">Município</label>
+        <v-select class="meu-select" v-model="selectedMunicipio"   :filterable="false" :options="optionsMunicipio"
+        @search="onSearch">
+        <template v-slot:no-options>
+            Não encontrado.
+        </template>
+        <template v-slot:option="option">
+            {{ option.nomeRazaoSocial }}
+        </template>
+        <template v-slot:selected-option="option">
+            {{ option.nomeRazaoSocial }}
+        </template>
+        </v-select>
+
 
         <div class="mb-3">
           <label class="form-label">Nome</label>
@@ -149,6 +165,8 @@
   
 <script>
   import clienteService from '@/services/clienteService';
+  import municipioService from '@/services/municipioService';
+  import "vue-select/dist/vue-select.css";
   export default {
     props: {
       propsCliente: Object,
@@ -157,7 +175,6 @@
       return {
         id: "",
         nomeRazaoSocial: "",
-        municipioNome: "",
         cnpj: "",
         cpf: "",
         telefone: "",
@@ -170,9 +187,21 @@
 
         isInvalido: false,
         mensagem : '',
+        optionsMunicipio: [],
+        selectedMunicipio: null,
       };
     },
     methods: {
+      async onSearch(search, loading) {
+        if (search == "")
+          return;
+        loading(true);
+        await municipioService.buscar(search).then((response) => {
+          this.optionsMunicipio = response.content;
+          loading(false);
+        });
+      },
+
       async salvarCliente() {
         if (this.nomeRazaoSocial === "") {
           this.isInvalido = true;
