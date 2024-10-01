@@ -54,6 +54,7 @@
         <label class="form-label">Municipio ID</label>
         <input class="form-control" type="text" v-model="municipioId" placeholder="Municipio ID" />
       </div>
+      <label class="form-label">Municipio</label>
       <v-select class="form-control" label="Produto" :filterable="false"
           v-model="municipioSelecionado" :options="municipios" @search="onSearchMunicipios">
           <template v-slot:no-options>
@@ -65,7 +66,7 @@
           <template v-slot:selected-option="option" >
               {{ option.nome }}
           </template>
-        </v-select>
+      </v-select>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
@@ -107,7 +108,7 @@ export default {
       if(search.length) {
         loading(true);
         await municipioService.buscar(search).then((response) => {
-        //console.log(response);
+        console.log(response);
         this.municipios = response.content;
         loading(false);
       });
@@ -167,8 +168,8 @@ export default {
         this.endereco = "";
         this.bairro = "";
         this.cep = "";
-        this.municipioId = "",
-          this.municipioNome = "";
+        this.municipioId = "";
+        this.municipioNome = "";
       } catch (error) {
         this.isInvalido = true;
         if (error.response.status === 403) {
