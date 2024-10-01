@@ -41,6 +41,19 @@ public class ClienteController {
         return clienteService.getTodos(pageable);
     }
 
+    @GetMapping("/clientes/{txtBusca}")
+    public Page<ClienteDTO> getPorNome(
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property,
+        @PathVariable String txtBusca
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+
+        return clienteService.buscar(pageable, txtBusca);
+    }
+
     @GetMapping("/cliente/{id}")
     public ClienteDTO getPorId(@PathVariable BigInteger id) throws Exception {
         return clienteService.getporId(id);

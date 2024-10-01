@@ -13,6 +13,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
 
     Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
+    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);
 
     boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger id);
 }
