@@ -34,11 +34,11 @@ const router = createRouter({
       name: 'formaPagamento',
       component:()=>import('../views/FormaPagamentoView.vue')
     },
-    // {
-    //   path: '/clientes',
-    //   name: 'clientes',
-    //   component:()=>import('../views/ClienteView.vue')
-    // },
+    {
+      path: '/clientes',
+      name: 'clientes',
+      component:()=>import('../views/ClienteView.vue')
+    },
     {
       path: '/pedidos',
       name: 'pedidos',
