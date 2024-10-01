@@ -55,17 +55,17 @@
         <input class="form-control" type="text" v-model="municipioId" placeholder="Municipio ID" />
       </div>
       <label class="form-label">Municipio</label>
-      <v-select class="form-control" label="Produto" :filterable="false"
-          v-model="municipioSelecionado" :options="municipios" @search="onSearchMunicipios">
-          <template v-slot:no-options>
-            Sem Municipios para exibir.
-          </template>
-          <template v-slot:option="option" > 
-              {{ option.nome }}
-          </template>
-          <template v-slot:selected-option="option" >
-              {{ option.nome }}
-          </template>
+      <v-select class="form-control" label="Produto" :filterable="false" v-model="municipioSelecionado"
+        :options="municipios" @search="onSearchMunicipios">
+        <template v-slot:no-options>
+          Sem Municipios para exibir.
+        </template>
+        <template v-slot:option="option">
+          {{ option.nome }}
+        </template>
+        <template v-slot:selected-option="option">
+          {{ option.nome }}
+        </template>
       </v-select>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -105,13 +105,13 @@ export default {
   },
   methods: {
     async onSearchMunicipios(search, loading) {
-      if(search.length) {
+      if (search.length) {
         loading(true);
         await municipioService.buscar(search).then((response) => {
-        console.log(response);
-        this.municipios = response.content;
-        loading(false);
-      });
+          console.log(response);
+          this.municipios = response.content;
+          loading(false);
+        });
       }
     },
     getDados() {
@@ -129,15 +129,14 @@ export default {
       };
     },
     async salvarCliente() {
-      if (this.nomeRazaoSocial === "") {
+      if (!this.nomeRazaoSocial) {
         this.isInvalido = true;
         this.mensagem = "Nome/RazãoSocial do cliente não pode estar vazia.";
         return;
       }
       this.isInvalido = false;
-
       try {
-        if (this.id === "") {
+        if (!this.id) {
           const response = await clienteService.criar(this.getDados());
           this.listaClientes = response;
         } else {
@@ -147,29 +146,8 @@ export default {
           );
           this.listaClientes = response;
         }
-        this.$emit("salvar_cliente", {
-          id: this.id,
-          nomeRazaoSocial: this.nomeRazaoSocial,
-          cnpj: this.cnpj,
-          cpf: this.cpf,
-          telefone: this.telefone,
-          endereco: this.endereco,
-          bairro: this.bairro,
-          cep: this.cep,
-          municipioId: this.municipioId,
-          municipioNome: this.municipioNome
-        });
-
-        this.id = "";
-        this.nomeRazaoSocial = "";
-        this.cnpj = "";
-        this.cpf = "";
-        this.telefone = "";
-        this.endereco = "";
-        this.bairro = "";
-        this.cep = "";
-        this.municipioId = "";
-        this.municipioNome = "";
+        this.$emit("salvar_cliente", this.getDados());
+        this.limparFormulario();
       } catch (error) {
         this.isInvalido = true;
         if (error.response.status === 403) {
@@ -185,6 +163,10 @@ export default {
       }
     },
     cancelar() {
+      this.limparFormulario();
+      this.$emit("cancelar", true);
+    },
+    limparFormulario() {
       this.id = "";
       this.nomeRazaoSocial = "";
       this.cnpj = "";
@@ -194,8 +176,7 @@ export default {
       this.bairro = "";
       this.cep = "";
       this.municipioNome = "";
-      this.$emit("cancelar", true);
-    },
+    }
   },
   mounted() {
     if (this.propsCliente) {
