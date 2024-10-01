@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formatarAtivo(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -120,6 +120,7 @@
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
+import Logico from "@/utils/Logico.js";
 export default {
   components: {
     FormFormaPagamento,
@@ -160,6 +161,9 @@ export default {
     alterarFormaPagamento(formaPagamento) {
       this.formaPagamentoEscolhida = formaPagamento;
       this.formVisible = true;
+    },
+    formatarAtivo(valor){
+      return Logico.toSimNao(valor);
     },
     async excluirFormaPagamento(id) {
       let config = {

@@ -37,6 +37,10 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
         .orElseThrow(()-> new IdInexistenteException("Município", id)));
     }
 
+    public Page<MunicipioDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repository.findByNomeContainingIgnoreCase(pageable, txtBusca));
+    }
+
     public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
         validar(origem);
         return toDTO(repository.save(toEntity(origem)));

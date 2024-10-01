@@ -64,6 +64,18 @@ public class MunicipioController {
         return service.listarMunicipiosPorEstadoNome(nome, pageable);
     }
 
+    @GetMapping("/municipios/{txtBusca}")
+    public Page<MunicipioDTO> getBusca(
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property,
+        @PathVariable String txtBusca
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return service.buscar(pageable, txtBusca);
+    }
+
     @GetMapping("/municipio/{id}")
     public MunicipioDTO getMunicipioPorId(@PathVariable BigInteger id) throws Exception {
         try{

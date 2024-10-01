@@ -26,6 +26,8 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome/Razão Social</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">Endereço</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -34,8 +36,14 @@
           <th>
             {{ cliente.id }}
           </th>
-          <td>
+          <th>
             {{ cliente.nomeRazaoSocial }}
+          </th>
+          <th>
+            {{ cliente.telefone }}
+          </th>
+          <td>
+            {{ cliente.endereco }}
           </td>
           <td class="d-flex justify-content-end">
             <button

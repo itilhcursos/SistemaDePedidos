@@ -54,7 +54,7 @@ import { RouterLink, RouterView } from "vue-router";
 <style scoped>
 
 img{
-  width: 150px;
+  width: 200px;
   height: 15s0px;
   margin: auto;
   display: inline-block;

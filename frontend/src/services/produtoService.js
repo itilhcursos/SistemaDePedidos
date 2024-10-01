@@ -1,7 +1,7 @@
 import genericService from "./genericService";
 
-const path ='/estado';
-const pathGet ='/estados';
+const path ='/produto';
+const pathGet ='/produtos';
 
 const criar = async(objeto) =>{
 
@@ -35,8 +35,6 @@ const buscar = async(txtBusca, pageNumber = 1, pageSize = 100000, direction = 'A
     const {data} = await genericService.buscar(pathGet, txtBusca, pageNumber, pageSize, direction, property);
     return data;
 }
-
-
 
 export default{
     criar,

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.NomeEstadoInvalidoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
@@ -36,6 +37,10 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
         if(repositorio.existsByNome(dto.getNome()))   
             throw new EstadoDuplicadoException(dto.getNome());
 
+    }
+
+    public Page<EstadoDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repositorio.findByNomeContainingIgnoreCase(pageable, txtBusca));
     }
 
     public EstadoDTO criarEstado(EstadoDTO entityDTO) throws Exception {  

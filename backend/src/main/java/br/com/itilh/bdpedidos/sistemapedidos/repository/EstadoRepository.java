@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
-
 @Repository
 public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
     // Select * from tb_estados where tx_nome = 'nome'//
@@ -24,6 +23,8 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
 
     // Select * from tb_estados where UPPER(tx_nome) like UPPER('%nome%')//
     List<Estado> findByNomeContainingIgnoreCase(String nome);
+
+    Page<Estado> findByNomeContainingIgnoreCase(Pageable pageable, String nome);
 
     @Query("FROM Estado e WHERE e.nome like %?1")
     List<Estado> findByMinhaQuery(String nome);
