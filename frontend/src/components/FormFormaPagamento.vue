@@ -96,9 +96,10 @@ export default {
               this.listaFormasPagamento = response.data;
           }else {
             // alterar pelo PUT da API
+            
             const response = await formaPagamentoService.atualizar(
-              this.id.
-              this.getDados());
+              this.id,
+            this.getDados());
               this.listaFormasPagamento = response.data;
           }
 

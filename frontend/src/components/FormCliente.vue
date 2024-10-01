@@ -305,7 +305,7 @@
         this.municipioSelected = this.propsCliente.municipioId;
         this.municipioEstadoNome = this.propsCliente.municipioEstadoNome;
       }
-      
+      this.buscarMunicipios();
     },
     computed: {
       getAcao() {
