@@ -90,7 +90,7 @@
                   <th>
                     <button
                       class="btn btn-outline-danger m-2"
-                      @click="excluirItemPedido(item.id)">
+                      @click.prevent="excluirItemPedido(item.id)">
                       <i class="bi bi-clipboard2-minus"></i> 
                     </button>
                   </th>
@@ -278,7 +278,7 @@ export default {
         this.itens.push(response);
 
     },
-    async excluirItem(id){
+    async excluirItemPedido(id){
       const response = await itemPedidoService.apagar(id);
       console.log(response);
     }
