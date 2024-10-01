@@ -12,7 +12,7 @@
       <div class="row">
         <div>
           <FormMunicipio v-if="formVisible" :propsMunicipio="municipioEscolhido" @cancelar="limpar"
-            @salvar_municipio="buscar" />
+            @salvar_municipio="buscarMunicipios" />
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscar" class="btn btn-success">
+          <button @click.prevent="buscarMunicipios" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -102,9 +102,9 @@
 
 
 <script>
+import municipioService from "@/services/municipioService";
 import FormMunicipio from "./FormMunicipio.vue";
 import Logico from "@/utils/Logico.js";
-import axios from "axios";
 
 export default {
   components: {
@@ -125,16 +125,14 @@ export default {
     };
   },
   methods: {
-    async buscar() {
+    async buscarMunicipios() {
       this.municipioEscolhido = null;
       this.formVisible = false;
-      const response = await axios.get(
-        `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      //console.log(response.data);
-      this.listaMunicipios = response.data.content;
-      this.totalPages = response.data.totalPages;
-      //console.log(this.totalPages);
+
+      const response = await municipioService.listar(this.pageNumber, this.pageSize, this.direction, this.property, this.totalPages);
+      
+      this.listaMunicipios = response.content;
+      this.totalPages = response.totalPages;
     },
     formatarEntrega(valor) {
       return Logico.toSimNao(valor);
@@ -147,42 +145,30 @@ export default {
       this.formVisible = !this.formVisible;
     },
     alterarMunicipio(municipio) {
-      this.municipioEscolhido = {
-        ...municipio,
-        estadoSelecionado: {
-          id: municipio.estadoId,      // Assumindo que 'estadoId' é a chave do estado
-          nome: municipio.estadoNome   // Assumindo que 'estadoNome' é o nome do estado
-        }
-      };
+      this.municipioEscolhido = this.dadosMunicipio(municipio);
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }
-      try {
-        const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
+        const response = await municipioService.apagar(id);
         console.log(response.data);
-      } catch (error) {
-        if (error.response.status === 403) {
-          alert("Usuário não identificado! Faça o login!!!");
-        } else if (error.response.status === 400) {
-          alert(error.response.data.mensagem);
-        } else {
-          alert(error.message);
-        }
-      }
-      this.buscar();
-    },
+        this.buscarMunicipios();
+      },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscar();
+      this.buscarMunicipios();
     },
+    dadosMunicipio(municipio){
+      return {
+        ...municipio,
+        estadoSelecionado: {
+          id: municipio.estadoId,      
+          nome: municipio.estadoNome   
+        }
+      }
+    }
   },
   mounted() {
-    this.buscar();
+    this.buscarMunicipios();
   },
 };
 </script>
