@@ -28,7 +28,7 @@ public class ClienteController {
 
 
 
-    @GetMapping("/Clientes")
+    @GetMapping("/clientes")
     public Page<ClienteDTO> BuscarClientes(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -39,7 +39,7 @@ public class ClienteController {
         return clienteService.listarClientes(pageable);
     }
 
-     @GetMapping("/Clientes/municipio-id/{id}")
+     @GetMapping("/clientes/municipio-id/{id}")
     public Page<ClienteDTO> BuscarClientePorMunicipioId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -51,7 +51,7 @@ public class ClienteController {
     }
     
 
-    @GetMapping("/Clientes/municipio-nome/{nome}")
+    @GetMapping("/clientes/municipio-nome/{nome}")
     public Page<ClienteDTO> BuscarClientePorMunicipioNome(@PathVariable String nome,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -62,27 +62,27 @@ public class ClienteController {
         return clienteService.listarClientePorMunicipioNome(nome, pageable);
     }
 
- @GetMapping("/Cliente/{id}")
+ @GetMapping("/cliente/{id}")
     public ClienteDTO BuscarClientePorId(@PathVariable BigInteger id) throws Exception {
         return clienteService.buscarClientePorId(id);
     }    
 
 
-    @PostMapping("/Cliente")
+    @PostMapping("/cliente")
     public ClienteDTO criarItemPedido(@RequestBody ClienteDTO entity) throws Exception {
         return clienteService.criarCliente(entity);
     }
     
 
 
-    @PutMapping("/Cliente/{id}")
+    @PutMapping("/cliente/{id}")
     public ClienteDTO alterarCliente(@PathVariable BigInteger id, @RequestBody ClienteDTO origem) throws Exception {
         return clienteService.alterarCliente(id,origem);
     }
 
 
 
-    @DeleteMapping("/Cliente/{id}")
+    @DeleteMapping("/cliente/{id}")
     public String deleteCliente(@PathVariable BigInteger id) throws Exception {
         return clienteService.excluirCliente(id);
     }
