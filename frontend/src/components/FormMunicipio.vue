@@ -4,13 +4,13 @@
     <hr />
     <form>
       <div class="mb-3">
-        <label class="form-label">Id</label>
+        <label class="form-label">ID</label>
         <input
           class="form-control"
           type="text"
           v-model="id"
           :disabled="true"
-          placeholder="Id estado"
+          placeholder="Id Municipio"
         />
       </div>
       <div class="mb-3">
@@ -22,7 +22,35 @@
           placeholder="Nome"
         />
       </div>
-      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
+      <div class="mb-3">
+        <label class="form-label">Entrega</label>
+        <select v-model="entrega" class="form-select">
+          <option :value="true">Sim</option>
+          <option :value="false">Não</option>
+        </select>
+      </div>
+      <label class="form-label">Estado</label>
+      <v-select
+        class="form-control"
+        label="Estado"
+        :filterable="false"
+        v-model="estadoSelecionado"
+        :options="estados"
+        @search="onSearchEstados"
+      >
+        <template v-slot:no-options> Sem Estados para exibir. </template>
+        <template v-slot:option="option">
+          {{ option.nome }}
+        </template>
+        <template v-slot:selected-option="option">
+          {{ option.nome }}
+        </template>
+      </v-select>
+      <div
+        v-if="isInvalido"
+        class="alert alert-danger d-flex align-items-center"
+        role="alert"
+      >
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
       </div>
@@ -30,9 +58,9 @@
         <button
           class="btn btn-primary m-2"
           type="submit"
-          v-on:click.prevent="salvarEstado"
+          v-on:click.prevent="salvarMunicipio"
         >
-        <i class="bi bi-clipboard2-check"></i>
+          <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
         <button
@@ -40,7 +68,7 @@
           type="submit"
           v-on:click.prevent="cancelar"
         >
-        <i class="bi bi-clipboard2-x"></i>
+          <i class="bi bi-clipboard2-x"></i>
           Cancelar
         </button>
       </div>
@@ -49,7 +77,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import municipioService from "@/services/municipioService";
+import estadoService from "../services/estadoService";
 export default {
   props: {
     propsMunicipio: Object,
@@ -59,78 +88,88 @@ export default {
       id: "",
       nome: "",
       isInvalido: false,
-      mensagem : '',
+      mensagem: "",
+      listaMunicipios: "",
+      estados: "",
     };
   },
   methods: {
-    async salvarEstado() {
+    async onSearchEstados(search, loading) {
+      if (search.length) {
+        loading(true);
+        await estadoService.buscar(search).then((response) => {
+          console.log(response);
+          this.estados = response.content;
+          loading(false);
+        });
+      }
+    },
+    getDados() {
+      return {
+        id: this.id,
+        nome: this.nome,
+        entrega: this.entrega,
+        estadoSelecionado: this.estadoSelecionado,
+      };
+    },
+    async salvarMunicipio() {
       if (this.nome === "") {
         this.isInvalido = true;
         this.mensagem = "Nome deve ser preenchido!!";
         return;
       }
       this.isInvalido = false;
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }
 
-    try{
+      try {
         if (this.id === "") {
-          //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/estado", {
-            id: this.id,
-            nome: this.nome,
-          }, config);
-          this.listaEstados = response.data;
+          const response = await municipioService.criar(this.getDados());
+          this.listaMunicipios = response;
         } else {
-          // alterar pelo PUT da API
-          const response = await axios.put(
-            `http://localhost:8080/estado/${this.id}`,
-            {
-              id: this.id,
-              nome: this.nome,
-            }
-          ,config );
-          this.listaEstados = response.data;
+          const response = await municipioService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaMunicipios = response;
         }
         this.$emit("salvar_municipio", {
-        id: this.id,
-        nome: this.nome,
-      });
+          id: this.id,
+          nome: this.nome,
+          entrega: this.entrega,
+          estadoSelecionado: this.estadoId,
+        });
 
-      this.id = "";
-      this.nome = "";
-    }catch(error){
-      //mesagens de erro
-       //exibe o objeto do error completo
-        // console.log (error);
-       //exibe o codigo do status de retorno       
-       // console.log (error.response.status);
-        //exibe o mensagem de erro personalidado do backend
-        // console.log (error.response.data.exception);
-      this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'EstadoDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
-        this.mensagem = error.message;
+        this.id = "";
+        this.nome = "";
+        this.entrega = "";
+        this.estadoSelecionado = "";
+      } catch (error) {
+        this.isInvalido = true;
+        if (error.response.status === 403) {
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        } else if (
+          error.response.status === 400 &&
+          error.response.data.exception === "MunicipioDuplicadoException"
+        ) {
+          this.mensagem = error.response.data.mensagem;
+        } else {
+          this.mensagem = error.message;
+        }
       }
-    }
-   },
+    },
     cancelar() {
       this.id = "";
       this.nome = "";
+      this.entrega = "";
+      this.estadoSelecionado = "";
       this.$emit("cancelar", true);
     },
   },
   mounted() {
-    if (this.propsEstado) {
-      this.id = this.propsEstado.id;
-      this.nome = this.propsEstado.nome;
+    if (this.propsMunicipio) {
+      this.id = this.propsMunicipio.id;
+      this.nome = this.propsMunicipio.nome;
+      this.entrega = this.propsMunicipio.entrega;
+      this.estadoSelecionado = this.propsMunicipio.estadoSelecionado;
     }
   },
   computed: {
