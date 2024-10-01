@@ -92,7 +92,7 @@ export default {
       this.isInvalido = false;
 
       try {
-        if (!this.nome) {
+        if (!this.id) {
           const response = await municipioService.criar(this.getDados());
           this.listaMunicipios = response;
         } else {
