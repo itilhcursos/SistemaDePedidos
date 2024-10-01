@@ -11,12 +11,8 @@
       </div>
       <div class="row">
         <div>
-          <FormMunicipio
-            v-if="formVisible"
-            :propsMunicipio="municipioEscolhido"
-            @cancelar="limpar"
-            @salvar_municipio="buscar"
-          />
+          <FormMunicipio v-if="formVisible" :propsMunicipio="municipioEscolhido" @cancelar="limpar"
+            @salvar_municipio="buscar" />
         </div>
       </div>
     </div>
@@ -46,17 +42,11 @@
             {{ municipio.estadoNome }}
           </td>
           <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterarMunicipio(municipio)"
-            >
+            <button class="btn btn-btn btn-primary m-2" @click="alterarMunicipio(municipio)">
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirMunicipio(municipio.id)"
-            >
+            <button class="btn btn-outline-danger m-2" @click="excluirMunicipio(municipio.id)">
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
           </td>
@@ -70,24 +60,14 @@
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
 
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
             {{ pagina }}
           </button>
 
 
         </div>
         <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25" />
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -156,7 +136,7 @@ export default {
       this.totalPages = response.data.totalPages;
       //console.log(this.totalPages);
     },
-    formatarEntrega(valor){
+    formatarEntrega(valor) {
       return Logico.toSimNao(valor);
     },
     limpar() {
@@ -167,31 +147,33 @@ export default {
       this.formVisible = !this.formVisible;
     },
     alterarMunicipio(municipio) {
-      this.municipioEscolhido = municipio;
+      this.municipioEscolhido = {
+        ...municipio,
+        estadoSelecionado: {
+          id: municipio.estadoId,      // Assumindo que 'estadoId' é a chave do estado
+          nome: municipio.estadoNome   // Assumindo que 'estadoNome' é o nome do estado
+        }
+      };
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
-      try{
-          const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
-          console.log(response.data);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
+      try {
+        const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
+        console.log(response.data);
+      } catch (error) {
+        if (error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
           alert(error.message);
         }
-      }     
+      }
       this.buscar();
     },
     irPara(pagina) {
