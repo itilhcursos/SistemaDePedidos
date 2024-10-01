@@ -11,12 +11,8 @@
       </div>
       <div class="row">
         <div>
-          <FormEstado
-            v-if="formVisible"
-            :propsEstado="estadoEscolhido"
-            @cancelar="limpar"
-            @salvar_estado="buscarEstados"
-          />
+          <FormEstado v-if="formVisible" :propsEstado="estadoEscolhido" @cancelar="limpar"
+            @salvar_estado="buscarEstados" />
         </div>
       </div>
     </div>
@@ -38,17 +34,11 @@
             {{ estado.nome }}
           </td>
           <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
-            >
+            <button class="btn btn-btn btn-primary m-2" @click="alterarEstado(estado)">
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
-            >
+            <button class="btn btn-outline-danger m-2" @click="excluirEstado(estado.id)">
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
           </td>
@@ -61,25 +51,12 @@
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
-
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
             {{ pagina }}
           </button>
-
-
         </div>
         <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25" />
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -115,7 +92,6 @@
 
 <script>
 import FormEstado from "./FormEstado.vue";
-import axios from "axios";
 import estadoService from "../services/estadoService"
 export default {
   components: {
@@ -137,15 +113,9 @@ export default {
     async buscarEstados() {
       this.estadoEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
 
-      const response = await estadoService.listar(this.pageNumber, this.pageSize, this. direction, this.property);
+      const response = await estadoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
 
-      const response2 = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      
       this.listaEstados = response.content;
       this.totalPages = response.totalPages;
     },
@@ -161,23 +131,25 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
-      try{
-          const response = await estadoService.apagar(id);
-          console.log(response)
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.mensagem);     
-        }else{
-          alert(error.message);
-        }
-      }     
+      try {
+        const response = await estadoService.apagar(id);
+      } catch (error) {
+        this.tratarErro(error);
+      }
       this.buscarEstados();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarEstados();
+    },
+    tratarErro(error) {
+      if (error.response.status === 403) {
+        alert("Usuário não identificado! Faça o login!!!");
+      } else if (error.response.status === 400) {
+        alert(error.response.mensagem);
+      } else {
+        alert(error.message);
+      }
     },
   },
   mounted() {
