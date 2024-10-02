@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.NomeEstadoInvalidoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
@@ -64,6 +65,11 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
     public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
+    }
+
+    public FormaPagamentoDTO testCriarFormaPagamento(FormaPagamentoDTO testeDTO) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'testCriarFormaPagamento'");
     }  
     
 }
