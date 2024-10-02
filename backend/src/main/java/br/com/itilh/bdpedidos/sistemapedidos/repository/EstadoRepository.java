@@ -28,8 +28,8 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
     @Query("FROM Estado e WHERE e.nome like %?1")
     List<Estado> findByMinhaQuery(String nome);
     
-    // @Override
-    // Page<Estado> findAll(Pageable pageable);
+    @Override
+    Page<Estado> findAll(Pageable pageable);
 
     boolean existsByNome (String nome);
 }
