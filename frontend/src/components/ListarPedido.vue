@@ -49,13 +49,13 @@
                 {{ pedido.numero }}
             </td>                   
             <td>
-                {{ pedido.dataCompra }}
+                {{ formatar(pedido.dataCompra) }}
             </td>          
             <td>
-                {{ pedido.dataEntrega }}
+                {{ formatar(pedido.dataEntrega) }}
             </td>  
             <td>
-                {{ pedido.dataPagamento }}
+                {{ formatar(pedido.dataPagamento) }}
             </td>
             <td class="d-flex justify-content-end">
             <button
@@ -131,6 +131,7 @@
 
 <script>
 import pedidoService from '@/services/pedidoService';
+import Data from "../utils/Data"
 import FormPedido from "./FormPedido.vue";
 export default {
   components: {
@@ -186,6 +187,9 @@ export default {
       this.pageNumber = pagina;
       this.buscar();
     },
+    formatar(data){
+      return Data.formatoDMA(data);
+    }
   },
   mounted() {
     this.buscar();

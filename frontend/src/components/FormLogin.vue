@@ -104,8 +104,5 @@ export default {
       this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
     },
   },
-
-  
 };
 </script>
-

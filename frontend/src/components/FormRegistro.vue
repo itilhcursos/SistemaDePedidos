@@ -93,7 +93,7 @@ export default {
       this.id = "";
       this.nome = "";
     },
-    Registry() {
+    registry() {
       localStorage.setItem('login', "");
       localStorage.setItem('senha', "");
       localStorage.setItem('role', "");

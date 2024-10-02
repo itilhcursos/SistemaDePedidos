@@ -9,6 +9,12 @@
         return{};
     },
     methods:{
+      registry() {
+        localStorage.setItem('login', "");
+        localStorage.setItem('senha', "");
+        localStorage.setItem('role', "");
+        this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
+      },
       logout() {
         localStorage.setItem('token', "");
         localStorage.removeItem('token', "");
@@ -18,7 +24,8 @@
       },
     },
     mounted(){
-        this.logout();
+      this.registry();
+      this.logout();
     }
  };
 </script>
