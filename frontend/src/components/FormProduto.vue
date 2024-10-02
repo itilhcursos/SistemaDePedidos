@@ -47,6 +47,17 @@
             <option :value="false">Não</option>
           </select>
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">URL Imagem</label>
+                <input
+                class="form-control"
+                type="text"
+                v-model="urlImagem"
+                placeholder="URL Imagem"
+                />
+            </div>
+
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
                 <div class="p-2">{{ mensagem}}</div>
@@ -91,6 +102,7 @@ export default {
             descricao: "",
             isInvalido: false,
             mensagem: "",
+            
         };
     },
 
@@ -115,7 +127,8 @@ export default {
                         descricao: this.descricao, 
                         quantidadeEstoque: this.quantidadeEstoque, 
                         precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo
+                        ativo: this.ativo,
+                        urlImagem: this.urlImagem,
                     }, config);
                     this.listaProdutos = response.data;
                 } else {
@@ -125,9 +138,10 @@ export default {
                         descricao: this.descricao, 
                         quantidadeEstoque: this.quantidadeEstoque, 
                         precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo
+                        ativo: this.ativo,
+                        urlImagem: this.urlImagem,
                     }, config);
-                    this.listaProdutos = response.data;
+                    this.listaEstados = response.data;
                 }
 
                 this.$emit("salvar_produto", {
@@ -135,13 +149,16 @@ export default {
                     descricao: this.descricao, 
                     quantidadeEstoque: this.quantidadeEstoque, 
                     precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
+                    ativo: this.ativo,
+                    urlImagem: this.urlImagem,
                 });
                 this.id = "";
                 this.descricao = "";
                 this.quantidadeEstoque = "";
                 this.precoUnidadeAtual = ""; 
                 this.ativo = "";
+                this.urlImagem ="";
+
             }catch(error){
                 this.isInvalido = true;
                 if(error.response.status === 403){        
@@ -160,6 +177,7 @@ export default {
             this.quantidadeEstoque = "";
             this.precoUnidadeAtual = ""; 
             this.ativo = "";
+            this.urlImagem = "";
             this.$emit("cancelar", true);
         },
 
@@ -179,6 +197,7 @@ export default {
             this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
             this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual; 
             this.ativo = this.propsProduto.ativo;
+            this.urlImagem = this.propsProduto.urlImagem;
         }
     },
 

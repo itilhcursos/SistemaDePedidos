@@ -69,7 +69,7 @@
 
 <script>
 import axios from "axios";
-
+import estadoService from "@services/estadoService";
 export default {
   props: {
     propsMunicipio: Object,
@@ -161,10 +161,8 @@ export default {
     },
 
     async buscarEstados(){
-      const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=1&pageSize=100&direction=ASC&property=id`
-      );
-      this.estados = response.data.content;
+      const response = await estadoService.listar(1, 1000, 'ASC', 'id');
+      this.estados = response.content;
     }
 
   },
