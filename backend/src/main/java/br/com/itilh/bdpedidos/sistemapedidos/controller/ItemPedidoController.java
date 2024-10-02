@@ -58,7 +58,7 @@ ItemPedidoService itemPedidoService;
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return itemPedidoService.listarItemPedidoPorProdutoNome(nome, pageable);
     }
-    @GetMapping("/item-pedidos/produto-id/{id}")
+    /* @GetMapping("/item-pedidos/produto-id/{id}")
     public Page<ItemPedidoDTO> getItemPedidosPorProdutoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -67,7 +67,7 @@ ItemPedidoService itemPedidoService;
     ){
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return itemPedidoService.listarItemPedidoPorProdutoId(id, pageable);
-    }
+    } */
     @GetMapping("/item-pedido/{id}")
     public ItemPedidoDTO getItemPedidoPorId(@PathVariable BigInteger id) throws Exception {
         return itemPedidoService.buscarItemPedidoPorId(id);
