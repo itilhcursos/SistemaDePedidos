@@ -1,5 +1,5 @@
 <script setup>
-//import ListarProduto from '../components/ListarProduto.vue'
+import ListarCliente from '../components/ListarCliente.vue'
 </script>
 
 <template>
