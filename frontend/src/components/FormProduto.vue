@@ -141,14 +141,12 @@ export default {
         } catch (error) {this.isInvalido = true;
             
             if (error.response.status === 403) {
-                this.mensagem = "Usuário não identificado! Faça o login!!!";
-            } else if (
-                error.response.status === 400 &&
-                error.response.data.exception === "PedidoDuplicadoException"
-            ) {
-                this.mensagem = error.response.data.mensagem;
+              this.mensagem = "Usuário não identificado! Faça o login!!!";
+            } else if ( error.response.status === 400 && 
+                        error.response.data.exception === "ProdutoDuplicadoException") {
+              this.mensagem = error.response.data.mensagem;
             } else {
-                this.mensagem = error.message;
+              this.mensagem = error.message;
             }
         }
         
