@@ -29,10 +29,13 @@
           <th scope="col">Cliente</th>
           <th scope="col">Forma de Pagamento</th>
           <th scope="col">Data de Pagamento</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col">Data de Compra</th>
+          <th scope="col">Data de Entrega</th>
+          <th scope="col" class="d-flex justify-content-end">Itens</th>
         </tr>
       </thead>
       <tbody>
+        
         <tr v-for="pedido in listaPedidos" :key="pedido.id" scope="row">
           <th>
             {{ pedido.id }}
@@ -47,22 +50,35 @@
             {{ pedido.formaPagamentoDescricao }}
           </td>
           <td>
-            {{ pedido.dataPagamento }}
+            {{ formatar(pedido.dataPagamento) }}
           </td>
+          <td>
+            {{ formatar(pedido.dataCompra) }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataEntrega) }}
+          </td>
+          
           <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterar(pedido)"
-            >
-              <i class="bi bi-clipboard-pulse"></i> Alterar
-            </button>
-
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluir(pedido.id)"
-            >
-              <i class="bi bi-clipboard2-minus"></i> Excluir
-            </button>
+              <table class="table table-dark table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Itens</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Cliente</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="itens in pedido.itens" :key="itens.id" scope="row">
+                    <th>
+                      <img :src=itens.produtoUrlImagem height ="50 px">
+                    </th>
+                    <td>
+                      {{ itens.produtoDescricao }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
           </td>
         </tr>
       </tbody>
@@ -104,7 +120,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="cliente.nomeRazaoSocial">Nome RazãoSocial</option>
+            <option value="formaPagamento.descricao">FormaPagamento Descrição </option>
           </select>
         </div>
         <div class="col-auto">
@@ -126,7 +143,7 @@
 
 
 <script>
-// import FormEstado from "./FormEstado.vue";
+import Data from '@/utils/Data';
 import pedidoService from '@/services/pedidoService';
 export default {
   components: {
@@ -198,6 +215,9 @@ export default {
           }
       }
       this.buscar();
+    },
+    formatar(data){
+      return Data.formatoDMA(data);
     },
 
     irPara(pagina) {
