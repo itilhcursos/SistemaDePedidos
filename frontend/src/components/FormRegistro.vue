@@ -8,7 +8,7 @@
           <input
             class="form-control"
             type="text"
-            v-model="registro"
+            v-model="login"
             placeholder="cadastrar usuário"
           />
         </div>
@@ -59,7 +59,7 @@
   export default {
     data() {
       return {
-        registro: "",
+        login: "",
         senha: "",
         role: "",
         isInvalido : false,
@@ -68,19 +68,19 @@
     },
     methods: {
       async registrar() {
-        if (this.registro === "" || this.senha === "" || this.role === "") {
+        if (this.login === "" || this.senha === "" || this.role === "") {
           return;
         }
   
         try{
           const response = await axios.post("http://localhost:8080/auth/registro", {
-              registro: this.registro,
+              login: this.login,
               senha: this.senha,
               role: this.role,
             });
           const dados = response.data;
           console.log(dados);
-          localStorage.setItem('registro', dados.registro);
+          localStorage.setItem('login', dados.login);
           localStorage.setItem('senha', dados.senha);
           localStorage.setItem('role', dados.role);
           this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
@@ -94,13 +94,13 @@
         this.nome = "";
       },
       Registry() {
-        localStorage.setItem('registro', "");
+        localStorage.setItem('login', "");
         localStorage.setItem('senha', "");
           localStorage.setItem('role', "");
         this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
       },
       cancelar() {
-        this.registro = "";
+        this.login = "";
         this.senha = "";
         this.role = "";
       },
