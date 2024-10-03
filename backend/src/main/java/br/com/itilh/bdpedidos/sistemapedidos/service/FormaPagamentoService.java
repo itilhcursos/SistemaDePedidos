@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 @Service
