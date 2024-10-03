@@ -38,10 +38,23 @@ public class ProdutoController {
         return produtoService.listarProdutos(pageable);
     }
 
+    @GetMapping("/produtos/{txtBusca}")
+    public Page<ProdutoDTO> getBuscarProdutos(
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property,
+        @PathVariable String txtBusca
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
+        return produtoService.buscar(pageable, txtBusca);
+    }
+
     @GetMapping("/produto/{id}")
     public ProdutoDTO getProdutoPorId(@PathVariable BigInteger id) throws Exception {
         return produtoService.buscarProdutoPorId(id);
-    }    
+    } 
+    
 
     @PostMapping("/produto")
     public ProdutoDTO criarProduto(@RequestBody ProdutoDTO entity) throws Exception {

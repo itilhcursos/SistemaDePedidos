@@ -44,9 +44,16 @@ const listar = async (path, pageNumber, pageSize, direction, property) =>{
 
 }
 
+const buscar = async (path, txtBusca, pageNumber, pageSize, direction, property) =>{
+
+    return await axios.get(url + path +`/${txtBusca}?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`);
+
+}
+
 export default{ //torna os métodos publicos.
     criar,
     atualizar,
     apagar,
-    listar
+    listar,
+    buscar
 }

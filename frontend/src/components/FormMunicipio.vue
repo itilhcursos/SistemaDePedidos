@@ -24,7 +24,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Selecione o Estado </label>
-        <select v-model="estadoSelected">
+        <select v-model="estadoSelected" class="form-select">
           <option v-for="estado in estados" :value="estado.id" :key="estado.id"> {{ estado.nome }}</option>
         </select>
       </div>

@@ -16,11 +16,12 @@
                     <FormPedido
                     v-if="formVisible"
                     :propsPedido="pedidoEscolhido"
+                    @flip="flipFormVisible"
                     @salvar="listarPedidos"
-                    @cancelar="cancelar"
                     />
                 </div>
             </div>
+
 
             <table class="table table-dark table-striped" v-if="!formVisible">
                 <thead>
@@ -54,18 +55,17 @@
                             {{ formatar(pedido.dataCompra) }}
                         </td>
                         <td>
-                            {{ formatar(pedido.dataEntrega) }}
+                            {{ pedido.dataEntrega }}
                         </td>
                         <td>
-                            {{ formatar(pedido.dataPagamento) }}
-                        </td>
-                        
-                        <td class="d-flex justify-content-end">
-                            <button
+                            {{ pedido.dataPagamento }}
+                        </td>       
+                        <button
                             class="btn btn-btn btn-primary m-2"
                             @click="alterar(pedido)"
-                        > <i class="bi bi-clipboard-pulse"></i> Alterar Pedido
+                        >
                         </button>
+                        <td class="d-flex justify-content-end">
                             <table class="table table-dark table-striped">
                                 <thead>
                                     <tr>
@@ -85,6 +85,7 @@
                                 </tbody>
                             </table>
                         </td>
+
                     </tr>
                 </tbody>
             </table>
@@ -163,12 +164,12 @@ export default {
         formatar(data){
             return Data.formatoDMA(data);
         },
-        flipFormVisible() {
+        flipFormVisible(){
             this.formVisible = !this.formVisible;
         },
-        cancelar() {
+        limpar() {
             this.pedidoEscolhido = null;
-            this.formVisible = false;
+            this.flipFormVisible();
         },
         irPara(pagina) {
             this.pageNumber = pagina;
