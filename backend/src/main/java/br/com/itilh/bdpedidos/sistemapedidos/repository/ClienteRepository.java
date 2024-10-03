@@ -11,7 +11,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 
 @Repository
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
-<<<<<<< HEAD
     Page<Cliente> findByMunicipioId(BigInteger id, Pageable pageable);
     Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
     
@@ -19,8 +18,3 @@ public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
     boolean existsByCpf(String cpf);
     boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger municipioId);
 }
-=======
-
-Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);
-}
->>>>>>> developer
