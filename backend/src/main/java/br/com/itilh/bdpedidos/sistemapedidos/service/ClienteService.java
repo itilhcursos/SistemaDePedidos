@@ -1,19 +1,26 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+<<<<<<< HEAD
 import java.math.BigInteger;
 
+=======
+>>>>>>> developer
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+<<<<<<< HEAD
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+=======
+>>>>>>> developer
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
 @Service
+<<<<<<< HEAD
 public class ClienteService extends GenericService<Cliente, ClienteDTO> {
 
     @Autowired
@@ -66,4 +73,15 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
             throw new ClienteDuplicadoException("Nome/Razão Social", origem.getNomeRazaoSocial());
         }
     }
+=======
+public class ClienteService extends GenericService <Cliente, ClienteDTO>{
+
+    @Autowired
+    ClienteRepository repositorio;
+
+    public Page<ClienteDTO> buscar (Pageable pageable, String txtBusca ){
+        return toPageDTO(repositorio.findByNomeRazaoSocialContainingIgnoreCase(pageable , txtBusca));
+    }
+
+>>>>>>> developer
 }

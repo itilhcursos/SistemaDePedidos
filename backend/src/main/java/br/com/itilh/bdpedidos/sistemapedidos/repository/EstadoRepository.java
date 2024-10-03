@@ -27,5 +27,7 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
     List<Estado> findByMinhaQuery(String nome);
     
 
+    Page<Estado> findByNomeStartingWithIgnoreCase(Pageable pageable, String nome);
+
     boolean existsByNome (String nome);
 }

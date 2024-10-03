@@ -28,13 +28,17 @@ import lombok.ToString;
 @Table(name = "tb_itens_pedidos")
 public class ItemPedido {
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> developer
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_itens_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
     private BigInteger id;
 
     @ManyToOne
+<<<<<<< HEAD
     @JoinColumn(name = "id_produto")
     private Produto produto;
 
@@ -48,4 +52,19 @@ public class ItemPedido {
     @Column(name = "nu_preco_unidade_atual")
     private BigDecimal precoUnidadeAtual;
     
+=======
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
+
+    @ManyToOne
+    @JoinColumn(name = "id_produto")
+    private Produto produto;
+
+    @Column(name = "dbl_quantidade_estoque")
+    private Double quantidadeEstoque;
+    
+    @Column(name = "nu_preco_unidade_atual")
+    private BigDecimal precoUnidadeAtual;
+
+>>>>>>> developer
 }

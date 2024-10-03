@@ -5,14 +5,9 @@ import java.math.BigInteger;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
+import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, BigInteger> {
+public interface ItemPedidoRepository extends JpaRepository<ItemPedido, BigInteger> {
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> developer
 }

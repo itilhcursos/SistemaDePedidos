@@ -4,13 +4,19 @@
       <div class="col-10">
         <h3>Pedidos</h3>
       </div>
+<<<<<<< HEAD
       <!-- <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+=======
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novo" class="btn btn-success">
+>>>>>>> developer
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
+<<<<<<< HEAD
           <FormEstado
             v-if="formVisible"
             :propsEstado="estadoEscolhido"
@@ -19,6 +25,16 @@
           />
         </div>
       </div> -->
+=======
+          <FormPedido
+            v-if="formVisible"
+            :propsPedido="pedidoEscolhido"
+            @cancelar="limpar"
+            @salvar_pedido="buscar"
+          />
+        </div>
+      </div> 
+>>>>>>> developer
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
@@ -28,10 +44,17 @@
           <th scope="col">Número</th>
           <th scope="col">Cliente</th>
           <th scope="col">Forma Pagamento</th>
+<<<<<<< HEAD
           <th scope="col">data Compra</th>
           <th scope="col">data Entrega</th>
           <th scope="col">data Pagamento</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
+=======
+          <th scope="col">Data Compra</th>
+          <th scope="col">Data Entrega</th>
+          <th scope="col">Data Pagamento</th>
+          <th scope="col" class="d-flex justify-content-end">Itens</th>
+>>>>>>> developer
         </tr>
       </thead>
       <tbody>
@@ -39,6 +62,7 @@
           <th>
             {{ pedido.id }}
           </th>
+<<<<<<< HEAD
           <td>
             {{ pedido.numero }}
           </td>
@@ -58,12 +82,34 @@
             {{ pedido.dataPagamento }}
           </td>         
           <td class="d-flex justify-content-end">
+=======
+          <th>
+            {{ pedido.numero }}
+          </th>
+          <td>
+            {{ pedido.clienteNomeRazaoSocial }}
+          </td>
+          <td>
+            {{ pedido.formaPagamentoDescricao }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataCompra) }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataEntrega) }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataPagamento) }}
+          </td>
+          <td class="d-flex justify-content-end">            
+>>>>>>> developer
             <button
               class="btn btn-btn btn-primary m-2"
               @click="alterar(pedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
+<<<<<<< HEAD
 
             <button
               class="btn btn-outline-danger m-2"
@@ -71,6 +117,26 @@
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
+=======
+            <table class="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Itens</th>
+                  <th scope="col">Descricão</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="itens in pedido.itens" :key="itens.id" scope="row">
+                  <th>
+                    <img :src=itens.produtoUrlImagem height="50px">
+                  </th>
+                  <th>
+                    {{ itens.produtoDescricao }}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+>>>>>>> developer
           </td>
         </tr>
       </tbody>
@@ -112,7 +178,12 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
+<<<<<<< HEAD
             <option value="nome">Nome</option>
+=======
+            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
+            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
+>>>>>>> developer
           </select>
         </div>
         <div class="col-auto">
@@ -122,7 +193,11 @@
           </select>
         </div>
         <div class="col-auto">
+<<<<<<< HEAD
           <button @click.prevent="buscarEstados" class="btn btn-success">
+=======
+          <button @click.prevent="buscar" class="btn btn-success">
+>>>>>>> developer
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -134,11 +209,20 @@
 
 
 <script>
+<<<<<<< HEAD
 // import FormEstado from "./FormEstado.vue";
 import pedidoService from "@/services/pedidoService";
 export default {
   components: {
    // FormEstado,
+=======
+import FormPedido from "./FormPedido.vue";
+import Data from "../utils/Data"
+import pedidoService from "@/services/pedidoService";
+export default {
+  components: {
+    FormPedido,
+>>>>>>> developer
   },
   data() {
     return {
@@ -164,11 +248,19 @@ export default {
       this.pedidoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
+<<<<<<< HEAD
     novoEstado() {
       this.formVisible = !this.formVisible;
     },
     alterar(estado) {
       this.pedidoEscolhido = estado;
+=======
+    novo() {
+      this.formVisible = !this.formVisible;
+    },
+    alterar(pedido) {
+      this.pedidoEscolhido = pedido;
+>>>>>>> developer
       this.formVisible = true;
     },
     async excluir(id) {
@@ -190,6 +282,12 @@ export default {
       this.pageNumber = pagina;
       this.buscar();
     },
+<<<<<<< HEAD
+=======
+    formatar(data){
+      return Data.formatoDMA(data);
+    }
+>>>>>>> developer
   },
   mounted() {
     this.buscar();

@@ -48,11 +48,14 @@ const router = createRouter({
       path: '/pedidos',
       name: 'pedidos',
       component:()=>import('../views/PedidoView.vue')
+<<<<<<< HEAD
     },
     {
       path: '/clientes',
       name: 'clientes',
       component:()=>import('../views/ClienteView.vue')
+=======
+>>>>>>> developer
     }
   ]
 })

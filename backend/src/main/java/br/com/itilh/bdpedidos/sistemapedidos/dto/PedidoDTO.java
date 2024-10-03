@@ -16,6 +16,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class PedidoDTO {
+<<<<<<< HEAD
     
     private BigInteger id;
     private BigInteger numero;
@@ -26,6 +27,23 @@ public class PedidoDTO {
     private LocalDate dataCompra;
     private LocalDate dataEntrega;  
     private LocalDate dataPagamento;
+=======
+
+    private BigInteger id;
+   
+    private BigInteger clienteId;
+    private String clienteNomeRazaoSocial;
+
+    private BigInteger formaPagamentoId;
+    private String formaPagamentoDescricao;
+    
+    
+    private BigInteger numero;
+    private LocalDate dataCompra;
+    private LocalDate dataEntrega;
+    private LocalDate dataPagamento;
+    
+>>>>>>> developer
     private List<ItemPedidoDTO> itens;
 
 }

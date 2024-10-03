@@ -6,7 +6,10 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+<<<<<<< HEAD
 import jakarta.persistence.FetchType;
+=======
+>>>>>>> developer
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,17 +32,24 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "tb_pedidos")
+<<<<<<< HEAD
 public class Pedido {
 
+=======
+public class Pedido {   
+>>>>>>> developer
     
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
     private BigInteger id;
 
+<<<<<<< HEAD
     @Column(name = "int_numero")
     private BigInteger numero;
 
+=======
+>>>>>>> developer
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
@@ -48,16 +58,30 @@ public class Pedido {
     @JoinColumn(name = "id_forma_pagamento")
     private FormaPagamento formaPagamento;
 
+<<<<<<< HEAD
+=======
+    @Column(name = "int_numero")
+    private BigInteger numero;
+
+>>>>>>> developer
     @Column(name = "dt_compra")
     private LocalDate dataCompra;
 
     @Column(name = "dt_entrega")
     private LocalDate dataEntrega;
+<<<<<<< HEAD
     
     @Column(name = "dt_pagamento")
     private LocalDate dataPagamento;
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
+=======
+
+    @Column(name = "dt_pagamento")
+    private LocalDate dataPagamento;
+
+    @OneToMany(mappedBy = "pedido")
+>>>>>>> developer
     private List<ItemPedido> itens;
 
 }
