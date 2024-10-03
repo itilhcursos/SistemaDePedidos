@@ -26,8 +26,8 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome</th>
-          <th scope="col">Entrega</th>
           <th scope="col">Estado</th>
+          <th scope="col">Entrega</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -40,10 +40,10 @@
             {{ municipio.nome }}
           </td>
           <td>
-            {{ formatarEntrega(municipio.entrega) }}
+            {{ municipio.estadoNome }}
           </td>
           <td>
-            {{ municipio.estadoNome }}
+            {{ formatarEntrega(municipio.entrega) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
