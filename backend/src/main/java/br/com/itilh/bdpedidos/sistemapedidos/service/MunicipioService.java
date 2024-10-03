@@ -42,10 +42,20 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
         return toDTO(repository.save(toEntity(origem)));
     }
 
-    private void validar(MunicipioDTO origem) {
+    private void validar(MunicipioDTO dto) throws Exception {
         // se já existe municipio com mesmo nome e no mesmo estado
-        if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
-          throw new MunicipioDuplicadoException(origem.getNome());
+
+        if (repository.existsByNomeAndEstadoId(dto.getNome(), dto.getEstadoId())) {
+            if (dto.getId() == null) {
+                throw new MunicipioDuplicadoException(dto.getNome());
+            } else {
+                Municipio m = repository.getReferenceById(dto.getId());
+                if (!m.getNome().equalsIgnoreCase(dto.getNome())) {
+                    throw new MunicipioDuplicadoException(dto.getNome());
+                }
+            }
+        }
+
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
