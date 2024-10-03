@@ -3,7 +3,7 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Forma de Pagamento</h4>
     <hr />
     <form>
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label class="form-label">Id</label>
         <input
           class="form-control"
@@ -12,8 +12,9 @@
           :disabled="true"
           placeholder="Id Pagamento"
         />
-      </div>
-      <div class="mb-3">
+      </div> -->
+      <div class="row">
+      <div class="col-md-6 mb-3">
         <label class="form-label">Descrição</label>
         <input
           class="form-control"
@@ -22,12 +23,13 @@
           placeholder="Descrição"
         />
       </div>
-      <div class="mb-3">
+      <div class="col-md-6 mb-3">
         <label class="form-label">Ativo</label>
           <select v-model="ativo" class="form-select">
             <option :value="true">Sim</option>
             <option :value="false">Não</option>
           </select>
+        </div>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
