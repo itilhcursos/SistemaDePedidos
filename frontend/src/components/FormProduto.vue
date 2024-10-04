@@ -139,7 +139,7 @@ export default {
                         precoUnidadeAtual: this.precoUnidadeAtual, 
                         ativo: this.ativo
                     }, config);
-                    this.listaEstados = response.data;
+                    this.listaProdutos = response.data;
                 }
 
                 this.$emit("salvar_produto", {

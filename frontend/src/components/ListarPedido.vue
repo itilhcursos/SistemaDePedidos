@@ -32,8 +32,8 @@
                         <th scope="col">Data da Compra</th>
                         <th scope="col">Data da Entrega</th>
                         <th scope="col">Data do Pagamento</th>
-                        <th scope="col" class="d-flex justify-content-end">Itens</th>
-                        <!-- <th scope="col" class="d-flex justify-content-end">Ações</th> -->
+                        <th scope="col">&emsp;Ações</th>
+                        <!-- <th scope="col" class="d-flex justify-content-end">Itens do Pedido</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -61,13 +61,19 @@
                         </td>
                         
                         <td class="d-flex justify-content-end">
-                            <button
-                            class="btn btn-btn btn-primary m-2"
-                            @click="alterar(pedido)"
-                        > <i class="bi bi-clipboard-pulse"></i> Alterar Pedido
-                        </button>
+                            <th>
+                                <button
+                                class="btn btn-btn btn-primary m-2"
+                                @click="alterar(pedido)"> <i class="bi bi-clipboard-pulse"></i> Alterar
+                                </button>
+                                <button
+                                class="btn btn-btn btn-primary m-2"
+                                @click="alterar(pedido)"> <i class="bi bi-clipboard2-minus"></i> Excluir
+                                </button>
+                            </th>
+                            
                             <table class="table table-dark table-striped">
-                                <thead>
+                                <thead><pre>ITENS DO PEDIDO</pre>
                                     <tr>
                                         <th scope="col">Imagem</th>
                                         <th scope="col">Descricao</th>

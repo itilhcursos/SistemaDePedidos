@@ -34,12 +34,12 @@
             <input class="form-control" type="date" v-model="dataCompra" placeholder="Data Compra" />
           </div>
           <div class="col">
-            <label class="form-label">Data Entrega</label>
-            <input class="form-control" type="date" v-model="dataEntrega" placeholder="Data Entrega" />
-          </div>
-          <div class="col">
             <label class="form-label">Data Pagamento</label>
             <input class="form-control" type="date" v-model="dataPagamento" placeholder="Data Pagamento" />
+          </div>
+          <div class="col">
+            <label class="form-label">Data Entrega</label>
+            <input class="form-control" type="date" v-model="dataEntrega" placeholder="Data Entrega" />
           </div>
         </div>
         <div class="mb-3">
@@ -142,6 +142,10 @@
           <i class="bi bi-exclamation-triangle-fill"></i>
           <div class="p-2">{{ mensagem }}</div>
         </div>
+        <div v-if="isInvalidoItemPedido" class="alert alert-danger d-flex align-items-center" role="alert">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <div class="p-2">{{ mensagem }}</div>
+        </div>
         <div class="mb-3 d-flex justify-content-end">
           <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvar">
             <i class="bi bi-clipboard2-check"></i>
@@ -181,6 +185,7 @@
         itens: [],
   
         isInvalido: false,
+        isInvalidoItemPedido: false,
         isLoading: false,
         mensagem: "",
         optionsCliente: [],
@@ -228,36 +233,45 @@
       getDados() {
         return {
           id: this.id,
-          nome: this.nome,
+          clienteId: this.selectedClientee,
+          formaPagamentoId: this.selectedFormaPagamento,
+          numero: this.numero,
+          dataCompra: this.dataCompra,
+          dataEntrega: this.dataEntrega,
+          dataPagamento: this.dataPagamento,
+          itens: this.itens
         };
       },
       async salvar() {
         console.log(this.selectedCliente, this.selectedProduto);
-        // if (this.nome === "") {
-        //   this.isInvalido = true;
-        //   this.mensagem = "Nome deve ser preenchido!!";
-        //   return;
-        // }
-        // this.isInvalido = false;
+        console.log("AQUI", this.clienteId === "", this.formaPagamentoId === "", this.numero === "", this.dataCompra === "", this.dataEntrega === "", this.dataPagamento === "", this.itens === "")
+        if (this.clienteId === "" || this.formaPagamentoId === "" || this.numero === "" || this.dataCompra === "" || this.dataEntrega === "" || this.dataPagamento === "" || this.itens === "") {
+          this.isInvalido = true;
+          this.mensagem = "Todos os campos devem ser preenchidos.";
+          return;
+        }
+        this.isInvalido = false;
   
         try {
           if (this.id === "") {
-            //  const response = await estadoService.criar(this.getDados());
-            //  this.options = response;
+            const response = await pedidoService.criar(this.getDados());
+            this.options = response;
           } else {
-            // const response = await estadoService.atualizar(
-            //   this.id,
-            //   this.getDados()
-            // );
-            //this.listaEstados = response;
+            const response = await pedidoService.atualizar(this.id, this.getDados());
+            this.listaPedidos = response;
           }
           this.$emit("salvar_pedido", {
             id: this.id,
-            nome: this.nome,
+            clienteId: this.clienteId,
+            formaPagamentoId: this.formaPagamentoId,
+            numero: this.numero,
+            dataCompra: this.dataCompra,
+            dataEntrega: this.dataEntrega,
+            dataPagamento: this.dataPagamento,
+            itens: this.itens
           });
   
-          this.id = "";
-          this.nome = "";
+          this.limparCampos();
         } catch (error) {
           this.isInvalido = true;
           if (error.response.status === 403) {
@@ -272,35 +286,38 @@
         }
       },
       cancelar() {
-        this.id = "";
-        this.nome = "";
+        this.limparCampos();
         this.$emit("cancelar", true);
       },
-      async incluirItem(){
-          const itemPedido = {
-                id : null,
-                pedidoId : this.id,
-                produtoId : this.selectedProduto.id,
-                produtoDescricao : this.selectedProduto.descricao,
-                produtoUrlImagem : this.selectedProduto.urlImagem,
-                quantidadeEstoque : this.quantidadeItem,
-                precoUnidadeAtual : null,
-              }
-          console.log(itemPedido);
+      async incluirItem(){ //TODO: Somente fazer a inclusão real no BD quando o Pedido for feito!
+        const itemPedido = {
+          id : null,
+          pedidoId : this.id,
+          produtoId : this.selectedProduto.id,
+          produtoDescricao : this.selectedProduto.descricao,
+          produtoUrlImagem : this.selectedProduto.urlImagem,
+          quantidadeEstoque : this.quantidadeItem,
+          precoUnidadeAtual : null,
+        }
+        console.log(itemPedido);
+        if (this.pedidoId !== null){
           try{
             const response = await itemPedidoService.criar(itemPedido);
             // lista de itens na tela
             this.itens.push(response); // Coloca o response (um itemPedido) no array 'itens'
-          }catch(error){
+          } catch(error){
             if(error.response.status === 403){        
-            alert("Usuário não identificado! Faça o login!!!");
+              alert("Usuário não identificado! Faça o login!!!");
             }else if(error.response.status === 400 ){
               alert(error.response.data.mensagem);     
             }else{
               alert(error.message);
+            }
           }
+        } else {
+          this.isInvalidoItemPedido = true;
+          this.mensagem = "NÃO FAÇA ISSO";
         }
-  
       },
       async excluirItemPedido(id){
         try{
@@ -323,6 +340,16 @@
       },
       formatarReaisBD(valor){
         return Monetario.toBD(valor);
+      },
+      limparCampos(){
+        this.id = "";
+        this.clienteId = "";
+        this.formaPagamentoId = "";
+        this.numero = "";
+        this.dataCompra = "";
+        this.dataEntrega = "";
+        this.dataPagamento = "";
+        this.itens = "";
       }
     },
     mounted() {
