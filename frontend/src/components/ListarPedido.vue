@@ -2,11 +2,11 @@
   <div class="container">
     <div class="row">
         <div class="col-10">
-          <h3>Pedidos</h3>
+          <h3>PEDIDOS</h3>
         </div>
         <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoPedido" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
+          <i class="bi bi-clipboard-plus"></i> Incluir
         </button>
       </div>
       <div class="row">
@@ -31,7 +31,7 @@
           <th scope="col">data Compra</th>
           <th scope="col">data Entrega</th>
           <th scope="col">data Pagamento</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col" class="d-flex justify-content-center">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -57,9 +57,9 @@
             <td>
                 {{ formatar(pedido.dataPagamento) }}
             </td>
-            <td class="d-flex justify-content-end">
+            <td class="d-flex justify-content-center">
             <button
-              class="btn btn-warning m-2"
+              class="btn btn-outline-warning m-2"
               @click="alterar(pedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar

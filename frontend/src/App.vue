@@ -55,16 +55,15 @@ import { RouterLink, RouterView } from "vue-router";
 <style scoped>
 
 img{
-  width: 200px;
-  height: 15s0px;
+  width: 160px;
+  height: 130px;
   margin: auto;
   display: inline-block;
-
 }
 
 nav {
     text-align: left;
-    font-size: 1rem;
+    font-size: 0.9rem;
     padding: 1rem 0;
     margin-top: 1rem;
     background: #23232e;

@@ -89,12 +89,9 @@
 import produtoService from "@/services/produtoService";
 export default {
 
-
     props: {
         propsProduto: Object,
     },
-
-
     data() {
         return {
             id: "",
@@ -104,8 +101,6 @@ export default {
             mensagem: "",
         };
     },
-
-
     methods: {
         async salvarProduto() {
             if (this.descricao === "") {
@@ -151,7 +146,6 @@ export default {
         }
         
     },
-
         cancelar() {
             this.id = "";
             this.descricao = "";
@@ -162,8 +156,6 @@ export default {
             this.$emit("cancelar", true);
         },
     },
-
-
     mounted(){
         if (this.propsProduto) {
             this.id = this.propsProduto.id;
@@ -174,8 +166,6 @@ export default {
             this.ativo = this.propsProduto.ativo;
         }
     },
-
-
     computed: {
         getAcao(){
             return this.id === "" ? "Incluir" : "Alterar";

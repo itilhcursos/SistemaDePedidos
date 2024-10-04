@@ -6,7 +6,7 @@
       </div>
       <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
+          <i class="bi bi-clipboard-plus"></i> Incluir
         </button>
       </div>
       <div class="row">
@@ -28,7 +28,7 @@
           <th scope="col">Nome</th>
           <th scope="col">Estado</th>
           <th scope="col">Entrega</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col" class="d-flex justify-content-center">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -45,9 +45,9 @@
           <td>
             {{ formatarLogico(municipio.entrega) }}
           </td>
-          <td class="d-flex justify-content-end">
+          <td class="d-flex justify-content-center">
             <button
-              class="btn btn-warning m-2"
+              class="btn btn-outline-warning m-2"
               @click="alterarMunicipio(municipio)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar

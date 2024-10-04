@@ -6,7 +6,7 @@
         </div>
         <div class="col-2 d-flex justify-content-end">
           <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
-            <i class="bi bi-clipboard-plus"></i> Novo
+            <i class="bi bi-clipboard-plus"></i> Incluir
           </button>
         </div>
         <div class="row">
@@ -36,7 +36,7 @@
             <th scope="col">E-mail</th>
             <th scope="col">Informação</th>
             <th scope="col">Entrega</th>
-            <th scope="col" class="d-flex justify-content-end">Ações</th>
+            <th scope="col" class="d-flex justify-content-center">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -77,9 +77,9 @@
             <td>
               {{ formatarLogico(cliente.ativo) }}
             </td>
-            <td class="d-flex justify-content-end">
+            <td class="d-flex justify-content-center">
               <button
-                class="btn btn-warning m-2"
+                class="btn btn-outline-warning m-2"
                 @click="alterarCliente(cliente)"
               >
                 <i class="bi bi-clipboard-pulse"></i> Alterar
