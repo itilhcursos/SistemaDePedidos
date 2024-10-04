@@ -87,26 +87,21 @@
 </template>
 
 <script>
-import axios from "axios";
+import produtoService from "@/services/produtoService";
 export default {
-
 
     props: {
         propsProduto: Object,
     },
-
-
     data() {
         return {
             id: "",
             descricao: "",
+            urlImagem: "",
             isInvalido: false,
             mensagem: "",
-            
         };
     },
-
-
     methods: {
         async salvarProduto() {
             if (this.descricao === "") {
@@ -115,93 +110,63 @@ export default {
                 return;
             }
             this.isInvalido = false;
-            let config = {
-                headers: {
-                'Authorization': 'Bearer ' +localStorage.getItem('token')
-                }
-            }
-            try{
+            
+            try {
                 if (this.id === "") {
-                    const response = await axios.post("http://localhost:8080/produto", {
-                        id: this.id, 
-                        descricao: this.descricao, 
-                        quantidadeEstoque: this.quantidadeEstoque, 
-                        precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo,
-                        urlImagem: this.urlImagem,
-                    }, config);
+                    const response = await produtoService.criar(this.getDados());
                     this.listaProdutos = response.data;
                 } else {
-                    const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
-                    {
-                        id: this.id,
-                        descricao: this.descricao, 
-                        quantidadeEstoque: this.quantidadeEstoque, 
-                        precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo,
-                        urlImagem: this.urlImagem,
-                    }, config);
-                    this.listaEstados = response.data;
-                }
-
-                this.$emit("salvar_produto", {
-                    id: this.id,
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo,
-                    urlImagem: this.urlImagem,
-                });
-                this.id = "";
-                this.descricao = "";
-                this.quantidadeEstoque = "";
-                this.precoUnidadeAtual = ""; 
-                this.ativo = "";
-                this.urlImagem ="";
-
-            }catch(error){
-                this.isInvalido = true;
-                if(error.response.status === 403){        
-                    this.mensagem = "Usuário não identificado! Faça o login!!!";
-                }else if(error.response.status === 400 ){
-                    this.mensagem = error.response.data.mensagem;     
-                }else{
-                    this.mensagem = error.message;
-                }
+                    const response = await produtoService.atualizar(
+                    this.id,
+                    this.getDados()
+                );
+                this.listaEstados = response.data;
             }
-        },
-
-        cancelar(){
+            this.$emit("salvar_produto", {
+                id: this.id,
+                descricao: this.descricao, 
+                quantidadeEstoque: this.quantidadeEstoque, 
+                precoUnidadeAtual: this.precoUnidadeAtual, 
+                ativo: this.ativo
+            });
             this.id = "";
             this.descricao = "";
             this.quantidadeEstoque = "";
             this.precoUnidadeAtual = ""; 
             this.ativo = "";
+        } catch (error) {this.isInvalido = true;
+            
+            if (error.response.status === 403) {
+              this.mensagem = "Usuário não identificado! Faça o login!!!";
+            } else if ( error.response.status === 400 && 
+                        error.response.data.exception === "ProdutoDuplicadoException") {
+              this.mensagem = error.response.data.mensagem;
+            } else {
+              this.mensagem = error.message;
+            }
+        }
+        
+    },
+        cancelar() {
+            this.id = "";
+            this.descricao = "";
             this.urlImagem = "";
+            this.quantidadeEstoque = "";
+            this.precoUnidadeAtual = ""; 
+            this.ativo = "";
             this.$emit("cancelar", true);
         },
-
-        async buscarProdutos(){
-      const response = await axios.get(
-        `http://localhost:8080/produtos?pageNumber=1&pageSize=100&direction=ASC&property=id`
-      );
-      this.produtos = response.data.content;
-    }
     },
-
-
     mounted(){
         if (this.propsProduto) {
             this.id = this.propsProduto.id;
+            this.urlImagem = this.propsProduto.urlImagem;
             this.descricao = this.propsProduto.descricao;
             this.quantidadeEstoque = this.propsProduto.quantidadeEstoque;
             this.precoUnidadeAtual = this.propsProduto.precoUnidadeAtual; 
             this.ativo = this.propsProduto.ativo;
-            this.urlImagem = this.propsProduto.urlImagem;
         }
     },
-
-
     computed: {
         getAcao(){
             return this.id === "" ? "Incluir" : "Alterar";

@@ -101,8 +101,6 @@
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
             <option value="nome">Nome</option>
-            <th scope="col">Entrega</th>
-          <th scope="col">Estado</th>
           </select>
         </div>
         <div class="col-auto">
@@ -153,11 +151,8 @@ export default {
       const response = await axios.get(
         `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
-      //console.log(response.data);
       this.listaMunicipios = response.data.content;
-      this.totalPages = response.data.totalPages;
-      //console.log(this.totalPages);
-    },
+      this.totalPages = response.data.totalPages; },
     formatarEntrega(valor){
       return Logico.toSimNao(valor);
     },
@@ -173,10 +168,6 @@ export default {
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')

@@ -39,7 +39,7 @@
               {{ produto.id }}
             </th>
             <td>
-              <img :src=produto.urlImagem width="100px"/>
+              <img :src=produto.urlImagem height="50px">
             </td>
             <td>
               {{ produto.descricao }}
@@ -56,15 +56,13 @@
             <td class="d-flex justify-content-end">
               <button
                 class="btn btn-btn btn-primary m-2"
-                @click="alterarProduto(produto)"
-              >
+                @click="alterarProduto(produto)">
                 <i class="bi bi-clipboard-pulse"></i> Alterar
               </button>
   
               <button
                 class="btn btn-outline-danger m-2"
-                @click="excluirProduto(produto.id)"
-              >
+                @click="excluirProduto(produto.id)">
                 <i class="bi bi-clipboard2-minus"></i> Excluir
               </button>
             </td>
@@ -134,6 +132,7 @@
   import Logico from "@/utils/Logico.js";
   import Monetario from "@/utils/Monetario.js";
   import Decimal from "@/utils/Decimal.js";
+  import produtoService from "@/services/produtoService";
   import axios from "axios";
   export default {
     components: {
@@ -157,52 +156,41 @@
         this.formVisible = false;
   
       
-        const response = await axios.get(
-          `http://localhost:8080/produtos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-        );
-        console.log(response.data);
-        this.listaProdutos = response.data.content;
-        this.totalPages = response.data.totalPages;
-        console.log(this.totalPages);
-      },
-      limpar() {
-        this.produtoEscolhido = null;
-        this.formVisible = !this.formVisible;
-      },
-      novoProduto() {
-        this.formVisible = !this.formVisible;
-      },
-      alterarProduto(produto) {
-        this.produtoEscolhido = produto;
-        this.formVisible = true;
-      },
-      async excluirProduto(id) {
-        let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-          }
-        }
-        const response = await axios.delete(`http://localhost:8080/produto/${id}`,config);
-        console.log(response.data);
-        this.buscarProdutos();
-      },
-      irPara(pagina) {
-        this.pageNumber = pagina;
-        this.buscarProdutos();
-      },
-      formatarLogico(valor){
-        return Logico.toSimNao(valor);
-      },
-      formatarPreco(valor){
-        return Monetario.toTela(valor);
-      },
-      formatarQuantidade(valor){
-        return Decimal.toTela(valor);
-      }
+        const response = await produtoService.listar(this.pageNumber, this.pageSize, this.direction, this.property, this.totalPages);
+      this.listaProdutos = response.content;
+      this.totalPages = response.totalPages;
     },
-    mounted() {
+    limpar() {
+      this.produtoEscolhido = null;
+      this.formVisible = !this.formVisible;
+    },
+    novoProduto() {
+      this.formVisible = !this.formVisible;
+    },
+    alterarProduto(produto) {
+      this.produtoEscolhido = produto;
+      this.formVisible = true;
+    },
+    async excluirProduto(id) {
+      const response = await produtoService.apagar(id);
       this.buscarProdutos();
     },
-  };
-  </script>
-  
+    irPara(pagina) {
+      this.pageNumber = pagina;
+      this.buscarProdutos();
+    },
+    formatarLogico(valor) {
+      return Logico.toSimNao(valor);
+    },
+    formatarPreco(valor) {
+      return Monetario.toTela(valor);
+    },
+    formatarQuantidade(valor) {
+      return Decimal.toTela(valor);
+    }
+  },
+  mounted() {
+    this.buscarProdutos();
+  },
+};
+</script>
