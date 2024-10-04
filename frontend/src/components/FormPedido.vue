@@ -8,19 +8,21 @@
                 <label class="form-label">ID</label>
                 <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id" />
             </div>
-            <label class="form-label">Cliente</label>
-            <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
-            @search="onSearch">
-            <template v-slot:no-options>
+            <div class="mb-3">
+              <label class="form-label">Cliente</label>
+              <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
+              @search="onSearch">
+              <template v-slot:no-options>
                 Não encontrado.
-            </template>
-            <template v-slot:option="option">
+              </template>
+              <template v-slot:option="option">
                 {{ option.nomeRazaoSocial }}
-            </template>
-            <template v-slot:selected-option="option">
+              </template>
+              <template v-slot:selected-option="option">
                 {{ option.nomeRazaoSocial }}
-            </template>
-            </v-select>
+              </template>
+              </v-select>
+            </div>
             <div class="col">
                 <label class="form-label">Número</label>
                 <input class="form-control" type="text" v-model="numero" placeholder="Número" />
@@ -44,16 +46,19 @@
         <div class="row">
             <div class="col">
                 <label class="form-label">Data Compra</label>
-                <input class="form-control" type="text" v-model="dataCompra" placeholder="Data Compra" />
+                <input class="form-control" type="date" v-model="dataCompra" placeholder="Data Compra" />
             </div>
             <div class="col">
                 <label class="form-label">Data Entrega</label>
-                <input class="form-control" type="text" v-model="dataEntrega" placeholder="Data Entrega" />
+                <input class="form-control" type="date" v-model="dataEntrega" placeholder="Data Entrega" />
             </div>
             <div class="col">
                 <label class="form-label">Data Pagamento</label>
-                <input class="form-control" type="text" v-model="dataPagamento" placeholder="Data Pagamento" />
+                <input class="form-control" type="date" v-model="dataPagamento" placeholder="Data Pagamento" />
             </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Itens Pedidos</label>
         </div>
         <div class="mb-3">
             <div class="row">
@@ -66,17 +71,19 @@
                       </template>
                       <template v-slot:option="option">
                         <img class="mini" :src='option.urlImagem' />
-                        {{ option.descricao }}
+                        {{ option.descricao }} - {{ option.quantidadeEstoque }} - {{ option.precoUnidadeAtual }}
                       </template>
                       <template v-slot:selected-option="option">
                         <img class="mini" :src='option.urlImagem' />
-                        {{ option.descricao }}
+                        {{ option.descricao }} - 
+                        Qtd{{ option.quantidadeEstoque }} - 
+                        Preço{{ option.precoUnidadeAtual }}
                       </template>
                     </v-select>
                 </div>
                 <div class="col-2">
                     <label class="form-label">Quantidade</label>
-                    <input class="form-control" type="text" v-model="nome" placeholder="quantidade" />
+                    <input class="form-control" type="number" v-model="nome" placeholder="quantidade" />
                 </div>
             </div>
         </div>
@@ -222,7 +229,25 @@ export default {
 mounted() {
     if (this.propsPedido) {
         this.id = this.propsPedido.id;
-        this.nome = this.propsPedido.nome;
+        this.clienteId = this.propsPedido.clienteId;
+        this.clienteNomeRazaoSocial = this.propsPedido.clienteNomeRazaoSocial;
+        this.formaPagamentoId = this.propsPedido.formaPagamentoId;
+        this.formaPagamentoDescricao = this.propsPedido.formaPagamentoDescricao;
+        this.numero = this.propsPedido.numero;
+        this.dataCompra = this.propsPedido.dataCompra;
+        this.dataEntrega = this.propsPedido.dataEntrega;
+        this.dataPagamento = this.propsPedido.dataPagamento;
+        this.itens = this.propsPedido.itens;
+
+        this.selectedFormaPagamento = {
+          id: this.propsPedido.formaPagamentoId,
+          descricao: this.propsPedido.formaPagamentoDescricao
+        };
+
+        this.selectedCliente = {
+          id: this.propsPedido.clienteId,
+          nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
+        };
     }
 },
 computed: {

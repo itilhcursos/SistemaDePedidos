@@ -43,7 +43,7 @@
           </td>
           <td class="d-flex justify-content-end">
             <button
-              class="btn btn-btn btn-primary m-2"
+              class="btn btn-warning m-2"
               @click="alterarFormaPagamento(formaPagamento)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
@@ -106,7 +106,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
+          <button @click.prevent="buscarFormaPagamento" class="btn btn-primary m-2">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>

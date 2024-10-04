@@ -45,8 +45,8 @@ const router = createRouter({
       component:()=>import('../views/PedidoView.vue')
     },
     {
-      path: '/cadastros',
-      name: 'cadastro',
+      path: '/registro',
+      name: 'registro',
       component:()=>import('../views/RegistroView.vue')
     },
     {
