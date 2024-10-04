@@ -22,6 +22,8 @@ public class ClienteDTO {
 
     private String municipioNome;
 
+    private String municipioEstadoId;
+
     private String municipioEstadoNome;
 
     private String nomeRazaoSocial;

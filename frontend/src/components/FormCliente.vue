@@ -15,22 +15,21 @@
       </div>
 
       <div class="mb-3">
-            <label class="form-label">Municipio</label>
-            <select v-model="municipioSelected" class="form-control">
-                <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
-                    {{ municipio.nome }}
-                </option>
-            </select>
-        </div>
+          <label class="form-label">Municipio</label>
+          <select v-model="municipioSelected" class="form-control">
+            <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
+              {{ municipio.nome }}
+            </option>
+          </select>
+      </div>
 
-        <div class="mb-3">
+      <div class="mb-3">
         <label class="form-label">Estado</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="municipioEstadoNome"
-          placeholder="Estado"
-        />
+        <select v-model="estadoSelected" class="form-control">
+          <option v-for="estado in estados" :value="estado.id" :key="estado.id">
+            {{ estado.nome }}
+          </option>
+        </select>
       </div>
 
       <div class="mb-3">
@@ -40,8 +39,10 @@
           type="text"
           v-model="nomeRazaoSocial"
           placeholder="NOME"
+          
         />
       </div>
+      <!-- O v-if é como visible e Invisible que faz com que o cnpj ou cpf suma do formulario caso uma das duas estejam preenchidas. -->
       <div class="mb-3">
         <label class="form-label">CNPJ</label>
         <input
@@ -49,18 +50,21 @@
           type="text"
           v-model="cnpj"
           placeholder="CNPJ"
+          :disabled="!getCnpj"
         />
+       <!-- ja o disabled é justamente o que diz desabilitar, mesmo ainda aparecendo no form, não se pode mecher nele. -->
       </div>
-      <div class="mb-3">
+      <div class="mb-3"  >
         <label class="form-label">CPF</label>
         <input
           class="form-control"
           type="text"
           v-model="cpf"
           placeholder="CPF"
+          :disabled="!getCpf"
         />
       </div>
-
+          
       <div class="mb-3">
         <label class="form-label">Telefone</label>
         <input
@@ -161,6 +165,7 @@
 <script>
   import clienteService from '@/services/clienteService';
   import municipioService from '@/services/municipioService';
+  import estadoService from '@/services/estadoService';
   export default {
     props: {
       propsCliente: Object,
@@ -176,7 +181,8 @@
         email: "",
         ativo: "",
         informacao: "",
-        municipioEstadoNome:"",
+        estadoSelected: "",
+        estados:[],
         municipioSelected: "",
         municipios:[],
         isInvalido: false,
@@ -197,7 +203,7 @@
           ativo: this.ativo,
           informacao: this.informacao,
           municipioId: this.municipioSelected,
-          municipioEstadoNome: this.municipioEstadoNome,
+          municipioEstadoId: this.estadoSelected,
         }
       },
       async salvarCliente() {
@@ -235,7 +241,7 @@
             ativo: this.ativo,
             informacao: this.informacao,
             municipioId: this.municipioSelected,
-            municipioEstadoNome: this.municipioEstadoNome,
+            municipioEstadoId: this.estadoSelected,
           });
 
           this.id = "";
@@ -250,7 +256,7 @@
           this.ativo = "";
           this.informacao = "";
           this.municipioSelected = "";
-          this.municipioEstadoNome = "";
+          this.estadoSelected = "";
         
         }catch(error){
         
@@ -280,13 +286,17 @@
         this.ativo = "";
         this.informacao = "";
         this.municipioSelected = "";
-        this.municipioEstadoNome = "";
+        this.estadoSelected = "";
         this.$emit("cancelar", true);
       },
 
       async buscarMunicipios(){
         const response = await municipioService.listar(1,1000, 'ASC', 'id');
         this.municipios = response.content;
+      },
+      async buscarEstados(){
+        const response = await estadoService.listar(1,1000,'ASC','id');
+        this.estados = response.content;
       }
     },   
     mounted() {
@@ -303,16 +313,28 @@
         this.ativo = this.propsCliente.ativo;
         this.informacao = this.propsCliente.informacao;
         this.municipioSelected = this.propsCliente.municipioId;
-        this.municipioEstadoNome = this.propsCliente.municipioEstadoNome;
+        this.estadoSelected = this.propsCliente.municipioEstadoId;
       }
       this.buscarMunicipios();
+      this.buscarEstados();
     },
     computed: {
       getAcao() {
         return this.id === "" ? "Incluir" : "Alterar";
       },
-    },
 
+      // getCpf só vai aparecer se o cnpj for vazio('')
+      getCpf(){
+        return this.cnpj === '' ? true : false;
+      },
+      // getCnpj só vai aparecer se o cpf for vazio('')
+      getCnpj(){
+        return this.cpf === '' ? true : false;
+      }
+
+
+    },
+    
   };
 
 </script>
