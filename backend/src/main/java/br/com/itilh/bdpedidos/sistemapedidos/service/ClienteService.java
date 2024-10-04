@@ -32,7 +32,6 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO>{
     }
 
     private void validar(ClienteDTO origem) {
-        // se já existe cliente com mesmo nome e no mesmo municipio
         if(repositorio.existsByNomeRazaoSocialAndMunicipioId(origem.getNomeRazaoSocial(), origem.getMunicipioId()))
           throw new ClienteDuplicadoException(origem.getNomeRazaoSocial());
     }
@@ -43,7 +42,7 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO>{
         try{    
             return toDTO(repositorio.save(toEntity(entityDTO)));
         }catch(Exception e){
-            throw new Exception("Erro ao salvar o estado.");
+            throw new Exception("Erro ao salvar o Cliente.");
         }
     }
 

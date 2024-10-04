@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
@@ -41,7 +42,13 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
         validar(origem);
-        return toDTO(repositorio.save(toEntity(origem)));
+        if(repositorio.existsByDescricao(origem.getDescricao()))   
+            throw new ClienteDuplicadoException(origem.getDescricao());
+        try{     
+            return toDTO(repositorio.save(toEntity(origem)));
+        }catch(Exception e){
+            throw new Exception("Alteração não foi realizada.");
+        }
     }
 
     private void validar(ProdutoDTO dto) throws Exception {
