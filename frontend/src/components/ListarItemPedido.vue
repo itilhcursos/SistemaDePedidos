@@ -2,10 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>ESTADOS</h3>
+        <h3>Itens Pedidos</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoitemPedido" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
@@ -13,9 +13,9 @@
         <div>
           <FormEstado
             v-if="formVisible"
-            :propsEstado="estadoEscolhido"
+            :propsItemPedido="itemPedidoEscolhido"
             @cancelar="limpar"
-            @salvar_estado="buscarEstados"
+            @salvar_itemPedido="buscaritemPedido"
           />
         </div>
       </div>
@@ -25,29 +25,41 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col">Quantidade no Estoque</th>
+          <th scope="col">Preço Atual</th>
+          <th scope="col">Pedido</th>
+          <th scope="col">Descrição do Produto</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="estado in listaEstados" :key="estado.id" scope="row">
+        <tr v-for="itemPedido in listaItemPedido" :key="itemPedido.id" scope="row">
           <th>
-            {{ estado.id }}
+            {{ itemPedido.id }}
           </th>
           <td>
-            {{ estado.nome }}
+            {{ formatarQuantidade(itemPedido.quantidadeEstoque) }}
+          </td>
+          <td>
+            {{ formatarPreco(itemPedido.precoUnidadeAtual) }}
+          </td>
+          <td>
+            {{ itemPedido.pedidoId }}
+          </td>
+          <td>
+            {{ itemPedido.produtoDescricao }}
           </td>
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
+              @click="alterarItemPedido(itemPedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
             <button
               class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
+              @click="excluirItemPedido(itemPedido.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
@@ -92,7 +104,10 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="quantidadeEstoque">Quantidade no Estoque</option>
+            <option value="precoUnidadeAtual">Preço Atual</option>
+            <option value="pedidoId">Pedidos</option>
+            <option value="produtoDescricao">Descrição do Produto</option>
           </select>
         </div>
         <div class="col-auto">
@@ -102,7 +117,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
+          <button @click.prevent="buscaritemPedido" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -114,16 +129,18 @@
 
 
 <script>
-import FormEstado from "./FormEstado.vue";
+import FormItemPedido from "./FormItemPedido.vue";
+import Monetario from "@/utils/Monetario.js";
+import Decimal from "@/utils/Decimal.js";
 import axios from "axios";
 export default {
   components: {
-    FormEstado,
+    FormItemPedido,
   },
   data() {
     return {
-      listaEstados: [],
-      estadoEscolhido: null,
+      listaitemPedido: [],
+      itemPedidoEscolhido: null,
       formVisible: false,
       mode: import.meta.env.MODE,
       url: import.meta.env.VITE_APP_URL_API,
@@ -135,47 +152,50 @@ export default {
     };
   },
   methods: {
-    async buscarEstados() {
-      this.estadoEscolhido = null;
+    async buscaritemPedido() {
+      this.itemPedidoEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
       const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
+        `http://localhost:8080/itemPedido?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`);
       console.log(response.data);
-      this.listaEstados = response.data.content;
+      this.listaitemPedido = response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
     },
     limpar() {
-      this.estadoEscolhido = null;
+      this.itemPedidoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoEstado() {
+    novoitemPedido() {
       this.formVisible = !this.formVisible;
     },
-    alterarEstado(estado) {
-      this.estadoEscolhido = estado;
+    alterarItemPedido(itemPedido) {
+      this.itemPedidoEscolhido = itemPedido;
       this.formVisible = true;
     },
-    async excluirEstado(id) {
+    async excluirItemPedido(id) {
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
+      const response = await axios.delete(`http://localhost:8080/itemPedido/${id}`, config);
       console.log(response.data);
-      this.buscarEstados();
+      this.buscaritemPedido();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarEstados();
+      this.buscaritemPedido();
     },
+      formatarPreco(valor){
+        return Monetario.toTela(valor);
+      },
+      formatarQuantidade(valor){
+        return Decimal.toTela(valor);
+      }
   },
   mounted() {
-    this.buscarEstados();
+    this.buscaritemPedido();
   },
 };
 </script>
