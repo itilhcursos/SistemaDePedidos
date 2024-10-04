@@ -31,7 +31,7 @@
           <th scope="col">Data Compra</th>
           <th scope="col">Data Entrega</th>
           <th scope="col">Data Pagamento</th>
-          <th scope="col" class="d-flex justify-content-end">Itens</th>
+          <th scope="col" class="d-flex justify-content-end">Itens do Pedido</th>
         </tr>
       </thead>
       <tbody>
@@ -117,8 +117,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
-            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
+            <option value="cliente.nomeRazaoSocial">Cliente</option>
+            <option value="formaPagamento.descricao">Forma Pagamento</option>
           </select>
         </div>
         <div class="col-auto">

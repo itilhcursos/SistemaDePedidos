@@ -3,22 +3,22 @@
         <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Cliente</h4>
         <hr />
         <form>
-            <!-- <div class="mb-3">
+            <div class="mb-3">
                 <label class="form-label">Id</label>
                 <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id cliente" />
-            </div> -->
+            </div>
             <div class="mb-3">
                 <label class="form-label">Cliente</label>
                 <input class="form-control" type="text" v-model="nomeRazaoSocial" placeholder="Nome ou Razão Social" />
             </div>
             <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">CPF</label>
+                <input class="form-control" type="text" v-model="cpf" placeholder="CPF" />
+            </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">CNPJ</label>
                     <input class="form-control" type="text" v-model="cnpj" placeholder="CNPJ" />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">CPF</label>
-                    <input class="form-control" type="text" v-model="cpf" placeholder="CPF" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Endereço</label>
@@ -100,10 +100,10 @@ export default {
     data() {
         return {
             id: "",
-            nome: "",
+            nomeRazaoSocial: "",
             cnpj: "",
             cpf: "",
-            endereço: "",
+            endereco: "",
             bairro: "",
             cep: "",
             telefone: "",
@@ -122,10 +122,10 @@ export default {
         getDados() {
             return {
                 id: this.id,
-                nome: this.nome,
+                nomeRazaoSocial: this.nomeRazaoSocial,
                 cnpj: this.cnpj,
                 cpf: this.cpf,
-                endereço: this.endereco,
+                endereco: this.endereco,
                 bairro: this.bairro,
                 cep: this.cep,
                 telefone: this.cep,
@@ -137,9 +137,9 @@ export default {
             };
         },
         async salvarCliente() {
-            if (this.nome === "" || this.municipioSelected === null || this.estadoSelected === null) {
+            if (this.nomeRazaoSocial === "" || this.municipioSelected === null || this.estadoSelected === null) {
                 this.isInvalido = true;
-                this.mensagem = "Nome do cliente ou razão social, município e estado não pode ser vazio.";
+                this.mensagem = "Nome do cliente ou razão social, município e estado não pode ser vazios.";
                 return;
             }
             this.isInvalido = false;
@@ -152,8 +152,6 @@ export default {
                     this.listaClientes = response;
                 }
                 this.$emit("salvar_cliente", this.getDados());
-
-                // Resetar campos
                 this.resetarCampos();
             } catch (error) {
                 this.isInvalido = true;
@@ -182,10 +180,10 @@ export default {
         },
         resetarCampos() {
             this.id = "";
-            this.nome = "";
+            this.nomeRazaoSocial = "";
             this.cnpj = "";
             this.cpf = "";
-            this.endereço = "";
+            this.endereco = "";
             this.bairro = "";
             this.cep = "";
             this.telefone = "";
@@ -208,17 +206,17 @@ export default {
     mounted() {
         if (this.propsCliente) {
             this.id = this.propsCliente.id;
-            this.nome = this.propsCliente.nome;
+            this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
             this.cnpj = this.propsCliente.cnpj;
             this.cpf = this.propsCliente.cpf;
-            this.endereço = this.propsCliente.endereco;
+            this.endereco = this.propsCliente.endereco;
             this.bairro = this.propsCliente.bairro;
             this.cep = this.propsCliente.cep;
             this.telefone = this.propsCliente.telefone;
             this.email = this.propsCliente.email;
             this.informacoes = this.propsCliente.informacoes;
-            this.municipioSelectd = this.propsCliente.municipioId; 
-            this.estadoSelectd = this.propsCliente.estadoId; 
+            this.municipioSelected = this.propsCliente.municipioId; 
+            this.estadoSelected = this.propsCliente.estadoId; 
             this.ativo = this.propsCliente.ativo;
         }
         this.carregarEstados();

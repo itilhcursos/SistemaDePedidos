@@ -26,19 +26,19 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
-          <th scope="col">Ativo</th>
+          <th scope="col" class="text-center align-middle">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
-          <th>
+          <th class="align-middle">
             {{ formaPagamento.id }}
           </th>
-          <td>
+          <td class="align-middle">
             {{ formaPagamento.descricao }}
           </td>
-          <td>
+          <td class="text-center align-middle">
             {{ formatarLogico(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">

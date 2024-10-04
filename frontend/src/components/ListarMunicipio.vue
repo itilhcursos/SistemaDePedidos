@@ -26,23 +26,23 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Entrega</th>
+          <th scope="col" class="text-center align-middle">Estado</th>
+          <th scope="col" class="text-center align-middle">Entrega</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="municipio in listaMunicipios" :key="municipio.id" scope="row">
-          <th>
+          <th class="align-middle">
             {{ municipio.id }}
           </th>
-          <td>
+          <td class="align-middle">
             {{ municipio.nome }}
           </td>
-          <td>
+          <td class="text-center align-middle">
             {{ municipio.estadoNome }}
           </td>
-          <td>
+          <td class="text-center align-middle">
             {{ formatarEntrega(municipio.entrega) }}
           </td>
           <td class="d-flex justify-content-end">

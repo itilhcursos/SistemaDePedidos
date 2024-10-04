@@ -5,7 +5,7 @@
         <h3>Clientes</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novo" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
@@ -27,9 +27,9 @@
           <th scope="col">ID</th>
           <th scope="col">Cliente</th>
           <th scope="col">CPF</th>
-          <th scope="col">CNPJ</th>
+          <!-- <th scope="col">CNPJ</th>
+          <th scope="col">Telefone</th> -->
           <th scope="col">Email</th>
-          <th scope="col">Telefone</th>
           <th scope="col">Estado</th>
           <th scope="col">Município</th>
           <th scope="col">Ativo</th>
@@ -38,32 +38,32 @@
       </thead>
       <tbody>
         <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
-          <th>
+          <th class="align-middle">
             {{ cliente.id }}
           </th>
-          <th>
+          <th class="align-middle">
             {{ cliente.nomeRazaoSocial }}
           </th>
-          <td>
+          <!-- <td>
             {{ cliente.cpf }}
           </td>
           <td>
             {{ cliente.cnpj }}
-          </td>
-          <td>
-            {{ cliente.email }}
-          </td>
-          <td>
+          </td> -->
+          <td class="align-middle">
             {{ cliente.telefone }}
           </td>
-          <td>
+          <td class="align-middle">
+            {{ cliente.email }}
+          </td>
+          <td class="align-middle">
             {{ cliente.municipioEstadoNome }}
           </td>
-          <td>
+          <td class="align-middle">
             {{ cliente.municipioNome }}
           </td>
-          <td>
-            {{ cliente.ativo }}
+          <td class="align-middle">
+            {{ formatarLogico(cliente.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
               <button
@@ -99,7 +99,6 @@
             {{ pagina }}
           </button>
 
-
         </div>
         <div class="col-auto">
           <input
@@ -120,7 +119,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="cliente.nomeRazaoSocial">Nome Razao Social</option>
+            <option value="cliente.nomeRazaoSocial">Cliente</option>
           </select>
         </div>
         <div class="col-auto">
@@ -144,6 +143,7 @@
 <script>
 import FormCliente from "./FormCliente.vue";
 import clienteService from "@/services/clienteService";
+import Logico from "@/utils/Logico.js";
 export default {
   components: {
     FormCliente,
@@ -172,14 +172,14 @@ export default {
       this.clienteEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novo() {
+    novoCliente() {
       this.formVisible = !this.formVisible;
     },
-    alterar(cliente) {
+    alterarCliente(cliente) {
       this.clienteEscolhido = cliente;
       this.formVisible = true;
     },
-    async excluir(id) {
+    async excluirCliente(id) {
       try{
           const response = await clienteService.apagar(id);
           console.log(response);
@@ -198,6 +198,9 @@ export default {
       this.pageNumber = pagina;
       this.buscar();
     },
+    formatarLogico(valor){
+        return Logico.toSimNao(valor);
+      },
   },
   mounted() {
     this.buscar();

@@ -31,10 +31,10 @@
       </thead>
       <tbody>
         <tr v-for="estado in listaEstados" :key="estado.id" scope="row">
-          <th>
+          <th class="align-middle">
             {{ estado.id }}
           </th>
-          <td>
+          <td class="align-middle">
             {{ estado.nome }}
           </td>
           <td class="d-flex justify-content-end">

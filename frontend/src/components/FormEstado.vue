@@ -3,7 +3,7 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Estado</h4>
     <hr />
     <form>
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label class="form-label">Id</label>
         <input
           class="form-control"
@@ -12,8 +12,8 @@
           :disabled="true"
           placeholder="Id estado"
         />
-      </div>
-      <div class="mb-3">
+      </div> -->
+      <div class="col-md-6 mb-3">
         <label class="form-label">Nome</label>
         <input
           class="form-control"

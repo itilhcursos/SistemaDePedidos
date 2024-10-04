@@ -3,7 +3,7 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Município</h4>
     <hr />
     <form>
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label class="form-label">Id</label>
         <input
           class="form-control"
@@ -12,8 +12,9 @@
           :disabled="true"
           placeholder="Id município"
         />
-      </div>
-      <div class="mb-3">
+      </div> -->
+      <div class="row">
+      <div class="col-md-6 mb-3">
         <label class="form-label">Nome</label>
         <input
           class="form-control"
@@ -22,13 +23,21 @@
           placeholder="Nome do município"
         />
       </div>
-      <div class="mb-3">
+      <div class="col-md-6 mb-3">
         <label class="form-label">Estado</label>
         <select v-model="estadoSelected" class="form-select">
           <option v-for="estado in estados" :key="estado.id" :value="estado.id">
             {{ estado.nome }}
           </option>
         </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Entrega</label>
+          <select v-model="entrega" class="form-select">
+            <option :value="true">Sim</option>
+            <option :value="false">Não</option>
+          </select>
+        </div>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -55,7 +64,11 @@
     </form>
   </div>
 </template>
-
+<!-- <style scoped>
+.same-width {
+  width: 97.6%;
+}
+</style> -->
 <script>
 import municipioService from '@/services/municipioService';
 import estadoService from '@/services/estadoService';
@@ -69,6 +82,7 @@ export default {
       nome: "",
       estadoSelected: null,
       estados: [],
+      entrega: "",
       isInvalido: false,
       mensagem : '',
     };
@@ -79,6 +93,7 @@ export default {
               id: this.id,
               nome: this.nome,
               estadoId: this.estadoSelected,
+              entrega: this.entrega,
             };
     },
     async salvarMunicipio() {
@@ -105,6 +120,7 @@ export default {
         id: this.id,
         nome: this.nome,
         estadoId: this.estadoSelected,
+        entrega: this.entrega,
       });
 
       this.resetForm();
@@ -136,6 +152,7 @@ export default {
       this.id = "";
       this.nome = "";
       this.estadoSelected = null;
+      this.entrega = "";
     }
   },
   mounted() {
@@ -143,6 +160,7 @@ export default {
       this.id = this.propsMunicipio.id;
       this.nome = this.propsMunicipio.nome;
       this.estadoSelected = this.propsMunicipio.estadoId;
+      this.entrega = this.propsMunicipio.entrega;
     }
     this.carregarEstados();
   },
@@ -154,9 +172,3 @@ export default {
 };
 </script>
 
-<!-- <style>
-.form-select {
-  max-height: 100px;
-  overflow-y: auto;
-}
-</style> -->

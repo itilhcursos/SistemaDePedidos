@@ -1,134 +1,118 @@
 <template>
-    <div class="container">
+  <div class="container">
+    <div class="row">
+      <div class="col-10">
+        <h3>Produtos</h3>
+      </div>
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novoProduto" class="btn btn-success">
+          <i class="bi bi-clipboard-plus"></i> Novo
+        </button>
+      </div>
       <div class="row">
-        <div class="col-10">
-          <h3>Produtos</h3>
+        <div>
+          <FormProduto v-if="formVisible" :propsProduto="produtoEscolhido" @cancelar="limpar"
+            @salvar_produto="buscarProdutos" />
         </div>
-        <div class="col-2 d-flex justify-content-end">
-          <button v-if="!formVisible" @click="novoProduto" class="btn btn-success">
-            <i class="bi bi-clipboard-plus"></i> Novo
+      </div>
+    </div>
+
+    <table class="table table-dark table-striped" v-if="!formVisible">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center align-middle">ID</th>
+          <th scope="col" class="text-center align-middle">Imagem</th>
+          <th scope="col">Descrição</th>
+          <th scope="col" class="text-center align-middle">Quantidade</th>
+          <th scope="col" class="text-center align-middle">Preço</th>
+          <th scope="col" class="text-center align-middle">Ativo</th>
+          <th scope="col" class="d-flex justify-content-end">Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr v-for="produto in listaProdutos" :key="produto.id" scope="row">
+          <th class="text-center align-middle">
+            {{ produto.id }}
+          </th>
+          <td class="text-center align-middle">
+            <img :src=produto.urlImagem height="100px" />
+          </td>
+          <td class="align-middle">
+            {{ produto.descricao }}
+          </td>
+          <td class="text-center align-middle">
+            {{ formatarQuantidade(produto.quantidadeEstoque) }}
+          </td>
+          <td class="align-middle">
+            {{ formatarPreco(produto.precoUnidadeAtual) }}
+          </td>
+          <td class="text-center align-middle">
+            {{ formatarLogico(produto.ativo) }}
+          </td>
+          <td class="text-end align-middle">
+            <button class="btn btn-btn btn-primary m-2" @click="alterarProduto(produto)">
+              <i class="bi bi-clipboard-pulse"></i> Alterar
+            </button>
+
+            <button class="btn btn-outline-danger m-2" @click="excluirProduto(produto.id)">
+              <i class="bi bi-clipboard2-minus"></i> Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div v-if="!formVisible">
+    <hr />
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-auto">
+
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
+            {{ pagina }}
+          </button>
+
+        </div>
+        <div class="col-auto">
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25" />
+        </div>
+
+        <div class="col-auto">
+          <select v-model="pageSize" class="form-select">
+            <option value="2">2</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+
+        <div class="col-auto">
+          <select v-model="property" class="form-select">
+            <option value="id">ID</option>
+            <option value="descricao">Descrição</option>
+          </select>
+        </div>
+
+        <div class="col-auto">
+          <select v-model="direction" class="form-select">
+            <option value="ASC">Crescente</option>
+            <option value="DESC">Decrescente</option>
+          </select>
+        </div>
+
+        <div class="col-auto">
+          <button @click.prevent="buscarProdutos" class="btn btn-success">
+            <i class="bi bi-binoculars"></i>
+            Buscar
           </button>
         </div>
-        <div class="row">
-          <div>
-            <FormProduto
-              v-if="formVisible"
-              :propsProduto="produtoEscolhido"
-              @cancelar="limpar"
-              @salvar_produto="buscarProdutos"
-            />
-          </div>
-        </div>
-      </div>
-  
-      <table class="table table-dark table-striped" v-if="!formVisible">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Imagem</th>
-            <th scope="col">Descrição</th>
-            <th scope="col">Quantidade</th>
-            <th scope="col">Preço</th>
-            <th scope="col">Ativo</th>
-            <th scope="col" class="d-flex justify-content-end">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="produto in listaProdutos" :key="produto.id" scope="row">
-            <th>
-              {{ produto.id }}
-            </th>
-            <td>
-              <img :src=produto.urlImagem height = "50px" />
-            </td>
-            <td>
-              {{ produto.descricao }}
-            </td>
-            <td>
-              {{ formatarQuantidade(produto.quantidadeEstoque) }}
-            </td>
-            <td>
-              {{ formatarPreco(produto.precoUnidadeAtual) }}
-            </td>
-            <td>
-              {{ formatarLogico(produto.ativo) }}
-            </td>
-            <td class="d-flex justify-content-end">
-              <button
-                class="btn btn-btn btn-primary m-2"
-                @click="alterarProduto(produto)"
-              >
-                <i class="bi bi-clipboard-pulse"></i> Alterar
-              </button>
-  
-              <button
-                class="btn btn-outline-danger m-2"
-                @click="excluirProduto(produto.id)"
-              >
-                <i class="bi bi-clipboard2-minus"></i> Excluir
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div v-if="!formVisible">
-      <hr />
-      <div class="container">
-        <div class="row d-flex justify-content-center">
-          <div class="col-auto">
-  
-            <button
-              v-for="pagina in totalPages"
-              :key="pagina"
-              @click.prevent="irPara(pagina)"
-              class="btn btn-light ms-1"
-            >
-              {{ pagina }}
-            </button>
-  
-  
-          </div>
-          <div class="col-auto">
-            <input
-              type="text"
-              v-model="pageNumber"
-              placeholder="Número da pagina"
-              class="form-control w-25"
-            />
-          </div>
-          <div class="col-auto">
-            <select v-model="pageSize" class="form-select">
-              <option value="2">2</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <select v-model="property" class="form-select">
-              <option value="id">ID</option>
-              <option value="descricao">Descrição</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <select v-model="direction" class="form-select">
-              <option value="ASC">Crescente</option>
-              <option value="DESC">Decrescente</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <button @click.prevent="buscarProdutos" class="btn btn-success">
-              <i class="bi bi-binoculars"></i>
-              Buscar
-            </button>
-          </div>
-        </div>
       </div>
     </div>
-  </template>
-  
-  
+  </div>
+</template>
+
   <script>
   import FormProduto from "./FormProduto.vue";
   import produtoService from "@/services/produtoService";
@@ -152,12 +136,12 @@
       };
     },
     methods: {
-      async buscarProdutos() {
+        async buscarProdutos() {
         this.produtoEscolhido = null;
         this.formVisible = false;
-      const response = await produtoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
-      this.listaProdutos = response.content;
-      this.totalPages = response.totalPages;   
+        const response = await produtoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+        this.listaProdutos = response.content;
+        this.totalPages = response.totalPages;   
       },
       limpar() {
         this.produtoEscolhido = null;
@@ -171,18 +155,18 @@
         this.formVisible = true;
       },
       async excluirProduto(id) {
-        try{
+        try {
           const response = await produtoService.apagar(id);
           console.log(response);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
-          alert(error.message);
-        }
-      }     
+        } catch (error) {
+          if (error.response.status === 403) {
+            alert("Usuário não identificado! Faça o login!!!");
+          } else if (error.response.status === 400) {
+            alert(error.response.data.mensagem);
+          } else {
+            alert(error.message);
+          }
+        }     
       this.buscarProdutos();
       },
       irPara(pagina) {
