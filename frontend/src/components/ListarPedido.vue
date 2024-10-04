@@ -4,21 +4,17 @@
       <div class="col-10">
         <h3>Pedidos</h3>
       </div>
-      <!-- <div class="col-2 d-flex justify-content-end">
-          <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
-            <i class="bi bi-clipboard-plus"></i> Novo
-          </button>
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+          <i class="bi bi-clipboard-plus"></i> Novo
+        </button>
+      </div>
+      <div class="row">
+        <div>
+          <FormEstado v-if="formVisible" :propsEstado="estadoEscolhido" @cancelar="limpar"
+            @salvar_estado="buscarEstados" />
         </div>
-        <div class="row">
-          <div>
-            <FormEstado
-              v-if="formVisible"
-              :propsEstado="estadoEscolhido"
-              @cancelar="limpar"
-              @salvar_estado="buscarEstados"
-            />
-          </div>
-        </div> -->
+      </div> -->
     </div>
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
