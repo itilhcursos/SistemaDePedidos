@@ -1,8 +1,8 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
+
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +28,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "tb_pedidos")
 public class Pedido {
-    
+
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
@@ -44,7 +45,7 @@ public class Pedido {
     private LocalDate dataCompra;
     @Column(name = "dt_entrega")
     private LocalDate dataEntrega;
-    
+
     @Column(name = "dt_pagamento")
     private LocalDate dataPagamento;
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
