@@ -233,7 +233,7 @@
       getDados() {
         return {
           id: this.id,
-          clienteId: this.selectedClientee,
+          clienteId: this.selectedCliente,
           formaPagamentoId: this.selectedFormaPagamento,
           numero: this.numero,
           dataCompra: this.dataCompra,
@@ -242,10 +242,22 @@
           itens: this.itens
         };
       },
+
+      getDadosIP(){
+        return {
+          id: this.id,
+          pedidoId: null,
+          produtoId: this.selectedProduto,
+          produtoDescricao: null,
+          produtoUrlImagem: null,
+          quantidadeEstoque: this.quantidadeEstoque,
+          precoUnidadeAtual: this.precoUnidadeAtual
+        }
+      },
       async salvar() {
         console.log(this.selectedCliente, this.selectedProduto);
-        console.log("AQUI", this.clienteId === "", this.formaPagamentoId === "", this.numero === "", this.dataCompra === "", this.dataEntrega === "", this.dataPagamento === "", this.itens === "")
-        if (this.clienteId === "" || this.formaPagamentoId === "" || this.numero === "" || this.dataCompra === "" || this.dataEntrega === "" || this.dataPagamento === "" || this.itens === "") {
+        console.log("Dados do Pedido: ", "clienteId =", this.selectedCliente.clienteId, "formaPagamentoId =", this.selectedFormaPagamento.formaPagamentoId, "numero =", this.numero, "dataCompra =", this.dataCompra, this.dataEntrega, this.dataPagamento, this.itens)
+        if (this.clienteId === null || this.formaPagamentoId === null || this.numero === "" || this.dataCompra === "" || this.dataEntrega === "" || this.dataPagamento === "") {
           this.isInvalido = true;
           this.mensagem = "Todos os campos devem ser preenchidos.";
           return;
@@ -262,8 +274,8 @@
           }
           this.$emit("salvar_pedido", {
             id: this.id,
-            clienteId: this.clienteId,
-            formaPagamentoId: this.formaPagamentoId,
+            clienteId: this.selectedCliente,
+            formaPagamentoId: this.selectedFormaPagamento,
             numero: this.numero,
             dataCompra: this.dataCompra,
             dataEntrega: this.dataEntrega,
@@ -276,13 +288,12 @@
           this.isInvalido = true;
           if (error.response.status === 403) {
             this.mensagem = "Usuário não identificado! Faça o login!!!";
-          } else if (
-            error.response.status === 400
-          ) {
+          } else if (error.response.status === 400) {
             this.mensagem = error.response.data.mensagem;
           } else {
             this.mensagem = error.message;
           }
+
         }
       },
       cancelar() {

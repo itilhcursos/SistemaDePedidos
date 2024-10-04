@@ -73,7 +73,7 @@
                             </th>
                             
                             <table class="table table-dark table-striped">
-                                <thead><pre>ITENS DO PEDIDO</pre>
+                                <thead><pre>ITENS DO PEDIDO:</pre>
                                     <tr>
                                         <th scope="col">Imagem</th>
                                         <th scope="col">Descricao</th>
