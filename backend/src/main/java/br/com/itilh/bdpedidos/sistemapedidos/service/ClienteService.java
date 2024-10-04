@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 //import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
@@ -27,6 +28,10 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
     // Listar todos os clientes com paginação
     public Page<ClienteDTO> listarClientes(Pageable pageable) {
         return toPageDTO(clienteRepository.findAll(pageable));
+    }
+
+    public Page<ClienteDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(clienteRepository.findByNomeRazaoSocialContainingIgnoreCase(pageable, txtBusca));
     }
 
     // Buscar cliente por ID

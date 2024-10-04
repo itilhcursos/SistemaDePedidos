@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
@@ -22,6 +23,10 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
 
     public Page<FormaPagamentoDTO> listarFormasPagamento(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
+    }
+
+    public Page<FormaPagamentoDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
     }
 
     public FormaPagamentoDTO buscarFormaPagamentoPorId(BigInteger id) throws Exception {
