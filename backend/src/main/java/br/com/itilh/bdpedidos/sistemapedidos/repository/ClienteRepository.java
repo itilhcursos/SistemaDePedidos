@@ -22,6 +22,8 @@ public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
     
     List<Cliente> findByNomeRazaoSocialContainingIgnoreCase(String nomeRazaoSocial);
 
+    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);
+
     @Query("FROM Cliente e WHERE e.nomeRazaoSocial like %?1")
     List<Cliente> findByMinhaQuery(String nomeRazaoSocial);
 
