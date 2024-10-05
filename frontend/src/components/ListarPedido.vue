@@ -110,7 +110,7 @@
 import pedidoService from "@/services/GenericService";
 export default {
   components: {
-    // FormEstado,
+
   },
   data() {
     return {
