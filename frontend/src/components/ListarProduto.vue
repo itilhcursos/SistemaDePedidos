@@ -99,7 +99,7 @@
           </div>
           <div class="col-auto">
             <select v-model="pageSize" class="form-select">
-              <option value="2">2</option>
+              <option value="5">5</option>
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="50">50</option>
@@ -186,7 +186,7 @@ export default {
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscar();
+      this.buscarProdutos();
     },
     formatarLogico(valor) {
       return Logico.toSimNao(valor);
@@ -207,6 +207,6 @@ export default {
 <style scoped>
 img{
   border-style: solid;
-  border-color: rgb(121, 46, 46);
+  border-color: black;
 }
 </style>

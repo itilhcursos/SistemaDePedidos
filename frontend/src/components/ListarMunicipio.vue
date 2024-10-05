@@ -90,7 +90,7 @@
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
-            <option value="2">2</option>
+            <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
@@ -189,7 +189,7 @@ export default {
       this.buscarMunicipios();
     },
     formatarLogico(valor){
-        return Logico.toSimNao(valor);
+        return Logico.toAtivoInativo(valor);
     },
   },
   mounted() {

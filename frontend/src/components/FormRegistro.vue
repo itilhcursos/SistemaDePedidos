@@ -22,7 +22,7 @@
         />
       </div>
       <div class="mb-3">
-      <label class="form-label">Usuário</label>
+      <label class="form-label">Tipo de Usuário</label>
       <select v-model="role" class="form-select">
         <option :value="0">ADMIN</option>
         <option :value="1">USER</option>

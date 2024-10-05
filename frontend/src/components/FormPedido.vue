@@ -124,7 +124,7 @@
          
           <button class="btn btn-success position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="incluirItem">
           <i class="bi bi-clipboard2-check"></i>
-            Incluir
+            IncluirProduto
         </button>
         </div>
       </div>
