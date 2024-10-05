@@ -3,30 +3,38 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Pedido</h4>
     <hr />
     <form>
-      <div class="mb-3">
-        <v-select label="Produto" :filterable="false" 
-          v-model="produtoSelecionado" :options="produtos" @search="onSearchProdutos">
-          <template v-slot:no-options>
-            Sem Produtos para exibir.
-          </template>
-          <template v-slot:option="option">
-            <img :src='option.urlImagem'/> 
-            {{ option.descricao }}
-          </template>
-          <template v-slot:selected-option="option">
-            <img :src='option.urlImagem'/> 
-            {{ option.descricao }}
-          </template>
-        </v-select>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Nome</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="nome"
-          placeholder="Nome"
-        />
+      <div class="row">
+        <div class="mb-3">
+          <label class="form-label">Id</label>
+          <input class="form-control" type="text"  v-model="id" :disabled ="true"  placeholder="Id"/>
+        </div>
+        <div class="mb-3">
+          <label for="">Produto</label>
+            <v-select class="meu-select" label="Produto" :filterable="false" placeholder="Produto"
+              v-model="produtoSelecionado" :options="produtos" @search="onSearchProdutos">
+              
+              <template v-slot:no-options>
+                Sem produtos para exibir.
+              </template>
+              <template v-slot:option="option">
+                <img  class="mini" :src='option.urlImagem'/> 
+                {{ option.descricao }}
+              </template>
+              <template v-slot:selected-option="option">
+                <img class="mini" :src='option.urlImagem'/> 
+                {{ option.descricao }}
+              </template>
+            </v-select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nome</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="nome"
+            placeholder="Nome"
+          />
+        </div>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
@@ -36,7 +44,7 @@
         <button
           class="btn btn-primary m-2"
           type="submit"
-          v-on:click.prevent="salvarEstado"
+          v-on:click.prevent="salvarPedido"
         >
         <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
@@ -55,7 +63,9 @@
 </template>
 
 <script>
-  import pedidoService from '@/services/pedidoService';
+ 
+import pedidoService from '@/services/pedidoService';
+import produtoService from '@/services/produtoService';
   export default {
     props: {
       propsPedido: Object,
@@ -66,9 +76,21 @@
         nome: "",
         isInvalido: false,
         mensagem: '',
+        produtoSelecionado:"",
+        produtos:[],
       };
     },
     methods: {
+      async onSearchProdutos(search, loading){
+        if(search.length){
+          loading(true);
+          await produtoService.buscar(search).then((response) => {
+            console.log(response);
+            this.produtos = response.content;
+            loading(false); 
+          });
+        }
+      },
       getDados(){
         return{
             id: this.id,
@@ -88,7 +110,7 @@
             //incluir pelo POST da API
             const response = await pedidoService.criar(
             this.getDados());
-            this.listaEstados = response.data;
+            this.listaPedidos = response.data;
           } else {
             // alterar pelo PUT da API
             const response = await pedidoService.atualizar(
@@ -143,3 +165,18 @@
   };
 
 </script>
+<style>
+  .meu-select{
+    width: 100%;
+    font-size: 1.0em;
+    color:#252525;
+    background: #fbf4f4;
+    border-radius: 0.375rem;
+  }
+  .mini {
+    height: auto;
+    max-width: 2.5rem;
+    margin-right: 1rem;
+  }
+
+</style>
