@@ -67,8 +67,8 @@
                                 @click="alterar(pedido)"> <i class="bi bi-clipboard-pulse"></i> Alterar
                                 </button>
                                 <button
-                                class="btn btn-btn btn-primary m-2"
-                                @click="alterar(pedido)"> <i class="bi bi-clipboard2-minus"></i> Excluir
+                                class="btn btn-btn btn-danger m-2"
+                                @click="excluir(pedido.id)"> <i class="bi bi-clipboard2-minus"></i> Excluir
                                 </button>
                             </th>
                             

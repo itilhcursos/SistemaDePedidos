@@ -86,9 +86,21 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Municipio* </label>
-                <select v-model="municipioSelecionado">
+                <!-- <select v-model="municipioSelecionado">
                     <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id"> {{ municipio.nome }} </option>
-                </select>
+                </select> -->
+                <v-select class="meu-select" v-model="municipioSelecionado" :filterable="false" :options="optionsMunicipio"
+                    @search="onSearchMunicipio">
+                    <template v-slot:no-options>
+                    Não encontrado.
+                    </template>
+                    <template v-slot:option="option">
+                    {{ option.nome }}
+                    </template>
+                    <template v-slot:selected-option="option">
+                    {{ option.nome }}
+                    </template>
+                </v-select>
             </div>
 
 
@@ -128,8 +140,10 @@ export default {
             informacao: "",
             ativo: "",
             municipioId: "",
-            municipioSelecionado: "",
-            municipios: []
+
+            isLoading: false,
+            optionsMunicipios: [],
+            municipioSelecionado: null
         }
     },
     mounted(){
@@ -147,7 +161,7 @@ export default {
             this.ativo=this.propsCliente.ativo;
             this.municipioSelecionado= this.propsCliente.municipioId;
         }
-        this.buscarMunicipios();
+        /* this.buscarMunicipios(); */
     },
     methods:{
         getDados(){
@@ -166,10 +180,20 @@ export default {
                 municipioId: this.municipioSelecionado
              };
         },
-        async buscarMunicipios(){
+        async onSearchMunicipio(search, loading) {
+            if (search == "")
+            return;
+            loading(true);
+            await municipioService.buscar(search).then((response) => {
+                //console.log(response);
+                this.optionsMunicipio = response.content;
+                loading(false);
+            });
+        },
+        /* async buscarMunicipios(){
             const response = await municipioService.listar(1, 1000, 'ASC', 'nome');
             this.municipios = response.content;
-        },
+        }, */
         cancelar(){
             this.id = "";
             this.nomeRazaoSocial = "";
@@ -266,3 +290,13 @@ export default {
     }
 }   
 </script>
+
+<style>
+.meu-select {
+    width: 100%;
+    font-size: 1.0em;
+    color: #252525;
+    background: #fbf4f4;
+    border-radius: 0.375rem;
+  }
+</style>

@@ -57,7 +57,7 @@
             </template>
           </v-select>
         </div>
-        <div class="mb-3">
+        <div class="mb-3" v-if="id != ''">
           <label class="form-label">Itens Pedido</label>
           <table class="table table-dark table-striped">
                 <thead>
@@ -68,7 +68,6 @@
                     <th scope="col">Preço Unitário</th>
                     <th scope="col">Preço Total</th>
                     <th scope="col">Remover Item</th>
-                    <th scope="col">Estoque após venda:</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -82,12 +81,6 @@
                     <th>
                       {{ item.quantidadeEstoque + " unidade(s)"}}
                     </th>
-                    <!-- <th>
-                      {{ item.precoUnidadeAtual }}
-                    </th>
-                    <th>
-                      {{ item.quantidadeEstoque * item.precoUnidadeAtual }}
-                    </th>   --> 
                     <th>
                       {{ formatarReaisTela(item.precoUnidadeAtual) }}
                     </th>
@@ -101,14 +94,11 @@
                         <i class="bi bi-clipboard2-minus"></i> 
                       </button>
                     </th>
-                    <th>
-                      {{ item.quantidadeEstoque }}
-                    </th>
                   </tr>
                 </tbody>
           </table>
         </div>
-        <div class="row">
+        <div class="row" v-if="id != ''">
           <div class="col-8">
             <label class="form-label">Novo Produto</label>
             <v-select class="meu-select" v-model="selectedProduto" :filterable="false" :options="optionsProduto"
@@ -132,8 +122,8 @@
           </div>
           <div class="col-2 position-relative">
            
-            <button class="btn btn-primary position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="incluirItem">
-            <i class="bi bi-clipboard2-check"></i>
+            <button class="btn btn-secondary position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="incluirItem">
+            <i class="bi bi-bag-plus"></i>
               Incluir
           </button>
           </div>
@@ -144,7 +134,7 @@
         </div>
         <div v-if="isInvalidoItemPedido" class="alert alert-danger d-flex align-items-center" role="alert">
           <i class="bi bi-exclamation-triangle-fill"></i>
-          <div class="p-2">{{ mensagem }}</div>
+          <div class="p-2" style="margin:50px">{{ mensagem }}</div>
         </div>
         <div class="mb-3 d-flex justify-content-end">
           <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvar">
@@ -184,6 +174,7 @@
         dataPagamento: '',
         itens: [],
   
+        criando: false,
         isInvalido: false,
         isInvalidoItemPedido: false,
         isLoading: false,
@@ -194,7 +185,7 @@
         selectedProduto: null,
         optionsFormaPagamento: [],
         selectedFormaPagamento: null,
-        quantidadeItem: 0, ide: ''
+        quantidadeItem: 0
       };
     },
     methods: {
@@ -232,9 +223,8 @@
   
       getDados() {
         return {
-          id: this.id,
-          clienteId: this.selectedCliente,
-          formaPagamentoId: this.selectedFormaPagamento,
+          clienteId: this.selectedCliente.id,
+          formaPagamentoId: this.selectedFormaPagamento.id,
           numero: this.numero,
           dataCompra: this.dataCompra,
           dataEntrega: this.dataEntrega,
@@ -245,7 +235,6 @@
 
       getDadosIP(){
         return {
-          id: this.id,
           pedidoId: null,
           produtoId: this.selectedProduto,
           produtoDescricao: null,
@@ -256,7 +245,6 @@
       },
       async salvar() {
         console.log(this.selectedCliente, this.selectedProduto);
-        console.log("Dados do Pedido: ", "clienteId =", this.selectedCliente.clienteId, "formaPagamentoId =", this.selectedFormaPagamento.formaPagamentoId, "numero =", this.numero, "dataCompra =", this.dataCompra, this.dataEntrega, this.dataPagamento, this.itens)
         if (this.clienteId === null || this.formaPagamentoId === null || this.numero === "" || this.dataCompra === "" || this.dataEntrega === "" || this.dataPagamento === "") {
           this.isInvalido = true;
           this.mensagem = "Todos os campos devem ser preenchidos.";
@@ -269,21 +257,11 @@
             const response = await pedidoService.criar(this.getDados());
             this.options = response;
           } else {
-            const response = await pedidoService.atualizar(this.id, this.getDados());
-            this.listaPedidos = response;
+            const response = await pedidoService.atualizar(this.id, this.getDados()); //NÃO FUNCIONANDO
+            this.listaPedidos = response;     
           }
-          this.$emit("salvar_pedido", {
-            id: this.id,
-            clienteId: this.selectedCliente,
-            formaPagamentoId: this.selectedFormaPagamento,
-            numero: this.numero,
-            dataCompra: this.dataCompra,
-            dataEntrega: this.dataEntrega,
-            dataPagamento: this.dataPagamento,
-            itens: this.itens
-          });
-  
           this.limparCampos();
+          this.$emit("salvar", true);
         } catch (error) {
           this.isInvalido = true;
           if (error.response.status === 403) {
@@ -293,14 +271,18 @@
           } else {
             this.mensagem = error.message;
           }
-
         }
       },
       cancelar() {
         this.limparCampos();
         this.$emit("cancelar", true);
       },
-      async incluirItem(){ //TODO: Somente fazer a inclusão real no BD quando o Pedido for feito!
+      async incluirItem(){ 
+        if (this.id === ''){
+          this.isInvalido = true;
+          this.mensagem = "Crie um pedido antes de incluir itens!!";
+          return;
+        }
         const itemPedido = {
           id : null,
           pedidoId : this.id,
@@ -311,23 +293,19 @@
           precoUnidadeAtual : null,
         }
         console.log(itemPedido);
-        if (this.pedidoId !== null){
-          try{
-            const response = await itemPedidoService.criar(itemPedido);
-            // lista de itens na tela
-            this.itens.push(response); // Coloca o response (um itemPedido) no array 'itens'
-          } catch(error){
-            if(error.response.status === 403){        
-              alert("Usuário não identificado! Faça o login!!!");
-            }else if(error.response.status === 400 ){
-              alert(error.response.data.mensagem);     
-            }else{
-              alert(error.message);
-            }
+
+        try{
+          const response = await itemPedidoService.criar(itemPedido);
+          // lista de itens na tela
+          this.itens.push(response); // Coloca o response (um itemPedido) no array 'itens'
+        } catch(error){
+          if(error.response.status === 403){        
+            alert("Usuário não identificado! Faça o login!!!");
+          }else if(error.response.status === 400 ){
+            alert(error.response.data.mensagem);     
+          }else{
+            alert(error.message);
           }
-        } else {
-          this.isInvalidoItemPedido = true;
-          this.mensagem = "NÃO FAÇA ISSO";
         }
       },
       async excluirItemPedido(id){
@@ -377,7 +355,7 @@
         this.itens= this.propsPedido.itens;
   
         this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao };
-        this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
+        this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial };
   
       }
     },
