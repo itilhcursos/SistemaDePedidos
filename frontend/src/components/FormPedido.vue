@@ -10,7 +10,7 @@
         </div>
         <div class="col">
           <label class="form-label">Número</label>
-          <input class="form-control" type="text" v-model="numero" placeholder="Número" />
+          <input class="form-control" type="number" v-model="numero" placeholder="Número" />
         </div>
         <div class="col">
           <label class="form-label">Forma de pagamento</label>
@@ -76,7 +76,7 @@
                     <img :src=item.produtoUrlImagem height="50px">
                   </th>
                   <th>
-                    {{ item.produtoDescricao }}
+                    {{ item.descricao }}
                   </th>
                   <th>
                     {{ item.quantidadeEstoque }}
@@ -158,9 +158,9 @@ export default {
   data() {
     return {
       id: '',
-      clienteId: '',
+      cliente: '',
       clienteNomeRazaoSocial: '',
-      formaPagamentoId: '',
+      formaPagamento: '',
       formaPagamentoDescricao: '',
       numero: '',
       dataCompra: '',
@@ -208,13 +208,6 @@ export default {
         loading(false);
       });
     },
-
-    getDados() {
-      return {
-        id: this.id,
-        nome: this.nome,
-      };
-    },
     async salvar() {
       console.log(this.selectedCliente, this.selectedProduto);
       // if (this.nome === "") {
@@ -226,19 +219,18 @@ export default {
 
       try {
         if (this.id === "") {
-          //  const response = await estadoService.criar(this.getDados());
-          //  this.options = response;
+          const response = await itemPedidoService.criar(this.getDados());
+          this.options = response;
         } else {
-          // const response = await estadoService.atualizar(
-          //   this.id,
-          //   this.getDados()
-          // );
-          //this.listaEstados = response;
+          const response = await itemPedidoService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaPedidos = response;
         }
-        this.$emit("salvar_pedido", {
-          id: this.id,
-          nome: this.nome,
-        });
+        this.$emit("salvar_pedido",
+          this.getDados(),
+        );
 
         this.id = "";
         this.nome = "";
@@ -262,13 +254,13 @@ export default {
     },
     async incluirItem(){
         const itemPedido = {
-              id : null,
+              id : this.id,
               pedidoId : this.id,
               produtoId : this.selectedProduto.id,
               produtoDescricao : this.selectedProduto.descricao,
               produtoUrlImagem : this.selectedProduto.urlImagem,
               quantidadeEstoque : this.quantidadeItem,
-              precoUnidadeAtual : null
+              precoUnidadeAtual : this.precoUnidadeAtual
             }
         console.log(itemPedido);
         try{
@@ -306,9 +298,9 @@ export default {
   mounted() {
     if (this.propsPedido) {
       this.id = this.propsPedido.id;
-      this.clienteId= this.propsPedido.clienteId;
+      this.cliente= this.propsPedido.cliente;
       this.clienteNomeRazaoSocial= this.propsPedido.clienteNomeRazaoSocial;
-      this.formaPagamentoId= this.propsPedido.formaPagamentoId;
+      this.formaPagamento= this.propsPedido.formaPagamento;
       this.formaPagamentoDescricao= this.propsPedido.formaPagamentoDescricao;
       this.numero= this.propsPedido.numero;
       this.dataCompra= this.propsPedido.dataCompra;
@@ -320,7 +312,7 @@ export default {
         id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao 
       };
       this.selectedCliente = { 
-        id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
+        id:this.propsPedido.cliente, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
       };
 
     }

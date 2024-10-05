@@ -40,10 +40,10 @@
                 {{ pedido.id }}
             </th>
             <td>
-                {{ pedido.ClienteID }}
+                {{ pedido.cliente }}
             </td>
             <td>
-                {{ pedido.FormaPagamentoID }}
+                {{ pedido.formaPagamento }}
             </td> 
             <td>
                 {{ pedido.numero }}

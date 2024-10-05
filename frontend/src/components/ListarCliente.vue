@@ -33,9 +33,6 @@
             <th scope="col">Endereço</th>
             <th scope="col">Bairro</th>
             <th scope="col">CEP</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Informação</th>
-            <th scope="col">Entrega</th>
             <th scope="col" class="d-flex justify-content-center">Ações</th>
           </tr>
         </thead>
@@ -67,15 +64,6 @@
             </td>
             <td>
               {{ cliente.cep }}
-            </td>
-            <td>
-              {{ cliente.email }}
-            </td>
-            <td>
-              {{ cliente.informacao }}
-            </td>
-            <td>
-              {{ formatarLogico(cliente.ativo) }}
             </td>
             <td class="d-flex justify-content-center">
               <button
@@ -179,6 +167,7 @@ export default {
       this.formVisible = false;
       const response = await clienteService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
       this.listaClientes = response.content;
+      console.log(this.listaClientes);
       this.totalPages = response.totalPages;   
     },
     limpar() {
@@ -198,7 +187,7 @@ export default {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-      const response = await clienteService.delete(`http://localhost:8080/cliente/${id}`, config);
+      const response = await clienteService.apagar(`http://localhost:8080/cliente/${id}`, config);
       console.log(response.data);
       this.buscarClientes();
     },

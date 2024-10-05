@@ -115,11 +115,11 @@ export default {
                     const response = await produtoService.criar(this.getDados());
                     this.listaProdutos = response.data;
                 } else {
-                    const response = await produtoService.atualizar(
-                    this.id,
-                    this.getDados()
+                  const response = await produtoService.atualizar(
+                  this.id,
+                  this.getDados()
                 );
-                this.listaEstados = response.data;
+                this.listaProdutos = response.data;
             }
             this.$emit("salvar_produto", {
                 id: this.id,

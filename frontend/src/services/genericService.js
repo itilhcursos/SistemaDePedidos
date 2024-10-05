@@ -27,7 +27,7 @@ const atualizar = async (path, id, objeto) =>{
 
 //delete
 const apagar = async (path, id) =>{
-
+    console.log(getConfig);
     return await axios.delete(url + path + "/"+ id,  getConfig );
 
 }

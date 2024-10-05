@@ -138,6 +138,7 @@ export default {
       this.formVisible = false;
       const response = await estadoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
       this.listaEstados = response.content;
+      console.log(this.listaEstados);
       this.totalPages = response.totalPages;   
     },
     limpar() {
@@ -152,12 +153,7 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-      const response = await estadoService.delete(`http://localhost:8080/estado/${id}`, config);
+      const response = await estadoService.apagar(id);
       console.log(response.data);
       this.buscarEstados();
     },

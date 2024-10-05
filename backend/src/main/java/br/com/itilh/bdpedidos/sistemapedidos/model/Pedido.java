@@ -41,20 +41,20 @@ public class Pedido {
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_forma_de_pagamento")
+    @JoinColumn(name = "id_forma_pagamento")
     private FormaPagamento formaPagamento;
 
     @Column(name = "int_numero")
     private BigInteger numero;
 
     @Column(name = "dt_compra")
-    private LocalDate compra;
+    private LocalDate dataCompra;
 
     @Column(name = "dt_entrega")
-    private LocalDate entrega;
+    private LocalDate dataEntrega;
 
     @Column(name = "dt_pagamento")
-    private LocalDate pagamento;
+    private LocalDate dataPagamento;
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
     private List<ItemPedido> itens;

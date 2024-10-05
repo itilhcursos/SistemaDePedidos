@@ -76,28 +76,23 @@ export default {
         return;
       }
       this.isInvalido = false;
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
 
       if (this.id === "") {
         //incluir pelo POST da API
-        const response = await estadoService.post("http://localhost:8080/estado", {
+        const response = await estadoService.criar( {
           id: this.id,
           nome: this.nome,
-        }, config);
+        });
         this.listaEstados = response.data;
       } else {
         // alterar pelo PUT da API
-        const response = await estadoService.put(
-          `http://localhost:8080/estado/${this.id}`,
+        const response = await estadoService.atualizar(
+          this.id,
           {
             id: this.id,
             nome: this.nome,
           }
-        ,config );
+        );
         this.listaEstados = response.data;
       }
 

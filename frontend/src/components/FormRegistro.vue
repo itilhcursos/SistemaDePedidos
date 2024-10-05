@@ -24,8 +24,8 @@
       <div class="mb-3">
       <label class="form-label">Usuário</label>
       <select v-model="role" class="form-select">
-        <option :value="true">ADMIN</option>
-        <option :value="false">USER</option>
+        <option :value="0">ADMIN</option>
+        <option :value="1">USER</option>
       </select>
     </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -71,7 +71,7 @@ export default {
       if (this.login === "" || this.senha === "" || this.role === "") {
         return;
       }
-
+      console.log("role", this.role)
       try{
         const response = await axios.post("http://localhost:8080/auth/registro", {
             login: this.login,
