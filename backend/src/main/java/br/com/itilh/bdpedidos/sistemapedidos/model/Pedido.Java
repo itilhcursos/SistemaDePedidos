@@ -41,6 +41,9 @@ public class Pedido {
     @JoinColumn(name="id_forma_pagamento")
     private FormaPagamento formaPagamento;
 
+    @Column(name="int_numero", unique = true)
+    private BigInteger numero;
+
     @Column(name="dt_compra")
     private Date dataCompra;
     
