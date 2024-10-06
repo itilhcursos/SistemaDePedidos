@@ -174,7 +174,6 @@
         dataPagamento: '',
         itens: [],
   
-        criando: false,
         isInvalido: false,
         isInvalidoItemPedido: false,
         isLoading: false,
@@ -223,6 +222,7 @@
   
       getDados() {
         return {
+          id: this.id,
           clienteId: this.selectedCliente.id,
           formaPagamentoId: this.selectedFormaPagamento.id,
           numero: this.numero,
@@ -233,7 +233,7 @@
         };
       },
 
-      getDadosIP(){
+      /* getDadosIP(){
         return {
           pedidoId: null,
           produtoId: this.selectedProduto,
@@ -242,7 +242,7 @@
           quantidadeEstoque: this.quantidadeEstoque,
           precoUnidadeAtual: this.precoUnidadeAtual
         }
-      },
+      }, */
       async salvar() {
         console.log(this.selectedCliente, this.selectedProduto);
         if (this.clienteId === null || this.formaPagamentoId === null || this.numero === "" || this.dataCompra === "" || this.dataEntrega === "" || this.dataPagamento === "") {

@@ -66,10 +66,11 @@
                                 class="btn btn-btn btn-primary m-2"
                                 @click="alterar(pedido)"> <i class="bi bi-clipboard-pulse"></i> Alterar
                                 </button>
-                                <button
+                                <button v-if="pedido.itens.length === 0"
                                 class="btn btn-btn btn-danger m-2"
                                 @click="excluir(pedido.id)"> <i class="bi bi-clipboard2-minus"></i> Excluir
                                 </button>
+                               <!--  <button class="btn btn-btn btn-info m-2" @click="console.log(pedido.itens.length == 0, pedido.itens.length)"><i class="bi bi-code-slash"></i> console.log (debug)</button> -->
                             </th>
                             
                             <table class="table table-dark table-striped">
@@ -149,6 +150,7 @@
 import Data from '@/utils/Data';
 import FormPedido from './FormPedido.vue';
 import pedidoService from '@/services/pedidoService';
+import itemPedidoService from '@/services/itemPedidoService';
 export default {
     components:{
         FormPedido
@@ -163,6 +165,8 @@ export default {
             direction: "ASC",
             property: "id",
             totalPages: 0,
+
+            semItens: false,
         }
     },
     methods: {
@@ -194,10 +198,26 @@ export default {
             this.pedidoEscolhido = pedido;
             this.flipFormVisible();
         },
-        async excluir(id){
-            try{
-                const response = await pedidoService.apagar(id);
+        async excluirItensPedido(id){
+            
+            console.log(id);
+            /* try{
+                const response = await itemPedidoService.apagar(id);
                 console.log(response);
+            }catch(error){
+                if(error.response.status === 403){        
+                alert("Usuário não identificado! Faça o login!!!");
+                }else if(error.response.status === 400 ){
+                alert(error.response.data.mensagem);     
+                }else{
+                alert(error.message);
+                }
+            } */
+        },
+        async excluir(id){
+            try{  
+                const response = await pedidoService.apagar(id);
+                console.log(response);  
             }catch(error){
                 if(error.response.status === 403){        
                 alert("Usuário não identificado! Faça o login!!!");
@@ -208,11 +228,15 @@ export default {
                 }
             }     
             this.listarPedidos();
-        }
-        
+        },
     },
     mounted(){
         this.listarPedidos();
     },
+    computed:{
+        habilitarExcluir(){
+            return this.semItens ? false : true;
+        }
+    }
 };
 </script>

@@ -28,6 +28,13 @@
           <option v-for="estado in estados" :value="estado.id" :key="estado.id"> {{ estado.nome }}</option>
         </select>
       </div>
+      <div class="mb-3">
+        <label class="form-label">Entrega disponível para este municipio?</label>
+        <select v-model="entrega" class="form-select">
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
+      </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
@@ -67,6 +74,7 @@ export default {
       nome: "",
       estadoSelected: "",
       estados: [],
+      entrega: "",
       isInvalido: false,
       mensagem : '', 
     };

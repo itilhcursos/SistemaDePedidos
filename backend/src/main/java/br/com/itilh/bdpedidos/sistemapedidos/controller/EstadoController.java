@@ -39,6 +39,18 @@ public class EstadoController {
         return estadoService.getTodos(pageable);
     }
 
+    @GetMapping("/estados/{txtBusca}")
+    public Page<EstadoDTO> getBuscarEstados(
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property,
+        @PathVariable String txtBusca
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
+        return estadoService.buscar(pageable, txtBusca);
+    }
+
     // @GetMapping("/estados/nome/{nome}")
     // public List<Estado> getEstadosPorNome(@PathVariable String nome,
     // @RequestParam(required = true) ModoBusca modoBusca) {
