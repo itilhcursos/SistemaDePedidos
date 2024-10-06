@@ -78,8 +78,10 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
     public String excluirItemPedido(BigInteger id) throws Exception {
         ItemPedido item = repositorio.getReferenceById(id);
         Produto produto = item.getProduto();
+
         produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + item.getQuantidadeEstoque());
         repositorioProduto.save(produto);
+
         repositorio.deleteById(id);
         return "Excluído";
     }

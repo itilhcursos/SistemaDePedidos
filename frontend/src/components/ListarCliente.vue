@@ -29,16 +29,15 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nome</th>
-                        <th scope="col">CNPJ</th>
-                        <th scope="col">CPF</th>
+                        <th scope="col">CNPJ/CPF</th>
                         <th scope="col">Telefone</th>
                         <th scope="col">Endereço</th>
                         <th scope="col">Bairro</th>
-                        <th scope="col">Municipio</th>
+                        <!-- <th scope="col">Municipio</th> -->
                         <th scope="col">CEP</th>
                         <th scope="col">E-mail</th>
                         <th scope="col">Informações</th>
-                        <th scope="col">Ativo/Inativo</th>
+                        <th scope="col">Ativo?</th>
                         <th scope="col" class="d-flex justify-content-end">Ações</th>
                     </tr>
                 </thead>
@@ -51,10 +50,7 @@
                             {{ cliente.nomeRazaoSocial }}
                         </td>
                         <td>
-                            {{ cliente.cnpj }}
-                        </td>
-                        <td>
-                            {{ cliente.cpf }}
+                            {{ cliente.cnpj != '' ? 'CNPJ: ' + cliente.cnpj : 'CPF: ' + cliente.cpf }}
                         </td>
                         <td>
                             {{ cliente.telefone }}
@@ -65,9 +61,9 @@
                         <td>
                             {{ cliente.bairro }}
                         </td>
-                        <td>
+                        <!-- <td>
                             {{ cliente.municipioNome }}
-                        </td>
+                        </td> -->
                         <td>
                             {{ cliente.cep }}
                         </td>

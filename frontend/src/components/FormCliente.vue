@@ -92,13 +92,13 @@
                 <v-select class="meu-select" v-model="municipioSelecionado" :filterable="false" :options="optionsMunicipio"
                     @search="onSearchMunicipio">
                     <template v-slot:no-options>
-                    Não encontrado.
+                    Pesquise um Municipio...
                     </template>
                     <template v-slot:option="option">
-                    {{ option.nome }}
+                    {{ option.nome+',' }}&nbsp;{{ option.estadoNome}}
                     </template>
                     <template v-slot:selected-option="option">
-                    {{ option.nome }}
+                    {{ option.nome + ' (Municipio)' }} &emsp;|&emsp; {{ option.estadoNome + ' (Estado)' }}
                     </template>
                 </v-select>
             </div>
@@ -142,7 +142,7 @@ export default {
             municipioId: "",
 
             isLoading: false,
-            optionsMunicipios: [],
+            optionsMunicipio: [],
             municipioSelecionado: null
         }
     },
@@ -230,7 +230,7 @@ export default {
                     const response = await clienteService.criar(this.getDados());
                     this.listaClientes = response;
                 } else {
-                    const response = await clienteService.atualizar(this.id, this.getDados());
+                    const response = await clienteService.atualizar(this.id, this.getDados()); //TODO: Investigar erros
                     this.listaClientes = response;
                 }
                 this.$emit("salvar", {
