@@ -50,10 +50,10 @@
                 />
             </div>
             <div class="mb-3">
-                <label class="form-label">Ativo</label>
+                <label class="form-label">Status</label>
                 <select v-model="ativo" class="form-select">
-            <option :value="true">Sim</option>
-            <option :value="false">Não</option>
+            <option :value="true">Ativo</option>
+            <option :value="false">Inativo</option>
           </select>
             </div>
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">

@@ -23,15 +23,15 @@
         />
       </div>
       <div class="mb-3">
-        <label class="form-label">Ativo</label>
+        <label class="form-label">Status</label>
           <select v-model="ativo" class="form-select">
-            <option :value="true">Sim</option>
-            <option :value="false">Não</option>
+            <option :value="true">Ativo</option>
+            <option :value="false">Inativo</option>
           </select>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
-        <div class="p-2">Descrição e ativo devem ser preenchidos!</div>
+        <div class="p-2">{{ mensagem }}</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
         <button
@@ -57,6 +57,7 @@
 
 <script>
 import axios from "axios";
+import formaPagamentoService from "@/services/formaPagamentoService";
 export default {
   props: {
     propsFormaPagamento: Object,
@@ -65,59 +66,59 @@ export default {
     return {
       id: "",
       descricao: "",
-      ativo: "",
+      ativo: null,
       isInvalido: false,
+      mensagem : ''
     };
   },
   methods: {
     async salvarFormaPagamento() {
       if (this.descricao === "") {
         this.isInvalido = true;
+        this.mensagem = "Descrição forma de pagamento deve ser preenchida!";
         return;
       }
       this.isInvalido = false;
-
+      
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
 
-      if (this.id === "") {
-        //incluir pelo POST da API
-        const response = await axios.post("http://localhost:8080/forma-pagamento", {
-          id: this.id,
-          descricao: this.descricao,
-          ativo: this.ativo
-        }, config);
-        this.listaFormasPagamento = response.data;
-      } else {
-        // alterar pelo PUT da API
-        const response = await axios.put(
-          `http://localhost:8080/forma-pagamento/${this.id}`,
-          {
-            id: this.id,
-            descricao: this.descricao,
-            ativo: this.ativo
-          }, config
-        );
-        this.listaFormasPagamento = response.data;
-      }
-
-      this.$emit("salvar_formaPagamento", {
+      try{
+        if (this.id === "") {
+          const response = await formaPagamentoService.criar(this.getDados(), config);
+          this.listaFormasPagamento = response;
+        } else {
+          const response = await formaPagamentoService.atualizar(this.id, this.getDados());
+          this.listaFormasPagamento = response;
+        }
+        this.$emit("salvar_formaPagamento", {
         id: this.id,
         descricao: this.descricao,
-        ativo: this.ativo
+        ativo: this.ativo,
       });
 
       this.id = "";
       this.descricao = "";
-      this.ativo = "";
-    },
+      this.ativo = false;
+    }catch(error){
+      this.isInvalido = true;
+      if(error.response.status === 403){        
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      }else if(error.response.status === 400 &&
+               error.response.data.exception === 'FormaPagamentoDuplicadoException'){
+        this.mensagem = error.response.data.mensagem;     
+      }else{
+        this.mensagem = error.message;
+      }
+    }
+   },
     cancelar() {
       this.id = "";
       this.descricao = "";
-      this.ativo = "";
+      this.ativo = false;
       this.$emit("cancelar", true);
     },
   },
@@ -135,4 +136,3 @@ export default {
   },
 };
 </script>
-

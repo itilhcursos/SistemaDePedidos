@@ -29,7 +29,7 @@
           <th scope="col">Descrição</th>
           <th scope="col">Quantidade</th>
           <th scope="col">Preço</th>
-          <th scope="col">Ativo</th>
+          <th scope="col">Status</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@
             {{ produto.id }}
           </th>
           <td>
-            <img :src=produto.urlImagem height="100px">
+            <img :src=produto.urlImagem height="50px">
           </td>
           <td>
             {{ produto.descricao }}
@@ -51,7 +51,7 @@
             {{ formatarPreco(produto.precoUnidadeAtual) }}
           </td>
           <td>
-            {{ formatarLogico(produto.ativo) }}
+            {{ formatarStatus(produto.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -128,7 +128,6 @@
   </div>
 </template>
 
-
 <script>
 import FormProduto from "./FormProduto.vue";
 import Logico from "@/utils/Logico.js";
@@ -190,9 +189,9 @@ export default {
       this.pageNumber = pagina;
       this.buscarProdutos();
     },
-    formatarLogico(valor){
-      return Logico.toSimNao(valor);
-    },
+    formatarStatus(valorBoo){
+          return Logico.toAtivoInativo(valorBoo)
+      },
     formatarPreco(valor){
       return Monetario.toTela(valor);
     },

@@ -26,7 +26,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome</th>
-          <th scope="col">Entrega</th>
+          <th scope="col">Entrega?</th>
           <th scope="col">Estado</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>

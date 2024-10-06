@@ -78,7 +78,7 @@ export default {
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
+        this.mensagem = "Nome município deve ser preenchido!";
         return;
       }
       this.isInvalido = false;

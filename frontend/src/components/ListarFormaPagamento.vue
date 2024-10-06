@@ -26,7 +26,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
-          <th scope="col">Ativo</th>
+          <th scope="col">Status</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formatarStatus(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -119,6 +119,7 @@
 
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
+import Logico from "@/utils/Logico.js";
 import axios from "axios";
 export default {
   components: {
@@ -185,6 +186,9 @@ export default {
       this.pageNumber = pagina;
       this.buscarFormaPagamento();
     },
+    formatarStatus(valorBoo){
+          return Logico.toAtivoInativo(valorBoo)
+      },
   },
   mounted() {
     this.buscarFormaPagamento();
