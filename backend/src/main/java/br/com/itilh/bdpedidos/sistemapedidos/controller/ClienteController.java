@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,7 +27,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class ClienteController {
 
     @Autowired
-    private ClienteService service;
+    private ClienteService clienteService;
 
     @GetMapping("/clientes")
     public Page<ClienteDTO> getClientes(
@@ -36,9 +37,35 @@ public class ClienteController {
         @RequestParam(required = false, defaultValue = "id") String property
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-
         return service.listarClientes(pageable);
     }
+
+    @GetMapping("/cliente/{id}")
+    public ClienteDTO getClientePorId(@PathVariable BigInteger id) throws Exception {
+        return clienteService.buscarClientePorId(id);
+    }    
+
+    @PostMapping("/cliente")
+    public ClienteDTO criarCliente(@RequestBody ClienteDTO entity) throws Exception {
+        return clienteService.criarProduto(entity);
+    }
+    
+    @PutMapping("/cliente/{id}")
+    public ClienteDTO alterarCliente(@PathVariable BigInteger id, @RequestBody ProdutoDTO novosDados) throws Exception {
+        return clienteService.alterarCliente(id, novosDados);
+    }
+
+    @DeleteMapping("/cliente/{id}")
+    public String deleteCliente(@PathVariable BigInteger id) throws Exception {
+        return clienteService.excluirCliente(id);
+    }
+}
+
+
+
+
+    
+    
     
     
     
