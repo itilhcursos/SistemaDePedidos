@@ -24,8 +24,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Entity
 
+@Entity
 @Table(name = "tb_itens_pedidos")
 public class ItemPedido {
 
@@ -37,6 +37,10 @@ public class ItemPedido {
     @ManyToOne
     @JoinColumn(name = "id_produto")
     private Produto produto;
+
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
 
     @Column(name = "dbl_quantidade_estoque")
     private Double quantidadeEstoque;
