@@ -4,10 +4,43 @@
     <hr />
     <form>
       <div class="row">
-        <div class="mb-3">
+        <div class="col">
           <label class="form-label">Id</label>
           <input class="form-control" type="text"  v-model="id" :disabled ="true"  placeholder="Id"/>
         </div>
+
+        <div class="col">
+          <label class=" form-label" >Numero</label>
+          <input  class="form-control" type="text" v-model="numero" placeholder="Numero" >
+        </div>
+
+        <div class="col">
+          <label class=" form-label" >Forma de Pagemento</label>
+            <v-select class="meu-select" v-model="formaPagamentoSelected" :filterable="false"
+              :options="formasPagamento" @search="onSearchFormaPagamento">
+                <template v-slot:no-options>
+                  Não encontrado.
+                </template>
+                <template v-slot:option="option">
+                  {{ option.descricao }}
+                </template>
+                <template v-slot:selected-option="option">
+                  {{ option.descricao }}
+                </template>
+                
+            </v-select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Cliente</label>
+          <input
+            class="form-control"
+            type="text"
+            v-model="clienteNomeRazaoSocial"
+            placeholder="Cliente"
+          />
+        </div>
+
         <div class="mb-3">
           <label for="">Produto</label>
             <v-select class="meu-select" label="Produto" :filterable="false" placeholder="Produto"
@@ -26,27 +59,19 @@
               </template>
             </v-select>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Nome</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="nome"
-            placeholder="Nome"
-          />
-        </div>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
       </div>
+
       <div class="mb-3 d-flex justify-content-end">
         <button
           class="btn btn-primary m-2"
           type="submit"
           v-on:click.prevent="salvarPedido"
         >
-        <i class="bi bi-clipboard2-check"></i>
+          <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
         <button
@@ -73,7 +98,13 @@ import produtoService from '@/services/produtoService';
     data() {
       return {
         id: "",
-        nome: "",
+        clienteNomeRazaoSocial: "",
+        numero: "",
+        dataCompra: "",
+        dataEntrega: "",
+        dataPagamento: "",
+        formaPagamentoSelected:"",
+        formasPagemento:[],
         isInvalido: false,
         mensagem: '',
         produtoSelecionado:"",
@@ -91,14 +122,18 @@ import produtoService from '@/services/produtoService';
           });
         }
       },
+
+      async onSearchFormaPagamento(search, loading){
+        
+      },
       getDados(){
         return{
             id: this.id,
-            nome: this.nome,
+            clienteNomeRazaoSocial: this.clienteNomeRazaoSocial,
         }
       },
       async salvarPedido() {
-        if (this.nome === "") {
+        if (this.clienteNomeRazaoSocial === "") {
           this.isInvalido = true;
           this.mensagem = "O Nome deve ser preenchido!!";
           return;
@@ -117,15 +152,15 @@ import produtoService from '@/services/produtoService';
               this.id,
               this.getDados()
             );
-            this.listaEstados = response.data;
+            this.listaPedidos = response.data;
           }
           this.$emit("salvar_pedido", {
             id: this.id,
-            nome: this.nome,
+            clienteNomeRazaoSocial: this.clienteNomeRazaoSocial,
           });
 
           this.id = "";
-          this.nome = "";
+          this.clienteNomeRazaoSocial = "";
         
         }catch(error){
         
@@ -146,14 +181,14 @@ import produtoService from '@/services/produtoService';
 
       cancelar(){
         this.id = "";
-        this.nome = "";
+        this.clienteNomeRazaoSocial = "";
         this.$emit("cancelar", true);
       },
     },   
     mounted() {
       if (this.propsPedido) {
         this.id = this.propsEstado.id;
-        this.nome = this.propsEstado.nome;
+        this.clienteNomeRazaoSocial = this.propsEstado.nome;
       }
     },
     computed: {

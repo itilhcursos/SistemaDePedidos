@@ -20,16 +20,17 @@
             <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
               {{ municipio.nome }}
             </option>
-          </select>
+          </select >
       </div>
 
-      <div class="mb-3">
+      <div class="mb-3" >
         <label class="form-label">Estado</label>
         <select v-model="estadoSelected" class="form-control">
           <option v-for="estado in estados" :value="estado.id" :key="estado.id">
             {{ estado.nome }}
           </option>
         </select>
+        
       </div>
 
       <div class="mb-3">
@@ -117,12 +118,10 @@
 
       <div class="mb-3">
         <label class="form-label">Ativo</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="ativo"
-          placeholder="Ativo"
-        />
+        <select class="form-control" v-model="ativo" >
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
       </div>
 
       <div class="mb-3">
@@ -187,6 +186,7 @@
         municipios:[],
         isInvalido: false,
         mensagem: '',
+        
       };
     },
     methods: {
@@ -225,6 +225,7 @@
             const response = await clienteService.atualizar(
               this.id,
               this.getDados()
+              
             );
             this.listaClientes = response.data;
           }
@@ -330,7 +331,8 @@
       // getCnpj só vai aparecer se o cpf for vazio('')
       getCnpj(){
         return this.cpf === '' ? true : false;
-      }
+      },
+      
 
 
     },

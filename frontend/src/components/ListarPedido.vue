@@ -62,6 +62,7 @@
           <td class="d-flex justify-content-end">
               <table class="table table-dark table-striped">
                 <thead>
+                  
                   <tr>
                     <th scope="col">Itens</th>
                     <th scope="col">Descrição</th>
