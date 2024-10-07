@@ -5,7 +5,7 @@ import ListarPedido from '../components/ListarPedido.vue'
 
 <template>
  <main>
-   <ListarEstado />
+   <ListarPedido />
  </main>
 </template>
 

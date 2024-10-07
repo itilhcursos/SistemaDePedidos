@@ -2,20 +2,20 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>ESTADOS</h3>
+        <h3>Clientes</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+        <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormCliente
             v-if="formVisible"
-            :propsEstado="estadoEscolhido"
+            :propsCliente="clienteEscolhido"
             @cancelar="limpar"
-            @salvar_estado="buscarEstados"
+            @salvar_cliente="buscarClientes"
           />
         </div>
       </div>
@@ -25,29 +25,69 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col">Nome ou Razão Social</th>
+          <th scope="col">CNPJ</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">Endereço</th>
+          <th scope="col">Bairro</th>
+          <th scope="col">CEP</th>
+          <th scope="col">Email</th>
+          <th scope="col">Informações</th>
+          <th scope="col">CPF</th>
+          <th scope="col">Municipios</th>
+          <th scope="col">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="estado in listaEstados" :key="estado.id" scope="row">
+        <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
           <th>
-            {{ estado.id }}
+            {{ cliente.id }}
           </th>
           <td>
-            {{ estado.nome }}
+            {{ cliente.nomeRazaoSocial }}
+          </td>
+          <td>
+            {{ cliente.cnpj }}
+          </td>
+          <td>
+            {{ cliente.telefone }}
+          </td>
+          <td>
+            {{ cliente.endereco }}
+          </td>
+          <td>
+            {{ cliente.bairro }}
+          </td>
+          <td>
+            {{ cliente.cep }}
+          </td>
+          <td>
+            {{ cliente.email }}
+          </td>
+          <td>
+            {{ cliente.informacoes }}
+          </td>
+          <td>
+            {{ cliente.cpf }}
+          </td>
+          <td>
+            {{ cliente.municipioNome }}
+          </td>
+          <td>
+            {{ formatarLogico(cliente.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarEstado(estado)"
+              @click="alterarCliente(cliente)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
             <button
               class="btn btn-outline-danger m-2"
-              @click="excluirEstado(estado.id)"
+              @click="excluirEstado(cliente.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
@@ -92,7 +132,14 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="nomeRazaoSocial">Nome ou Razão Social</option>
+            <option value="cnpj">CNPJ</option>
+            <option value="telefone">Telefone</option>
+            <option value="endereco">Endereço</option>
+            <option value="bairro">Bairro</option>
+            <option value="cep">CEP</option>
+            <option value="email">Email</option>
+            <option value="informacoes">Informações</option>
           </select>
         </div>
         <div class="col-auto">
@@ -102,7 +149,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
+          <button @click.prevent="buscarClientes" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -114,19 +161,18 @@
 
 
 <script>
-import FormEstado from "./FormEstado.vue";
+import FormCliente from "./FormCliente.vue";
 import axios from "axios";
+import Logico from "@/utils/Logico.js";
 export default {
   components: {
-    FormEstado,
+    FormCliente,
   },
   data() {
     return {
-      listaEstados: [],
-      estadoEscolhido: null,
+      listaClientes: [],
+      clienteEscolhido: null,
       formVisible: false,
-      mode: import.meta.env.MODE,
-      url: import.meta.env.VITE_APP_URL_API,
       pageNumber: 1,
       pageSize: 10,
       direction: "ASC",
@@ -135,47 +181,48 @@ export default {
     };
   },
   methods: {
-    async buscarEstados() {
-      this.estadoEscolhido = null;
+    async buscarClientes() {
+      this.clienteEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
       const response = await axios.get(
-        `http://localhost:8080/estados?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `http://localhost:8080/cliente?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
       console.log(response.data);
-      this.listaEstados = response.data.content;
+      this.listaClientes= response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
     },
     limpar() {
-      this.estadoEscolhido = null;
+      this.clienteEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoEstado() {
+    novoCliente() {
       this.formVisible = !this.formVisible;
     },
-    alterarEstado(estado) {
-      this.estadoEscolhido = estado;
+    alterarCliente(cliente) {
+      this.clienteEscolhido = cliente;
       this.formVisible = true;
     },
-    async excluirEstado(id) {
+    async excluirCliente(id) {
       let config = {
         headers: {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-      const response = await axios.delete(`http://localhost:8080/estado/${id}`, config);
+      const response = await axios.delete(`http://localhost:8080/cliente/${id}`, config);
       console.log(response.data);
-      this.buscarEstados();
+      this.buscarClientes();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarEstados();
+      this.buscarClientes();
     },
+    formatarLogico(valor){
+        return Logico.toSimNao(valor);
+      },
   },
   mounted() {
-    this.buscarEstados();
+    this.buscarClientes();
   },
 };
 </script>

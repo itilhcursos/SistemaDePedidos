@@ -11,7 +11,7 @@
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormItemPedido
             v-if="formVisible"
             :propsItemPedido="itemPedidoEscolhido"
             @cancelar="limpar"

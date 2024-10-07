@@ -22,7 +22,7 @@
           </select>
         </div>
             <div class="mb-3">
-                <label class="form-label">Nome ou Razção Social</label>
+                <label class="form-label">Nome ou Razão Social</label>
                 <input
                 class="form-control"
                 type="text"

@@ -5,7 +5,7 @@ import ListarMunicipio from '../components/ListarMunicipio.vue'
 
 <template>
  <main>
-   <ListarEstado />
+   <ListarMunicipio />
  </main>
 </template>
 

@@ -1,11 +1,11 @@
 
 <script setup>
-import ListarEstado from '../components/ListarItemPedido.vue'
+import ListarItemPedido from '../components/ListarItemPedido.vue';
 </script>
 
 <template>
  <main>
-   <ListarEstado />
+   <ListarItemPedido />
  </main>
 </template>
 
