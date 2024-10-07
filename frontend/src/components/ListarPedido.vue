@@ -4,28 +4,7 @@
       <div class="col-10">
         <h3>Pedidos</h3>
       </div>
-<<<<<<< HEAD
-      <!-- <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
-=======
-      <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novo" class="btn btn-success">
->>>>>>> developer
-          <i class="bi bi-clipboard-plus"></i> Novo
-        </button>
-      </div>
-      <div class="row">
-        <div>
-<<<<<<< HEAD
-          <FormEstado
-            v-if="formVisible"
-            :propsEstado="estadoEscolhido"
-            @cancelar="limpar"
-            @salvar_estado="buscarEstados"
-          />
-        </div>
-      </div> -->
-=======
+     
           <FormPedido
             v-if="formVisible"
             :propsPedido="pedidoEscolhido"
@@ -34,8 +13,6 @@
           />
         </div>
       </div> 
->>>>>>> developer
-    </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
@@ -44,17 +21,10 @@
           <th scope="col">Número</th>
           <th scope="col">Cliente</th>
           <th scope="col">Forma Pagamento</th>
-<<<<<<< HEAD
-          <th scope="col">data Compra</th>
-          <th scope="col">data Entrega</th>
-          <th scope="col">data Pagamento</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
-=======
           <th scope="col">Data Compra</th>
           <th scope="col">Data Entrega</th>
           <th scope="col">Data Pagamento</th>
           <th scope="col" class="d-flex justify-content-end">Itens</th>
->>>>>>> developer
         </tr>
       </thead>
       <tbody>
@@ -62,27 +32,6 @@
           <th>
             {{ pedido.id }}
           </th>
-<<<<<<< HEAD
-          <td>
-            {{ pedido.numero }}
-          </td>
-          <td>
-            {{ pedido.clienteNome }}
-          </td>          
-          <td>
-            {{ pedido.formaPagamentoDescricao }}
-          </td>          
-          <td>
-            {{ pedido.dataCompra }}
-          </td>          
-          <td>
-            {{ pedido.dataEntrega }}
-          </td>  
-          <td>
-            {{ pedido.dataPagamento }}
-          </td>         
-          <td class="d-flex justify-content-end">
-=======
           <th>
             {{ pedido.numero }}
           </th>
@@ -102,22 +51,12 @@
             {{ formatar(pedido.dataPagamento) }}
           </td>
           <td class="d-flex justify-content-end">            
->>>>>>> developer
             <button
               class="btn btn-btn btn-primary m-2"
               @click="alterar(pedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-<<<<<<< HEAD
-
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="exclui(pedido.id)"
-            >
-              <i class="bi bi-clipboard2-minus"></i> Excluir
-            </button>
-=======
             <table class="table table-dark table-striped">
               <thead>
                 <tr>
@@ -136,12 +75,11 @@
                 </tr>
               </tbody>
             </table>
->>>>>>> developer
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
+
   <div v-if="!formVisible">
     <hr />
     <div class="container">
@@ -178,12 +116,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-<<<<<<< HEAD
-            <option value="nome">Nome</option>
-=======
             <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
             <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
->>>>>>> developer
           </select>
         </div>
         <div class="col-auto">
@@ -193,11 +127,7 @@
           </select>
         </div>
         <div class="col-auto">
-<<<<<<< HEAD
-          <button @click.prevent="buscarEstados" class="btn btn-success">
-=======
           <button @click.prevent="buscar" class="btn btn-success">
->>>>>>> developer
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -209,20 +139,12 @@
 
 
 <script>
-<<<<<<< HEAD
-// import FormEstado from "./FormEstado.vue";
 import pedidoService from "@/services/pedidoService";
-export default {
-  components: {
-   // FormEstado,
-=======
+import Data from "../utils/Data";
 import FormPedido from "./FormPedido.vue";
-import Data from "../utils/Data"
-import pedidoService from "@/services/pedidoService";
 export default {
   components: {
     FormPedido,
->>>>>>> developer
   },
   data() {
     return {
@@ -248,19 +170,11 @@ export default {
       this.pedidoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-<<<<<<< HEAD
-    novoEstado() {
-      this.formVisible = !this.formVisible;
-    },
-    alterar(estado) {
-      this.pedidoEscolhido = estado;
-=======
     novo() {
       this.formVisible = !this.formVisible;
     },
     alterar(pedido) {
       this.pedidoEscolhido = pedido;
->>>>>>> developer
       this.formVisible = true;
     },
     async excluir(id) {
@@ -282,12 +196,9 @@ export default {
       this.pageNumber = pagina;
       this.buscar();
     },
-<<<<<<< HEAD
-=======
     formatar(data){
       return Data.formatoDMA(data);
     }
->>>>>>> developer
   },
   mounted() {
     this.buscar();

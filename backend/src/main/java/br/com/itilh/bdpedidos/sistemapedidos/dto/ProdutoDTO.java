@@ -20,3 +20,4 @@ public class ProdutoDTO {
     private String urlImagem;
     
 }
+

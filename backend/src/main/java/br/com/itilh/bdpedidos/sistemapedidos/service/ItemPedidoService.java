@@ -41,6 +41,16 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
     }
 
     @Transactional
+    public ItemPedidoDTO alterarItemPedido(BigInteger id, ItemPedidoDTO novosDados) throws Exception {
+
+        try{     
+         return toDTO(repositorio.save(toEntity(novosDados)));
+        }catch(Exception e){
+            throw new Exception("Alteração não foi realizada.");
+        }                                   
+    }
+
+    @Transactional
     public String deletePorId(BigInteger id) throws Exception {
 
         ItemPedido item = repositorio.getReferenceById(id);
