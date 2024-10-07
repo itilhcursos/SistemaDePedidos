@@ -4,105 +4,113 @@
         <hr />
         <div>Campos marcados com * são obrigatórios.</div> <div>Campos marcados com ** significa que somente um deles é obrigatório.</div> <hr />
         <form>
-            <div class="mb-3" >
-                <label class="form-label">ID</label>
+            <div class="row" style="padding: 10px">
+                <div class="col" >
+                <label class="form-label">ID (Automático)</label>
                 <input class="form-control" style="background-color:rgb(150, 150, 150)"
                     type="text"
                     v-model="id"
                     :disabled="true"
-                    placeholder="ID do Cliente. (Automático)"/>
+                    placeholder="ID do Cliente."/>
+                </div>
+                
+                <div class="col">
+                    <label class="form-label">CNPJ*</label>
+                    <input class="form-control"
+                        type="text"
+                        v-model="cnpj"
+                        placeholder="CNPJ..."
+                        :disabled= "setCnpjState"/>  
+                </div>
+                <div class="col">
+                    <label class="form-label">CPF*</label>
+                    <input class="form-control"
+                        type="text"
+                        v-model="cpf"
+                        placeholder="CPF..."
+                        :disabled= "setCpfState"/>              
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Nome ou Razão Social*</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="nomeRazaoSocial"
-                    placeholder="Nome ou Razão Social da empresa..."/>
+
+            <div class="row" style="padding: 10px">
+                <div class="col">
+                    <label class="form-label">Nome ou Razão Social*</label>
+                    <input class="form-control"
+                        type="text"
+                        v-model="nomeRazaoSocial"
+                        placeholder="Nome ou Razão Social da empresa..."/>
+                </div>
+                <div class="col">
+                    <label class="form-label">Telefone**</label>
+                    <input class="form-control"
+                        type="text"
+                        v-model="telefone"
+                        placeholder="Número de Telefone..."/>
+                </div>
+                <div class="col">
+                    <label class="form-label">E-mail**</label>
+                    <input class="form-control"
+                        type="text"
+                        v-model="email"
+                        placeholder="E-mail..."/>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">CNPJ*</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="cnpj"
-                    placeholder="CNPJ..."
-                    :disabled= "setCnpjState"/>  
-            </div>
-            <div class="mb-3">
-                <label class="form-label">CPF*</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="cpf"
-                    placeholder="CPF..."
-                    :disabled= "setCpfState"/>              
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Telefone**</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="telefone"
-                    placeholder="Número de Telefone..."/>
-            </div>
-            <div class="mb-3">
+            
+            <div class="row" style="padding: 10px">
+                <div class="col">
                 <label class="form-label">Endereço*</label>
                 <input class="form-control"
                     type="text"
                     v-model="endereco"
                     placeholder="Endereço..."/>
+                </div>
+                <div class="col">
+                    <label class="form-label">Bairro*</label>
+                    <input class="form-control"
+                        type="text"
+                        v-model="bairro"
+                        placeholder="Bairro de residência..."/>
+                </div>
+                <div class="col">
+                    <label class="form-label">CEP*</label>
+                    <input class="form-control"
+                        type="text"
+                        v-model="cep"
+                        placeholder="CEP..."/>
+                </div>
+                <div class="col">
+                    <label class="form-label">Municipio* </label>
+                    <v-select class="meu-select" v-model="municipioSelecionado" :filterable="false" :options="optionsMunicipio"
+                        @search="onSearchMunicipio">
+                        <template v-slot:no-options>
+                        Pesquise um Municipio...
+                        </template>
+                        <template v-slot:option="option">
+                        {{ option.nome+',' }}&nbsp;{{ option.estadoNome}}
+                        </template>
+                        <template v-slot:selected-option="option">
+                        {{ option.nome + ' (Municipio)' }} &emsp;|&emsp; {{ option.estadoNome + ' (Estado)' }}
+                        </template>
+                    </v-select>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Bairro*</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="bairro"
-                    placeholder="Bairro de residência..."/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">CEP*</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="cep"
-                    placeholder="CEP..."/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">E-mail**</label>
-                <input class="form-control"
-                    type="text"
-                    v-model="email"
-                    placeholder="E-mail..."/>
-            </div>
-            <div class="mb-3">
+            
+            <div class="row" style="padding: 10px">
+                <div class="col">
                 <label class="form-label">Informações</label>
                 <input class="form-control"
                     type="text"
                     v-model="informacao"
                     placeholder="Informações sobre o Cliente..."/>
+                </div>
+                <div class="col">
+                    <label class="form-label">Ativo?</label>
+                    <select v-model="ativo" class="form-select">
+                        <option value="true">Sim (Ativo)</option>
+                        <option value="false">Não (Inativo)</option>
+                    </select>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Ativo?</label>
-                <select v-model="ativo" class="form-select">
-                    <option value="true">Sim (Ativo)</option>
-                    <option value="false">Não (Inativo)</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Municipio* </label>
-                <!-- <select v-model="municipioSelecionado">
-                    <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id"> {{ municipio.nome }} </option>
-                </select> -->
-                <v-select class="meu-select" v-model="municipioSelecionado" :filterable="false" :options="optionsMunicipio"
-                    @search="onSearchMunicipio">
-                    <template v-slot:no-options>
-                    Pesquise um Municipio...
-                    </template>
-                    <template v-slot:option="option">
-                    {{ option.nome+',' }}&nbsp;{{ option.estadoNome}}
-                    </template>
-                    <template v-slot:selected-option="option">
-                    {{ option.nome + ' (Municipio)' }} &emsp;|&emsp; {{ option.estadoNome + ' (Estado)' }}
-                    </template>
-                </v-select>
-            </div>
-
 
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
@@ -177,7 +185,7 @@ export default {
                 email: this.email,
                 informacao: this.informacao,
                 ativo: this.ativo,
-                municipioId: this.municipioSelecionado
+                municipioId: this.municipioSelecionado.id
              };
         },
         async onSearchMunicipio(search, loading) {
