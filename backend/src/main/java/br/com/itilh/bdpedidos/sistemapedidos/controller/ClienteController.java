@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -41,7 +40,6 @@ public class ClienteController {
         return service.listarClientes(pageable);
     }
 
-    
     @GetMapping("/clientes/{txtBusca}")
     public Page<ClienteDTO> getBuscarClientes(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -55,7 +53,7 @@ public class ClienteController {
     }
 
     // Endpoint para buscar cliente por ID
-    @GetMapping("/clientes/{id}")
+    @GetMapping("/clientes/id/{id}")
     public ClienteDTO getClientePorId(@PathVariable BigInteger id) throws Exception {
         try {
             return service.buscarClientePorId(id);

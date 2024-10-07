@@ -31,4 +31,7 @@ public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
     Page<Cliente> findAll(Pageable pageable);
 
     boolean existsByNomeRazaoSocial (String nomeRazaoSocial);
+    boolean existsByCpf(String cpf);
+    boolean existsByCnpj(String cnpj);
+    boolean existsByCnpjOrCpf(String cnpj, String cpf);
 }

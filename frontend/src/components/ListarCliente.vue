@@ -26,9 +26,9 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Cliente</th>
-          <th scope="col">CPF</th>
-          <!-- <th scope="col">CNPJ</th>
-          <th scope="col">Telefone</th> -->
+          <!-- <th scope="col">CPF</th>
+          <th scope="col">CNPJ</th> -->
+          <th scope="col">Telefone</th>
           <th scope="col">Email</th>
           <th scope="col">Estado</th>
           <th scope="col">Município</th>
