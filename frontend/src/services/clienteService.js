@@ -30,11 +30,18 @@ const listar = async( pageNumber = 1, pageSize = 10, direction = 'ASC', property
     return data;
 
 }
+const buscar = async(txtBusca, pageNumber = 1, pageSize = 10, direction = 'ASC', property = 'id')=>{
+    
+    const{data} =  await genericService.buscar(pathGet, pageNumber, pageSize, direction, property, txtBusca);
+    return data;
+
+}
 
 export default{
     criar,
     atualizar,
     apagar,
-    listar
+    listar,
+    buscar
 }
 

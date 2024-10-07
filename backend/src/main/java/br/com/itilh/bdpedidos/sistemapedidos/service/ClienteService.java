@@ -22,6 +22,10 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
         return toPageDTO(repositorio.findAll(pageable));
     }
 
+    public Page<ClienteDTO> buscar(Pageable pageable, String txtBusca){
+        return toPageDTO(repositorio.findByNomeRazaoSocialContainingIgnoreCase(pageable, txtBusca));
+    }
+
     public ClienteDTO getPorId(BigInteger id) throws Exception{
         return toDTO(repositorio.findById(id).orElseThrow(
             ()-> new IdInexistenteException("Cliente", id)));
