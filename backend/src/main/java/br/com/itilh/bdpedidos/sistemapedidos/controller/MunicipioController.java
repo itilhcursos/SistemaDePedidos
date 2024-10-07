@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.MunicipioService;
@@ -40,6 +41,17 @@ public class MunicipioController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return service.listarMunicipios(pageable);
+    }
+
+    @GetMapping("/municipios/{txtBusca}")
+    public Page<MunicipioDTO> getBuscarMunicipios(
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property,
+            @PathVariable String txtBusca) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return service.buscar(pageable, txtBusca);
     }
 
     @GetMapping("/municipios/estado-id/{id}")
