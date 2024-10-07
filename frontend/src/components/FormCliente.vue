@@ -92,7 +92,7 @@
                         {{ option.nome+';' }}&nbsp;{{ option.estadoNome}}
                         </template>
                         <template v-slot:selected-option="option">
-                        {{ option.nome + ' (Municipio);' }} {{ option.estadoNome + ' (Estado)' }}
+                        {{ option.nome }}
                         </template>
                     </v-select>
                 </div>
@@ -168,9 +168,11 @@ export default {
             this.email= this.propsCliente.email;
             this.informacao= this.propsCliente.informacao;
             this.ativo=this.propsCliente.ativo;
-            this.municipioSelecionado= this.propsCliente.municipioId; // TODO: UNDEFINED no v-select ao alterar, usuario tem que re-pesquisar.
+            this.municipioId=this.propsCliente.municipioId;
+            this.municipioNome= this.propsCliente.municipioNome;
+            
+            this.municipioSelecionado = {id: this.propsCliente.municipioId, nome:this.propsCliente.municipioNome};
         }
-        /* this.buscarMunicipios(); */
     },
     methods:{
         getDados(){
@@ -277,7 +279,7 @@ export default {
             this.email= "";
             this.informacao = "";
             this.ativo = "";
-            this.municipioSelecionado == "";
+            this.municipioId == "";
         }
     },
     computed:{
