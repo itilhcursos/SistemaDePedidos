@@ -20,17 +20,16 @@ public class ItemPedidoController {
     @Autowired
     ItemPedidoService itemPedidoService;
 
-// @GetMapping("/estados")
-//     public Page<EstadoDTO> getTodos(
-//         @RequestParam(required = false, defaultValue = "1") int pageNumber,
-//         @RequestParam(required = false, defaultValue = "10") int pageSize,
-//         @RequestParam(required = false, defaultValue = "ASC") String direction,
-//         @RequestParam(required = false, defaultValue = "id") String property
-//     ) {
-//         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+    // @GetMapping("/itens-pedido")
+    // public Page<ItemPedidoDTO> getTodos(
+    //         @RequestParam(required = false, defaultValue = "1") int pageNumber,
+    //         @RequestParam(required = false, defaultValue = "10") int pageSize,
+    //         @RequestParam(required = false, defaultValue = "ASC") String direction,
+    //         @RequestParam(required = false, defaultValue = "id") String property) {
+    //     Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
-//         return estadoService.getTodos(pageable);
-//     }
+    //     return itemPedidoService.getTodos(pageable);
+    // }
 
     // @GetMapping("/estados/nome/{nome}")
     // public List<Estado> getEstadosPorNome(@PathVariable String nome,
@@ -65,6 +64,6 @@ public class ItemPedidoController {
 
     @DeleteMapping("/item-pedido/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
-        return itemPedidoService.excluirItemPedido(id);
+        return itemPedidoService.deletePorId(id);
     }    
 }
