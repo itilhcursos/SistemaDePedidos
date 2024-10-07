@@ -15,7 +15,7 @@
             v-if="formVisible"
             :propsMunicipio="municipioEscolhido"
             @cancelar="limpar"
-            @salvar_municipio="buscar"
+            @salvar="buscar"
           />
         </div>
       </div>

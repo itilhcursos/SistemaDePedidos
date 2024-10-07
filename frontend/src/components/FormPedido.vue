@@ -255,9 +255,9 @@
         try {
           if (this.id === "") {
             const response = await pedidoService.criar(this.getDados());
-            this.options = response;
+            this.options = response; // mudar pra this.listaPedidos
           } else {
-            const response = await pedidoService.atualizar(this.id, this.getDados()); //NÃO FUNCIONANDO
+            const response = await pedidoService.atualizar(this.id, this.getDados()); // NÃO FUNCIONANDO
             this.listaPedidos = response;     
           }
           this.limparCampos();

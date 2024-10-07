@@ -47,7 +47,7 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
     }
 
     private void validar(MunicipioDTO origem) {
-        if (origem.getId() == null){
+        /* if (origem.getId() == null){
             if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
                 throw new MunicipioDuplicadoException(origem.getNome());
         }
@@ -55,7 +55,20 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
         if (origem.getId() != null){
             if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
                 throw new MunicipioDuplicadoException(origem.getNome());
+        } */
+
+        
+        if (repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId())){
+            if(origem.getId() == null){
+                throw new MunicipioDuplicadoException(origem.getNome());
+            }else{
+                Municipio m = repository.getReferenceById(origem.getId());
+                if(!m.getNome().equalsIgnoreCase(origem.getNome())){
+                    throw new MunicipioDuplicadoException(origem.getNome());
+                }
+            }            
         }
+        
     }
 
     public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {

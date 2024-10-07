@@ -168,7 +168,7 @@ export default {
             this.email= this.propsCliente.email;
             this.informacao= this.propsCliente.informacao;
             this.ativo=this.propsCliente.ativo;
-            this.municipioSelecionado= this.propsCliente.municipioId; // TODO: UNDEFINED no v-select ao alterar, salva nulo
+            this.municipioSelecionado= this.propsCliente.municipioId; // TODO: UNDEFINED no v-select ao alterar, usuario tem que re-pesquisar.
         }
         /* this.buscarMunicipios(); */
     },

@@ -43,7 +43,7 @@
         <button
           class="btn btn-primary m-2"
           type="submit"
-          v-on:click.prevent="salvarMunicipio"
+          v-on:click.prevent="salvar"
         >
         <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import estadoService from "@/services/estadoService";
+import municipioService from "@/services/municipioService";
 export default {
   props: {
     propsMunicipio: Object,
@@ -72,88 +72,82 @@ export default {
     return {
       id: "",
       nome: "",
+      entrega: "",
+      estadoId: "",
       estadoSelected: "",
       estados: [],
-      entrega: "",
       isInvalido: false,
-      mensagem : '', 
+      mensagem: '',
     };
   },
   methods: {
-    async salvarMunicipio() {
-      if (this.nome === "") {
-        this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
-        return;
+    getDados(){
+      return {
+        id:this.id,
+        nome:this.nome,
+        entrega:this.entrega,
+        estadoId:this.estadoSelected
       }
-      this.isInvalido = false;
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-
-      try{
-        if (this.id === "") {
-          //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/municipio", {
-            id: this.id,
-            nome: this.nome,
-            estadoId: this.estadoSelected,
-          }, config);
-          this.listaMunicipios = response.data;
-        } else {
-          // alterar pelo PUT da API
-          const response = await axios.put(
-            `http://localhost:8080/municipio/${this.id}`,
-            {
-              id: this.id,
-              nome: this.nome,
-              estadoId: this.estadoSelected,
-            }
-          ,config );
-          this.listaMunicipios = response.data;
-        }
-        this.$emit("salvar_municipio", {
-        id: this.id,
-        nome: this.nome,
-        estadoId: this.estadoSelected,
-      });
-
-      this.id = "";
-      this.nome = "";
-      
-    }catch( error){
-      console.log (error);
-      console.log (error.response.status);
-      this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 500){
-        this.mensagem = error.response.data.mensagem;
-      }else if(error.response.status === 400){
-        this.mensagem = error.response.data.mensagem;
-      }     
-      else{
-        this.mensagem = error.message;
-      }
-    }
-   },
-    cancelar() {
-      this.id = "";
-      this.nome = "";
-      this.$emit("cancelar", true);
     },
 
     async buscarEstados(){
       const response = await estadoService.listar(1, 1000, 'ASC', 'id');
       this.estados = response.content;
+    },
+
+    async salvar(){
+      if (this.nome === "") {
+        this.isInvalido = true;
+        this.mensagem = "Preencha o nome do municipio."
+        return;
+      }
+      if (this.entrega === ""){
+        this.isInvalido = true;
+        this.mensagem = "Defina a disponibilidade de entrega no municipio."
+        return;
+      }
+      this.isInvalido = false;
+
+      try {
+        if (this.id === "") {
+          const response = await municipioService.criar(this.getDados());
+          this.listaMunicipios = response;
+        } else {
+          const response = await municipioService.atualizar(this.id, this.getDados());
+          this.listaMunicipios = response;
+        }
+        this.limparCampos();
+        this.$emit("salvar", true);
+      } catch (error) {
+        this.isInvalido = true;
+        if (error.response.status === 403) {
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        } else if (error.response.status === 400) {
+          this.mensagem = error.response.data.mensagem;
+        } else {
+          this.mensagem = error.message;
+        }
+      }
+    },
+
+    cancelar() {
+      this.limparCampos();
+      this.$emit("cancelar", true);
+    },
+
+    limparCampos(){
+      this.id = "";
+      this.nome = "";
+      this.entrega = "";
+      this.estadoSelected = "";
     }
   },
+
   mounted() {
     if (this.propsMunicipio) {
       this.id = this.propsMunicipio.id;
       this.nome = this.propsMunicipio.nome;
+      this.entrega = this.propsMunicipio.entrega;
       this.estadoSelected = this.propsMunicipio.estadoId;
     }
     this.buscarEstados();
@@ -165,4 +159,3 @@ export default {
   },
 };
 </script>
-
