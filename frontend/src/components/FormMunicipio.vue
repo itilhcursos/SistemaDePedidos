@@ -3,7 +3,7 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Município</h4>
     <hr />
     <form>
-      <!-- <div class="mb-3">
+      <div v-if="id !== ''" class="col-md-1 mb-3">
         <label class="form-label">Id</label>
         <input
           class="form-control"
@@ -12,10 +12,10 @@
           :disabled="true"
           placeholder="Id município"
         />
-      </div> -->
+      </div>
       <div class="row">
       <div class="col-md-6 mb-3">
-        <label class="form-label">Nome</label>
+        <label class="form-label">Nome*</label>
         <input
           class="form-control"
           type="text"
@@ -24,7 +24,7 @@
         />
       </div>
       <div class="col-md-6 mb-3">
-        <label class="form-label">Estado</label>
+        <label class="form-label">Estado*</label>
         <select v-model="estadoSelected" class="form-select">
           <option v-for="estado in estados" :key="estado.id" :value="estado.id">
             {{ estado.nome }}
@@ -39,6 +39,9 @@
           </select>
         </div>
       </div>
+      <div class="mb-3">
+                <label class="form-label">*Preenchimento obrigatório</label>
+            </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
