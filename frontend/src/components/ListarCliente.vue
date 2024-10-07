@@ -5,7 +5,6 @@
                 <h3>CLIENTES</h3>
             </div>
 
-
             <div class="col-2 d-flex justify-content-end">
                 <button v-if="!formVisible" @click="flipFormVisible" class="btn btn-success">
                     <i class="bi bi-clipboard-plus"></i> Novo
@@ -23,7 +22,6 @@
                 </div>
             </div>
 
-
             <table class="table table-dark table-striped" v-if="!formVisible">
                 <thead>
                     <tr>
@@ -33,7 +31,7 @@
                         <th scope="col">Telefone</th>
                         <th scope="col">Endereço</th>
                         <th scope="col">Bairro</th>
-                        <!-- <th scope="col">Municipio</th> -->
+                        <th scope="col">Municipio</th>
                         <th scope="col">CEP</th>
                         <th scope="col">E-mail</th>
                         <th scope="col">Informações</th>
@@ -61,9 +59,9 @@
                         <td>
                             {{ cliente.bairro }}
                         </td>
-                        <!-- <td>
+                        <td>
                             {{ cliente.municipioNome }}
-                        </td> -->
+                        </td>
                         <td>
                             {{ cliente.cep }}
                         </td>

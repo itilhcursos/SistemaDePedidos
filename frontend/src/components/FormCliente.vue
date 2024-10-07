@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <h4 class="p-1 mb-1 bg-success text-white"> {{ getAcao }} Cliente</h4>
-        <hr />
-        <div>Campos marcados com * são obrigatórios.</div> <div>Campos marcados com ** significa que somente um deles é obrigatório.</div> <hr />
+        <!-- <hr />
+        <div>Campos marcados com * são obrigatórios.</div> <div>Campos marcados com ** significa que somente um deles é obrigatório.</div> <hr /> -->
         <form>
             <div class="row" style="padding: 10px">
                 <div class="col" >
@@ -77,7 +77,10 @@
                         type="text"
                         v-model="cep"
                         placeholder="CEP..."/>
-                </div>
+                </div>        
+            </div>
+            
+            <div class="row" style="padding: 10px">
                 <div class="col">
                     <label class="form-label">Municipio* </label>
                     <v-select class="meu-select" v-model="municipioSelecionado" :filterable="false" :options="optionsMunicipio"
@@ -86,16 +89,13 @@
                         Pesquise um Municipio...
                         </template>
                         <template v-slot:option="option">
-                        {{ option.nome+',' }}&nbsp;{{ option.estadoNome}}
+                        {{ option.nome+';' }}&nbsp;{{ option.estadoNome}}
                         </template>
                         <template v-slot:selected-option="option">
-                        {{ option.nome + ' (Municipio)' }} &emsp;|&emsp; {{ option.estadoNome + ' (Estado)' }}
+                        {{ option.nome + ' (Municipio);' }} {{ option.estadoNome + ' (Estado)' }}
                         </template>
                     </v-select>
                 </div>
-            </div>
-            
-            <div class="row" style="padding: 10px">
                 <div class="col">
                 <label class="form-label">Informações</label>
                 <input class="form-control"
@@ -148,6 +148,7 @@ export default {
             informacao: "",
             ativo: "",
             municipioId: "",
+            municipioNome: "",
 
             isLoading: false,
             optionsMunicipio: [],
@@ -159,15 +160,15 @@ export default {
             this.id = this.propsCliente.id;
             this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
             this.cnpj = this.propsCliente.cnpj;
-            this.cpf = this.propsCliente.nome;
-            this.telefone = this.propsCliente.id;
-            this.endereco = this.propsCliente.nome;
-            this.bairro = this.propsCliente.id;
+            this.cpf = this.propsCliente.cpf;
+            this.telefone = this.propsCliente.telefone;
+            this.endereco = this.propsCliente.endereco;
+            this.bairro = this.propsCliente.bairro;
             this.cep= this.propsCliente.cep;
             this.email= this.propsCliente.email;
             this.informacao= this.propsCliente.informacao;
             this.ativo=this.propsCliente.ativo;
-            this.municipioSelecionado= this.propsCliente.municipioId;
+            this.municipioSelecionado= this.propsCliente.municipioId; // TODO: UNDEFINED no v-select ao alterar, salva nulo
         }
         /* this.buscarMunicipios(); */
     },
@@ -203,18 +204,8 @@ export default {
             this.municipios = response.content;
         }, */
         cancelar(){
-            this.id = "";
-            this.nomeRazaoSocial = "";
-            this.cnpj = "";
-            this.cpf = "";
-            this.telefone = "";
-            this.endereco = "";
-            this.bairro = "";
-            this.cep = "";
-            this.email= "";
-            this.informacao = "";
-            this.ativo = "";
-            this.$emit("cancelar", true)
+            this.limparCampos();
+            this.$emit("cancelar", true);
         },
         async salvar(){
             if (this.nome === "" || this.cep === "" || this.bairro === "" || this.endereco === "" || this.municipioId === null){
@@ -241,7 +232,8 @@ export default {
                     const response = await clienteService.atualizar(this.id, this.getDados()); //TODO: Investigar erros
                     this.listaClientes = response;
                 }
-                this.$emit("salvar", {
+                this.$emit("salvar", true
+                /* {
                     //Apagável?
                 id: this.id,
                 nomeRazaoSocial: this.nomeRazaoSocial,
@@ -255,20 +247,9 @@ export default {
                 informacao: this.informacao,
                 ativo: this.ativo,
                 municipioId: this.municipioSelecionado
-                });
+                }*/);
 
-                // Apagável? 
-                this.id = "";
-                this.nomeRazaoSocial = "";
-                this.cnpj= "";
-                this.cpf= "";
-                this.telefone= "";
-                this.endereco= "";
-                this.bairro= "";
-                this.cep= "";
-                this.email= "";
-                this.informacao= "";
-                this.ativo="";
+                this.limparCampos();
 
             } catch (error) {
                 this.isInvalido = true;
@@ -283,6 +264,20 @@ export default {
                     this.mensagem = error.message;
                 } 
             }
+        },
+        limparCampos(){
+            this.id = "";
+            this.nomeRazaoSocial = "";
+            this.cnpj = "";
+            this.cpf = "";
+            this.telefone = "";
+            this.endereco = "";
+            this.bairro = "";
+            this.cep = "";
+            this.email= "";
+            this.informacao = "";
+            this.ativo = "";
+            this.municipioSelecionado == "";
         }
     },
     computed:{
