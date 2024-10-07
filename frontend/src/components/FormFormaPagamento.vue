@@ -23,13 +23,12 @@
         />
       </div>
       <div class="mb-3">
-        <label class="form-label">Ativo</label>
-          <select v-model="ativo" class="form-select">
-            <option :value="true">Sim</option>
-            <option :value="false">Não</option>
-          </select>
-      </div>
-
+                <label class="form-label">Ativo</label>
+                <select v-model="ativo" class="form-select">
+                    <option :value="true">Sim</option>
+                    <option :value="false">Não</option>
+                </select>
+            </div>
       <!-- <div class="mb-3">
   <label class="form-label">Ativo</label>
   <div>
@@ -128,6 +127,9 @@ export default {
       this.id = "";
       this.descricao = "";
       this.ativo = "";
+      
+    
+
     },
     cancelar() {
       this.id = "";

@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formatarLogico(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -120,6 +120,7 @@
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import axios from "axios";
+import Logico from "@/utils/Logico";
 export default {
   components: {
     FormFormaPagamento,
@@ -173,10 +174,11 @@ export default {
     }catch(error){
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
-          alert(error.message);
+        }else if(error.response.status === 400 &&
+               error.response.data.exception === 'FormaPagamentoDuplicadoException'){
+        this.mensagem = error.response.data.mensagem;     
+      }else{
+        this.mensagem = error.message;
         }
       } 
       this.buscarFormaPagamento();
@@ -185,6 +187,12 @@ export default {
       this.pageNumber = pagina;
       this.buscarFormaPagamento();
     },
+    
+    formatarLogico(valor) {
+      return Logico.toSimNao(valor);
+    }
+
+    
   },
   mounted() {
     this.buscarFormaPagamento();

@@ -133,7 +133,7 @@
   import Monetario from "@/utils/Monetario.js";
   import Decimal from "@/utils/Decimal.js";
   import produtoService from "@/services/produtoService";
-  import axios from "axios";
+  //import axios from "axios";
   export default {
     components: {
       FormProduto,
@@ -175,6 +175,7 @@
       const response = await produtoService.apagar(id);
       this.buscarProdutos();
     },
+    
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarProdutos();
