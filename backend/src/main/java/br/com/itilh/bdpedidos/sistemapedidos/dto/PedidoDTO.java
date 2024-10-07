@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
+import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +18,7 @@ public class PedidoDTO {
     private LocalDate compra;
     private LocalDate entrega;
     private LocalDate pagamento;
-
+    private List<ItemPedidoDTO> itens;    
     private BigInteger clienteId;
     private String clienteNome;
 

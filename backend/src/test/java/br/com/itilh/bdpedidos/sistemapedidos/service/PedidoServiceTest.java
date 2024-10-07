@@ -50,14 +50,14 @@ public class PedidoServiceTest {
     void testAlterarPedidoDuplicado() throws Exception {
 setupPedido();
 PedidoDTO dtoPedidoErrado = new PedidoDTO(BigInteger.valueOf(7798498L), Integer.valueOf(10), LocalDate.MIN,LocalDate.MIN, 
-LocalDate.MIN,BigInteger.ONE, "cliente teste errado", BigInteger.ONE, "formaPagamento errado");
+LocalDate.MIN,null, BigInteger.ONE, "cliente teste errado", BigInteger.ONE, "formaPagamento errado");
 dtoPedidoErrado = pedidoService.criarPedido(dtoPedidoErrado);
 PedidoDTO dtoPedidoCorrigido = new PedidoDTO(BigInteger.ONE, Integer.valueOf(1), LocalDate.MIN,LocalDate.MIN, 
-LocalDate.MIN,BigInteger.ONE, "cliente corrigido", BigInteger.ONE, "formaPagamento corrigido");
+LocalDate.MIN,null,BigInteger.ONE, "cliente corrigido", BigInteger.ONE, "formaPagamento corrigido");
 dtoPedidoCorrigido = pedidoService.criarPedido(dtoPedidoCorrigido);
 
 PedidoDTO dtoReparado = new PedidoDTO(dtoPedidoErrado.getId(), Integer.valueOf(1), LocalDate.MIN,LocalDate.MIN, 
-LocalDate.MIN,BigInteger.ONE, "cliente corrigido", BigInteger.ONE, "formaPagamento corrigido");
+LocalDate.MIN,null,BigInteger.ONE, "cliente corrigido", BigInteger.ONE, "formaPagamento corrigido");
 assertThrows(PedidoDuplicadoException.class,()-> pedidoService.alterarPedido(dtoReparado.getId(), dtoReparado));
     }
 
@@ -67,10 +67,10 @@ assertThrows(PedidoDuplicadoException.class,()-> pedidoService.alterarPedido(dto
     void testAlterarPedido() throws Exception{
         setupPedido();
         PedidoDTO dtoPedidoErrado = new PedidoDTO(BigInteger.valueOf(7798498L), Integer.valueOf(10), LocalDate.MIN,LocalDate.MIN, 
-        LocalDate.MIN,BigInteger.ONE, "cliente teste errado", BigInteger.ONE, "formaPagamento errado");
+        LocalDate.MIN,null,BigInteger.ONE, "cliente teste errado", BigInteger.ONE, "formaPagamento errado");
     PedidoDTO dtoRetorno = pedidoService.criarPedido(dtoPedidoErrado);
         PedidoDTO dtoPedidoCorrigido = new PedidoDTO(dtoRetorno.getId(), Integer.valueOf(1), LocalDate.MIN,LocalDate.MIN, 
-        LocalDate.MIN,BigInteger.ONE, "cliente corrigido", BigInteger.ONE, "formaPagamento corrigido");
+        LocalDate.MIN,null,BigInteger.ONE, "cliente corrigido", BigInteger.ONE, "formaPagamento corrigido");
         dtoPedidoCorrigido =pedidoService.alterarPedido(dtoRetorno.getId(), dtoPedidoCorrigido);
         assertEquals(true, dtoPedidoCorrigido.getId().equals(dtoRetorno.getId()));
     }
@@ -96,7 +96,7 @@ assertThrows(PedidoDuplicadoException.class,()-> pedidoService.alterarPedido(dto
     void testCriarPedido()throws Exception {
         setupPedido();
        PedidoDTO pedidoDTO = new PedidoDTO(BigInteger.ONE, Integer.valueOf(10), LocalDate.MIN,LocalDate.MIN, 
-       LocalDate.MIN,BigInteger.ONE, "cliente teste", BigInteger.ONE, "formaPagamento teste");
+       LocalDate.MIN,null,BigInteger.ONE, "cliente teste", BigInteger.ONE, "formaPagamento teste");
        PedidoDTO dtoRetorno = pedidoService.criarPedido(pedidoDTO);
        assertEquals(true, dtoRetorno.getId() != null);
     }
@@ -107,7 +107,7 @@ assertThrows(PedidoDuplicadoException.class,()-> pedidoService.alterarPedido(dto
 void testCriarPedidoDuplicado()throws Exception{
     setupPedido();
     PedidoDTO pedidoDTO = new PedidoDTO(BigInteger.ONE, Integer.valueOf(10), LocalDate.MIN,LocalDate.MIN, 
-    LocalDate.MIN,BigInteger.ONE, "cliente teste", BigInteger.ONE, "formaPagamento teste");
+    LocalDate.MIN,null,BigInteger.ONE, "cliente teste", BigInteger.ONE, "formaPagamento teste");
     PedidoDTO  dtoRetorno = pedidoService.criarPedido(pedidoDTO);
     assertThrows(PedidoDuplicadoException.class,()-> pedidoService.criarPedido(dtoRetorno));
 }
@@ -202,6 +202,7 @@ assertNull(pedidoDTO);
             assertEquals(BigInteger.ONE, pedido1.getId());
             assertEquals(BigInteger.ONE, pedido1.getClienteId());
             assertEquals(BigInteger.ONE, pedido1.getFormaPagamentoId());
+            assertEquals(null, pedido1.getItens());
             assertEquals("cliente nome", pedido1.getClienteNome());
             assertEquals("formaPagamento teste", pedido1.getFormaPagamentoDescricao());
             assertEquals( Integer.valueOf(5), pedido1.getNumero());
@@ -209,6 +210,20 @@ assertNull(pedidoDTO);
             assertEquals(LocalDate.MIN, pedido1.getEntrega());
             assertEquals(LocalDate.MIN, pedido1.getPagamento());
         }
+        @Test
+        @DisplayName("teste de listar Pedido por Itens")
+        void testListarPedidoPorItens() throws Exception{
+            Page<PedidoDTO> pedidoList = pedidoService.listarPedidoPorItens(null, null);
+            assertEquals(null, pedidoList);
+
+            PedidoDTO pedido1 =null;
+            for(PedidoDTO pedido : pedidoList){
+             if(pedido.getItens().equals(null)){
+                pedido1 = pedido; 
+             } }
+             assertNull(pedido1);
+             assertEquals(null, pedido1.getItens());
+            }
     
 void setupPedido(){
     setupCliente();

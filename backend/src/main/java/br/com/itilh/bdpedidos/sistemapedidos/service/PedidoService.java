@@ -1,12 +1,14 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.PedidoDuplicadoException;
@@ -30,6 +32,9 @@ public class PedidoService extends GenericService<Pedido,PedidoDTO> {
     }
     public Page<PedidoDTO> listarPedidoPorFormaPagamentoId(BigInteger id, Pageable pageable) {
         return toPageDTO(pedidoRepository.findByformaPagamentoId(id, pageable));
+    }
+    public Page<PedidoDTO> listarPedidoPorItens(List<ItemPedidoDTO> itens, Pageable pageable) {
+        return toPageDTO(pedidoRepository.findByitens(itens, pageable));
     }
 
     public Page<PedidoDTO> listarPedidoPorClienteNome(String nome, Pageable pageable) {
