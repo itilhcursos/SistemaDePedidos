@@ -29,7 +29,7 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
     }  
 
     private void validar (EstadoDTO dto) throws Exception {
-
+        dto.validarDados();
         if(dto.getNome().length() < 3 || dto.getNome().length() > 50)
             throw new NomeEstadoInvalidoException(dto.getNome());
         

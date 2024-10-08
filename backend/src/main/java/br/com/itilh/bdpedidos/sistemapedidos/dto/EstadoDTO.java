@@ -18,4 +18,10 @@ public class EstadoDTO {
     private BigInteger id;
     private String nome;
 
+
+    public void validarDados() throws Exception{
+        if(this.nome == null || "".equals(this.nome)){
+            throw new Exception("Nome do estado não pode ser vazio");
+        }
+    }
 }

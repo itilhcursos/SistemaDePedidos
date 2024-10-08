@@ -99,6 +99,9 @@ export default {
             id: "",
             descricao: "",
             urlImagem: "",
+            quantidadeEstoque: 0,
+            precoUnidadeAtual: 0,
+            ativo: true,
             isInvalido: false,
             mensagem: "",
         };
