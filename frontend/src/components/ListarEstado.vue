@@ -156,13 +156,16 @@ export default {
     },
     async excluirEstado(id) {
       try{
-          const response = await estadoService.apagar(id);
-          console.log(response);
+        console.log(id)
+        const response = await estadoService.apagar(id);
+        console.log(response);
       }catch(error){
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
+        }else if(error.response.status === 400){
+          /* console.log("Texto", error.response.request.responseText); */
+          /* console.log(error.response.request.responseText.indexOf("DataIntegrityViolationExceptions")); */
+          alert("Estado referenciado em algum municipio."); 
         }else{
           alert(error.message);
         }

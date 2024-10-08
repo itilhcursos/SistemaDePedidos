@@ -43,13 +43,20 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
-    private void validar (FormaPagamentoDTO dto) throws Exception {
-
-        if(repositorio.existsByDescricao(dto.getDescricao()))   
-            throw new FormaPagamentoDuplicadoException(dto.getDescricao());
-
+    private void validar(FormaPagamentoDTO origem) {
+        
+        if (repositorio.existsByDescricao(origem.getDescricao())){
+            if(origem.getId() == null){
+                throw new FormaPagamentoDuplicadoException(origem.getDescricao());
+            }else{
+                FormaPagamento f = repositorio.getReferenceById(origem.getId());
+                if(!f.getDescricao().equalsIgnoreCase(origem.getDescricao())){
+                    throw new FormaPagamentoDuplicadoException(origem.getDescricao());
+                }
+            }            
+        }
     }
-
+    
     public String excluirFormaPagamento(BigInteger id) throws Exception{
         try{ 
             repositorio.deleteById(id);

@@ -28,6 +28,7 @@
           <th scope="col">Nome</th>
           <th scope="col">Entrega</th>
           <th scope="col">Estado</th>
+          <th scope="col">Estado ID</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -44,6 +45,9 @@
           </td>
           <td>
             {{ municipio.estadoNome }}
+          </td>
+          <td>
+            {{ municipio.estadoId }}
           </td>
           <td class="d-flex justify-content-end">
             <button
