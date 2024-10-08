@@ -62,13 +62,43 @@
                 </template>
           </v-select>
       </div>
-      <div>
-        <table>
+      <div class="mb-3">
+        <label class="form-label" >Itens Pedido</label>
+        <table class="table table-dark table-striped">
           <thead>
-
+            <tr>
+              <th scope="col">Itens</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Quantidade</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Total</th>
+              <th scope="col">Excluir</th>
+            </tr>
           </thead>
           <tbody>
-
+            <tr v-for="item in itens" :key="item.id" scope="row">
+              <th>
+                <img :src=item.produtoUrlImagem height="50px">
+              </th>
+              <th>
+                {{ item.produtoDescricao  }}
+              </th>
+              <th>
+                {{ item.quantidadeEstoque }}
+              </th>
+              <th>
+                {{ item.precoUnidadeAtual  }}
+              </th>
+              <th>
+                {{ item.quantidadeEstoque * item.precoUnidadeAtual  }}
+              </th>
+              <th>
+                <button class="btn btn-outline-danger m-2">
+                  <i class="bi bi-clipboard2-minus"></i>
+                </button>
+              </th>
+              
+            </tr>
           </tbody>
         </table>
       </div>
@@ -153,12 +183,13 @@ import clienteService from '@/services/clienteService';
         dataPagamento: "",
         itens:[],
         
+
+        isInvalido: false,
+        mensagem: '',
         selectedFormaPagamento:null,
         optionsFormaPagamento:[],
         clienteSelecionado:null,
         clientes:[],
-        isInvalido: false,
-        mensagem: '',
         produtoSelecionado:"",
         produtos:[],
       };
@@ -256,8 +287,20 @@ import clienteService from '@/services/clienteService';
     },   
     mounted() {
       if (this.propsPedido) {
-        this.id = this.propsEstado.id;
-        this.clienteNomeRazaoSocial = this.propsEstado.nome;
+        this.id = this.propsPedido.id;
+        this.clienteId= this.propsPedido.clienteId;
+        this.clienteNomeRazaoSocial = this.propsPedido.clienteNomeRazaoSocial;
+        this.formaPagamentoId= this.propsPedido.formaPagamentoId;
+        this.formaPagamentoDescricao= this.propsPedido.formaPagamentoDescricao;
+        this.numero= this.propsPedido.numero;
+        this.dataCompra= this.propsPedido.dataCompra;
+        this.dataEntrega= this.propsPedido.dataEntrega;
+        this.dataPagamento= this.propsPedido.dataPagamento;
+        this.itens= this.propsPedido.itens;
+
+        this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao: this.propsPedido.formaPagamentoDescricao};
+        this.clienteSelecionado = {id: this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
+
       }
     },
     computed: {

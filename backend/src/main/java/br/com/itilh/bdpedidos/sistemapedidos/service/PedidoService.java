@@ -27,7 +27,7 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO>{
     }  
 
     private void validar (PedidoDTO dto) throws Exception {
-
+        
         
     }
 

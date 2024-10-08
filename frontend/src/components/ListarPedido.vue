@@ -31,8 +31,9 @@
           <th scope="col">Data de Pagamento</th>
           <th scope="col">Data de Compra</th>
           <th scope="col">Data de Entrega</th>
-          <th scope="col" class="d-flex justify-content-end">Itens</th>
+          <th scope="col" class="Item" >Itens</th>
         </tr>
+        <!-- class="d-flex justify-content-end" -->
       </thead>
       <tbody>
         
@@ -61,12 +62,12 @@
           
           <td class="d-flex justify-content-end">
 
-                <button
-                  class="btn btn-btn btn-primary m-2"
-                  @click="alterar(pedido)"
-                >
-                   <i class="bi bi-clipboard-pulse"></i>Alterar 
-                </button>
+            <button
+                class="btn btn-btn btn-primary m-2"
+                @click="alterar(pedido)"
+            >
+                <i class="bi bi-clipboard-pulse"></i>Alterar 
+            </button> 
             
               <table class="table table-dark table-striped">
                 <thead>
@@ -240,3 +241,8 @@ export default {
   },
 };
 </script>
+<style>
+  .Item{
+    text-align: center;
+  }
+</style>
