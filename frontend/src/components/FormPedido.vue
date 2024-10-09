@@ -217,12 +217,27 @@ export default {
     },
     async salvar() {
       console.log(this.selectedCliente, this.selectedProduto);
-      // if (this.nome === "") {
-      //   this.isInvalido = true;
-      //   this.mensagem = "Nome deve ser preenchido!!";
-      //   return;
-      // }
-      // this.isInvalido = false;
+      if (this.clienteNomeRazaoSocial === "") {
+        this.isInvalido = true;
+        this.mensagem = "Nome do cliente ou razão social não pode ser vazio.";
+        return;
+      }
+      if (this.dataCompra === "") {
+        this.isInvalido = true;
+        this.mensagem = "Data da compra não pode ser vazia";
+        return;
+      }
+      if (this.dataEntrega === "") {
+        this.isInvalido = true;
+        this.mensagem = "Data da entrega não pode ser vazia";
+        return;
+      }
+      if (this.dataCompra === "") {
+        this.isInvalido = true;
+        this.mensagem = "Data do pagamento não pode ser vazio";
+        return;
+      }
+      this.isInvalido = false;
 
       try {
         if (this.id === "") {
