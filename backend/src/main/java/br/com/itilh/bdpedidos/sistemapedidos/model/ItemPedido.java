@@ -40,7 +40,7 @@ public class ItemPedido {
 
     @ManyToOne
     @JoinColumn(name = "id_pedido")
-    private Pedido pedido;
+    private Pedido1 pedido;
 
     @Column(name = "dbl_quantidade_estoque")
     private Double quantidadeEstoque;
