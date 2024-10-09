@@ -113,21 +113,21 @@
                 </template>
                 <template v-slot:option="option">
                     <img  class="mini" :src='option.urlImagem'/> 
-                    {{ option.descricao }}
+                    {{ option.descricao }} -Qtd( {{ option.quantidadeEstoque }}) -Preço({{ option.precoUnidadeAtual }})
                 </template>
                 <template v-slot:selected-option="option">
                     <img class="mini" :src='option.urlImagem'/> 
-                    {{ option.descricao }}
+                    {{ option.descricao }} -Qtd({{ option.quantidadeEstoque }}) -Preço({{ option.precoUnidadeAtual }})
                 </template>
             </v-select>
           </div>
           <div class="col-2">
               <label class="form-label" >Quantidade</label>
-              <input  class="form-control " type="number" v-model="quantidadeItens" placeholder="0">
+              <input  class="form-control " type="number" v-model="quantidadeItem" placeholder="0">
           </div>
 
           <div class="col-2 position-relative">
-              <button  class="btn btn-primary position-absolute top-50 start-50 translate-middle" type="submit">
+              <button  class="btn btn-primary position-absolute top-50 start-50 translate-middle" type="submit" v-on:click.prevent="incluirItem">
                 <i class="bi bi-clipboard2-check" ></i>Incluir
               </button>
           </div>
@@ -162,7 +162,7 @@
 
 <script>
  
-import pedidoService from '@/services/pedidoService';
+import itemPedidoService from '@/services/itemPedidoService';
 import produtoService from '@/services/produtoService';
 import formaPagamentoService from '@/services/formaPagamentoService';
 import clienteService from '@/services/clienteService';
@@ -181,17 +181,19 @@ import clienteService from '@/services/clienteService';
         dataCompra: "",
         dataEntrega: "",
         dataPagamento: "",
-        itens:[],
         
 
         isInvalido: false,
-        mensagem: '',
+        isLoading:false,
+        mensagem: "",
         selectedFormaPagamento:null,
         optionsFormaPagamento:[],
         clienteSelecionado:null,
         clientes:[],
-        produtoSelecionado:"",
+        produtoSelecionado:null,
         produtos:[],
+        quantidadeItem: 0,
+        itens:[],
       };
     },
     methods: {
@@ -243,16 +245,16 @@ import clienteService from '@/services/clienteService';
         try{
           if (this.id === "") {
             //incluir pelo POST da API
-            const response = await pedidoService.criar(
-            this.getDados());
-            this.listaPedidos = response.data;
+            // const response = await pedidoService.criar(
+            // this.getDados());
+            // this.listaPedidos = response.data;
           } else {
             // alterar pelo PUT da API
-            const response = await pedidoService.atualizar(
-              this.id,
-              this.getDados()
-            );
-            this.listaPedidos = response.data;
+            // const response = await pedidoService.atualizar(
+            //   this.id,
+            //   this.getDados()
+            // );
+            // this.listaPedidos = response.data;
           }
           this.$emit("salvar_pedido", {
             id: this.id,
@@ -284,7 +286,22 @@ import clienteService from '@/services/clienteService';
         this.clienteNomeRazaoSocial = "";
         this.$emit("cancelar", true);
       },
-    },   
+      async incluirItem(){
+        const itemPedido = {
+          id: null,
+          pedidoId : this.id,
+          produtoId: this.produtoSelecionado.id,
+          produtoDescricao: this.produtoSelecionado.descricao,
+          produtoUrlImagem: this.produtoSelecionado.urlImagem,
+          quantidadeEstoque: this.quantidadeItem,
+          precoUnidadeAtual: null,
+          
+        }
+        console.log(itemPedido);
+        const response = await itemPedidoService.criar(itemPedido);
+        this.itens.push(response);
+      }
+    },
     mounted() {
       if (this.propsPedido) {
         this.id = this.propsPedido.id;
@@ -297,7 +314,7 @@ import clienteService from '@/services/clienteService';
         this.dataEntrega= this.propsPedido.dataEntrega;
         this.dataPagamento= this.propsPedido.dataPagamento;
         this.itens= this.propsPedido.itens;
-
+        //cada um desse da parte inicial, Ex(this.itens) esta associoado com o v-model.
         this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao: this.propsPedido.formaPagamentoDescricao};
         this.clienteSelecionado = {id: this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
 

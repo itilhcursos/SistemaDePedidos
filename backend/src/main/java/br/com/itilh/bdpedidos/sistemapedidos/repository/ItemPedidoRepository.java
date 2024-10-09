@@ -10,4 +10,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 @Repository
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, BigInteger> {
 
+    
+  
 }

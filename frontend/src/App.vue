@@ -39,9 +39,11 @@ import { RouterLink, RouterView } from "vue-router";
       checkLogin(){
         const token = localStorage.getItem('token');
         const login = localStorage.getItem('login');
-        this.isLogado = (token != null && login != null);
+        this.isLogado = (token != null && login != null)
         this.login = login;
-        alert(this.isLogado);
+        return alert(this.isLogado? `Seja Bem Vindo Sr ${this.login = login}`:'Por favor Faça o login' );
+        
+        
       }
     },
     mounted(){
