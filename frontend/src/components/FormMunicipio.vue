@@ -31,7 +31,7 @@
     <label class="btn btn-outline-success" :class="{ active: ativo === true }">
       <input type="radio" v-model="entrega" :value="true" autocomplete="off"> Sim
     </label>
-    <label class="btn btn-outline-success" :class="{ active: ativo === false }">
+    <label class="btn btn-outline-primary" :class="{ active: ativo === false }">
       <input type="radio" v-model="entrega" :value="false" autocomplete="off"> Não
     </label>
   </div>

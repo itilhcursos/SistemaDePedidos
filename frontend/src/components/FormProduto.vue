@@ -120,12 +120,14 @@ export default {
         },
 
         getDados() {
-                return { id:this.id,           
-                descricao:this.descricao,
-                urlImagem:this.urlImagem,
-                quantidadeEstoque:this.quantidadeEstoque,
-                precoUnidadeAtual:this.precoUnidadeAtual,
-                ativo:this.ativo };
+            return {
+                id: this.id,
+                descricao: this.descricao,
+                urlImagem: this.urlImagem,
+                quantidadeEstoque: this.quantidadeEstoque,
+                precoUnidadeAtual: this.precoUnidadeAtual,
+                ativo: this.ativo
+            };
 
         },
 

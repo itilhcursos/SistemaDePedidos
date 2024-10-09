@@ -6,13 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.NomeEstadoInvalidoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
+
 import br.com.itilh.bdpedidos.sistemapedidos.repository.PedidoRepository;
 
 @Service

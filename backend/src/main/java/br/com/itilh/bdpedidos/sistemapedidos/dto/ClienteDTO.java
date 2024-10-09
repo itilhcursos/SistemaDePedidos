@@ -27,7 +27,7 @@ public class ClienteDTO {
     private String email;
     private Boolean ativo;
     private String informacao;
-    private BigInteger estadoId;
-    private String estadoNome;
+    private BigInteger municipioId;
+    private String municipioNome;
 
 }

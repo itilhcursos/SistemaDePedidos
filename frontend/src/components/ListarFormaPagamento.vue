@@ -11,12 +11,11 @@
       </div>
       <div class="row">
         <div>
-          <FormFormaPagamento
-            v-if="formVisible"
-            :propsFormaPagamento="formaPagamentoEscolhida"
+          <FormFormaPagamento 
+            v-if="formVisible" 
+            :propsFormaPagamento="formaPagamentoEscolhida" 
             @cancelar="limpar"
-            @salvar_formaPagamento="buscarFormaPagamento"
-          />
+            @salvar_formaPagamento="buscarFormaPagamento" />
         </div>
       </div>
     </div>
@@ -42,17 +41,11 @@
             {{ formatarLogico(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterarFormaPagamento(formaPagamento)"
-            >
+            <button class="btn btn-btn btn-primary m-2" @click="alterarFormaPagamento(formaPagamento)">
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
 
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirFormaPagamento(formaPagamento.id)"
-            >
+            <button class="btn btn-outline-danger m-2" @click="excluirFormaPagamento(formaPagamento.id)">
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
           </td>
@@ -66,24 +59,14 @@
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
 
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
             {{ pagina }}
           </button>
 
 
         </div>
         <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25" />
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -142,7 +125,7 @@ export default {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;
 
-      
+
       const response = await axios.get(
         `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
@@ -165,34 +148,34 @@ export default {
     async excluirFormaPagamento(id) {
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
-    try{
-      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`,config);
-      console.log(response.data);
-    }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 &&
-               error.response.data.exception === 'FormaPagamentoDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
-        this.mensagem = error.message;
+      try {
+        const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`, config);
+        console.log(response.data);
+      } catch (error) {
+        if (error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
+          alert(error.message);
         }
-      } 
+      }
       this.buscarFormaPagamento();
     },
+
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarFormaPagamento();
     },
-    
+
     formatarLogico(valor) {
       return Logico.toSimNao(valor);
     }
 
-    
+
   },
   mounted() {
     this.buscarFormaPagamento();

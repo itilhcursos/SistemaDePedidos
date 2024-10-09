@@ -2,11 +2,12 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>Clientes</h3>
+        <h3>CLIENTES</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo</button>
+          <i class="bi bi-clipboard-plus"></i> Novo
+        </button>
       </div>
       <div class="row">
         <div>
@@ -24,11 +25,14 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome/Razao social</th>
-          <th scope="col">Cnpj</th>
-          <th scope="col">Cpf</th>
+          <th scope="col">Nome/Razão Social</th>
+          <th scope="col">CNPJ</th>
+          <th scope="col">CPF</th>
           <th scope="col">Telefone</th>
-          <th scope="col">Ativo</th>
+          <th scope="col">Endereço</th>
+          <th scope="col">Bairro</th>
+          <th scope="col">CEP</th>
+          <th scope="col">Nome Municipio</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
@@ -36,39 +40,31 @@
         <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
           <th>
             {{ cliente.id }}
-             </th>
-             <td>
+          </th>
+          <td>
             {{ cliente.nomeRazaoSocial }}
-           </td>
-            <td>
-            {{ cliente.cnpj }}
-            </td>
-            <td>
-            {{ cliente.cpf }}
-            </td>
-            <td>
-            {{ cliente.telefone }}
-            </td>
-            <!-- <td>
-             {{ cliente.endereco }}
-             </td>
-             <td>
-             {{ cliente.bairro }}
-              </td>
-              <td>
-             {{ cliente.cep }}
-              </td>
-              <td>
-              {{ cliente.e-mail }}
-              </td>
-             <td>
-              {{ cliente.informacao }}
-              </td> -->
-            <td>
-        {{ formatarLogico(cliente.ativo) }}
           </td>
-
-
+          <td>
+            {{ cliente.cnpj }}
+          </td>
+          <td>
+            {{ cliente.cpf }}
+          </td>
+          <td>
+            {{ cliente.telefone }}
+          </td>
+          <td>
+            {{ cliente.endereco }}
+          </td>
+          <td>
+            {{ cliente.bairro }}
+          </td>
+          <td>
+            {{ cliente.cep }}
+          </td>
+          <td>
+            {{ cliente.municipioNome }}
+          </td>
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
@@ -124,7 +120,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="nomeRazaoSocial">Nome/ Razão Social</option>
           </select>
         </div>
         <div class="col-auto">
@@ -146,20 +142,20 @@
 
 
 <script>
+import clienteService from "@/services/clienteService";
 import FormCliente from "./FormCliente.vue";
-import Logico from "@/utils/Logico";
-import axios from "axios";
+import Logico from "@/utils/Logico.js";
+import Monetario from "@/utils/Monetario.js";
+import Decimal from "@/utils/Decimal.js";
 export default {
   components: {
-    FormCliente,
+      FormCliente,
   },
   data() {
     return {
       listaClientes: [],
       clienteEscolhido: null,
       formVisible: false,
-      mode: import.meta.env.MODE,
-      url: import.meta.env.VITE_APP_URL_API,
       pageNumber: 1,
       pageSize: 10,
       direction: "ASC",
@@ -169,64 +165,47 @@ export default {
   },
   methods: {
     async buscarClientes() {
-      this.clienteEscolhido = null;
-      this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
-      const response = await axios.get(
-        `http://localhost:8080/clientes?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaClientes = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
-    },
-    limpar() {
-      this.clienteEscolhido = null;
-      this.formVisible = !this.formVisible;
-    },
-    novoCliente() {
-      this.formVisible = !this.formVisible;
-    },
-    alterarCliente(cliente) {
-      this.clienteEscolhido = cliente;
-      this.formVisible = true;
-    },
-    async excluirCliente(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-      try{
-          const response = await axios.delete(`http://localhost:8080/cliente/${id}`, config);
-          console.log(response.data);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
-          alert(error.message);
-        }
-      }     
-      this.buscarClientes();
-    },
-    irPara(pagina) {
-      this.pageNumber = pagina;
-      this.buscarClientes();
-    },
-
-    formatarLogico(valor){
+        this.clienteEscolhido = null;
+        this.formVisible = false;
+      
+        const response = await clienteService.listar(this.pageNumber, this.pageSize, this. direction, this.property);
+        
+        this.listaClientes = response.content;
+        this.totalPages = response.totalPages;
+      },
+      limpar() {
+        this.clienteEscolhido = null;
+        this.formVisible = !this.formVisible;
+      },
+      novoCliente() {
+        this.formVisible = !this.formVisible;
+      },
+      alterarCliente(cliente) {
+        this.clienteEscolhido = cliente;
+        this.formVisible = true;
+      },
+      async excluirCliente(id) {
+        const response = await clienteService.apagar(id);
+        console.log(response.data);
+        this.buscarClientes();
+      },
+      irPara(pagina) {
+        this.pageNumber = pagina;
+        this.buscarClientes();
+      },
+      formatarLogico(valor){
         return Logico.toSimNao(valor);
       },
-  },
-  mounted() {
-    this.buscarClientes();
-  },
-};
-</script>
+      formatarPreco(valor){
+        return Monetario.toTela(valor);
+      },
+      formatarQuantidade(valor){
+        return Decimal.toTela(valor);
+      }
+    },
+
+    mounted() {
+      this.buscarClientes();
+    },
+  };
+  </script>
