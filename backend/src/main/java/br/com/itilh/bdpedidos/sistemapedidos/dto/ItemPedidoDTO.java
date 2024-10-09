@@ -1,19 +1,29 @@
 package br.com.itilh.bdpedidos.sistemapedidos.dto;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class ItemPedidoDTO {
-
-
     private BigInteger id;
-    private String descricao;
+    private BigInteger pedidoId;
+    private BigInteger produtoId;
+    private String produtoDescricao;
+    private String produtoUrlImagem;
     private Double quantidadeEstoque;
-    private Boolean ativo;
+    private BigDecimal precoUnidadeAtual;
+
 }
+
+   
+    
