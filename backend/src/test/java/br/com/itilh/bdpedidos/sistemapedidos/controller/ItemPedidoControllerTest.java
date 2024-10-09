@@ -82,6 +82,7 @@ mockMvc.perform(get("/ItemPedido/1")).andExpect(status().isOk())
     }
 
     @Test
+    @DisplayName("teste de buscar ItemPedido por produto nome ")
     void testBuscarItemPedidosPorProdutoNome()throws Exception  {
         setupItemPedido();
         mockMvc.perform(get("/produto/produto teste")).andExpect(status().isOk())
@@ -97,7 +98,7 @@ produtoRepository.getReferenceById(BigInteger.ONE), Double.valueOf(1L), BigDecim
 
     void setupPedido(){
 
-        Pedido pedido = new Pedido(BigInteger.ONE, null, null, Integer.valueOf(5), "01/01/2001", "02/01/2001", "01/01/2001");
+        Pedido pedido = new Pedido(BigInteger.ONE, null, null, Integer.valueOf(5), null, null, null);
         pedidoRepository.save(pedido);
     }
 

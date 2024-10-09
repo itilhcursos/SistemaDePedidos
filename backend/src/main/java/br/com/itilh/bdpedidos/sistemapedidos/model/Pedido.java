@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,12 +43,12 @@ private FormaPagamento formaPagamento;
 private Integer numero;
 
 @Column(name = "dt_compra")
-private String compra;
+private LocalDate compra;
 
 @Column(name = "dt_entrega")
-private String entrega;
+private LocalDate entrega;
 
 @Column(name = "dt_pagamento")
-private String pagamento;
+private LocalDate pagamento;
 
 }

@@ -50,7 +50,7 @@ void setupPedido(){
     setupCliente();
     setupFormaPagamento();
         Pedido pedido = new Pedido(BigInteger.ONE, clienteRepository.getReferenceById(BigInteger.ONE), formaPagamentoRepository.getReferenceById(BigInteger.ONE), 
-        Integer.valueOf(5), "01/01/2001", "02/01/2001", "01/01/2001");
+        Integer.valueOf(5), null, null, null);
         pedidoRepository.save(pedido);
 }
 
@@ -75,6 +75,7 @@ mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
     }
 
     @Test
+    @DisplayName("teste de buscar pedido ")
     void testBuscarPedidos() throws Exception{
         setupPedido();
         mockMvc.perform(get("/pedidos")).andExpect(status().isOk())
@@ -82,6 +83,7 @@ mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
     }
 
     @Test
+    @DisplayName("teste de buscar pedido por cliente id")
     void testBuscarPedidosPorClienteId() throws Exception{
         setupPedido();
         mockMvc.perform(get("/cliente/1")).andExpect(status().isOk())
@@ -89,6 +91,7 @@ mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
     }
 
     @Test
+    @DisplayName("teste de buscar pedido por  cliente nome")
     void testBuscarPedidosPorClienteNome()throws Exception {
         setupPedido();
         mockMvc.perform(get("/cliente/Cliente teste")).andExpect(status().isOk())
@@ -96,6 +99,7 @@ mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
     }
 
     @Test
+    @DisplayName("teste de buscar pedido por forma-pagamento nome")
     void testBuscarPedidosPorFormaPagamentoNome()throws Exception {
         setupPedido();
         mockMvc.perform(get("/formas-pagamento/1")).andExpect(status().isOk())
@@ -104,6 +108,7 @@ mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
     }
 
     @Test
+    @DisplayName("teste de buscar pedido por forma-pagamento id")
     void testBuscarPedidosPorformaPagamentoId()throws Exception {
         setupPedido();
         mockMvc.perform(get("/fomas-pagamento/1")).andExpect(status().isOk())
@@ -113,7 +118,7 @@ mockMvc.perform(get("/pedido/1")).andExpect(status().isOk())
 
     @Test
     @WithMockUser(username="admin",roles={"USER","ADMIN"})
-    @DisplayName("teste de criar pedido")
+    @DisplayName("teste de alterar pedido")
     void testAlterarPedido() throws Exception{
     setupPedido();
     mockMvc.perform(put("/pedido/1")

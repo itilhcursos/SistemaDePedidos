@@ -52,6 +52,32 @@ public class MunicipioControllerTest {
     }
 
     @Test
+    @DisplayName("teste de buscar municipio por id")
+    void testGetMunicipioPorId() throws Exception{
+        setUpMunicipio();
+        mockMvc.perform(get("/municipio/1")).andExpect(status().isOk())
+.andExpect(content().string(containsString("1")));
+    }
+
+    @Test
+    @DisplayName("teste de buscar municipio por estado id")
+    void testGetMunicipiosPorEstadoId() throws Exception{
+        setUpMunicipio();
+        mockMvc.perform(get("/estado/1")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("1")));
+    }
+
+    @Test
+    @DisplayName("teste de buscar municipio por  estado nome")
+    void testGetMunicipioPorEstadoNome()throws Exception {
+        setUpMunicipio();
+        mockMvc.perform(get("/estado/Acre")).andExpect(status().isOk())
+        .andExpect(content().string(containsString("Acre")));
+    }
+
+
+
+    @Test
     @DisplayName("teste de path inexistente")
     void TesteGetPathInexistente() throws Exception{
         mockMvc.perform(get("/municipio")).andExpect(status().isMethodNotAllowed());
