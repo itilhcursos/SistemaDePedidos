@@ -53,7 +53,7 @@ public class PedidoController {
 
     @PutMapping("/pedido/{id}")
     public PedidoDTO alterarPedido(@PathVariable BigInteger id, 
-                                @RequestBody EstadoDTO novosDados) throws Exception {
+                                @RequestBody PedidoDTO novosDados) throws Exception {
 
         return pedidoService.alterarPedido(id, novosDados);
     }
