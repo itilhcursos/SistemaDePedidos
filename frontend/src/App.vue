@@ -15,7 +15,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/clientes">Clientes</RouterLink>
       <RouterLink to="/produtos">Produtos</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
-      <RouterLink to="/itens-pedido">Itens de Pedidos</RouterLink>
+      <!-- <RouterLink to="/itens-pedido">Itens de Pedidos</RouterLink> -->
       <RouterLink to="/login" v-if="!isLogado" class="login-link">Login</RouterLink>
       <RouterLink to="/logout" v-if="isLogado" class="user-link">Usuário: {{ login }}</RouterLink>
 
@@ -58,7 +58,7 @@ export default {
 img{
   width: 150px;
   height: 150px;
-  margin-right: -90px;
+  margin: auto;
   display: inline-block;
 
 }
@@ -71,7 +71,7 @@ nav {
     background: #23232e;
     border-radius: 11px;
     display: inline-block;
-    width: 90%;
+    width: 80%;
   }
 
 .logo {
