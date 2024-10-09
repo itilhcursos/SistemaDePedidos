@@ -172,20 +172,20 @@ import clienteService from '@/services/clienteService';
     },
     data() {
       return {
-        id: "",
-        clienteId:"",
-        clienteNomeRazaoSocial:"",
-        formaPagamentoId:"",
-        formaPagamentoDescricao:"",
-        numero: "",
-        dataCompra: "",
-        dataEntrega: "",
-        dataPagamento: "",
+        id:'',
+        clienteId:'',
+        clienteNomeRazaoSocial:'',
+        formaPagamentoId:'',
+        formaPagamentoDescricao:'',
+        numero:'',
+        dataCompra:'',
+        dataEntrega:'',
+        dataPagamento:'',
         
 
         isInvalido: false,
         isLoading:false,
-        mensagem: "",
+        mensagem:"",
         selectedFormaPagamento:null,
         optionsFormaPagamento:[],
         clienteSelecionado:null,
@@ -193,7 +193,7 @@ import clienteService from '@/services/clienteService';
         produtoSelecionado:null,
         produtos:[],
         quantidadeItem: 0,
-        itens:[],
+        itens:[]
       };
     },
     methods: {
@@ -272,8 +272,7 @@ import clienteService from '@/services/clienteService';
           this.isInvalido = true;
           if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
             this.mensagem = "Usuário não identificado! Faça o login!!!";
-          }else if(error.response.status === 400 &&
-                   error.response.data.exception === 'EstadoDuplicadoException'){ 
+          }else if(error.response.status === 400){
             this.mensagem = error.response.data.mensagem;
           }else{
             this.mensagem = error.message;
@@ -299,6 +298,7 @@ import clienteService from '@/services/clienteService';
         }
         console.log(itemPedido);
         const response = await itemPedidoService.criar(itemPedido);
+         // lista de itens na tela
         this.itens.push(response);
       }
     },

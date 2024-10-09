@@ -1,40 +1,24 @@
 import genericService from "./genericService";
 
-const path = '/item-pedido';
-//const pathGet = '/itens-pedido';
+const path ='/item-pedido';
+//const pathGet ='/itens-pedido';
 
-const criar = async(objeto)=>{
 
-    const{data} = await genericService.criar(path, objeto);
+const criar = async(objeto) =>{
+
+    const {data} = await genericService.criar(path, objeto);
     return data;
 
-}
+} 
 
-const atualizar = async(id, objeto)=>{
-    
-    const{data} = await genericService.atualizar(path, id, objeto);
-    return data;
+const apagar = async(id) =>{
 
-}
-
-const apagar = async(id)=>{
-    
-    const{data} = await genericService.apagar(path, id);
-    return data;
-
-}
-
-const listar = async( pageNumber = 1, pageSize = 10, direction = 'ASC', property = 'id')=>{
-    
-    const{data} =  await genericService.listar(path, pageNumber, pageSize, direction, property);
+    const {data} = await genericService.apagar(path, id);
     return data;
 
 }
 
 export default{
     criar,
-    atualizar,
-    apagar,
-    listar
+    apagar
 }
-
