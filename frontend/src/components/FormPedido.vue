@@ -222,6 +222,11 @@ export default {
         this.mensagem = "Nome do cliente ou razão social não pode ser vazio.";
         return;
       }
+      if (this.formaPagamentoId === "") {
+        this.isInvalido = true;
+        this.mensagem = "Nome do cliente ou razão social não pode ser vazio.";
+        return;
+      }
       if (this.dataCompra === "") {
         this.isInvalido = true;
         this.mensagem = "Data da compra não pode ser vazia";
@@ -237,6 +242,12 @@ export default {
         this.mensagem = "Data do pagamento não pode ser vazio";
         return;
       }
+      if (this.dataCompra === "") {
+        this.isInvalido = true;
+        this.mensagem = "Data do pagamento não pode ser vazio";
+        return;
+      }
+
       this.isInvalido = false;
 
       try {
