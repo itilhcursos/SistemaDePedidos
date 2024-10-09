@@ -16,29 +16,48 @@
         </div>
       </div>
     </div>
-
-    <table class="table table-dark table-striped" v-if="!formVisible">
-      <thead>
+    
+    <div v-for="itemPedido in listaItensPedido" :key="itemPedido.id" scope="row">
+    <table class="table table-dark table-striped" >
+      <thead  v-if="novoPedido(itemPedido.pedidoId)">
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Pedido</th>
+          <th scope="col">Id Pedido</th>
+          <th scope="col">Id Produto</th>
+          <th scope="col">Produto Descrição</th>
           <th scope="col">Quantidade</th>
           <th scope="col">Preço Unitário</th>
           <th scope="col">Total</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="itemPedido in listaItensPedido" :key="itemPedido.id" scope="row">
-          <td>{{ itemPedido.id }}</td>
-          <td>{{ itemPedido.pedido}}</td>
-          <td>{{ itemPedido.quantidadeEstoque }}</td>
-          <td>{{ itemPedido.precoUnidadeAtual }}</td>
-          <td>{{ itemPedido.quantidadeEstoque * itemPedido.precoUnidadeAtual }}</td>
+      <thead  v-if="!novoPedido(itemPedido.pedidoId)">
+        <tr>
+          <th scope="col" colspan="6" ></th>
+          <!-- <th scope="col">Id Pedido</th>
+          <th scope="col">Id Produto</th>
+          <th scope="col">Produto Descrição</th>
+          <th scope="col">Quantidade</th>
+          <th scope="col">Preço Unitário</th>
+          <th scope="col">Total</th> -->
         </tr>
-      </tbody>
-    </table>
-  </div>
-  <div v-if="!formVisible">
+      </thead>
+      <tbody>
+          
+          <tr>
+            
+            <td>{{ itemPedido.id }}</td>
+            <td>{{ itemPedido.pedidoId}}</td>
+            <td>{{ itemPedido.produtoId}}</td>
+            <td>{{ itemPedido.produtoDescricao}}</td>
+            <td>{{ itemPedido.quantidadeEstoque }}</td>
+            <td>{{ itemPedido.precoUnidadeAtual }}</td>
+            <td>{{ itemPedido.quantidadeEstoque * itemPedido.precoUnidadeAtual }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    <div v-if="!formVisible">
     <hr />
     <div class="container">
       <div class="row d-flex justify-content-center">
@@ -72,7 +91,7 @@
         </div>
         <div class="col-auto">
           <select v-model="property" class="form-select">
-            <option value="id">ID</option>
+            <option value="pedido.id">Pedido</option>
             <option value="descricao">Descrição</option>
           </select>
         </div>
@@ -101,6 +120,7 @@ export default {
     return {
       itensPedido: [],
       pedidoItemEscolhido: null,
+      auxPedidoId: 0,
       formVisible: false,
       pageNumber: 1,
       pageSize: 10,
@@ -122,6 +142,11 @@ export default {
       this.pageNumber = pagina;
       this.buscarItensPedido();
     },
+    novoPedido(id){
+      const valor = id != this.auxPedidoId;
+      this.auxPedidoId = id;
+      return valor;
+    }
   },
   mounted() {
     this.buscarItensPedido(); 
