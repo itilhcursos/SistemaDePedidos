@@ -56,16 +56,14 @@
                 </tr>
               </tbody>
               
-              <button class="btn btn-btn btn-primary m-2" @click="alterar(pedido)">
-                <i class="bi bi-clipboard-pulse"></i> Alterar
-              </button>
-          
-           
-              <button class="btn btn-outline-danger m-2" @click="excluirProduto(produto.id)">
-                <i class="bi bi-clipboard2-minus"></i> Excluir
-              </button>
-          
+              
             </table>
+            <button class="btn btn-btn btn-primary m-2" @click="alterar(pedido)">
+              <i class="bi bi-clipboard-pulse"></i> Alterar
+            </button>
+            <button class="btn btn-outline-danger m-2" @click="excluirProduto(pedido.id)">
+              <i class="bi bi-clipboard2-minus"></i> Excluir
+            </button>
           </th>
         </tr>
 

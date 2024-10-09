@@ -51,15 +51,15 @@
             {{ formatarLogico(produto.ativo) }}
           </td>
           <td class="text-end align-middle">
-            <button class="btn btn-btn btn-primary m-2" @click="alterarProduto(produto)">
+          <button class="btn btn-btn btn-primary m-2" @click="alterarProduto(produto)">
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-
+        
             <button class="btn btn-outline-danger m-2" @click="excluirProduto(produto.id)">
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
           </td>
-        </tr>
+          </tr>
       </tbody>
     </table>
   </div>
