@@ -164,8 +164,6 @@ export default {
             direction: "ASC",
             property: "id",
             totalPages: 0,
-
-            semItens: false,
         }
     },
     methods: {
@@ -203,11 +201,11 @@ export default {
                 console.log(response);  
             }catch(error){
                 if(error.response.status === 403){        
-                alert("Usuário não identificado! Faça o login!!!");
+                    alert("Usuário não identificado! Faça o login!!!");
                 }else if(error.response.status === 400 ){
-                alert(error.response.data.mensagem);     
+                    alert(error.response.data.mensagem);     
                 }else{
-                alert(error.message);
+                    alert(error.message);
                 }
             }     
             this.listarPedidos();
@@ -216,10 +214,5 @@ export default {
     mounted(){
         this.listarPedidos();
     },
-    computed:{
-        habilitarExcluir(){
-            return this.semItens ? false : true;
-        }
-    }
 };
 </script>
