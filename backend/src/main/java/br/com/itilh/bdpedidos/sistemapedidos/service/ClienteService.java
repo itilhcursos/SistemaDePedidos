@@ -57,6 +57,3 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
 
 
 }
-
-
-

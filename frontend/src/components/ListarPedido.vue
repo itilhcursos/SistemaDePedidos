@@ -4,21 +4,21 @@
       <div class="col-10">
         <h3>Pedidos</h3>
       </div>
-      <!-- <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novo" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormPedido
             v-if="formVisible"
-            :propsEstado="estadoEscolhido"
+            :propsPedido="pedidoEscolhido"
             @cancelar="limpar"
-            @salvar_estado="buscarEstados"
+            @salvar_pedido="buscar"
           />
         </div>
-      </div> -->
+      </div> 
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
@@ -28,10 +28,10 @@
           <th scope="col">Número</th>
           <th scope="col">Cliente</th>
           <th scope="col">Forma Pagamento</th>
-          <th scope="col">data Compra</th>
-          <th scope="col">data Entrega</th>
-          <th scope="col">data Pagamento</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col">Data Compra</th>
+          <th scope="col">Data Entrega</th>
+          <th scope="col">Data Pagamento</th>
+          <th scope="col" class="d-flex justify-content-end">Itens</th>
         </tr>
       </thead>
       <tbody>
@@ -39,38 +39,49 @@
           <th>
             {{ pedido.id }}
           </th>
-          <td>
+          <th>
             {{ pedido.numero }}
+          </th>
+          <td>
+            {{ pedido.clienteNomeRazaoSocial }}
           </td>
           <td>
-            {{ pedido.clienteNome }}
-          </td>          
-          <td>
             {{ pedido.formaPagamentoDescricao }}
-          </td>          
+          </td>
           <td>
-            {{ pedido.dataCompra }}
-          </td>          
+            {{ formatar(pedido.dataCompra) }}
+          </td>
           <td>
-            {{ pedido.dataEntrega }}
-          </td>  
+            {{ formatar(pedido.dataEntrega) }}
+          </td>
           <td>
-            {{ pedido.dataPagamento }}
-          </td>         
-          <td class="d-flex justify-content-end">
+            {{ formatar(pedido.dataPagamento) }}
+          </td>
+          <td class="d-flex justify-content-end">            
             <button
               class="btn btn-btn btn-primary m-2"
               @click="alterar(pedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="exclui(pedido.id)"
-            >
-              <i class="bi bi-clipboard2-minus"></i> Excluir
-            </button>
+            <table class="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Itens</th>
+                  <th scope="col">Descricão</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="itens in pedido.itens" :key="itens.id" scope="row">
+                  <th>
+                    <img :src=itens.produtoUrlImagem height="50px">
+                  </th>
+                  <th>
+                    {{ itens.produtoDescricao }}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
           </td>
         </tr>
       </tbody>
@@ -112,7 +123,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
+            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
           </select>
         </div>
         <div class="col-auto">
@@ -122,7 +134,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
+          <button @click.prevent="buscar" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -134,11 +146,12 @@
 
 
 <script>
-// import FormEstado from "./FormEstado.vue";
+import FormPedido from "./FormPedido.vue";
+import Data from "../utils/Data"
 import pedidoService from "@/services/pedidoService";
 export default {
   components: {
-   // FormEstado,
+    FormPedido,
   },
   data() {
     return {
@@ -164,11 +177,11 @@ export default {
       this.pedidoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoEstado() {
+    novo() {
       this.formVisible = !this.formVisible;
     },
-    alterar(estado) {
-      this.pedidoEscolhido = estado;
+    alterar(pedido) {
+      this.pedidoEscolhido = pedido;
       this.formVisible = true;
     },
     async excluir(id) {
@@ -190,6 +203,9 @@ export default {
       this.pageNumber = pagina;
       this.buscar();
     },
+    formatar(data){
+      return Data.formatoDMA(data);
+    }
   },
   mounted() {
     this.buscar();

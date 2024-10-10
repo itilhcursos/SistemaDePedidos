@@ -45,9 +45,9 @@ public class AuthenticationController {
             throw new RuntimeException("Usario já existe");
         String senhaCriptografado = new BCryptPasswordEncoder().encode(dto.getSenha());
 
-        Usuario user = new Usuario(dto.getLogin(), senhaCriptografado, dto.role);
+        Usuario user = new Usuario(dto.getLogin(), senhaCriptografado, dto.getRole());
         repository.save(user);
-        return "ok";
+        return "Usuário registrado com sucesso.";
     }
     
 
