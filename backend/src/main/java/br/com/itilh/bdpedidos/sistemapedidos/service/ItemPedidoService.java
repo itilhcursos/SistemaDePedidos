@@ -3,6 +3,8 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
@@ -25,21 +27,21 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO entityDTO) throws Exception { 
+    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO entityDTO) throws Exception {
 
         Produto produto = repositorioProduto.getReferenceById(entityDTO.getProdutoId());
-        if(produto!= null && produto.getQuantidadeEstoque() != null
-            && entityDTO.getQuantidadeEstoque() >0 &&
-            ((produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque())>=0)){
+        if (produto != null && produto.getQuantidadeEstoque() != null
+                && entityDTO.getQuantidadeEstoque() > 0 &&
+                ((produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque()) >= 0)) {
 
-                produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque());
-                repositorioProduto.save(produto);
+            produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque());
+            repositorioProduto.save(produto);
 
-                entityDTO.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
-                return toDTO((ItemPedido) repositorio.save(toEntity(entityDTO)));
+            entityDTO.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
+            return toDTO((ItemPedido) repositorio.save(toEntity(entityDTO)));
         }
         throw new ProdutoEstoqueNegativoException(entityDTO.getProdutoDescricao());
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -52,7 +54,16 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
         repositorioProduto.save(produto);
         repositorio.deleteById(id);
         return "Excluído";
-    }  
+    }
 
+    public ItemPedidoDTO alterarItemPedido(BigInteger id, ItemPedidoDTO origem) {
+
+        throw new UnsupportedOperationException("Unimplemented method 'alterarItemPedido'");
+    }
+
+    public Page<ItemPedidoDTO> getTodos(Pageable pageable) {
+
+        throw new UnsupportedOperationException("Unimplemented method 'getTodos'");
+    }
 
 }
