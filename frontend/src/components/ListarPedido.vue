@@ -150,7 +150,6 @@
 import Data from '@/utils/Data';
 import FormPedido from './FormPedido.vue';
 import pedidoService from '@/services/pedidoService';
-import itemPedidoService from '@/services/itemPedidoService';
 export default {
     components:{
         FormPedido
@@ -197,22 +196,6 @@ export default {
         alterar(pedido){
             this.pedidoEscolhido = pedido;
             this.flipFormVisible();
-        },
-        async excluirItensPedido(id){
-            
-            console.log(id);
-            /* try{
-                const response = await itemPedidoService.apagar(id);
-                console.log(response);
-            }catch(error){
-                if(error.response.status === 403){        
-                alert("Usuário não identificado! Faça o login!!!");
-                }else if(error.response.status === 400 ){
-                alert(error.response.data.mensagem);     
-                }else{
-                alert(error.message);
-                }
-            } */
         },
         async excluir(id){
             try{  
