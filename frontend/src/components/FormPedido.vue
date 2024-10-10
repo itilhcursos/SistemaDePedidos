@@ -95,7 +95,7 @@
               <th>
                 <button 
                  class="btn btn-outline-danger m-2"
-                 @click="excluirItemPedido(item.id)"
+                 @click.prevent="excluirItemPedido(item.id)"
                  >
                   <i class="bi bi-clipboard2-minus"></i>
                 </button>
@@ -310,6 +310,11 @@ import clienteService from '@/services/clienteService';
       async excluirItemPedido(id){
         const response = await itemPedidoService.apagar(id);
         console.log(response);
+        // lista de itens na tela 
+        // toda vez que é exluida alguem, a lista de itens é pegada e transformada em uma nova lista de itens filtrada com quem é, o id diferente do que eu exluir.
+        //ao apagar o id, uma nova lista com todos, menos o id exluido aparece.  
+        this.itens = this.itens.filter(item => item.id !== id)
+
       }
     },
     mounted() {
