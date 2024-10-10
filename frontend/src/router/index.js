@@ -54,6 +54,11 @@ const router = createRouter({
       name: 'pedidos',
       component:()=>import('../views/PedidoView.vue')
     },
+    {
+      path: '/area-de-usuario',
+      name: 'area-de-usuario',
+      component:()=>import('../views/AreaUsuarioView.vue')
+    }
   ]
 })
 

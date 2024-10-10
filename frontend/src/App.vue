@@ -6,6 +6,10 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <header>
     <div>
+    <nav style="width:21%">
+      <RouterLink to="/area-de-usuario" v-if="!logado">Cadastrar ou Iniciar Sessão</RouterLink>
+      <RouterLink to="/area-de-usuario" v-if="logado">USUÁRIO: "{{ username }}"</RouterLink>
+    </nav>
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/about">Sobre</RouterLink>
@@ -15,9 +19,6 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/formas-pagamento">Formas de Pagamento</RouterLink>
       <RouterLink to="/Clientes">Clientes</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
-      <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
-      <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}</RouterLink>
-     
     </nav>
     <img src="./assets/carrinho.png" alt=""/>
   </div>
@@ -30,25 +31,20 @@ import { RouterLink, RouterView } from "vue-router";
 
 <script>
   export default{
-    data(){
-      return{
-        isLogado : false,
-        login : ''
-      };
-    },
-    methods:{
-      checkLogin(){
+    
+    computed: {
+      logado() {
         const token = localStorage.getItem('token');
         const login = localStorage.getItem('login');
-        this.isLogado = (token !== null && login !== null);
-        this.login = login;
+        if (token !== null && login !== null) {
+            return true
+        } else return false;
+      },
+      username () {
+        const login = localStorage.getItem('login');
+        return login;
       }
-
-    },
-    mounted(){
-      this.checkLogin();
-    },
-
+    }
   };
 </script>
 

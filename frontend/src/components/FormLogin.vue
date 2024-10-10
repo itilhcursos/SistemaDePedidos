@@ -1,15 +1,15 @@
 <template>
   <div class="container">
-    <h4 class="p-1 mb-1 bg-success text-white">Login</h4>
+    <h4 class="p-1 mb-1 bg-success text-white">Iniciar Sessão</h4>
     <hr />
     <form>
       <div class="mb-3">
-        <label class="form-label">Login</label>
+        <label class="form-label">Nome do Usuário</label>
         <input
           class="form-control"
           type="text"
           v-model="login"
-          placeholder="login"
+          placeholder="Login"
         />
       </div>
       <div class="mb-3">
@@ -18,7 +18,7 @@
           class="form-control"
           type="password"
           v-model="senha"
-          placeholder="senha"
+          placeholder="Sua senha"
         />
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -32,7 +32,7 @@
           v-on:click.prevent="logar"
         >
         <i class="bi bi-clipboard2-check"></i>
-          Logar
+          Iniciar Sessão
        </button>
         <button
           class="btn btn-warning m-2"
@@ -42,14 +42,14 @@
         <i class="bi bi-clipboard2-x"></i>
           Cancelar
         </button>
-        <button
+        <!-- <button
           class="btn btn-danger m-2"
           type="submit"
           v-on:click.prevent="logout"
         >
         <i class="bi bi-x-octagon"></i>
           Logout
-        </button>
+        </button> -->
       </div>
     </form>
   </div>
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     async logar() {
-      if (this.login === "" || this.senha ==="") {
+      if (this.login === "" || this.senha === "") {
         return;
       }
 
@@ -88,13 +88,11 @@ export default {
         this.isInvalido = true;
         this.erroMensagem = error.response.data.mensagem;
       }
-
-      this.id = "";
-      this.nome = "";
     },
     cancelar() {
       this.login = "";
       this.senha = "";
+      this.$emit("voltar");
     },
     logout() {
       localStorage.setItem('token', "");
@@ -104,8 +102,6 @@ export default {
       this.$router.push({path:'/'}).then(()=>{this.$router.go(0)});
     },
   },
-
-  
 };
 </script>
 

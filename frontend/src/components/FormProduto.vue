@@ -88,7 +88,6 @@
 import produtoService from '@/services/produtoService';
 export default {
 
-
     props: {
         propsProduto: Object,
     },

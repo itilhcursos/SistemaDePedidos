@@ -122,7 +122,7 @@
           </div>
           <div class="col-2 position-relative">
            
-            <button class="btn btn-secondary position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="incluirItem">
+            <button class="btn btn-success position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="incluirItem">
             <i class="bi bi-bag-plus"></i>
               Incluir
           </button>
