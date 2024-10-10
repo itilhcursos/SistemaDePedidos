@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import municipioService from '@/services/municipioService';
 export default {
   props: {
     propsMunicipio: Object,
@@ -78,6 +78,8 @@ export default {
     return {
       id: "",
       nome: "",
+      entrega: "",
+      estadoNome: "",
       isInvalido: false,
       mensagem : '',
     };
@@ -90,47 +92,39 @@ export default {
         return;
       }
       this.isInvalido = false;
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }
-
-    try{
-        if (this.id === "") {
-          //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/municipio", {
-            id: this.id,
-            nome: this.nome,
-            entrega: this.entrega,
-            estadoNome: this.estadoNome,
-          }, config);
-          this.listaMunicipios = response.data;
-        } else {
-          // alterar pelo PUT da API
-          const response = await axios.put(
-            `http://localhost:8080/municipio/${this.id}`,
-            {
-              id: this.id,
-              nome: this.nome,
-              entrega: this.entrega,
-              estadoNome: this.estadoNome,
-            }
-          ,config );
-          this.listaMunicipios = response.data;
-        }
-        this.$emit("salvar_municipio", {
+      
+      if (this.id === "") {
+        const response = await municipioService.criar( {
           id: this.id,
           nome: this.nome,
           entrega: this.entrega,
           estadoNome: this.estadoNome,
+        });
+        this.listaMunicipios = response.data;
+      } else {
+        const response = await municipioService.atualizar(
+          this.id,
+          {
+            id: this.id,
+            nome: this.nome,
+            entrega: this.entrega,
+            estadoNome: this.estadoNome,
+          }
+        );
+        this.listaMunicipios = response.data;
+      }
+      this.$emit("salvar_municipio", {
+        id: this.id,
+        nome: this.nome,
+        entrega: this.entrega,
+        estadoNome: this.estadoNome,
       });
 
       this.id = "";
       this.nome = "";
 
-    } catch(error) {
-      this.isInvalido = true;
+    /* } catch(error) {
+        this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
       }else if(error.response.status === 400 &&
@@ -139,8 +133,8 @@ export default {
       }else{
         this.mensagem = error.message;
       }
-    }
-   },
+     }, */
+    },
     cancelar() {
       this.id = "";
       this.nome = "";

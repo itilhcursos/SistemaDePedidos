@@ -63,12 +63,6 @@ export default {
     };
   },
   methods: {
-    getDados(){
-      return {
-              id: this.id,
-              nome: this.nome,
-            };
-    },
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;

@@ -77,29 +77,23 @@ export default {
       }
       this.isInvalido = false;
 
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-
       if (this.id === "") {
         //incluir pelo POST da API
-        const response = await formaPagamentoService.post("http://localhost:8080/forma-pagamento", {
+        const response = await formaPagamentoService.criar( {
           id: this.id,
           descricao: this.descricao,
           ativo: this.ativo
-        }, config);
+        });
         this.listaFormasPagamento = response.data;
       } else {
         // alterar pelo PUT da API
-        const response = await formaPagamentoService.put(
-          `http://localhost:8080/forma-pagamento/${this.id}`,
+        const response = await formaPagamentoService.atualizar(
+          this.id,
           {
             id: this.id,
             descricao: this.descricao,
             ativo: this.ativo
-          }, config
+          },
         );
         this.listaFormasPagamento = response.data;
       }

@@ -120,7 +120,7 @@
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
 import Logico from "@/utils/Logico.js";
-import axios from "axios";
+import formaPagamentoService from "@/services/formaPagamentoService";
 export default {
   components: {
     FormFormaPagamento,
@@ -141,15 +141,10 @@ export default {
     async buscarFormaPagamento() {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;
-
-      
-      const response = await axios.get(
-        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaFormasPagamento = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      const response = await formaPagamentoService.listar(this.pageNumber,this.pageSize,this.direction,this.property);
+      this.listaFormasPagamento = response.content;
+      console.log(this.listaFormasPagamento);
+      this.totalPages = response.totalPages;
     },
     limpar() {
       this.formaPagamentoEscolhida = null;
@@ -163,23 +158,9 @@ export default {
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-      try{
-        const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`,config);
+      const response = await formaPagamentoService.apagar(id);
       console.log(response.data);
-      } catch (error) {
-        if (error.response.status === 403) {        
-         alert("Usuário não identificado! Faça o login!!!");
-        } else if (error.response.status === 400 ) {
-          alert(error.response.data.mensagem);     
-        } else {
-          alert(error.message);
-        }
-      }
+      this.buscarFormaPagamento();
     },
     irPara(pagina) {
       this.pageNumber = pagina;

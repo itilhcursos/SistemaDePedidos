@@ -122,7 +122,7 @@
 <script>
 import FormMunicipio from "./FormMunicipio.vue";
 import Logico from "@/utils/Logico.js";
-import axios from "axios";
+import municipioService from "@/services/municipioService";
 export default {
   components: {
     FormMunicipio,
@@ -145,13 +145,10 @@ export default {
     async buscarMunicipios() {
       this.municipioEscolhido = null;
       this.formVisible = false;
-      const response = await axios.get(
-        `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaMunicipios = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      const response = await municipioService.listar(this.pageNumber,this.pageSize,this.direction,this.property);
+      this.listaMunicipios = response.content;
+      console.log(this.listaMunicipios);
+      this.totalPages = response.totalPages;
     },
     limpar() {
       this.municipioEscolhido = null;
@@ -165,23 +162,8 @@ export default {
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-      try{
-          const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
-          console.log(response.data);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
-          alert(error.message);
-        }
-      }     
+      const response = await municipioService.apagar(id);
+      console.log(response.data);    
       this.buscarMunicipios();
     },
     irPara(pagina) {
