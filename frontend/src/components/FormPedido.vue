@@ -93,7 +93,10 @@
                 {{ item.quantidadeEstoque * item.precoUnidadeAtual  }}
               </th>
               <th>
-                <button class="btn btn-outline-danger m-2">
+                <button 
+                 class="btn btn-outline-danger m-2"
+                 @click="excluirItemPedido(item.id)"
+                 >
                   <i class="bi bi-clipboard2-minus"></i>
                 </button>
               </th>
@@ -112,11 +115,11 @@
                     Sem produtos para exibir.
                 </template>
                 <template v-slot:option="option">
-                    <img  class="mini" :src='option.urlImagem'/> 
+                    <img  class="mini" :src='option.urlImagem' height="50 px"/> 
                     {{ option.descricao }} -Qtd( {{ option.quantidadeEstoque }}) -Preço({{ option.precoUnidadeAtual }})
                 </template>
                 <template v-slot:selected-option="option">
-                    <img class="mini" :src='option.urlImagem'/> 
+                    <img class="mini" :src='option.urlImagem' height="50 px"/> 
                     {{ option.descricao }} -Qtd({{ option.quantidadeEstoque }}) -Preço({{ option.precoUnidadeAtual }})
                 </template>
             </v-select>
@@ -128,7 +131,8 @@
 
           <div class="col-2 position-relative">
               <button  class="btn btn-primary position-absolute top-50 start-50 translate-middle" type="submit" v-on:click.prevent="incluirItem">
-                <i class="bi bi-clipboard2-check" ></i>Incluir
+                <i class="bi bi-clipboard2-check" ></i>
+                Incluir
               </button>
           </div>
       </div>
@@ -298,8 +302,14 @@ import clienteService from '@/services/clienteService';
         }
         console.log(itemPedido);
         const response = await itemPedidoService.criar(itemPedido);
-         // lista de itens na tela
+        // lista de itens na tela
         this.itens.push(response);
+       
+         
+      },
+      async excluirItemPedido(id){
+        const response = await itemPedidoService.apagar(id);
+        console.log(response);
       }
     },
     mounted() {

@@ -26,12 +26,10 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Entrega</label>
-                <input
-                    class="form-control"
-                    type="text"
-                    v-model="entrega"
-                    placeholder="Entrega"
-                />
+                <select v-model="entrega" class="form-control">
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                </select>
             </div>
 
             <div class="mb-3">

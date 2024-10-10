@@ -36,7 +36,7 @@
                 <tr v-for="municipio in listaMunicipios" :key="municipio.id" scope="row">
                     <th>{{ municipio.id }}</th>
                     <td>{{ municipio.nome }}</td>
-                    <td>{{ municipio.entrega }}</td>
+                    <td>{{ formatarLogico(municipio.entrega) }}</td>
                     <td>{{ municipio.estadoId }}</td>
                     <td>{{ municipio.estadoNome }}</td>
                     <td
@@ -121,6 +121,7 @@
 <script>
 import FormMunicipio from './FormMunicipio.vue';
 import municipioService from '@/services/municipioService';
+import Logico from '@/utils/Logico';
 export default {
     components:{
       FormMunicipio,
@@ -188,7 +189,11 @@ export default {
         irPara(pagina){
             this.pageNumber = pagina;
             this.buscarMunicipios();
+        },
+        formatarLogico(valor){
+            return Logico.toSimNao(valor);
         }
+        
     },
     mounted(){
         this.buscarMunicipios();
