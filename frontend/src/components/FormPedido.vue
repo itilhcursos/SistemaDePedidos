@@ -301,19 +301,37 @@ import clienteService from '@/services/clienteService';
           
         }
         console.log(itemPedido);
-        const response = await itemPedidoService.criar(itemPedido);
-        // lista de itens na tela
-        this.itens.push(response);
-       
-         
+        try{
+           const response = await itemPedidoService.criar(itemPedido);
+           // lista de itens na tela
+           this.itens.push(response);
+        }catch(error){
+          if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
+            alert("Usuário não identificado! Faça o login!!!");
+          }else if(error.response.status === 400){
+            alert( error.response.data.mensagem);
+          }else{
+            alert(error.message);
+          }
+        } 
       },
       async excluirItemPedido(id){
-        const response = await itemPedidoService.apagar(id);
-        console.log(response);
-        // lista de itens na tela 
-        //ao apagar o id, uma nova lista com todos, menos o id exluido aparece.  
-        this.itens = this.itens.filter(item => item.id !== id)
+        try{
 
+          const response = await itemPedidoService.apagar(id);
+          console.log(response);
+          // lista de itens na tela 
+          //ao apagar o id, uma nova lista com todos, menos o id exluido aparece.  
+          this.itens = this.itens.filter(item => item.id !== id)
+        }catch(error){
+          if(error.response.status === 403){    // o erro 403 é quando esqueço de fazer a autenticação    
+            alert("Usuário não identificado! Faça o login!!!");
+          }else if(error.response.status === 400){
+            alert( error.response.data.mensagem);
+          }else{
+            alert(error.message);
+          }
+        }
       }
     },
     mounted() {
