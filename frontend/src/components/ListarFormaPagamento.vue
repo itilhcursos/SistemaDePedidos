@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formatarLogico(formaPagamento.ativo) }}
           </td>
           <td class="d-flex justify-content-end">
             <button
@@ -175,6 +175,10 @@ export default {
       this.pageNumber = pagina;
       this.buscarFormaPagamento();
     },
+    
+
+
+
   },
   mounted() {
     this.buscarFormaPagamento();

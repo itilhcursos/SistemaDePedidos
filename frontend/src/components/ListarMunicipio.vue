@@ -153,15 +153,14 @@
         console.log(this.totalPages);
       },
     
-        this.Entrega = (valor){
+        Entrega = (valor){
             return Logico.toSimNAO(valor);
 
         },
       limpar() {
         this.municipioEscolhido = null;
         this.formVisible = this.formVisible;
-        }
-
+        },
         novoMunicipio() {
         this.formVisible = this.formVisible;
       },
