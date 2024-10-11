@@ -3,7 +3,6 @@
         <div class="row">
             <div class="col-10">
                 <h3>PEDIDOS</h3>
-                Obs.: Só é possivel apagar um pedido após remover todos os seus itens.
             </div>
             
 
