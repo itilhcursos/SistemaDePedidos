@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.PedidoRepository;
 
@@ -16,6 +18,9 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO>{
 
     @Autowired
     PedidoRepository repositorio;
+
+    @Autowired
+    ItemPedidoService itemService;
 
     public Page<PedidoDTO> getTodos(Pageable pageable ){
         return toPageDTO(repositorio.findAll(pageable));
@@ -59,7 +64,13 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO>{
         }                                   
     }
 
+    @Transactional
     public String excluirPedido(BigInteger id) throws Exception {
+        Pedido pedido = repositorio.getReferenceById(id);
+        for (ItemPedido item:pedido.getItens()){
+            itemService.excluirItemPedido(item.getId());
+        }
+
         repositorio.deleteById(id);
         return "Excluído";
     }  
