@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div>
-            <h3>Área do Usuário</h3> <hr/>
+            <h3>Área do Usuário <span v-if="logado"> (Atualmente Logado em: {{ username }})</span></h3>  <hr/>
         </div>
         <div class="container">
             <div class="row" style="justify-content: start">
@@ -78,7 +78,11 @@ export default {
             if (token !== null && login !== null) {
                 return true
             } else return false;
-        }
+        },
+        username () {
+            const login = localStorage.getItem('login');
+            return login;
+      }
     }
 }
 </script>

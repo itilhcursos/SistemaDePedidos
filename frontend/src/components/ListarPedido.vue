@@ -3,10 +3,11 @@
         <div class="row">
             <div class="col-10">
                 <h3>PEDIDOS</h3>
+                Obs.: Só é possivel apagar um pedido após remover todos os seus itens.
             </div>
+            
 
-
-            <div class="col-2 d-flex justify-content-end">
+            <div class="col-12 d-flex justify-content-end">
                 <button v-if="!formVisible" @click="flipFormVisible" class="btn btn-success">
                     <i class="bi bi-clipboard-plus"></i> Novo
                 </button>

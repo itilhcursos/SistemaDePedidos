@@ -42,7 +42,7 @@ public class AuthenticationController {
     @PostMapping("/registro")
     public String registro(@RequestBody RegistroDTO dto) {
         if(repository.findByLogin(dto.getLogin()) !=null)
-            throw new RuntimeException("Usario já existe");
+            throw new RuntimeException("Usuario já existe");
         String senhaCriptografado = new BCryptPasswordEncoder().encode(dto.getSenha());
 
         Usuario user = new Usuario(dto.getLogin(), senhaCriptografado, dto.role);

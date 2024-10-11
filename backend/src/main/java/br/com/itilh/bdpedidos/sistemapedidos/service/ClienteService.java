@@ -33,29 +33,38 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
     }
 
     private void validar(ClienteDTO dto) throws Exception{
-        // Verifica duplicações.
-        if (repositorio.existsByCpf(dto.getCpf()) || repositorio.existsByCnpj(dto.getCnpj()) || repositorio.existsByEmail(dto.getEmail())){
+
+        if (repositorio.existsByCnpjOrCpf(dto.getCnpj(), dto.getCpf())){
             if(dto.getId() == null){
 
-                // Verifica se o usuario Cadastrou um CPF E um CNPJ, para garantir que só seja cadastrado ou um ou outro.
-                if (dto.getCpf() != "" && dto.getCnpj() != ""){
-                    throw new Exception ("Cadastre ou um CPF ou um CNPJ.");
+                if (repositorio.existsByCnpj(dto.getCnpj()) && !dto.getCnpj().equals(""))
+                    throw new ClienteDuplicadoException("CNPJ", dto.getCnpj());
+
+                if (repositorio.existsByCpf(dto.getCpf()) && !dto.getCpf().equals(""))
+                    throw new ClienteDuplicadoException("CPF", dto.getCpf());
+            }else{
+                Cliente c = repositorio.getReferenceById(dto.getId());
+
+                if(!c.getCnpj().equalsIgnoreCase(dto.getCnpj())){
+                    throw new ClienteDuplicadoException("CNPJ", dto.getCnpj());
                 }
-                if (repositorio.existsByCpf(dto.getCpf()))
+                if(!c.getCpf().equalsIgnoreCase(dto.getCpf())){
+                    throw new ClienteDuplicadoException("CPF", dto.getCpf());
+                }
+            }            
+        }
+
+        // Verifica duplicações. (codigo antigo)
+        /* if (repositorio.existsByCpf(dto.getCpf()) || repositorio.existsByCnpj(dto.getCnpj())){
+            if(dto.getId() == null){
+
+                if (repositorio.existsByCpf(dto.getCpf()) && !dto.getCpf().equals(""))
                     throw new ClienteDuplicadoException("CPF");
 
-                if (repositorio.existsByCnpj(dto.getCnpj()))
+                if (repositorio.existsByCnpj(dto.getCnpj()) && !dto.getCnpj().equals(""))
                     throw new ClienteDuplicadoException("CNPJ");
-
-                if (repositorio.existsByEmail(dto.getEmail()))
-                    throw new ClienteDuplicadoException("E-mail");
-            } /* else {
-                Cliente c = repositorio.getReferenceById(dto.getId());
-                if(!c.getCpf().equalsIgnoreCase(dto.getCpf()) || !c.getCnpj().equalsIgnoreCase(dto.getCnpj()) || !c.getEmail().equalsIgnoreCase(dto.getEmail())){
-                    throw new Exception("Não altere CPF, CNPJ ou Email.");
-                }
-            } */
-        }
+            }
+        } */
     }
 
     public ClienteDTO criar(ClienteDTO dto) throws Exception {

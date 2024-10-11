@@ -5,7 +5,7 @@
                 <h3>CLIENTES</h3>
             </div>
 
-            <div class="col-2 d-flex justify-content-end">
+            <div class="col d-flex justify-content-end m-2">
                 <button v-if="!formVisible" @click="flipFormVisible" class="btn btn-success">
                     <i class="bi bi-clipboard-plus"></i> Novo
                 </button>
@@ -22,66 +22,30 @@
                 </div>
             </div>
 
-            <table class="table table-dark table-striped" v-if="!formVisible">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">CNPJ/CPF</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Endereço</th>
-                        <th scope="col">Bairro</th>
-                        <th scope="col">Municipio</th>
-                        <th scope="col">CEP</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Informações</th>
-                        <th scope="col">Ativo?</th>
-                        <th scope="col" class="d-flex justify-content-end">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
-                        <th>
-                            {{ cliente.id }}
-                        </th>
-                        <td>
-                            {{ cliente.nomeRazaoSocial }}
-                        </td>
-                        <td>
-                            {{ cliente.cnpj != '' ? 'CNPJ: ' + cliente.cnpj : 'CPF: ' + cliente.cpf }}
-                        </td>
-                        <td>
-                            {{ cliente.telefone }}
-                        </td>
-                        <td>
-                            {{ cliente.endereco }}
-                        </td>
-                        <td>
-                            {{ cliente.bairro }}
-                        </td>
-                        <td>
-                            {{ cliente.municipioNome }}
-                        </td>
-                        <td>
-                            {{ cliente.cep }}
-                        </td>
-                        <td>
-                            {{ cliente.email }}
-                        </td>
-                        <td>
-                            {{ cliente.informacao }}
-                        </td>
-                        <td>
-                            {{ formatarAtivo(cliente.ativo) }}
-                        </td>
-                        <td class="d-flex justify-content-end">
-                            <button class="btn btn-btn btn-primary m-2" @click="alterar(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar </button>
-                            <button class="btn btn-outline-danger m-2" @click="excluir(cliente.id)"><i class="bi bi-clipboard2-minus"></i> Excluir </button>
-                        </td>
 
-                    </tr>
-                </tbody>
-            </table>
+            <div class="row" v-if="!formVisible">
+                <div class="col col-lg-4" v-for="cliente in listaClientes" :key="cliente.id" scope="row">
+                    <div class="card text-white bg-dark mb-4" style="width: 22rem;">
+                        <div class="card-head">
+                            <h4 class="card-title">ID: {{ cliente.id }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-5">{{ cliente.nomeRazaoSocial }}</h5>
+                            <p class="card-text"><b>{{ cliente.cnpj != '' ? 'CNPJ: ' : 'CPF: ' }}</b>{{ cliente.cnpj != '' ?  cliente.cnpj  : cliente.cpf }}</p>
+                            <p class="card-text"><b>Telefone: </b>{{ cliente.telefone }}</p>
+                            <p class="card-text"><b>Endereço: </b>{{ cliente.endereco }}</p>
+                            <p class="card-text"><b>Bairro: </b>{{ cliente.bairro }}</p>
+                            <p class="card-text"><b>Municipio: </b>{{ cliente.municipioNome }}</p>
+                            <p class="card-text"><b>CEP: </b>{{ cliente.cep }}</p>
+                            <p class="card-text"><b>Email: </b>{{ cliente.email }}</p>
+                            <p class="card-text"><b>Informações: </b>{{ cliente.informacao }}</p>
+                            <p class="card-text"><b>Atividade: </b>{{ formatarAtivo(cliente.ativo) }}</p>
+                            <button class="btn btn-primary m-2" @click="alterar(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar </button>
+                            <button class="btn btn-danger m-2" @click="excluir(cliente.id)"><i class="bi bi-clipboard2-minus"></i> Excluir </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div v-if="!formVisible">
             <hr />
@@ -146,7 +110,7 @@ export default {
             clienteEscolhido: null,
             formVisible: false,
             pageNumber: 1,
-            pageSize: 10,
+            pageSize: 9,
             direction: "ASC",
             property: "id",
             totalPages: 0,

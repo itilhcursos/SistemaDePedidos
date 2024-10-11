@@ -15,7 +15,7 @@
                 </div>
                 
                 <div class="col">
-                    <label class="form-label">CNPJ*</label>
+                    <label class="form-label">CNPJ</label>
                     <input class="form-control"
                         type="text"
                         v-model="cnpj"
@@ -23,7 +23,7 @@
                         :disabled= "setCnpjState"/>  
                 </div>
                 <div class="col">
-                    <label class="form-label">CPF*</label>
+                    <label class="form-label">CPF</label>
                     <input class="form-control"
                         type="text"
                         v-model="cpf"
@@ -34,21 +34,21 @@
 
             <div class="row" style="padding: 10px">
                 <div class="col">
-                    <label class="form-label">Nome ou Razão Social*</label>
+                    <label class="form-label">Nome ou Razão Social</label>
                     <input class="form-control"
                         type="text"
                         v-model="nomeRazaoSocial"
                         placeholder="Nome ou Razão Social da empresa..."/>
                 </div>
                 <div class="col">
-                    <label class="form-label">Telefone**</label>
+                    <label class="form-label">Telefone</label>
                     <input class="form-control"
                         type="text"
                         v-model="telefone"
                         placeholder="Número de Telefone..."/>
                 </div>
                 <div class="col">
-                    <label class="form-label">E-mail**</label>
+                    <label class="form-label">E-mail</label>
                     <input class="form-control"
                         type="text"
                         v-model="email"
@@ -58,21 +58,21 @@
             
             <div class="row" style="padding: 10px">
                 <div class="col">
-                <label class="form-label">Endereço*</label>
+                <label class="form-label">Endereço</label>
                 <input class="form-control"
                     type="text"
                     v-model="endereco"
                     placeholder="Endereço..."/>
                 </div>
                 <div class="col">
-                    <label class="form-label">Bairro*</label>
+                    <label class="form-label">Bairro</label>
                     <input class="form-control"
                         type="text"
                         v-model="bairro"
                         placeholder="Bairro de residência..."/>
                 </div>
                 <div class="col">
-                    <label class="form-label">CEP*</label>
+                    <label class="form-label">CEP</label>
                     <input class="form-control"
                         type="text"
                         v-model="cep"
@@ -210,31 +210,21 @@ export default {
             this.$emit("cancelar", true);
         },
         async salvar(){
-            if (this.nome === "" || this.cep === "" || this.bairro === "" || this.endereco === "" || this.municipioId === null){
+            if (this.municipioSelecionado == null){
                 this.isInvalido = true;
-                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
-                return;
-            }
-            if (this.cpf === "" && this.cnpj === ""){
-                this.isInvalido = true;
-                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
-                return;
-            }
-            if (this.email === "" && this.telefone === ""){
-                this.isInvalido = true;
-                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
+                this.mensagem = "Preencha com um municipio!";
                 return;
             }
             this.isInvalido = false;
             try{
                 if (this.id === ""){
                     const response = await clienteService.criar(this.getDados());
-                    this.listaClientes = response;
+                    console.log(response);
                 } else {
-                    const response = await clienteService.atualizar(this.id, this.getDados()); //TODO: Investigar erros
+                    const response = await clienteService.atualizar(this.id, this.getDados());
                     this.listaClientes = response;
                 }
-                this.$emit("salvar", true
+                this.$emit("salvar"/* , true */
                 /* {
                     //Apagável?
                 id: this.id,
@@ -255,6 +245,7 @@ export default {
 
             } catch (error) {
                 this.isInvalido = true;
+                this.mensagem = error.message;
                 if(error.response.status === 403){        
                     this.mensagem = "Usuário não identificado! Faça o login!!!";
                 }else if(error.response.status === 400 &&

@@ -16,5 +16,7 @@ public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
     boolean existsByCpf(String cpf);
     boolean existsByEmail(String email);
 
+    boolean existsByCnpjOrCpf(String cnpj, String cpf);
+
     Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String txtBusca);
 }
