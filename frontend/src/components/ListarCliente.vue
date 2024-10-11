@@ -39,7 +39,7 @@
                             <p class="card-text"><b>CEP: </b>{{ cliente.cep }}</p>
                             <p class="card-text"><b>Email: </b>{{ cliente.email }}</p>
                             <p class="card-text"><b>Informações: </b>{{ cliente.informacao }}</p>
-                            <p class="card-text"><b>Atividade: </b>{{ formatarAtivo(cliente.ativo) }}</p>
+                            <p class="card-text"><b>Cliente Ativo/Inativo: </b>{{ formatarAtivo(cliente.ativo) }}</p>
                             <button class="btn btn-primary m-2" @click="alterar(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar </button>
                             <button class="btn btn-danger m-2" @click="excluir(cliente.id)"><i class="bi bi-clipboard2-minus"></i> Excluir </button>
                         </div>
