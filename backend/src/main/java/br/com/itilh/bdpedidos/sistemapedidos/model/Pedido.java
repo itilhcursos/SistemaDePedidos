@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -55,6 +56,6 @@ public class Pedido {
     @Column(name = "dt_pagamento")
     private LocalDate dataPagamento;
 
-    @OneToMany(mappedBy = "pedido") // associa os itens pertencentes a um dado pedido
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true) // Apagar ItemPedido quando Pedido for apagado (apaga órfãos).
     private List<ItemPedido> itens;
 }
