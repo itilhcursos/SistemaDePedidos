@@ -4,7 +4,7 @@
     <hr />
     <form>
       <div class="row">
-        <div class="col-md-1 mb-3">
+        <div v-if="id !== ''" class="col-md-1 mb-3">
           <label class="form-label">Id</label>
           <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id" />
         </div>
@@ -94,9 +94,10 @@
           </tbody>
         </table>
       </div>
-      <div class="row">
+
+      <div class="row align-items-end">
         <div class="col-8">
-          <label class="form-label">Novo Produto</label>
+          <label class="form-label">Incluir Produto</label>
           <v-select class="meu-select" v-model="selectedProduto" :filterable="false" :options="optionsProduto"
             @search="onSearchProduto">
             <template v-slot:no-options>
@@ -116,21 +117,23 @@
           <label class="form-label">Quantidade</label>
           <input class="form-control" type="number" v-model="quantidadeItem" placeholder="0" />
         </div>
-        <div class="col-2 position-relative">
-
-          <button class="btn btn-primary position-absolute top-50 start-50 translate-middle" type="submit"
-            v-on:click.prevent="incluirItem">
+        <div class="col-2">
+          <label class="form-label d-none">Adicionar</label>
+          <button class="btn btn-success w-100" type="submit" v-on:click.prevent="incluirItem">
             <i class="bi bi-clipboard2-check"></i>
-            Incluir
+            Adicionar
           </button>
         </div>
       </div>
+      <hr>
+
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
       </div>
+     
       <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvar">
+        <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarPedido">
           <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
@@ -148,6 +151,8 @@ import clienteService from "@/services/clienteService";
 import produtoService from "@/services/produtoService";
 import itemPedidoService from "@/services/itemPedidoService";
 import formaPagamentoService from "@/services/formaPagamentoService";
+import pedidoService from "@/services/pedidoService";
+
 export default {
   props: {
     propsPedido: Object,
@@ -183,7 +188,6 @@ export default {
         return;
       loading(true);
       await clienteService.buscar(search).then((response) => {
-        //console.log(response);
         this.optionsCliente = response.content;
         loading(false);
       });
@@ -193,7 +197,6 @@ export default {
         return;
       loading(true);
       await formaPagamentoService.buscar(search).then((response) => {
-        //console.log(response);
         this.optionsFormaPagamento = response.content;
         loading(false);
       });
@@ -203,7 +206,6 @@ export default {
         return;
       loading(true);
       await produtoService.buscar(search).then((response) => {
-        //console.log(response);
         this.optionsProduto = response.content;
         loading(false);
       });
@@ -211,20 +213,37 @@ export default {
 
     getDados() {
       return {
-        id: this.id,
-        nome: this.nome,
+        id: this.id || null,
+        clienteId: this.selectedCliente ? this.selectedCliente.id : null,
+        clienteNomeRazaoSocial: this.selectedCliente.nomeRazaoSocial,
+        formaPagamentoId: this.selectedFormaPagamento ? this.selectedFormaPagamento.id : null,
+        formaPagamentoDescricao: this.selectedFormaPagamento.descricao,
+        numero: this.numero,
+        dataCompra: this.dataCompra,
+        dataEntrega: this.dataEntrega,
+        dataPagamento: this.dataPagamento,
+        itens: this.itens,
       };
     },
-    async salvar() {
-      console.log(this.selectedCliente, this.selectedProduto);
-      if (this.clienteNomeRazaoSocial === "") {
+    limparMensagemErro() {
+    this.isInvalido = false;
+    this.mensagem = "";
+  },
+    async salvarPedido() {
+      //console.log('Iniciando processo de salvar pedido');
+      if (!this.numero || this.numero === "") {
         this.isInvalido = true;
-        this.mensagem = "Nome do cliente ou razão social não pode ser vazio.";
+        this.mensagem = "O número do pedido não pode ser vazio.";
         return;
       }
-      if (this.formaPagamentoId === "") {
+      if (!this.selectedCliente || !this.selectedCliente.id) {
         this.isInvalido = true;
-        this.mensagem = "Nome do cliente ou razão social não pode ser vazio.";
+        this.mensagem = "Selecione um cliente válido.";
+        return;
+      }
+      if (!this.selectedFormaPagamento || !this.selectedFormaPagamento.id) {
+        this.isInvalido = true;
+        this.mensagem = "Selecione uma forma de pagamento válida.";
         return;
       }
       if (this.dataCompra === "") {
@@ -237,44 +256,30 @@ export default {
         this.mensagem = "Data da entrega não pode ser vazia";
         return;
       }
-      if (this.dataCompra === "") {
+      if (this.dataPagamento === "") {
         this.isInvalido = true;
-        this.mensagem = "Data do pagamento não pode ser vazio";
+        this.mensagem = "Data do pagamento não pode ser vazia";
         return;
       }
-      if (this.dataCompra === "") {
-        this.isInvalido = true;
-        this.mensagem = "Data do pagamento não pode ser vazio";
-        return;
-      }
-
+      
       this.isInvalido = false;
-
+      
       try {
-        if (this.id === "") {
-          //  const response = await estadoService.criar(this.getDados());
-          //  this.options = response;
+        const dadosPedido = this.getDados();
+        if (!this.id) {
+          const response = await pedidoService.criar(dadosPedido);
+          this.listaPedidos = response;
         } else {
-          // const response = await estadoService.atualizar(
-          //   this.id,
-          //   this.getDados()
-          // );
-          //this.listaEstados = response;
+          const response = await pedidoService.atualizar(this.id, dadosPedido);
+          this.listaPedidos = response;
         }
-        this.$emit("salvar_pedido", {
-          id: this.id,
-          nome: this.nome,
-        });
+        this.$emit("salvar_pedido", dadosPedido); // Emite o evento
 
-        this.id = "";
-        this.nome = "";
       } catch (error) {
         this.isInvalido = true;
-        if (error.response.status === 403) {
+        if (error.response && error.response.status === 403) {
           this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else if (
-          error.response.status === 400
-        ) {
+        } else if (error.response && error.response.status === 400) {
           this.mensagem = error.response.data.mensagem;
         } else {
           this.mensagem = error.message;
@@ -283,47 +288,66 @@ export default {
     },
     cancelar() {
       this.id = "";
-      this.nome = "";
+      this.numero = "";
+      this.selectedCliente = null;
+      this.selectedFormaPagamento = null;
+      this.dataCompra = "";
+      this.dataEntrega = "";
+      this.dataPagamento = "";
+      this.itens = [];
+      this.quantidadeItem = "";
       this.$emit("cancelar", true);
     },
-    async incluirItem(){
-        const itemPedido = {
-              id : null,
-              pedidoId : this.id,
-              produtoId : this.selectedProduto.id,
-              produtoDescricao : this.selectedProduto.descricao,
-              produtoUrlImagem : this.selectedProduto.urlImagem,
-              quantidadeEstoque : this.quantidadeItem,
-              precoUnidadeAtual : null
-            }
-        console.log(itemPedido);
-        try{
-          const response = await itemPedidoService.criar(itemPedido);
-          // lista de itens na tela
-          this.itens.push(response);
-        }catch(error){
-          if(error.response.status === 403){        
-          alert("Usuário não identificado! Faça o login!!!");
-          }else if(error.response.status === 400 ){
-            alert(error.response.data.mensagem);     
-          }else{
-            alert(error.message);
-        }
+    async incluirItem() {
+
+      if (this.id && (!this.selectedProduto || !this.selectedProduto.id)) {
+        this.isInvalido = true;
+        this.mensagem = "Selecione um produto válido para adicionar ao pedido";
+        return;
+      }
+      if (this.id && this.quantidadeItem <= 0) {
+        this.isInvalido = true;
+        this.mensagem = "A quantidade deve ser maior que 0";
+        return;
       }
 
+      this.isInvalido = false;
+
+      const itemPedido = {
+        id: null,
+        pedidoId: this.id,
+        produtoId: this.selectedProduto.id,
+        produtoDescricao: this.selectedProduto.descricao,
+        produtoUrlImagem: this.selectedProduto.urlImagem,
+        quantidadeEstoque: this.quantidadeItem,
+        precoUnidadeAtual: this.selectedProduto.precoUnidadeAtual
+      };
+
+      console.log("Item a ser incluído:", itemPedido);
+
+      try {
+        const response = await itemPedidoService.criar(itemPedido);
+        this.itens.push(response);
+      } catch (error) {
+        if (error.response && error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response && error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
+          alert(error.message);
+        }
+      }
     },
-    async excluirItemPedido(id){
-      try{
-        const response = await itemPedidoService.apagar(id);
-        console.log(response);
-        // lista de itens na tela
+    async excluirItemPedido(id) {
+      try {
+        await itemPedidoService.apagar(id);
         this.itens = this.itens.filter(item => item.id !== id);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
+      } catch (error) {
+        if (error.response && error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response && error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
           alert(error.message);
         }
       }
@@ -332,19 +356,24 @@ export default {
   mounted() {
     if (this.propsPedido) {
       this.id = this.propsPedido.id;
-      this.clienteId= this.propsPedido.clienteId;
-      this.clienteNomeRazaoSocial= this.propsPedido.clienteNomeRazaoSocial;
-      this.formaPagamentoId= this.propsPedido.formaPagamentoId;
-      this.formaPagamentoDescricao= this.propsPedido.formaPagamentoDescricao;
-      this.numero= this.propsPedido.numero;
-      this.dataCompra= this.propsPedido.dataCompra;
-      this.dataEntrega= this.propsPedido.dataEntrega;
-      this.dataPagamento= this.propsPedido.dataPagamento;
-      this.itens= this.propsPedido.itens;
+      this.numero = this.propsPedido.numero;
+      this.clienteId = this.propsPedido.clienteId;
+      this.clienteNomeRazaoSocial = this.propsPedido.clienteNomeRazaoSocial;
+      this.formaPagamentoId = this.propsPedido.formaPagamentoId;
+      this.formaPagamentoDescricao = this.propsPedido.formaPagamentoDescricao;
+      this.dataCompra = this.propsPedido.dataCompra;
+      this.dataEntrega = this.propsPedido.dataEntrega;
+      this.dataPagamento = this.propsPedido.dataPagamento;
+      this.itens = this.propsPedido.itens;
 
-      this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao };
-      this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
-
+      this.selectedCliente = {
+        id: this.propsPedido.clienteId,
+        nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
+      };
+      this.selectedFormaPagamento = {
+        id: this.propsPedido.formaPagamentoId,
+        descricao: this.propsPedido.formaPagamentoDescricao
+      };
     }
   },
   computed: {
@@ -355,16 +384,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .meu-select {
   width: 100%;
   font-size: 1.0em;
   color: #252525;
   background: #fbf4f4;
   border-radius: 0.375rem;
-  
-
-
 }
 
 .mini {
