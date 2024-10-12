@@ -9,6 +9,7 @@
             <input 
             class="form-control"
             type="text"
+            v-model="login"
             placeholder="Ex: marioSantos"
             />
         </div>
@@ -17,6 +18,7 @@
             <input 
             class="form-control"
             type="text"
+            v-model="senha"
             placeholder="senha"
             />
         </div>
@@ -25,6 +27,7 @@
             <input 
             class="form-control"
             type="text"
+            v-model="role"
             placeholder="role"
             />
         </div>
@@ -57,7 +60,9 @@
         },
         data(){
             return{
-
+                login:"",
+                senha:"",
+                role:""
             }
         }
     }

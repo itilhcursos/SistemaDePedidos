@@ -139,19 +139,13 @@ export default {
                     this.listaProdutos = response.data;
                 } else {
                     const response = await produtoService.atualizar(
-                    this.id,
-                    this.getDados());
+                      this.id,
+                      this.getDados()
+                    );
                     this.listaEstados = response.data;
                 }
-
-                this.$emit("salvar_produto", {
-                    id: this.id,
-                    urlImagem: this.urlImagem, 
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
-                });
+                this.$emit("salvar_produto", this.getDados());
+                
                 this.id = "";
                 this.descricao = "";
                 this.urlImagem = "";

@@ -252,7 +252,6 @@ import pedidoService from '@/services/pedidoService';
         //   return;
         // } 
         this.isInvalido = false;
-
         try{
           if (this.id === "") {
             //incluir pelo POST da API
@@ -268,8 +267,14 @@ import pedidoService from '@/services/pedidoService';
           }
           this.$emit("salvar_pedido", this.getDados());
 
-          this.id = "";
-          this.clienteNomeRazaoSocial = "";
+            this.id="",
+            this.selectedFormaPagamento.id="",
+            this.formaPagamentoDescricao="",
+            this.numero="",
+            this.dataCompra="",
+            this.dataEntrega="",
+            this.dataPagamento="",
+            this.clienteSelecionado.id=""
         
         }catch(error){
         
@@ -288,8 +293,14 @@ import pedidoService from '@/services/pedidoService';
       },
 
       cancelar(){
-        this.id = "";
-        this.clienteNomeRazaoSocial = "";
+            this.id="",
+            this.selectedFormaPagamento.id="",
+            this.formaPagamentoDescricao="",
+            this.numero="",
+            this.dataCompra="",
+            this.dataEntrega="",
+            this.dataPagamento="",
+            this.clienteSelecionado.id=""
         this.$emit("cancelar", true);
       },
       async incluirItem(){
