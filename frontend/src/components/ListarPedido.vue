@@ -175,8 +175,7 @@ export default {
     async buscar() {
       this.pedidoEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
+      //buscar a lista de Pedidos no servidor
 
       const response =  await pedidoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
 

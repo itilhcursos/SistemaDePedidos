@@ -20,6 +20,7 @@
                 </div>
             </div>
         </div>
+        
         <table v-if="!formVisible" class="table table-dark table-striped">
             <thead>
                 <tr>

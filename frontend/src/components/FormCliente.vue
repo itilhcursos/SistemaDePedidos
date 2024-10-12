@@ -45,7 +45,7 @@
       </div>
       <!-- O v-if é como visible e Invisible que faz com que o cnpj ou cpf suma do formulario caso uma das duas estejam preenchidas. -->
       <div class="mb-3">
-        <label class="form-label">CNPJ</label>
+        <label class="form-label">CNPJ*</label>
         <input
           class="form-control"
           type="text"
@@ -56,7 +56,7 @@
        <!-- ja o disabled é justamente o que diz desabilitar, mesmo ainda aparecendo no form, não se pode mecher nele. -->
       </div>
       <div class="mb-3"  >
-        <label class="form-label">CPF</label>
+        <label class="form-label">CPF*</label>
         <input
           class="form-control"
           type="text"
@@ -77,7 +77,7 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Endereco</label>
+        <label class="form-label">Endereco*</label>
         <input
           class="form-control"
           type="text"
@@ -87,7 +87,7 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Bairro</label>
+        <label class="form-label">Bairro*</label>
         <input
           class="form-control"
           type="text"
@@ -112,7 +112,7 @@
           class="form-control"
           type="text"
           v-model="email"
-          placeholder="EMAIL"
+          placeholder="nome@exemplo.com"
         />
       </div>
 

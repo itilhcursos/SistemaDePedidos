@@ -170,6 +170,7 @@ import itemPedidoService from '@/services/itemPedidoService';
 import produtoService from '@/services/produtoService';
 import formaPagamentoService from '@/services/formaPagamentoService';
 import clienteService from '@/services/clienteService';
+import pedidoService from '@/services/pedidoService';
   export default {
     props: {
       propsPedido: Object,
@@ -235,35 +236,37 @@ import clienteService from '@/services/clienteService';
       getDados(){
         return{
             id: this.id,
-            clienteNomeRazaoSocial: this.clienteNomeRazaoSocial,
+            formaPagamentoId: this.selectedFormaPagamento.id,
+            formaPagamentoDescricao: this.formaPagamentoDescricao,
+            numero: this.numero,
+            dataCompra: this.dataCompra,
+            dataEntrega: this.dataEntrega,
+            dataPagamento: this.dataPagamento,
+            clienteId: this.clienteSelecionado.id,
         }
       },
       async salvarPedido() {
-        if (this.clienteNomeRazaoSocial === "") {
-          this.isInvalido = true;
-          this.mensagem = "O Nome deve ser preenchido!!";
-          return;
-        } 
+        // if (this.clienteNomeRazaoSocial === "") {
+        //   this.isInvalido = true;
+        //   this.mensagem = "O Nome deve ser preenchido!!";
+        //   return;
+        // } 
         this.isInvalido = false;
 
         try{
           if (this.id === "") {
             //incluir pelo POST da API
-            // const response = await pedidoService.criar(
-            // this.getDados());
-            // this.listaPedidos = response.data;
+            const response = await pedidoService.criar(this.getDados());
+            this.listaPedidos = response.data;
           } else {
             // alterar pelo PUT da API
-            // const response = await pedidoService.atualizar(
-            //   this.id,
-            //   this.getDados()
-            // );
-            // this.listaPedidos = response.data;
+            const response = await pedidoService.atualizar(
+              this.id,
+              this.getDados()
+            );
+            this.listaPedidos = response.data;
           }
-          this.$emit("salvar_pedido", {
-            id: this.id,
-            clienteNomeRazaoSocial: this.clienteNomeRazaoSocial,
-          });
+          this.$emit("salvar_pedido", this.getDados());
 
           this.id = "";
           this.clienteNomeRazaoSocial = "";

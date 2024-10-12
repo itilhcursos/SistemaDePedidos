@@ -33,15 +33,11 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Ferramentas</template>
 
-    Plataforma de e-commerce (ex: Shopify, Magento, WooCommerce)
+    O sistema foi criado utilizando Java e Spring Boot para a parte backend, assim como outras ferramentas. 
     <br>
-    Gateway de pagamento (ex: PayPal, PagSeguro)
-    <br>
-    Sistema de gestão de estoque
-    CRM (Customer Relationship Management)
-    <br>
-    Ferramentas de marketing digital (ex: Google Analytics, Facebook Ads)
-    e muitos outros.
+    enquanto o frontend foi desenvolvido com HTML, CSS, Bootstrap,
+    <br> 
+    JavaScript e Vue.js, proporcionando uma interface moderna e responsiva.
   </SobreItem>
 
   <SobreItem>

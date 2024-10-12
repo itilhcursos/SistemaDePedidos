@@ -1,5 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
+import java.math.BigInteger;
+
 import static org.hamcrest.Matchers.containsString;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,9 +13,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 
 @SpringBootTest
@@ -41,6 +45,10 @@ public class EstadoControllerTest {
     void testPathInexistente() throws Exception{
         mockMvc.perform(get("/estado")).andExpect(status().isMethodNotAllowed());
     }
+    void setUpEstado(){
+        Estado estado = new Estado(BigInteger.ONE, "Estado teste");
+        estadoRepository.save(estado);
+    }
 
     @Test
     @WithMockUser(username="admin", roles={"USER","ADMIN"})
@@ -53,6 +61,22 @@ public class EstadoControllerTest {
                 .content("{" + //
                             "  \"id\": null," + 
                             "  \"nome\": \"Estado de teste\"" + 
+                        "}")
+                        ).andExpect(status().isOk());
+
+    }
+
+    @Test
+    @WithMockUser(username="admin", roles={"USER","ADMIN"})
+    @DisplayName("teste do endPoint para criar estado")
+    void testAlterarEstado() throws Exception{
+       setUpEstado();
+        mockMvc.perform(
+                put("/estado/1")
+                .contentType("application/json")
+                .content("{" + //
+                            "  \"id\": 1," + 
+                            "  \"nome\": \"Estado \"" + 
                         "}")
                         ).andExpect(status().isOk());
 
