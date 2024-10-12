@@ -1,8 +1,6 @@
 <template>
     <div class="container">
         <h4 class="p-1 mb-1 bg-success text-white"> {{ getAcao }} Cliente</h4>
-        <!-- <hr />
-        <div>Campos marcados com * são obrigatórios.</div> <div>Campos marcados com ** significa que somente um deles é obrigatório.</div> <hr /> -->
         <form>
             <div class="row" style="padding: 10px">
                 <div class="col" >
@@ -16,19 +14,21 @@
                 
                 <div class="col">
                     <label class="form-label">CNPJ</label>
-                    <input class="form-control"
-                        type="text"
-                        v-model="cnpj"
-                        placeholder="CNPJ..."
-                        :disabled= "setCnpjState"/>  
+                        <input class="form-control"
+                            type="text"
+                            v-model="cnpj"
+                            :placeholder="cnpjDisabler ? 'CADASTRANDO COM CPF!!' : 'CNPJ...'"
+                            :disabled= "cnpjDisabler"
+                        />
                 </div>
                 <div class="col">
                     <label class="form-label">CPF</label>
-                    <input class="form-control"
-                        type="text"
-                        v-model="cpf"
-                        placeholder="CPF..."
-                        :disabled= "setCpfState"/>              
+                        <input class="form-control"
+                            type="text"
+                            v-model="cpf"
+                            :placeholder="cpfDisabler ? 'CADASTRANDO COM CNPJ!!' : 'CPF...'"
+                            :disabled= "cpfDisabler"
+                        />
                 </div>
             </div>
 
@@ -82,7 +82,7 @@
             
             <div class="row" style="padding: 10px">
                 <div class="col">
-                    <label class="form-label">Municipio* </label>
+                    <label class="form-label">Municipio (Obrigatório)</label>
                     <v-select class="meu-select" v-model="municipioSelecionado" :filterable="false" :options="optionsMunicipio"
                         @search="onSearchMunicipio">
                         <template v-slot:no-options>
@@ -277,10 +277,10 @@ export default {
         getAcao() {
             return this.id === "" ? "Incluir" : "Alterar";
         },
-        setCnpjState(){
+        cnpjDisabler(){
             return this.cpf ? true : false;
         },
-        setCpfState(){
+        cpfDisabler(){
             return this.cnpj ? true : false;
         },
     }
