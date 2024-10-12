@@ -16,10 +16,6 @@
         <input class="form-control" type="text" v-model="cnpj" placeholder="CNPJ" required />
       </div>
       <div class="mb-3">
-        <label class="form-label">CPF</label>
-        <input class="form-control" type="text" v-model="cpf" placeholder="CPF" required />
-      </div>
-      <div class="mb-3">
         <label class="form-label">Telefone</label>
         <input class="form-control" type="text" v-model="telefone" placeholder="Telefone" />
       </div>

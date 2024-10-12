@@ -25,7 +25,7 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome/Razão Social</th>
+          <th scope="col">Razão Social</th>
           <th scope="col">Telefone</th>
           <th scope="col">Endereço</th>
           <th scope="col">CNPJ</th>
@@ -33,7 +33,7 @@
            <th scope="col">CEP</th>
            <th scope="col">Email</th>
            <th scope="col">Ativo</th>
-           <th scope="col">CPF</th>
+           
            
 
 
@@ -69,10 +69,7 @@
           <td>
             {{ cliente.ativo }}
           </td>
-          <td>
-            {{ cliente.cpf }}
-          </td>
-       
+                 
           <td class="d-flex justify-content-end">
             <button
               class="btn btn-btn btn-primary m-2"
@@ -125,7 +122,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nomeRazaoSocial">Nome/Razão Social</option>
+            <option value="nomeRazaoSocial">Razão Social</option>
           </select>
         </div>
         <div class="col-auto">
