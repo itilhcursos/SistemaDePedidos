@@ -13,7 +13,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/municipios">Municípios</RouterLink>
       <RouterLink to="/produtos">Produtos</RouterLink>
       <RouterLink to="/formas-pagamento">Formas de Pagamento</RouterLink>
-      <RouterLink to="/Clientes">Clientes</RouterLink>
+      <RouterLink to="/clientes">Clientes</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
       <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
       <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}

@@ -63,7 +63,8 @@ h'<template>
       };
     },
     methods: {
-      async salvarMunicipio() {
+      async salvarMunicipio
+      () {
         if (this.nome === "") {
           this.isInvalido = true;
           this.mensagem = "Nome deve ser preenchido!!";
