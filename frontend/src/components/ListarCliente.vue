@@ -25,9 +25,9 @@
 
             <div class="row" v-if="!formVisible">
                 <div class="col col-lg-4" v-for="cliente in listaClientes" :key="cliente.id" scope="row">
-                    <div class="card text-white bg-dark mb-4" style="width: 22rem;">
+                    <div class="card border-secondary text-white bg-dark mb-4" style="width: 22rem;">
                         <div class="card-head">
-                            <h4 class="card-title">ID: {{ cliente.id }}</h4>
+                            <h4 class="card-title p-3">ID: {{ cliente.id }}</h4>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title mb-5">{{ cliente.nomeRazaoSocial }}</h5>
@@ -159,8 +159,7 @@ export default {
                 }
             }     
             this.listarClientes();
-        }
-        
+        }    
     },
     mounted(){
         this.listarClientes();
