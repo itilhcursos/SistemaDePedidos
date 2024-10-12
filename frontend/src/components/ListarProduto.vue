@@ -175,7 +175,7 @@
         this.produtoEscolhido = produto;
         this.formVisible = true;
       },
-      async excluirCliente(id) {
+      async excluirProduto(id) {
       try {
         const response = await produtoService.apagar(id);
         console.log(response);
@@ -188,7 +188,7 @@
           alert(error.message);
         }
       }
-      this.buscarClientes();
+      this.buscarProdutos();
     },
       irPara(pagina) {
         this.pageNumber = pagina;

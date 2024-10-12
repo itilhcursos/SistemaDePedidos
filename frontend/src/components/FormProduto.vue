@@ -85,89 +85,93 @@
 </template>
 
 <script>
-import axios from "axios";
+import produtoService from '@/services/produtoService';
 export default {
-
-
-    props: {
-        propsProduto: Object,
+  props: {
+    propsProduto: Object,
+  },
+  data() {
+    return {
+        id: "",
+        descricao: "",
+        urlImagem: "",
+        quantidadeEstoque: "",
+        precoUnidadeAtual: "", 
+        ativo: "",
+    };
+  },
+  methods: {
+    getDados() {
+      return {
+        id: this.id,
+        descricao: this.descricao,
+        urlImagem: this.urlImagem,
+        quantidadeEstoque: this.quantidadeEstoque,
+        precoUnidadeAtual: this.precoUnidadeAtual,
+        ativo: this.ativo
+      };
     },
+    async salvarProduto() {
+      if (this.nome === "") {
+        this.isInvalido = true;
+        this.mensagem = "Descrição deve ser preenchida!!";
+        return;
+      }
+      this.isInvalido = false;
 
-
-    data() {
-        return {
-            id: "",
-            descricao: "",
-            urlImagem: "",
-            isInvalido: false,
-            mensagem: "",
-        };
+      try {
+        if (this.id === "") {
+          const response = await produtoService.criar(this.getDados());
+          this.listaProdutos = response;
+        } else {
+          const response = await produtoService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaProdutos = response;
+        }
+        this.$emit("salvar_produto", this.getDados());
+        this.limparFormulario();
+      } catch(error){
+      this.isInvalido = true;
+      if(error.response.status === 403){        
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      }else if(error.response.status === 400 &&
+               error.response.data.exception === 'ProdutoDuplicadoException'){
+        this.mensagem = error.response.data.mensagem;     
+      }else{
+        this.mensagem = error.message;
+      }
+    }
     },
-
-
-    methods: {
-        async salvarProduto() {
-            if (this.descricao === "") {
-                this.isInvalido = true;
-                this.mensagem = "Descrição do produto não pode ser vazia."
-                return;
-            }
-            this.isInvalido = false;
-            let config = {
-                headers: {
-                'Authorization': 'Bearer ' +localStorage.getItem('token')
-                }
-            }
-            try{
-                if (this.id === "") {
-                    const response = await axios.post("http://localhost:8080/produto", {
-                        id: this.id, 
-                        urlImagem: this.urlImagem,
-                        descricao: this.descricao, 
-                        quantidadeEstoque: this.quantidadeEstoque, 
-                        precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo
-                    }, config);
-                    this.listaProdutos = response.data;
-                } else {
-                    const response = await axios.put(`http://localhost:8080/produto/${this.id}`, 
-                    {
-                        id: this.id,
-                        urlImagem: this.urlImagem,
-                        descricao: this.descricao, 
-                        quantidadeEstoque: this.quantidadeEstoque, 
-                        precoUnidadeAtual: this.precoUnidadeAtual, 
-                        ativo: this.ativo
-                    }, config);
-                    this.listaEstados = response.data;
-                }
-
-                this.$emit("salvar_produto", {
-                    id: this.id,
-                    urlImagem: this.urlImagem,
-                    descricao: this.descricao, 
-                    quantidadeEstoque: this.quantidadeEstoque, 
-                    precoUnidadeAtual: this.precoUnidadeAtual, 
-                    ativo: this.ativo
-                });
-                this.id = "";
-                this.descricao = "";
-                this.urlImagem = "";
-                this.quantidadeEstoque = "";
-                this.precoUnidadeAtual = ""; 
-                this.ativo = "";
-            }catch(error){
-                this.isInvalido = true;
-                if(error.response.status === 403){        
-                    this.mensagem = "Usuário não identificado! Faça o login!!!";
-                }else if(error.response.status === 400 ){
-                    this.mensagem = error.response.data.mensagem;     
-                }else{
-                    this.mensagem = error.message;
-                }
-            }
-        },
-
+    limparFormulario() {
+        this.id = "";
+        this.descricao = "";
+        this.urlImagem = "";
+        this.quantidadeEstoque = "";
+        this.precoUnidadeAtual = ""; 
+        this.ativo = "";
+    },
+    async excluirProduto(id) {
+      let config = {
+        headers: {
+          'Authorization': 'Bearer ' +localStorage.getItem('token')
+        }
+      }
+      try{
+          const response = await axios.delete(`http://localhost:8080/produto/${id}`, config);
+          console.log(response.data);
+      }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
+        }
+      }     
+      this.buscar();
+    },
         cancelar(){
             this.id = "";
             this.descricao = "";
@@ -178,8 +182,6 @@ export default {
             this.$emit("cancelar", true);
         },
     },
-
-
     mounted(){
         if (this.propsProduto) {
             this.id = this.propsProduto.id;
@@ -190,8 +192,6 @@ export default {
             this.ativo = this.propsProduto.ativo;
         }
     },
-
-
     computed: {
         getAcao(){
             return this.id === "" ? "Incluir" : "Alterar";

@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class MunicipioDuplicadoException extends RuntimeException {
 
     public MunicipioDuplicadoException(String nome){
-        super("Município = "+ nome + " duplicado.");
+        super("Município "+ nome + " duplicado.");
     }
 }

@@ -82,42 +82,69 @@ export default {
     return {
       id: "",
       nome: "",
-      entrega: "",
-      estadoSelecionado: null,
-      estados: [],
       isInvalido: false,
-      mensagem: '',
+      mensagem: "",
+      listaMunicipios: "",
+      estados: "",
     };
   },
   methods: {
+    async onSearchEstados(search, loading) {
+      if (search.length) {
+        loading(true);
+        await estadoService.buscar(search).then((response) => {
+          console.log(response);
+          this.estados = response.content;
+          loading(false);
+        });
+      }
+    },
     getDados() {
       return {
         id: this.id,
         nome: this.nome,
         entrega: this.entrega,
-        estadoSelecionado: this.estadoSelecionado,
+        estadoId: this.estadoSelecionado.id,
       };
     },
     async salvarMunicipio() {
-      if (this.nome === "") {
+      if (!this.nome) {
         this.isInvalido = true;
-        this.mensagem = "Nome do município não pode ser vazio.";
+        this.mensagem = "Nome deve ser preenchido!!";
         return;
       }
       this.isInvalido = false;
 
       try {
-        let response;
         if (this.id === "") {
-          response = await municipioService.criar(this.getDados());
+          const response = await municipioService.criar(this.getDados());
+          this.listaMunicipios = response;
         } else {
-          response = await municipioService.atualizar(this.id, this.getDados());
+          const response = await municipioService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaMunicipios = response;
         }
-        this.$emit("salvar_municipio", response);
-      } catch (error) {
-        this.isInvalido = true;
-        this.mensagem = this.getErrorMessage(error);
+        this.$emit("salvar_municipio", this.getDados());
+        this.limparFormulario();
+      } catch(error){
+      this.isInvalido = true;
+      if(error.response.status === 403){        
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      }else if(error.response.status === 400 &&
+               error.response.data.exception === 'MunicipioDuplicadoException'){
+        this.mensagem = error.response.data.mensagem;     
+      }else{
+        this.mensagem = error.message;
       }
+    }
+    },
+    limparFormulario() {
+      this.id = "";
+      this.nome = "";
+      this.entrega = "";
+      this.estadoSelecionado = "";
     },
     async onSearchEstados(search, loading) {
       if (search.length) {
