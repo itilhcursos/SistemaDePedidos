@@ -3,9 +3,7 @@
         <div class="row">
             <div class="col-10">
                 <h3>PEDIDOS</h3>
-                Obs.: Só é possivel apagar um pedido após remover todos os seus itens.
             </div>
-            
 
             <div class="col-12 d-flex justify-content-end">
                 <button v-if="!formVisible" @click="flipFormVisible" class="btn btn-success">
@@ -67,11 +65,10 @@
                                 class="btn btn-btn btn-primary m-2"
                                 @click="alterar(pedido)"> <i class="bi bi-clipboard-pulse"></i> Alterar
                                 </button>
-                                <button v-if="pedido.itens.length === 0"
+                                <button
                                 class="btn btn-btn btn-danger m-2"
                                 @click="excluir(pedido.id)"> <i class="bi bi-clipboard2-minus"></i> Excluir
                                 </button>
-                               <!--  <button class="btn btn-btn btn-info m-2" @click="console.log(pedido.itens.length == 0, pedido.itens.length)"><i class="bi bi-code-slash"></i> console.log (debug)</button> -->
                             </th>
                             
                             <table class="table table-dark table-striped">

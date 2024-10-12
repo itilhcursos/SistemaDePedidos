@@ -58,6 +58,7 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
             }            
         }
 
+        // Validar Preço negativo e Estoque Negativo
         if (dto.getPrecoUnidadeAtual() == null || dto.getPrecoUnidadeAtual().floatValue() < 0.0)
             throw new ProdutoPrecoNegativoException(dto.getDescricao());
 
