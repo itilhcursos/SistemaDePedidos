@@ -158,7 +158,7 @@ export default {
   data() {
     return {
       id: '',
-      cliente: '',
+      clienteID: '',
       clienteNomeRazaoSocial: '',
       formaPagamento: '',
       formaPagamentoDescricao: '',
@@ -298,7 +298,7 @@ export default {
   mounted() {
     if (this.propsPedido) {
       this.id = this.propsPedido.id;
-      this.cliente= this.propsPedido.cliente;
+      this.clienteID= this.propsPedido.clienteID;
       this.clienteNomeRazaoSocial= this.propsPedido.clienteNomeRazaoSocial;
       this.formaPagamento= this.propsPedido.formaPagamento;
       this.formaPagamentoDescricao= this.propsPedido.formaPagamentoDescricao;
@@ -312,7 +312,7 @@ export default {
         id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao 
       };
       this.selectedCliente = { 
-        id:this.propsPedido.cliente, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
+        id:this.propsPedido.clienteID, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
       };
 
     }
