@@ -158,9 +158,9 @@ export default {
   data() {
     return {
       id: '',
-      clienteID: '',
+      clienteId: '',
       clienteNomeRazaoSocial: '',
-      formaPagamento: '',
+      formaPagamentoId: '',
       formaPagamentoDescricao: '',
       numero: '',
       dataCompra: '',
@@ -298,9 +298,9 @@ export default {
   mounted() {
     if (this.propsPedido) {
       this.id = this.propsPedido.id;
-      this.clienteID= this.propsPedido.clienteID;
+      this.clienteId= this.propsPedido.clienteId;
       this.clienteNomeRazaoSocial= this.propsPedido.clienteNomeRazaoSocial;
-      this.formaPagamento= this.propsPedido.formaPagamento;
+      this.formaPagamentoId= this.propsPedido.formaPagamentoId;
       this.formaPagamentoDescricao= this.propsPedido.formaPagamentoDescricao;
       this.numero= this.propsPedido.numero;
       this.dataCompra= this.propsPedido.dataCompra;

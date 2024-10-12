@@ -21,7 +21,7 @@ public class PedidoDTO {
     private BigInteger id;
     private BigInteger numero;
     private BigInteger clienteId;
-    private String clienteNome;
+    private String clienteNomeRazaoSocial;
     private BigInteger formaPagamentoId;
     private String formaPagamentoDescricao;
     private LocalDate dataCompra;

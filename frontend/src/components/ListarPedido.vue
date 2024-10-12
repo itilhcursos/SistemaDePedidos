@@ -40,10 +40,10 @@
                 {{ pedido.id }}
             </th>
             <td>
-                {{ pedido.clienteID }}
+                {{ pedido.clienteNomeRazaoSocial }}
             </td>
             <td>
-                {{ pedido.formaPagamento }}
+                {{ pedido.formaPagamentoDescricao }}
             </td> 
             <td>
                 {{ pedido.numero }}
@@ -110,6 +110,8 @@
           <div class="col-auto">
             <select v-model="property" class="form-select">
                 <option value="id">ID</option>
+                <option value="clienteNomeRazaoSocial">Nome Razão Social</option>
+              <option value="formaPagamentoDescricao">FormaPagamento Descricao</option>
             </select>
           </div>
           <div class="col-auto">
@@ -150,7 +152,7 @@ export default {
     };
   },
   methods: {
-    async buscar() {
+    async buscarPedidos() {
       this.pedidoEscolhido = null;
       this.formVisible = false;
       const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
@@ -192,7 +194,7 @@ export default {
     }
   },
   mounted() {
-    this.buscar();
+    this.buscarPedidos();
   },
 };
 
