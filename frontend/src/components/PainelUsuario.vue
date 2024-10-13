@@ -21,7 +21,7 @@
           <i class="bi bi-box-arrow-in-right"></i> Entrar
         </button>
       </div>
-
+      
       <div class="row" style="justify-content: flex-start; margin-top: 10px">
         <button class="btn btn-danger" v-if="!showSignUpForm && !showLoginForm && isAuthenticated"
           @click="performLogout" style="width: 300px">

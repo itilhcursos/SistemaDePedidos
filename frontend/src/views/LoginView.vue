@@ -1,10 +1,11 @@
 <script setup>
-import FormLogin from '../components/FormLogin.vue'
+// import FormLogin from '../components/FormLogin.vue'
+import painel from '../components/PainelUsuario.vue';
 </script>
 
 <template>
  <main>
-   <FormLogin/>
+   <painel/>
  </main>
 </template>
 
