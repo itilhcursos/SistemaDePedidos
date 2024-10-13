@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SingUpDTO {
+public class SignUpDTO {
     public String login;
     public String token;
 }

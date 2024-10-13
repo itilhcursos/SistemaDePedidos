@@ -53,7 +53,13 @@ const router = createRouter({
       path: '/clientes',
       name: 'clientes',
       component:()=>import('../views/ClienteView.vue')
-    }
+    },
+    {
+      path: '/usuarios',
+      name: 'usuarios',
+      component:()=>import('../views/PainelUsuarioView.vue')
+    },
+
   ]
 })
 

@@ -116,8 +116,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
-            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
+            <option value="cliente.nomeRazaoSocial">Nome ou Razão Social</option>
+            <option value="formaPagamento.descricao">Forma de Pagamento</option>
           </select>
         </div>
         <div class="col-auto">
