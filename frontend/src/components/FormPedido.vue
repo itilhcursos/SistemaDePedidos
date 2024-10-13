@@ -133,7 +133,7 @@
       </div>
      
       <div class="mb-3 d-flex justify-content-end">
-        <button v-if="id === ''" class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarPedido">
+        <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarPedido">
           <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
@@ -267,15 +267,15 @@ export default {
       this.isInvalido = false;
       
       try {
-        const dadosPedido = this.getDados();
-        if (!this.id) {
-          const response = await pedidoService.criar(dadosPedido);
+        // const dadosPedido = this.getDados();
+        if (this.id === "") {
+          const response = await pedidoService.criar(this.getDados());
           this.listaPedidos = response;
         } else {
-          const response = await pedidoService.atualizar(this.id, dadosPedido);
+          const response = await pedidoService.atualizar(this.id, this.getDados());
           this.listaPedidos = response;
         }
-        this.$emit("salvar_pedido", dadosPedido); // Emite o evento
+        this.$emit("salvar_pedido", this.getDados()); // Emite o evento
 
       } catch (error) {
         this.isInvalido = true;
