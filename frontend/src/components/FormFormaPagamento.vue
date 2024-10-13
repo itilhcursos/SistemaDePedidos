@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} forma de pagamento</h4>
+    <h4 class="p-1 mb-1 bg-success text-white">
+      {{ getAcao }} forma de pagamento
+    </h4>
     <hr />
     <form>
       <div class="mb-3">
@@ -24,12 +26,16 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Status</label>
-          <select v-model="ativo" class="form-select">
-            <option :value="true">Ativo</option>
-            <option :value="false">Inativo</option>
-          </select>
+        <select v-model="ativo" class="form-select">
+          <option :value="true">Ativo</option>
+          <option :value="false">Inativo</option>
+        </select>
       </div>
-      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
+      <div
+        v-if="isInvalido"
+        class="alert alert-danger d-flex align-items-center"
+        role="alert"
+      >
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
       </div>
@@ -39,7 +45,7 @@
           type="submit"
           v-on:click.prevent="salvarFormaPagamento"
         >
-        <i class="bi bi-clipboard2-check"></i>
+          <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
         <button
@@ -47,7 +53,7 @@
           type="submit"
           v-on:click.prevent="cancelar"
         >
-        <i class="bi bi-clipboard2-x"></i>
+          <i class="bi bi-clipboard2-x"></i>
           Cancelar
         </button>
       </div>
@@ -56,7 +62,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import formaPagamentoService from "@/services/formaPagamentoService";
 export default {
   props: {
@@ -66,60 +71,62 @@ export default {
     return {
       id: "",
       descricao: "",
-      ativo: null,
+      ativo: "",
       isInvalido: false,
-      mensagem : ''
+      mensagem: "",
     };
   },
   methods: {
-    async salvarFormaPagamento() {
-      if (this.descricao === "") {
-        this.isInvalido = true;
-        this.mensagem = "Descrição forma de pagamento deve ser preenchida!";
-        return;
-      }
-      this.isInvalido = false;
-      
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }
-
-      try{
-        if (this.id === "") {
-          const response = await formaPagamentoService.criar(this.getDados(), config);
-          this.listaFormasPagamento = response;
-        } else {
-          const response = await formaPagamentoService.atualizar(this.id, this.getDados());
-          this.listaFormasPagamento = response;
-        }
-        this.$emit("salvar_formaPagamento", {
+    getDados() {
+      return {
         id: this.id,
         descricao: this.descricao,
         ativo: this.ativo,
-      });
-
-      this.id = "";
-      this.descricao = "";
-      this.ativo = false;
-    }catch(error){
-      this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'FormaPagamentoDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
-        this.mensagem = error.message;
+      };
+    },
+    async salvarFormaPagamento() {
+      if (this.descricao === "") {
+        this.isInvalido = true;
+        this.mensagem = "Informe a Forma de Pagamento!";
+        return;
       }
-    }
-   },
+      this.isInvalido = false;
+
+      try {
+        if (this.id === "") {
+          const response = await formaPagamentoService.criar(this.getDados());
+          this.listaFormasPagamento = response;
+        } else {
+          const response = await formaPagamentoService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaFormasPagamento = response;
+        }
+        this.limparCampos();
+        this.$emit("salvar_formaPagamento", true);
+      } catch (error) {
+        this.isInvalido = true;
+        if (error.response.status === 403) {
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        } else if (
+          error.response.status === 400 &&
+          error.response.data.exception === "FormaPagamentoDuplicadoException"
+        ) {
+          this.mensagem = error.response.data.mensagem;
+        } else {
+          this.mensagem = error.message;
+        }
+      }
+    },
     cancelar() {
+      this.limparCampos();
+      this.$emit("cancelar", true);
+    },
+    limparCampos() {
       this.id = "";
       this.descricao = "";
-      this.ativo = false;
-      this.$emit("cancelar", true);
+      this.ativo = "";
     },
   },
   mounted() {

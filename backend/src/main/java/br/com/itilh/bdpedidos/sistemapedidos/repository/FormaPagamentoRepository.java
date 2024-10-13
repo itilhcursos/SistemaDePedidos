@@ -2,10 +2,10 @@ package br.com.itilh.bdpedidos.sistemapedidos.repository;
 
 import java.math.BigInteger;
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 
 @Repository
@@ -14,6 +14,8 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
     List<FormaPagamento> findByDescricao(String descricao);
 
     List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao);
+
+    Page<FormaPagamento> findByDescricaoContainingIgnoreCase(Pageable pageable, String descricao);
 
     boolean existsByDescricao (String descricao);
 

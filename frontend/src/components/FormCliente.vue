@@ -12,12 +12,13 @@
                     placeholder="id"/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Nome/Razão Social</label>
+                <label class="form-label"> Nome/Razão Social</label>
                 <input class="form-control"
                     type="text"
                     v-model="nomeRazaoSocial"
                     placeholder="Nome/Razão Social"/>
             </div>
+       
             <div class="mb-3">
                 <label class="form-label">CNPJ</label>
                 <input class="form-control"
@@ -83,13 +84,15 @@
                     <option value="false">Inativo</option>
                 </select>
             </div>
+
             <div class="mb-3">
-                <label class="form-label">Município</label>
-                <select v-model="municipioSelecionado">
-                    <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id"> {{ municipio.nome }} </option>
+                <label class="form-label">Município </label><br>
+                <select class="meu-select" v-model="municipioSelecionado">
+                    <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id"> 
+                        {{ municipio.nome }} 
+                    </option>
                 </select>
             </div>
-
 
             <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>
@@ -105,7 +108,8 @@
 
 <script>
 import clienteService from '@/services/clienteService';
-// import municipioService from '@/services/municipioService';
+import municipioService from '@/services/municipioService';
+
 export default {
     props:{
         propsCliente: Object,
@@ -114,7 +118,6 @@ export default {
         return {
             isInvalido: false,
             mensagem: '',
-
             id: "",
             nomeRazaoSocial: "",
             cnpj: "",
@@ -135,16 +138,16 @@ export default {
         if (this.propsCliente) {
             this.id = this.propsCliente.id;
             this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
-            this.cnpj = this.propsCliente.cnpj;
             this.cpf = this.propsCliente.nome;
+            this.cnpj = this.propsCliente.cnpj;
             this.telefone = this.propsCliente.id;
             this.endereco = this.propsCliente.nome;
             this.bairro = this.propsCliente.id;
-            this.cep= this.propsCliente.cep;
-            this.email= this.propsCliente.email;
-            this.informacao= this.propsCliente.informacao;
-            this.ativo=this.propsCliente.ativo;
-            this.municipioSelecionado= this.propsCliente.municipioId;
+            this.cep = this.propsCliente.cep;
+            this.email = this.propsCliente.email;
+            this.informacao = this.propsCliente.informacao;
+            this.ativo = this.propsCliente.ativo;
+            this.municipioSelecionado = this.propsCliente.municipioId;
         }
         this.buscarMunicipios();
     },
@@ -166,8 +169,8 @@ export default {
              };
         },
         async buscarMunicipios(){
-            // const response = await municipioService.listar(1, 1000, 'ASC', 'nome');
-            // this.municipios = response.content;
+             const response = await municipioService.listar(1, 1000, 'ASC', 'nome');
+             this.municipios = response.content;
         },
         cancelar(){
             this.id = "";
@@ -184,21 +187,17 @@ export default {
             this.$emit("cancelar", true)
         },
         async salvar(){
-            if (this.nome === "" || this.cep === "" || this.bairro === "" || this.endereco === "" || this.municipioId === null){
+            if ((this.nome === "") || (this.municipioSelecionado === "") || (this.email === "") || (this.telefone === "")){
                 this.isInvalido = true;
                 this.mensagem = "Dados obrigatórios devem ser preenchidos!";
                 return;
             }
-            if (this.cpf === "" && this.cnpj === ""){
+            if (((this.cpf === "") || (this.cpf === null)) && ((this.cnpj === "") || (this.cnpj === null)) ){
                 this.isInvalido = true;
-                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
+                this.mensagem = "É obrigatório informar pelo menos um dos campos: CPF ou CNPJ!";
                 return;
             }
-            if (this.email === "" && this.telefone === ""){
-                this.isInvalido = true;
-                this.mensagem = "Dados obrigatórios devem ser preenchidos!";
-                return;
-            }
+
             this.isInvalido = false;
             try{
                 if (this.id === ""){
@@ -209,7 +208,7 @@ export default {
                     this.listaClientes = response;
                 }
                 this.$emit("salvar", {
-                    //Apagável?
+
                 id: this.id,
                 nomeRazaoSocial: this.nomeRazaoSocial,
                 cnpj: this.cnpj,
@@ -224,7 +223,6 @@ export default {
                 municipioId: this.municipioSelecionado
                 });
 
-                // Apagável? 
                 this.id = "";
                 this.nomeRazaoSocial = "";
                 this.cnpj= "";

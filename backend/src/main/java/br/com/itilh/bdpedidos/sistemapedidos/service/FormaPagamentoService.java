@@ -55,5 +55,8 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
         }
     }
 
+    public Page<FormaPagamentoDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
+    }    
 
 }

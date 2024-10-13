@@ -1,7 +1,7 @@
 import genericService from './genericService';
 
-const path ='/forma-pagamento';
-const pathGet = '/formas-pagamento';
+const path ='/municipio';
+const pathGet = '/municipios';
 
 const criar = async(objeto) => {
     const {data} = await genericService.criar(path, objeto);
@@ -25,7 +25,7 @@ const listar = async(pageNumber = 1, pageSize = 10, direction = 'ASC', property 
 
 const buscar = async (txtBusca, pageNumber = 1, pageSize = 1000000, direction='ASC', property='id') =>{
 
-    const {data} = await genericService.buscar(pathGet, pageNumber, pageSize, direction, property, txtBusca);
+    const {data} = await genericService.buscar(pathGet, txtBusca, pageNumber, pageSize, direction, property);
     return data;
 }
 

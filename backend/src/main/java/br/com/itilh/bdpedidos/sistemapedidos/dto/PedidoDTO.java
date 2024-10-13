@@ -6,26 +6,24 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@NoArgsConstructor
 public class PedidoDTO {
-    
+
     private BigInteger id;
     private BigInteger numero;
+    private LocalDate dataCompra; 
+    private LocalDate dataEntrega; 
+    private LocalDate dataPagamento; 
+    
     private BigInteger clienteId;
-    private String clienteNome;
-    private BigInteger formaPagamentoId;
-    private String formaPagamentoDescricao;
-    private LocalDate dataCompra;
-    private LocalDate dataEntrega;  
-    private LocalDate dataPagamento;
-    private List<ItemPedidoDTO> itens;
+    private String clienteNomeRazaoSocial;
 
+    private BigInteger formaPagamentoId;
+    private String formaPagamentoDescricao; 
+
+    private List<ItemPedidoDTO> itens;
 }

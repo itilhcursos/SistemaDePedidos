@@ -12,6 +12,7 @@ public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
 
     Page<Cliente> findByMunicipioId(BigInteger id, Pageable pageable);
     Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
+    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);    
 
     boolean existsByCnpjAndMunicipioId(String cnpj, BigInteger id);
     boolean existsByCpfAndMunicipioId(String cpf, BigInteger id);
