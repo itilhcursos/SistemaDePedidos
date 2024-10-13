@@ -119,7 +119,7 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="cliente.nomeRazaoSocial">Cliente</option>
+            <option value="nomeRazaoSocial">Cliente</option>
           </select>
         </div>
         <div class="col-auto">
