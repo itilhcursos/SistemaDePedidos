@@ -16,6 +16,7 @@
                     <label class="form-label">CNPJ</label>
                         <input class="form-control"
                             type="text"
+                            v-mask="['##.###.###/####-##']"
                             v-model="cnpj"
                             :placeholder="cnpjDisabler ? 'CADASTRANDO COM CPF!!' : 'CNPJ...'"
                             :disabled= "cnpjDisabler"
@@ -25,6 +26,7 @@
                     <label class="form-label">CPF</label>
                         <input class="form-control"
                             type="text"
+                            v-mask="'###.###.###-##'"
                             v-model="cpf"
                             :placeholder="cpfDisabler ? 'CADASTRANDO COM CNPJ!!' : 'CPF...'"
                             :disabled= "cpfDisabler"
@@ -43,16 +45,19 @@
                 <div class="col">
                     <label class="form-label">Telefone</label>
                     <input class="form-control"
-                        type="text"
+                        type="tel"
+                        v-mask="['(##) ####-####', '(##) #####-####']"
                         v-model="telefone"
                         placeholder="Número de Telefone..."/>
+                    
                 </div>
                 <div class="col">
                     <label class="form-label">E-mail</label>
                     <input class="form-control"
                         type="text"
                         v-model="email"
-                        placeholder="E-mail..."/>
+                        placeholder="E-mail..."
+                    />
                 </div>
             </div>
             
@@ -75,6 +80,7 @@
                     <label class="form-label">CEP</label>
                     <input class="form-control"
                         type="text"
+                        v-mask="'#####-###'"
                         v-model="cep"
                         placeholder="CEP..."/>
                 </div>        
