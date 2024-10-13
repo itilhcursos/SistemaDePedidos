@@ -15,7 +15,7 @@
         <div class="col">
           <label class="form-label">Forma de pagamento</label>
           <v-select class="meu-select" v-model="selectedFormaPagamento" :filterable="false"
-            :options="optionsFormaPagamento" @search="onSearchFormaPagamento">
+            :options="optionsFormaPagamento" >
             <template v-slot:no-options>
               Não encontrado.
             </template>
@@ -187,18 +187,14 @@ export default {
       loading(true);
       await clienteService.buscar(search).then((response) => {
         //console.log(response);
-        this.optionsCliente = response.content;
+        this.optionsCliente = response;
         loading(false);
       });
     },
-    async onSearchFormaPagamento(search, loading) {
-      if (search == "")
-        return;
-      loading(true);
-      await formaPagamentoService.buscar(search).then((response) => {
+    async onSearchFormaPagamento() {
+      await formaPagamentoService.buscar().then((response) => {
         //console.log(response);
         this.optionsFormaPagamento = response.content;
-        loading(false);
       });
     },
     async onSearchProduto(search, loading) {
@@ -322,6 +318,8 @@ export default {
       this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao };
       this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
 
+    }else{
+      this.selectedFormaPagamento = this.onSearchFormaPagamento();
     }
   },
   computed: {

@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,13 +30,16 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
         .orElseThrow(()-> new IdInexistenteException("Cliente", id)));
     }
 
+    public List<Cliente> buscarClientePorNome(String nome){
+        return repositorio.findByNomeRazaoSocialContainingIgnoreCase(nome);
+    }
+
     public ClienteDTO criarCliente(ClienteDTO origem) throws Exception {    
         validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public ClienteDTO alterarCliente(BigInteger id, ClienteDTO origem) throws Exception {
-        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 

@@ -53,7 +53,7 @@
             <td>
               {{ formatarLogico(produto.ativo) }}
             </td>
-            <td class="d-flex justify-content-end">
+            <td>
               <button
                 class="btn btn-btn btn-primary m-2"
                 @click="alterarProduto(produto)"

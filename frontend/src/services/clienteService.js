@@ -31,9 +31,15 @@ const listar = async (pageNumber = 1, pageSize = 10, direction = 'ASC', property
 
 }
 
+const buscar = async (txtBusca) =>{
+    const {data} = await genericService.buscarPorNome(pathGet, txtBusca);
+    return data;
+}
+
 export default{
     criar,
     atualizar,
     apagar,
-    listar
+    listar,
+    buscar
 }

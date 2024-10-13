@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -35,6 +37,13 @@ public class ClienteController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return clienteService.listarCliente(pageable);
+    }
+
+    @GetMapping("/clientes/{txtBusca}")
+    public List<Cliente> getClienteFiltro(
+        @RequestParam(required = false) String nome
+    ) {
+        return clienteService.buscarClientePorNome(nome);
     }
 
      @GetMapping("/cliente/{id}")

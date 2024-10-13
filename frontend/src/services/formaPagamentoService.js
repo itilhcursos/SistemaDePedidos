@@ -31,9 +31,15 @@ const listar = async (pageNumber = 1, pageSize = 10, direction = 'ASC', property
 
 }
 
+const buscar = async() => {
+    const {data} = await genericService.buscarTipoPagamento();
+    return data;
+}
+
 export default{
     criar,
     atualizar,
     apagar,
-    listar
+    listar,
+    buscar
 }

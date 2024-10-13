@@ -39,7 +39,7 @@
             {{ formaPagamento.descricao }}
           </td>
           <td>
-            {{ formaPagamento.ativo }}
+            {{ formaPagamento.ativo ? 'Sim' : 'Não'}}
           </td>
           <td class="d-flex justify-content-end">
             <button

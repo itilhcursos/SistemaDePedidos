@@ -40,9 +40,19 @@ const listar = async (path, pageNumber, pageSize, direction, property) =>{
 }
 
 const buscar = async (path, pageNumber, pageSize, direction, property, txtBusca) =>{
-    
     return await axios.get(url + path + "/"+ txtBusca  +`?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`);
+}
 
+const buscarPorNome = async (path, txtBusca) =>{
+    return await axios.get(url + path + "/Empresa"+`?nome=${txtBusca}`);
+}
+
+const buscarTipoPagamento = async () =>{
+    return await axios.get(url + "/formas-pagamento");
+}
+
+const buscarMunicipios = async (path) =>{
+    return await axios.get(url + path);
 }
 
 export default{
@@ -50,5 +60,8 @@ export default{
     atualizar,
     apagar,
     listar,
-    buscar
+    buscar,
+    buscarPorNome,
+    buscarTipoPagamento,
+    buscarMunicipios
 }

@@ -29,7 +29,6 @@
           <th scope="col">Telefone</th>
           <th scope="col">Endereço</th>
           <th scope="col">CNPJ</th>
-          <th scope="col">Bairro</th>
            <th scope="col">CEP</th>
            <th scope="col">Email</th>
            <th scope="col">Ativo</th>
@@ -58,16 +57,13 @@
             {{ cliente.cnpj }}
           </td>
           <td>
-            {{ cliente.endereco }}
-          </td>
-          <td>
             {{ cliente.cep }}
           </td>
           <td>
             {{ cliente.email }}
           </td>
           <td>
-            {{ cliente.ativo }}
+            {{ cliente.ativo ? 'Sim' : 'Não' }}
           </td>
                  
           <td class="d-flex justify-content-end">

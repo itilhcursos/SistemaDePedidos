@@ -30,10 +30,21 @@ const listar = async (pageNumber = 1, pageSize = 10, direction = 'ASC', property
     return data;
 
 }
+const buscar = async (txtBusca) =>{
+    const {data} = await genericService.buscarMunicipios(pathGet, txtBusca);
+    return data;
+}
+
+const buscarTodos = async () =>{
+    const {data} = await genericService.buscarMunicipios(pathGet);
+    return data;
+}
 
 export default{
     criar,
     atualizar,
     apagar,
-    listar
+    listar,
+    buscar,
+    buscarTodos
 }
