@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public class ClienteCnpjDuplicadoException extends RuntimeException {
 
     public ClienteCnpjDuplicadoException(String cnpj) {
-        super("O número de CNPJ: " + cnpj + " já existe no sistema.");
+        super("O número de CNPJ: " + cnpj + " já existe no sistema!");
     }
 
 }

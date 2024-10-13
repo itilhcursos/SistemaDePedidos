@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class ClienteCpfDuplicadoException extends RuntimeException {
 
     public ClienteCpfDuplicadoException(String cpf) {
-        super("O número de CPF: " + cpf + " já existe no sistema.");
+        super("O número de CPF: " + cpf + " já existe no sistema!");
     }
 }

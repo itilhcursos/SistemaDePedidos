@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class ProdutoPrecoNegativoException extends RuntimeException{
 
     public ProdutoPrecoNegativoException(String produto){
-        super("O produto :" + produto + " não pode ter o preço negativo.");
+        super("O produto: " + produto + " não pode ter o preço negativo!");
     }
 }
