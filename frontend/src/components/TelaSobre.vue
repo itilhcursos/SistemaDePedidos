@@ -16,13 +16,15 @@ import SupportIcon from './icons/IconSupport.vue'
       <template #heading>Orientações</template>
       
     <p>
-      navegação intuitiva e fácil de usar <br>
+      Nós do ITILH proporcionamos a nossos clientes: 
       <br>
-      descrições detalhadas para ajudar os clientes a tomar uma decisão de compra.
+      Uma navegação intuitiva e fácil de usar;
       <br>
-      pagamento seguras e variadas para atender às preferências dos clientes.
+      Descrições detalhadas para ajudar os clientes a tomar decisões de compra;
       <br>
-      e muitas outras. acesse e veja mais <a href="/">Orientações</a>
+      Formas de pagamento seguras e variadas para atender às preferências dos clientes;
+      <br>
+      E muitas outras coisas! Acesse e veja mais! <a href="/">Orientações</a>
 
     </p>
   </SobreItem>
