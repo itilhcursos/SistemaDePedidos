@@ -63,7 +63,9 @@ body {
   min-width: 83rem;
   overflow-x: hidden;
   color: var(--vt-c-black-mute);
-  background-image: linear-gradient(to left, blue, black 90%);
+  background-image: linear-gradient(to left, rgb(28, 60, 146), rgb(12, 9, 9) 90%);
+  /* background-image: linear-gradient(to left, blue, black 90%); */
+  /* background-color: rgb(21, 29, 51); */
   transition:
     color 0.5s,
     background-color 0.5s;

@@ -7,14 +7,19 @@ defineProps({
   msg2: {
     type: String,
     required: true
+  },
+  msg3: {
+    type: String,
+    required: true
   }
 })
 </script>
 
 <template>
   <div>
-    <h1 class="cor">{{ msg }}</h1>
-    <h2 >{{ msg2 }}</h2>
+    <h1 class="cor"><b>{{ msg }}</b></h1>
+    <h2><b>{{ msg2 }}</b>  </h2>
+    <h3 class="itilh"><i><b>{{ msg3 }}</b></i></h3>
     <div><img src="../assets/carrinho.png" alt=""></div>
     
   </div>
@@ -22,7 +27,10 @@ defineProps({
 
 <style scoped>
 .cor {
-  color: rgb(255, 174, 0)
+  color: rgb(190, 48, 98)
+}
+.itilh {
+  color: rgb(173, 190, 245)
 }
 img{
   margin: auto;
@@ -31,7 +39,7 @@ img{
 
 h1 {
   font-weight: 400;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: sans-serif;
   font-size: 5rem;
   position: relative;
   align-content: center;
@@ -42,9 +50,15 @@ h1 {
 h2 {
   position: relative;
   font-size: 70px;
-  font-family: serif;
+  font-family: sans-serif;
   text-align: center;
 }
 
+h3 {
+  position: relative;
+  font-size: 70px;
+  font-family: sans-serif;
+  text-align: center;
+}
 
 </style>
