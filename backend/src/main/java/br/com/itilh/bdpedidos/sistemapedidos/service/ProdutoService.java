@@ -58,12 +58,11 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
             }            
         }
 
-        if (dto.getPrecoUnidadeAtual() == null || dto.getPrecoUnidadeAtual().floatValue() < 0.0)
-            throw new ProdutoPrecoNegativoException(dto.getDescricao());
-
         if (dto.getQuantidadeEstoque() == null || dto.getQuantidadeEstoque().floatValue() < 0.0)
             throw new ProdutoEstoqueNegativoException(dto.getDescricao());
 
+        if (dto.getPrecoUnidadeAtual() == null || dto.getPrecoUnidadeAtual().floatValue() < 0.0)
+            throw new ProdutoPrecoNegativoException(dto.getDescricao());
     }
 
     public String excluirProduto(BigInteger id) throws Exception{
