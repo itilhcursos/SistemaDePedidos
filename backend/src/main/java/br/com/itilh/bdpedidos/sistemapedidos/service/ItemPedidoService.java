@@ -22,6 +22,7 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
     @Autowired
     ProdutoRepository repositorioProduto;
 
+    @SuppressWarnings("unchecked")
     @Transactional
     public ItemPedidoDTO criarItemPedido(ItemPedidoDTO entityDTO) throws Exception { 
 
@@ -40,6 +41,7 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
         
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional
     public String deletePorId(BigInteger id) throws Exception {
 

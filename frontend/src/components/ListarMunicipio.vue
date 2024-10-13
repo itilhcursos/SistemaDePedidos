@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>Municípios</h3>
+        <h3>Listagem de Municípios</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">

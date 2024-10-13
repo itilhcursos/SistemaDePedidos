@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>PRODUTOS</h3>
+        <h3>Listagem de Produtos</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoProduto" class="btn btn-success">
