@@ -16,7 +16,7 @@
                     <label class="form-label">CNPJ</label>
                         <input class="form-control"
                             type="text"
-                            v-mask="['##.###.###/####-##']"
+                            v-mask="'##.###.###/####-##'"
                             v-model="cnpj"
                             :placeholder="cnpjDisabler ? 'CADASTRANDO COM CPF!!' : 'CNPJ...'"
                             :disabled= "cnpjDisabler"
