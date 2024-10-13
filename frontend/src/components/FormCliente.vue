@@ -202,15 +202,10 @@ export default {
             return;
             loading(true);
             await municipioService.buscar(search).then((response) => {
-                //console.log(response);
                 this.optionsMunicipio = response.content;
                 loading(false);
             });
         },
-        /* async buscarMunicipios(){
-            const response = await municipioService.listar(1, 1000, 'ASC', 'nome');
-            this.municipios = response.content;
-        }, */
         cancelar(){
             this.limparCampos();
             this.$emit("cancelar", true);
@@ -230,23 +225,7 @@ export default {
                     const response = await clienteService.atualizar(this.id, this.getDados());
                     this.listaClientes = response;
                 }
-                this.$emit("salvar"/* , true */
-                /* {
-                    //Apagável?
-                id: this.id,
-                nomeRazaoSocial: this.nomeRazaoSocial,
-                cnpj: this.cnpj,
-                cpf: this.cpf,
-                telefone: this.telefone,
-                endereco: this.endereco,
-                bairro: this.bairro,
-                cep: this.cep,
-                email: this.email,
-                informacao: this.informacao,
-                ativo: this.ativo,
-                municipioId: this.municipioSelecionado
-                }*/);
-
+                this.$emit("salvar");
                 this.limparCampos();
 
             } catch (error) {

@@ -106,14 +106,6 @@ export default {
           this.mensagem = error.message;
         }
       }
-
-      /* this.$emit("salvar_formaPagamento", true) {
-        id: this.id,
-        descricao: this.descricao,
-        ativo: this.ativo
-       });
-
-      this.limparCampos(); */
     },
     cancelar() {
       this.limparCampos();

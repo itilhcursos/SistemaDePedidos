@@ -5,7 +5,7 @@
       <form>
         <div class="row">
           <div class="col">
-            <label class="form-label">Id</label>
+            <label class="form-label">ID (Automático)</label>
             <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id" />
           </div>
           <div class="col">
@@ -233,16 +233,6 @@
         };
       },
 
-      /* getDadosIP(){
-        return {
-          pedidoId: null,
-          produtoId: this.selectedProduto,
-          produtoDescricao: null,
-          produtoUrlImagem: null,
-          quantidadeEstoque: this.quantidadeEstoque,
-          precoUnidadeAtual: this.precoUnidadeAtual
-        }
-      }, */
       async salvar() {
         console.log(this.selectedCliente, this.selectedProduto);
         if (this.clienteId === null || this.formaPagamentoId === null || this.numero === "" || this.dataCompra === "" || this.dataEntrega === "" || this.dataPagamento === "") {
@@ -255,7 +245,7 @@
         try {
           if (this.id === "") {
             const response = await pedidoService.criar(this.getDados());
-            this.options = response; // mudar pra this.listaPedidos
+            this.options = response;
           } else {
             const response = await pedidoService.atualizar(this.id, this.getDados());
             this.listaPedidos = response;     
