@@ -30,7 +30,7 @@
                             <h4 class="card-title">ID: {{ cliente.id }}</h4>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title" style="padding-left:10px; padding-bottom:25px">{{ cliente.nomeRazaoSocial }}</h5>
+                            <h5 class="card-title" style="padding-bottom:25px">{{ cliente.nomeRazaoSocial }}</h5>
                             <p class="card-text"><b>{{ cliente.cnpj != '' ? 'CNPJ: ' : 'CPF: ' }}</b>{{ cliente.cnpj != '' ?  cliente.cnpj  : cliente.cpf }}</p>
                             <p class="card-text"><b>Telefone: </b>{{ cliente.telefone }}</p>
                             <p class="card-text"><b>Endereço: </b>{{ cliente.endereco }}</p>
@@ -168,3 +168,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+    .card-text {
+        padding-left:10px
+    }
+</style>
