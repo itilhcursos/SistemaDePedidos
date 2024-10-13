@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.PedidoNumeroException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
@@ -55,7 +56,7 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
     private void validar(PedidoDTO dto) throws Exception {
         if (dto.getId() == null) {
             if (pedidoRepository.existsByNumero(dto.getNumero())) {
-                throw new Exception("Número do pedido já existe: " + dto.getNumero());
+                throw new PedidoNumeroException(dto.getNumero());
             }
         } else {
             Pedido pedidoExistente = pedidoRepository.findById(dto.getId())
@@ -63,7 +64,7 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
     
             if (!pedidoExistente.getNumero().equals(dto.getNumero()) &&
                 pedidoRepository.existsByNumero(dto.getNumero())) {
-                throw new Exception("Número do pedido já existe para outro pedido: " + dto.getNumero());
+                throw new PedidoNumeroException(dto.getNumero());
             }
         }
         buscarCliente(dto.getClienteId());
