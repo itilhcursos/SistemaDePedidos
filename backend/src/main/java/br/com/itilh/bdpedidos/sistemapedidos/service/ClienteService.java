@@ -62,8 +62,10 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
             } else {          
                 Cliente c = repositorio.getReferenceById(dto.getId());
         
-                if (!dto.getCnpj().isEmpty() && !c.getCnpj().equalsIgnoreCase(dto.getCnpj()) && repositorio.existsByCnpj(dto.getCnpj())) {
-                    throw new ClienteDuplicadoException("CNPJ", dto.getCnpj());
+                if (!dto.getCnpj().isEmpty() && // Se o CNPJ NÃO vier vazio (ou seja, se o cara estiver cadastrando o Cliente com CNPJ ao invés de CPF)... 
+                    !c.getCnpj().equalsIgnoreCase(dto.getCnpj()) && // ...e o usuario estiver alterando o CNPJ para um novo...
+                    repositorio.existsByCnpj(dto.getCnpj())) { // ...e se no repositorio JÁ existir um cara com este novo CNPJ...
+                    throw new ClienteDuplicadoException("CNPJ", dto.getCnpj()); // ...então o usuário causaria uma duplicação no Banco de Dados com o Alterar. Sendo assim, a operação será bloqueada agora!
 
                 } else if (!dto.getCpf().isEmpty() && !c.getCpf().equalsIgnoreCase(dto.getCpf()) && repositorio.existsByCpf(dto.getCpf())) {
                     throw new ClienteDuplicadoException("CPF", dto.getCpf());
