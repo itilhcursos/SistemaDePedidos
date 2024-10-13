@@ -96,7 +96,8 @@ export default {
       isInvalido: false,
       erroMensagem: "",
       formVisible: false,
-      pedidoEscolhido: null,
+      
+      
     };
   },
   methods: {
@@ -142,6 +143,9 @@ export default {
     novo() {
       this.formVisible = !this.formVisible;
     },
+    limpar(){
+      this.formVisible = !this.formVisible;
+    }
   },
 };
 </script>
