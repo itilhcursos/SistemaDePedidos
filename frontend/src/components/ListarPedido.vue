@@ -20,13 +20,13 @@
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Número</th>
-          <th scope="col">Cliente</th>
-          <th scope="col">Forma Pagamento</th>
-          <th scope="col">Data Compra</th>
-          <th scope="col">Data Entrega</th>
-          <th scope="col">Data Pagamento</th>
+          <th scope="col" class="align-middle">ID</th>
+          <th scope="col" class="align-middle">Número</th>
+          <th scope="col" class="align-middle">Cliente</th>
+          <th scope="col" class="align-middle">Forma Pagamento</th>
+          <th scope="col" class="align-middle">Data Compra</th>
+          <th scope="col" class="align-middle">Data Entrega</th>
+          <th scope="col" class="align-middle">Data Pagamento</th>
         </tr>
       </thead>
       <tbody>
@@ -45,8 +45,8 @@
             <table class="table table-dark table-striped">
               <thead>
                 <tr>
-                  <th scope="col">Imagem</th>
-                  <th scope="col">Descrição</th>
+                  <th scope="col" class="align-middle">Imagem</th>
+                  <th scope="col" class="align-middle">Descrição</th>
                 </tr>
               </thead>
               <tbody>
