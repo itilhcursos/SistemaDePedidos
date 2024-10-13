@@ -129,12 +129,19 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
     }
 
     public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
-        Pedido pedidoExistente = pedidoRepository.findById(id)
-            .orElseThrow(() -> new Exception("Pedido não encontrado com ID: " + id));
-    
         validar(novosDados);
-    
-        // Atualizar os dados do pedidoExistente com os novosDados, se necessário
+        
+        Pedido pedidoExistente = pedidoRepository.findById(id)
+                .orElseThrow(() -> new Exception("Pedido não encontrado com ID: " + id));
+        Cliente cliente = clienteRepository.findById(novosDados.getClienteId())
+                .orElseThrow(() -> new Exception("Cliente não encontrado com ID: " + novosDados.getClienteId()));
+        FormaPagamento formaPagamento = formaPagamentoRepository.findById(novosDados.getFormaPagamentoId())
+                .orElseThrow(() -> new Exception(
+                        "Forma de pagamento não encontrada com ID: " + novosDados.getFormaPagamentoId()));
+
+        pedidoExistente.setCliente(cliente);
+        pedidoExistente.setFormaPagamento(formaPagamento);
+       
         pedidoExistente.setDataCompra(novosDados.getDataCompra());
         pedidoExistente.setDataEntrega(novosDados.getDataEntrega());
         pedidoExistente.setDataPagamento(novosDados.getDataPagamento());
@@ -162,7 +169,6 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
                 itemPedidoRepository.save(novoItem);
             }
         }
-    
         // Salvar o pedido atualizado
         pedidoRepository.save(pedidoExistente);
     
