@@ -31,16 +31,6 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
     public ItemPedidoDTO getPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")));
-    }  
-
-    private void validar (ItemPedidoDTO dto) throws Exception {
-
-        /* if(dto.getNumero().length() < 3 || dto.getNumero().length() > 50)
-            throw new NumeroPedidoInvalidoException(dto.getNumero());
-        
-        if(repositorio.existsByNumero(dto.getNumero()))   
-            throw new ItemPedidoDuplicadoException(dto.getNumero()); */
-
     }
 
     @Transactional // anotação que garante que o método só é executado se e somente se todas as diversas operações dentro ocorrerem corretamente
@@ -63,10 +53,7 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
     @Transactional
     public ItemPedidoDTO alterarItemPedido(BigInteger id, ItemPedidoDTO novosDados) throws Exception {
 
-        validar(novosDados);
-        /* if(repositorio.existsByNumero(novosDados.getNumero()))   
-            throw new ItemPedidoDuplicadoException(novosDados.getNumero());
-             */
+
         try{     
          return toDTO(repositorio.save(toEntity(novosDados)));
         }catch(Exception e){

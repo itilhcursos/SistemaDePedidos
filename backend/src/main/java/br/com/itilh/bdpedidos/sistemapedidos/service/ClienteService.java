@@ -11,6 +11,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.util.Validador;
 
 @Service
 public class ClienteService extends GenericService<Cliente,ClienteDTO> {
@@ -32,8 +33,23 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
         .orElseThrow(() -> new Exception("ID Inválido!")));
     }
 
-    private void validar(ClienteDTO dto) throws Exception{
+    private void validarDoc(ClienteDTO dto) throws Exception{
+        if (!dto.getCpf().equals("")){ // se NÃO for string vazia
+            if (Validador.isCpf(dto.getCpf()) == false){
+                throw new Exception("CPF Inválido!");
+            }
+        }
 
+        if (!dto.getCnpj().equals("")){
+            if (Validador.isCnpj(dto.getCnpj()) == false){
+                throw new Exception("CNPJ Inválido!");
+            }
+        }
+    }
+
+    private void validar(ClienteDTO dto) throws Exception{
+        validarDoc(dto);
+       
         if (repositorio.existsByCnpjOrCpf(dto.getCnpj(), dto.getCpf())){
             if(dto.getId() == null){
 
