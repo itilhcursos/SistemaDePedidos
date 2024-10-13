@@ -28,8 +28,8 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "tb_pedidos")
-public class Pedido {   
-    
+public class Pedido {
+
     @Id
     @SequenceGenerator(name = "sequencial", sequenceName = "tb_pedidos_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")

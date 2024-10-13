@@ -18,19 +18,18 @@ import lombok.ToString;
 public class PedidoDTO {
 
     private BigInteger id;
-   
+
     private BigInteger clienteId;
     private String clienteNomeRazaoSocial;
 
     private BigInteger formaPagamentoId;
     private String formaPagamentoDescricao;
-    
-    
+
     private BigInteger numero;
     private LocalDate dataCompra;
     private LocalDate dataEntrega;
     private LocalDate dataPagamento;
-    
+
     private List<ItemPedidoDTO> itens;
 
 }

@@ -1,26 +1,55 @@
-import genericService from "./GenericService";
+import axios from "axios";
 
-const path ='/pedido';
-const pathGet ='/pedidos';
-const criar = async(objeto) =>{
-     const {data} = await genericService.criar(path, objeto);
-     return data;
-} 
-const atualizar = async(id, objeto) =>{
-    const {data} = await genericService.atualizar(path, id, objeto);
-    return data;
+//const mode = import.meta.env.MODE;
+const url= import.meta.env.VITE_APP_URL_API;
+
+const getConfig = (
+    {
+        headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    }
+);
+
+// post
+const criar = async (path, objeto) =>{
+
+    return await axios.post(url + path, objeto, getConfig );
+
 }
-const apagar = async(id) =>{
-    const {data} = await genericService.apagar(path, id);
-    return data;
+
+// put
+const atualizar = async (path, id, objeto) =>{
+
+    return await axios.put(url + path + "/"+ id, objeto, getConfig );
+
 }
-const listar = async (pageNumber = 1, pageSize = 10, direction = 'ASC', property ='id') =>{
-    const {data} = await genericService.listar(pathGet, pageNumber, pageSize, direction, property);
-    return data;
+
+//delete
+const apagar = async (path, id) =>{
+
+    return await axios.delete(url + path + "/"+ id,  getConfig );
+
 }
+
+//get
+const listar = async (path, pageNumber, pageSize, direction, property) =>{
+
+    return await axios.get(url + path +`?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`);
+
+}
+
+const buscar = async (path, pageNumber, pageSize, direction, property, txtBusca) =>{
+    
+    return await axios.get(url + path + "/"+ txtBusca  +`?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`);
+
+}
+
 export default{
     criar,
     atualizar,
     apagar,
-    listar
+    listar,
+    buscar
 }
+

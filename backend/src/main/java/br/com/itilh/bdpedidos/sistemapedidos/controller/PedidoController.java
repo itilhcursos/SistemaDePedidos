@@ -22,16 +22,13 @@ public class PedidoController {
 
     @GetMapping("/pedidos")
     public Page<PedidoDTO> getTodos(
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
         return pedidoService.getTodos(pageable);
     }
-
-    
 
 }

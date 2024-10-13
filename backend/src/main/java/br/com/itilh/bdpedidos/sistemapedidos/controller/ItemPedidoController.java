@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @SecurityRequirement(name = "bearerAuth")
 public class ItemPedidoController {
@@ -30,7 +29,6 @@ public class ItemPedidoController {
     @DeleteMapping("/item-pedido/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return service.deletePorId(id);
-    }  
-    
+    }
 
 }

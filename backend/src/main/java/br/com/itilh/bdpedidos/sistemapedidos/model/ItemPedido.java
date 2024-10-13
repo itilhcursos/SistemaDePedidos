@@ -43,7 +43,7 @@ public class ItemPedido {
 
     @Column(name = "dbl_quantidade_estoque")
     private Double quantidadeEstoque;
-    
+
     @Column(name = "nu_preco_unidade_atual")
     private BigDecimal precoUnidadeAtual;
 
