@@ -1,10 +1,10 @@
 <script setup>
-import ListarCliente from '../components/ListarCliente.vue'
+import ListarPedido from '../components/ListarPedido.vue'
 </script>
 
 <template>
     <main>
-        <ListarCliente/>
+        <ListarPedido/>
     </main>
 </template>
 

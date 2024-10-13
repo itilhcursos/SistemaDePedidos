@@ -99,7 +99,7 @@
 
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
-import formaPagamentoService from "@/services/formaPagamentoService";
+import FormaPagamentoService from "@/services/FormaPagamentoService";
 import Logico from "@/utils/Logico";
 export default {
   components: {
@@ -122,7 +122,7 @@ export default {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;
 
-      const response = await formaPagamentoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
+      const response = await FormaPagamentoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
       this.listaFormasPagamento = response.content;
       this.totalPages = response.totalPages;
 
@@ -140,7 +140,7 @@ export default {
     },
     async excluirFormaPagamento(id) {
       try {
-        const response = await formaPagamentoService.apagar(id);
+        const response = await FormaPagamentoService.apagar(id);
         console.log(response);
       } catch (error) {
         if (error.response.status === 403) {

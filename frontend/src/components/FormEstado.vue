@@ -49,7 +49,7 @@ h'<template>
 </template>
 
 <script>
-import axios from "axios";
+import EstadoService from '@/services/EstadoService';
 export default {
   props: {
     propsEstado: Object,
@@ -63,6 +63,12 @@ export default {
     };
   },
   methods: {
+    getDados(){
+      return {
+              id: this.id,
+              nome: this.nome,
+            };
+    },
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
@@ -70,30 +76,17 @@ export default {
         return;
       }
       this.isInvalido = false;
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-
       try{
         if (this.id === "") {
-          //incluir pelo POST da API
-          const response = await axios.post("http://localhost:8080/estado", {
-            id: this.id,
-            nome: this.nome,
-          }, config);
-          this.listaEstados = response.data;
+          const response = await EstadoService.criar(
+            this.getDados());
+          this.listaEstados = response;
         } else {
-          // alterar pelo PUT da API
-          const response = await axios.put(
-            `http://localhost:8080/estado/${this.id}`,
-            {
-              id: this.id,
-              nome: this.nome,
-            }
-          ,config );
-          this.listaEstados = response.data;
+          const response = await EstadoService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaEstados = response;
         }
         this.$emit("salvar_estado", {
         id: this.id,
@@ -103,15 +96,13 @@ export default {
       this.id = "";
       this.nome = "";
     }catch( error){
-      console.log (error);
-      console.log (error.response.status);
       this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 500){
-        this.mensagem = error.response.data.mensagem;     
+      }else if(error.response.status === 400){
+         return error.response.data.mensagem;     
       }else{
-        this.mensagem = error.message;
+      return error.message;
       }
     }
    },

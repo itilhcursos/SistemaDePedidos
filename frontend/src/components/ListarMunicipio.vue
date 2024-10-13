@@ -5,17 +5,17 @@
           <h3>Municipios</h3>
         </div>
         <div class="col-2 d-flex justify-content-end">
-          <button v-if="!formVisible" @click="novaMunicipio" class="btn btn-success">
+          <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
             <i class="bi bi-clipboard-plus"></i> Novo
           </button>
         </div>
         <div class="row">
           <div>
-            <FormFormaPagamento
+            <FormMunicipio
               v-if="formVisible"
-              :propsFormaPagamento="MunicipioEscolhido"
+              :propsMunicipio="municipioEscolhido"
               @cancelar="limpar"
-              @salvar_municipio="buscarMunicipio"
+              @salvar_municipio="buscar"
             />
           </div>
         </div>
@@ -40,12 +40,15 @@
               {{ municipio.nome }}
             </td>
             <td>
+              {{ municipio.estadoNome }}
+            </td>
+            <td>
               {{ formatarEntrega(municipio.entrega) }}
             </td>
             <td class="d-flex justify-content-end">
               <button
                 class="btn btn-btn btn-primary m-2"
-                @click="alterarmunicipio(municipio)"
+                @click="alterarMunicipio(municipio)"
               >
                 <i class="bi bi-clipboard-pulse"></i> Alterar
               </button>
@@ -97,7 +100,7 @@
           <div class="col-auto">
             <select v-model="property" class="form-select">
               <option value="id">ID</option>
-              <option value="descricao">Descrição</option>
+              <option value="nome">NOME</option>
             </select>
           </div>
           <div class="col-auto">
@@ -107,7 +110,7 @@
             </select>
           </div>
           <div class="col-auto">
-            <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
+            <button @click.prevent="buscar" class="btn btn-success">
               <i class="bi bi-binoculars"></i>
               Buscar
             </button>
@@ -121,15 +124,16 @@
   <script>
 
   import FormMunicipio from "./FormMunicipio.vue";
-  import axios from "axios";
+  import MunicipioService from "@/services/MunicipioService";
+  import Logico from "@/utils/Logico";
   export default {
     components: {
       FormMunicipio,
     },
     data() {
       return {
-        listaFormasPagamento: [],
-        formaPagamentoEscolhida: null,
+        listaMunicipios: [],
+        municipioEscolhido: null,
         formVisible: false,
         mode: import.meta.env.MODE,
         url:import.meta.env.VITE_APP_URL_API,
@@ -141,50 +145,56 @@
       };
     },
     methods: {
-      async buscarMunicipio() {
-        this.MunicipioEscolhido = null;
+      async buscar() {
+        this.municipioEscolhido = null;
         this.formVisible = false;
-        const response = await axios.get(
-          `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-        );
-        console.log(response.data);
-        this.listaMunicipios = response.data.content;
-        this.totalPages = response.data.totalPages;
-        console.log(this.totalPages);
-      },
-    
-        Entrega = (valor){
-            return Logico.toSimNAO(valor);
-
+        const response = await MunicipioService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      this.listaMunicipios = response.content;
+      this.totalPages = response.totalPages;
         },
+        formatarEntrega(valor){
+      return Logico.toSimNao(valor);
+    },
       limpar() {
         this.municipioEscolhido = null;
-        this.formVisible = this.formVisible;
+        this.formVisible = !this.formVisible;
         },
         novoMunicipio() {
-        this.formVisible = this.formVisible;
+        this.formVisible = !this.formVisible;
+        this.municipioEscolhido = {
+        id: "",
+        nome: "",
+        entrega: false,
+        estadoId: null,
+        estadoNome: "",
+      };
       },
       alterarMunicipio(municipio) {
         this.municipioEscolhido = municipio;
         this.formVisible = true;
       },
-      async excluirFormaPagamento(id) {
-        let config = {
-          headers: {
-            'Authorization': 'Bearer ' +localStorage.getItem('token')
-          }
+      async excluirMunicipio(id) {
+        try{
+          const response = await MunicipioService.apagar(id);
+          console.log(response);
+      }catch(error){
+        if(error.response.status === 403){        
+         alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
         }
-        const response = await axios.delete(`http://localhost:8080/formas-pagamento/${id}`,config);
-        console.log(response.data);
-        this.buscarMunicipio();
+      }     
+      this.buscar();
       },
       irPara(pagina) {
         this.pageNumber = pagina;
-        this.buscarFormaPagamento();
+        this.buscar();
       },
     },
     mounted() {
-      this.buscarMunicipio();
+      this.buscar();
     },
   };
   </script>

@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import formaPagamentoService from '@/services/formaPagamentoService';
+import FormaPagamentoService from '@/services/FormaPagamentoService';
 export default {
   props: {
     propsFormaPagamento: Object,
@@ -86,10 +86,10 @@ export default {
       this.isInvalido = false;
       try{
         if (this.id === "") {
-          const response = await formaPagamentoService.criar(this.getDados());
+          const response = await FormaPagamentoService.criar(this.getDados());
           this.listaFormasPagamento = response;
         } else {
-          const response = await formaPagamentoService.atualizar(this.id, this.getDados());
+          const response = await FormaPagamentoService.atualizar(this.id, this.getDados());
           this.listaFormasPagamento = response;
         }
         this.$emit("salvar_formaPagamento", {
@@ -105,11 +105,10 @@ export default {
       this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'FormaPagamentoDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;     
+      }else if(error.response.status === 400){
+         return error.response.data.mensagem;     
       }else{
-        this.mensagem = error.message;
+      return error.message;
       }
     }
     },
