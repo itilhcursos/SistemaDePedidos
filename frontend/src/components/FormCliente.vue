@@ -148,14 +148,14 @@ export default {
                 this.mensagem = "Nome do Cliente ou Razão social deve ser preenchido!";
                 return;
             }
-            if (!this.selectedMunicipio) {
-                this.isInvalido = true;
-                this.mensagem = "Município deve ser selecionado!";
-                return;
-            }
             if (this.cpf === "" && this.cnpj === "") {
                 this.isInvalido = true;
                 this.mensagem = "Número do CPF ou CNPJ deve ser preenchido!";
+                return;
+            }
+            if (!this.selectedMunicipio) {
+                this.isInvalido = true;
+                this.mensagem = "Município deve ser selecionado!";
                 return;
             }
             // if (this.cpf !== "" && this.cnpj !== "") {

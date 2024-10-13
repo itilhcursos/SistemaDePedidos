@@ -263,7 +263,6 @@ export default {
         this.mensagem = "Data do Pagamento não pode ser vazia!";
         return;
       }
-      
       this.isInvalido = false;
       
       try {
@@ -302,6 +301,16 @@ export default {
     },
     async incluirItem() {
 
+      if (!this.id && (!this.selectedProduto || !this.selectedProduto.id)) {
+        this.isInvalido = true;
+        this.mensagem = "Selecione um Produto válido para adicionar ao pedido!";
+        return;
+      }
+      if (!this.id && this.quantidadeItem <= 0) {
+        this.isInvalido = true;
+        this.mensagem = "A quantidade deve ser maior que zero(0)!";
+        return;
+      }
       if (this.id && (!this.selectedProduto || !this.selectedProduto.id)) {
         this.isInvalido = true;
         this.mensagem = "Selecione um Produto válido para adicionar ao pedido!";
