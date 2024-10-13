@@ -13,17 +13,10 @@ import SupportIcon from './icons/IconSupport.vue'
     <template #icon>
       <DocumentationIcon />
     </template>
-      <template #heading>Orientações</template>
-      
-    <p>
-      navegação intuitiva e fácil de usar <br>
-      <br>
-      descrições detalhadas para ajudar os clientes a tomar uma decisão de compra.
-      <br>
-      pagamento seguras e variadas para atender às preferências dos clientes.
-      <br>
-      e muitas outras. acesse e veja mais <a href="/">Orientações</a>
+    <template #heading>Orientações</template>
 
+    <p>
+      Navegação intuitiva e amigável, com descrições detalhadas para facilitar as decisões de compra. Oferecemos diversas opções de pagamento seguras para atender a todos os perfis de clientes. Saiba mais acessando as<a href="/">Orientações.</a>
     </p>
   </SobreItem>
 
@@ -33,15 +26,7 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Ferramentas</template>
 
-    Plataforma de e-commerce (ex: Shopify, Magento, WooCommerce)
-    <br>
-    Gateway de pagamento (ex: PayPal, PagSeguro)
-    <br>
-    Sistema de gestão de estoque
-    CRM (Customer Relationship Management)
-    <br>
-    Ferramentas de marketing digital (ex: Google Analytics, Facebook Ads)
-    e muitos outros.
+    Integre sua loja com as melhores plataformas: Shopify, WooCommerce, e Magento. Utilize gateways de pagamento como PayPal e PagSeguro, ferramentas de gestão de estoque, CRM, e soluções de marketing digital como Google Analytics e Facebook Ads.
   </SobreItem>
 
   <SobreItem>
@@ -50,13 +35,7 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Ecosistema</template>
 
-    Plataforma de e-commerce: é a base da loja virtual, onde os produtos são exibidos,
-    os pedidos são processados e os pagamentos são realizados. Existem diversas opções de 
-    plataformas disponíveis, como Shopify, WooCommerce e Magento.
-  <br>
-    Design e usabilidade do site: uma boa experiência do usuário é essencial para atrair e reter clientes.
-    O design do site, a navegação fácil e a responsividade são aspectos importantes a serem considerados.
-    acesse e saiba mais sobre o ecossistema do Sys Vendas.  
+    Nosso ecossistema é robusto, com foco em design, usabilidade e responsividade para uma experiência de compra perfeita. Conecte-se com diversas plataformas de e-commerce e leve seu negócio ao próximo nível. Saiba mais sobre o<a href="/">Ecosistema Sys Vendas.</a>
   </SobreItem>
 
   <SobreItem>
@@ -65,10 +44,7 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Comunidade</template>
 
-    Acesse e interaja com a Comunidade do <a href="/">Sys Vendas</a> 
-    Os membros desta comunidade interagem entre si, compartilham experiências, dicas, avaliações de produtos,
-    feedbacks, além de tirarem dúvidas uns dos outros. A loja online pode criar um espaço específico para esta comunidade, 
-    como fóruns de discussão, grupos em redes sociais, e-mails exclusivos, entre outros.
+    Participe da comunidade<a href="/">SysVendas,</a>troque experiências, obtenha dicas e avaliações, ou tire dúvidas com outros usuários em nossos fóruns e grupos sociais exclusivos.
   </SobreItem>
 
   <SobreItem>
@@ -77,10 +53,10 @@ import SupportIcon from './icons/IconSupport.vue'
     </template>
     <template #heading>Suporte</template>
 
-   Tenha o Suporte do Sys Vendas, pelas Redes Sociais, facebook, whatsapp, instagram e outros. <br>
-   Tenha acesso tambem pelo Numero de Contato (xx) xxxxxxxxxxx.
+    Oferecemos suporte dedicado via redes sociais, como Facebook, WhatsApp, e Instagram, além de atendimento telefônico no (00) 99191-1199. Conte com o Sys Vendas para ajudar sempre que precisar.
   </SobreItem>
 </template>
+
 
 <style scoped>
  body{
