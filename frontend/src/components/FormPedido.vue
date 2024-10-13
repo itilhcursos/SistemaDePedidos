@@ -151,6 +151,7 @@
   import produtoService from "@/services/produtoService";
   import itemPedidoService from "@/services/itemPedidoService";
   import formaPagamentoService from "@/services/formaPagamentoService";
+  import pedidoService from "@/services/pedidoService";
   export default {
     props: {
       propsPedido: Object,
@@ -167,7 +168,6 @@
         dataEntrega: '',
         dataPagamento: '',
         itens: [],
-  
         isInvalido: false,
         isLoading: false,
         mensagem: "",
@@ -177,7 +177,8 @@
         selectedProduto: null,
         optionsFormaPagamento: [],
         selectedFormaPagamento: null,
-        quantidadeItem: 0
+        quantidadeItem: 0,
+        listaPedidos: [],
       };
     },
     methods: {
@@ -215,36 +216,43 @@
       getDados() {
         return {
           id: this.id,
-          nome: this.nome,
+          pedidoId: this.pedidoId,
+          precoUnidadeAtual: this.precoUnidadeAtual,
+          produtoDescricao: this.produtoDescricao,
+          produtoId: this.produtoId,
+          produtoUrlImagem: this.produtoUrlImagem,
+          quantidadeEstoque: this.quantidadeEstoque,
         };
       },
       async salvar() {
         console.log(this.selectedCliente, this.selectedProduto);
-        // if (this.nome === "") {
-        //   this.isInvalido = true;
-        //   this.mensagem = "Nome deve ser preenchido!!";
-        //   return;
-        // }
-        // this.isInvalido = false;
+        if (this.nome === "") {
+          this.isInvalido = true;
+          this.mensagem = "Nome deve ser preenchido!!";
+          return;
+        }
+        this.isInvalido = false;
   
         try {
           if (this.id === "") {
-            //  const response = await estadoService.criar(this.getDados());
-            //  this.options = response;
+             const response = await pedidoService.criar(this.getDados());
+             this.listaPedidos = response;
           } else {
-            // const response = await estadoService.atualizar(
-            //   this.id,
-            //   this.getDados()
-            // );
-            //this.listaEstados = response;
+            const response = await pedidoService.atualizar(
+              this.id,
+              this.getDados()
+            );
+            this.listaPedidos = response;
           }
-          this.$emit("salvar_pedido", {
-            id: this.id,
-            nome: this.nome,
-          });
+          this.$emit("salvar_pedido", this.getDados());
   
           this.id = "";
-          this.nome = "";
+          this.pedidoId =  "";
+          this.precoUnidadeAtual = "";
+          this.produtoDescricao = "";
+          this.produtoId = "";
+          this.produtoUrlImagem = "";
+          this.quantidadeEstoque = "";
         } catch (error) {
           this.isInvalido = true;
           if (error.response.status === 403) {
@@ -318,7 +326,6 @@
         this.dataEntrega= this.propsPedido.dataEntrega;
         this.dataPagamento= this.propsPedido.dataPagamento;
         this.itens= this.propsPedido.itens;
-  
         this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao };
         this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
   

@@ -15,7 +15,7 @@
               v-if="formVisible"
               :propsPedido="pedidoEscolhido"
               @cancelar="limpar"
-              @salvar_pedido="buscar"
+              @salvar_pedido="buscarPedidos"
             />
           </div>
         </div> 
@@ -134,7 +134,7 @@
             </select>
           </div>
           <div class="col-auto">
-            <button @click.prevent="buscar" class="btn btn-success">
+            <button @click.prevent="buscarPedidos" class="btn btn-success">
               <i class="bi bi-binoculars"></i>
               Buscar
             </button>
@@ -166,7 +166,7 @@
       };
     },
     methods: {
-      async buscar() {
+      async buscarPedidos() {
         this.pedidoEscolhido = null;
         this.formVisible = false;
         const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
@@ -197,18 +197,18 @@
             alert(error.message);
           }
         }     
-        this.buscar();
+        this.buscarPedidos();
       },
       irPara(pagina) {
         this.pageNumber = pagina;
-        this.buscar();
+        this.buscarPedidos();
       },
       formatar(data){
         return Data.formatoDMA(data);
       }
     },
     mounted() {
-      this.buscar();
+      this.buscarPedidos();
     },
   };
   </script>
