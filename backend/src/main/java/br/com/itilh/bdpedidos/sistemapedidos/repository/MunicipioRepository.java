@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 
 
@@ -21,7 +20,6 @@ public interface MunicipioRepository extends JpaRepository<Municipio , BigIntege
     List<Municipio> findByNomeContainingIgnoreCase(String nome);
 
     Page<Municipio> findByNomeContainingIgnoreCase(Pageable pageable, String nome);
-
 
     boolean existsByNomeAndEstadoId(String nome, BigInteger id);
 

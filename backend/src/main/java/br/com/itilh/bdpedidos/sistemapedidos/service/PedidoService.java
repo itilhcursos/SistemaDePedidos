@@ -107,14 +107,14 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
     public PedidoDTO criarPedido(PedidoDTO novosDados) throws Exception {
         validar(novosDados);
         try {
-            Pedido pedido = toEntity(novosDados);  // Converte DTO para entidade Pedido
-            Pedido pedidoSalvo = pedidoRepository.save(pedido);  // Salva o pedido e recebe o pedido salvo com ID
+            Pedido pedido = toEntity(novosDados);  
+            Pedido pedidoSalvo = pedidoRepository.save(pedido);  
     
             // salvar os itens relacionados ao pedido
             for (ItemPedidoDTO itemDTO : novosDados.getItens()) {
                 ItemPedido itemPedido = new ItemPedido();
-                itemPedido.setPedido(pedidoSalvo);  // Vincula o item ao pedido salvo
-                itemPedido.setProduto(buscarProduto(itemDTO.getProdutoId()));  // Busca o produto pelo ID
+                itemPedido.setPedido(pedidoSalvo);  
+                itemPedido.setProduto(buscarProduto(itemDTO.getProdutoId()));  
                 itemPedido.setQuantidadeEstoque(itemDTO.getQuantidadeEstoque());
                 itemPedido.setPrecoUnidadeAtual(itemDTO.getPrecoUnidadeAtual());
                 
@@ -122,7 +122,7 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
                 itemPedidoRepository.save(itemPedido);
             }
     
-            return toDTO(pedidoSalvo);  // Retorna o DTO do pedido salvo
+            return toDTO(pedidoSalvo);  
         } catch (Exception e) {
             throw new Exception("Erro ao salvar o pedido e os itens.");
         }
