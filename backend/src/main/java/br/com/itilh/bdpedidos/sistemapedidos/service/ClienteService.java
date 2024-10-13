@@ -36,13 +36,13 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO> {
     private void validarDoc(ClienteDTO dto) throws Exception{
         if (!dto.getCpf().equals("")){ // se NÃO for string vazia
             if (Validador.isCpf(dto.getCpf()) == false){
-                throw new Exception("CPF Inválido!");
+                throw new Exception("CPF Inválido! Use um CPF Válido para cadastrar. (https://www.4devs.com.br/gerador_de_cpf)");
             }
         }
 
         if (!dto.getCnpj().equals("")){
             if (Validador.isCnpj(dto.getCnpj()) == false){
-                throw new Exception("CNPJ Inválido!");
+                throw new Exception("CNPJ Inválido! Use um CNPJ Válido para cadastrar. (https://www.4devs.com.br/gerador_de_cnpj)");
             }
         }
     }
