@@ -86,7 +86,7 @@ export default {
         async salvarProduto() {
             if (this.descricao === "") {
                 this.isInvalido = true;
-                this.mensagem = "Descrição do produto não pode ser vazia.";
+                this.mensagem = "Descrição do Produto deve ser preenchido!";
                 return;
             }
             this.isInvalido = false;

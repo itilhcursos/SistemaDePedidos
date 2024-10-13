@@ -70,9 +70,9 @@
             <tr>
               <th scope="col">Itens</th>
               <th scope="col">Descrição</th>
-              <th scope="col">Quantidade</th>
-              <th scope="col">Valor</th>
-              <th scope="col">Total</th>
+              <th scope="col" class="text-center align-middle">Quantidade</th>
+              <th scope="col" class="text-center align-middle">Valor</th>
+              <th scope="col" class="text-center align-middle">Total</th>
               <th scope="col">Excluir</th>
             </tr>
           </thead>
@@ -81,10 +81,10 @@
               <th>
                 <img :src=item.produtoUrlImagem height="50px">
               </th>
-              <th>{{ item.produtoDescricao }}</th>
-              <th>{{ item.quantidadeEstoque }}</th>
-              <th>{{ item.precoUnidadeAtual }}</th>
-              <th>{{ item.quantidadeEstoque * item.precoUnidadeAtual }}</th>
+              <th class="align-middle">{{ item.produtoDescricao }}</th>
+              <th class="text-center align-middle">{{ formatarQuantidade(item.quantidadeEstoque) }}</th>
+              <th class="text-center align-middle">{{ formatarPreco(item.precoUnidadeAtual) }}</th>
+              <th class="text-center align-middle">{{ formatarPreco(item.quantidadeEstoque * item.precoUnidadeAtual) }}</th>
               <th>
                 <button class="btn btn-outline-danger m-2" @click.prevent="excluirItemPedido(item.id)">
                   <i class="bi bi-clipboard2-minus"></i>
@@ -133,7 +133,7 @@
       </div>
      
       <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarPedido">
+        <button v-if="id === ''" class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarPedido">
           <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
@@ -147,6 +147,8 @@
 </template>
 
 <script>
+import Monetario from "@/utils/Monetario";
+import Decimal from "@/utils/Decimal";
 import clienteService from "@/services/clienteService";
 import produtoService from "@/services/produtoService";
 import itemPedidoService from "@/services/itemPedidoService";
@@ -233,32 +235,32 @@ export default {
       //console.log('Iniciando processo de salvar pedido');
       if (!this.numero || this.numero === "") {
         this.isInvalido = true;
-        this.mensagem = "O número do pedido não pode ser vazio.";
+        this.mensagem = "O Número do Pedido não pode ser vazio!";
         return;
       }
       if (!this.selectedCliente || !this.selectedCliente.id) {
         this.isInvalido = true;
-        this.mensagem = "Selecione um cliente válido.";
+        this.mensagem = "Selecione um Cliente válido!";
         return;
       }
       if (!this.selectedFormaPagamento || !this.selectedFormaPagamento.id) {
         this.isInvalido = true;
-        this.mensagem = "Selecione uma forma de pagamento válida.";
+        this.mensagem = "Selecione uma Forma de Pagamento válida!";
         return;
       }
       if (this.dataCompra === "") {
         this.isInvalido = true;
-        this.mensagem = "Data da compra não pode ser vazia";
+        this.mensagem = "Data da Compra não pode ser vazia!";
         return;
       }
       if (this.dataEntrega === "") {
         this.isInvalido = true;
-        this.mensagem = "Data da entrega não pode ser vazia";
+        this.mensagem = "Data da Entrega não pode ser vazia!";
         return;
       }
       if (this.dataPagamento === "") {
         this.isInvalido = true;
-        this.mensagem = "Data do pagamento não pode ser vazia";
+        this.mensagem = "Data do Pagamento não pode ser vazia!";
         return;
       }
       
@@ -302,12 +304,12 @@ export default {
 
       if (this.id && (!this.selectedProduto || !this.selectedProduto.id)) {
         this.isInvalido = true;
-        this.mensagem = "Selecione um produto válido para adicionar ao pedido";
+        this.mensagem = "Selecione um Produto válido para adicionar ao pedido!";
         return;
       }
       if (this.id && this.quantidadeItem <= 0) {
         this.isInvalido = true;
-        this.mensagem = "A quantidade deve ser maior que 0";
+        this.mensagem = "A quantidade deve ser maior que zero(0)!";
         return;
       }
 
@@ -351,6 +353,12 @@ export default {
           alert(error.message);
         }
       }
+    },
+    formatarPreco(valor) {
+      return Monetario.toTela(valor);
+    },
+    formatarQuantidade(valor) {
+      return Decimal.toTela(valor);
     }
   },
   mounted() {

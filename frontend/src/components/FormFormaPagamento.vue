@@ -67,7 +67,7 @@ export default {
     async salvarFormaPagamento() {
       if (this.descricao === "") {
         this.isInvalido = true;
-        this.mensagem = "Descrição da forma de pagamento não pode ser vazia";
+        this.mensagem = "Descrição da Forma de Pagamento deve ser preenchida!";
         return;
       }
       this.isInvalido = false;
