@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 @Service
 public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO> {
 
+    @SuppressWarnings("rawtypes")
     @Autowired
     ItemPedidoRepository repositorio;
 
