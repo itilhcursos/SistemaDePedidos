@@ -179,9 +179,9 @@ export default {
         console.log(response)
       }catch(error){
         if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
+          alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400){
+          alert(error.response.status + " | " + error.response.data.substr(15, 31) + " (Objeto ainda é referenciado em outra tabela)"); 
         }else{
           alert(error.message);
         }

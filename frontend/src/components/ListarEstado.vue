@@ -165,7 +165,7 @@ export default {
         }else if(error.response.status === 400){
           /* console.log("Texto", error.response.request.responseText); */
           /* console.log(error.response.request.responseText.indexOf("DataIntegrityViolationExceptions")); */
-          alert("Estado referenciado em algum municipio."); 
+          alert("Estado referenciado em algum Municipio! Apague o Municipio antes!"); 
         }else{
           alert(error.message);
         }
