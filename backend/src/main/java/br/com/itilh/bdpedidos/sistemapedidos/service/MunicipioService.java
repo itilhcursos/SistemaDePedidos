@@ -24,6 +24,10 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
         return toPageDTO(repository.findAll(pageable));
     }
 
+    public Page<MunicipioDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repository.findByNomeContainingIgnoreCase(pageable, txtBusca));
+    }
+
     public Page<MunicipioDTO> listarMunicipiosPorEstadoId(BigInteger id, Pageable pageable) {
         return toPageDTO(repository.findByEstadoId(id, pageable));
     }

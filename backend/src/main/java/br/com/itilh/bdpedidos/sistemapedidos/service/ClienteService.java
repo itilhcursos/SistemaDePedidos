@@ -31,9 +31,9 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
         return toPageDTO(clienteRepository.findAll(pageable));
     }
 
-    // public Page<ClienteDTO> buscar(Pageable pageable, String txtBusca) {
-    //     return toPageDTO(clienteRepository.findByNomeRazaoSocialContainingIgnoreCase(pageable, txtBusca));
-    // }
+    public Page<ClienteDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(clienteRepository.findByNomeRazaoSocialContainingIgnoreCase(pageable, txtBusca));
+     }
 
     // Buscar cliente por ID
     public ClienteDTO buscarClientePorId(BigInteger id) throws Exception {
