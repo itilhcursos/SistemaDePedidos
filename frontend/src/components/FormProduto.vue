@@ -62,13 +62,9 @@ export default {
         return {
             id: "",
             descricao: "",
-            quantidadeEstoque: "",
-            precoUnidadeAtual: "",
-            ativo: "",
-            urlImagem: "",
             isInvalido: false,
             mensagem: "",
-            listaProdutos: [],
+            url: `http://localhost:8080/produto/${this.id}`
         };
     },
     methods: {
@@ -89,7 +85,7 @@ export default {
                     const response = await produtoService.criar(this.getDados());
                     this.listaProdutos = response;
                 } else {
-                    const response = await axios.put(`http://localhost:8080/produto/${this.id}`, this.getDados(), config);
+                    const response = await axios.put(this.url, this.getDados(), config);
                     this.listaProdutos = response;
                 }
                 this.$emit("salvar_produto", this.getDados());
