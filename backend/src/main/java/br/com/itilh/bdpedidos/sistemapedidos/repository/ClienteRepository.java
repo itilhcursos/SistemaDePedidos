@@ -33,4 +33,5 @@ public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
     boolean existsByNomeRazaoSocial (String nomeRazaoSocial);
     boolean existsByCpf(String cpf);
     boolean existsByCnpj(String cnpj);
+    boolean existsByCnpjOrCpf(String cnpj, String cpf );
 }
