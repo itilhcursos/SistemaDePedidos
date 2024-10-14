@@ -1,5 +1,6 @@
 package br.com.itilh.bdpedidos.sistemapedidos.dto;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -14,13 +15,10 @@ import lombok.NoArgsConstructor;
 public class ProdutoDTO {
 
     private BigInteger id;
-    private BigInteger numero;
-    private Date dataCompra;
-    private Date dataEntrega;
-    private Date dataPagamento;
+    private String descricao;
+    private Double quantidadeEstoque;
+    private BigDecimal precoUnidadeAtual;
+    private Boolean ativo;
+    private String urlImagem;
 
-    private BigInteger clInteid;
-    private String clienteNome;
-    private BigInteger formaPagamentoId;
-    private String formaPagamentoNome;
 }
