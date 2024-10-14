@@ -2,34 +2,36 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>PEDIDOS</h3>
+        <h3>Pedidos</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoPedido" class="btn btn-success">
+        <button v-if="!formVisible" @click="novo" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
         <div>
-          <FormEstado
+          <FormPedido
             v-if="formVisible"
             :propsPedido="pedidoEscolhido"
             @cancelar="limpar"
-            @salvar_pedido="buscarPedidos"
+            @salvar_pedido="buscar"
           />
         </div>
-      </div>
+      </div> 
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">NÚMERO</th>
-          <th scope="col">CLIENTE</th>
-          <th scope="col">FORMA PAGAMENTO</th>
-          <th scope="col">DATA COMPRA</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col">Número</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Forma Pagamento</th>
+          <th scope="col">Data Compra</th>
+          <th scope="col">Data Entrega</th>
+          <th scope="col">Data Pagamento</th>
+          <th scope="col" class="d-flex justify-content-end">Itens</th>
         </tr>
       </thead>
       <tbody>
@@ -37,37 +39,49 @@
           <th>
             {{ pedido.id }}
           </th>
-
-          <td>
+          <th>
             {{ pedido.numero }}
-          </td>
-
-          <th>
+          </th>
+          <td>
             {{ pedido.clienteNomeRazaoSocial }}
-          </th>
-
-          <th>
+          </td>
+          <td>
             {{ pedido.formaPagamentoDescricao }}
-          </th>
-
-          <th>
+          </td>
+          <td>
             {{ formatar(pedido.dataCompra) }}
-          </th>
-
-          <td class="d-flex justify-content-end">
+          </td>
+          <td>
+            {{ formatar(pedido.dataEntrega) }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataPagamento) }}
+          </td>
+          <td class="d-flex justify-content-end">            
             <button
               class="btn btn-btn btn-primary m-2"
-              @click="alterarPedido(pedido)"
+              @click="alterar(pedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-
-            <button
-              class="btn btn-outline-danger m-2"
-              @click="excluirPedido(pedido.id)"
-            >
-              <i class="bi bi-clipboard2-minus"></i> Excluir
-            </button>
+            <table class="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Itens</th>
+                  <th scope="col">Descricão</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="itens in pedido.itens" :key="itens.id" scope="row">
+                  <th>
+                    <img :src=itens.produtoUrlImagem height="50px">
+                  </th>
+                  <th>
+                    {{ itens.produtoDescricao }}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
           </td>
         </tr>
       </tbody>
@@ -109,7 +123,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="nome">Nome</option>
+            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
+            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
           </select>
         </div>
         <div class="col-auto">
@@ -119,7 +134,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarEstados" class="btn btn-success">
+          <button @click.prevent="buscar" class="btn btn-success">
             <i class="bi bi-binoculars"></i>
             Buscar
           </button>
@@ -131,20 +146,18 @@
 
 
 <script>
-import FormEstado from "./FormEstado.vue";
+import FormPedido from "./FormPedido.vue";
 import Data from "../utils/Data"
-import axios from "axios";
+import pedidoService from "@/services/pedidoService";
 export default {
   components: {
-    FormEstado,
+    FormPedido,
   },
   data() {
     return {
       listaPedidos: [],
       pedidoEscolhido: null,
       formVisible: false,
-      mode: import.meta.env.MODE,
-      url: import.meta.env.VITE_APP_URL_API,
       pageNumber: 1,
       pageSize: 10,
       direction: "ASC",
@@ -153,43 +166,28 @@ export default {
     };
   },
   methods: {
-    async buscarPedidos() {
+    async buscar() {
       this.pedidoEscolhido = null;
       this.formVisible = false;
-      //buscar a lista de estados no servidor
-      // http://localhost:8080/estados
-      const response = await axios.get(
-        `http://localhost:8080/pedidos?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaPedidos = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
+      const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      this.listaPedidos = response.content;
+      this.totalPages = response.totalPages;   
     },
     limpar() {
       this.pedidoEscolhido = null;
       this.formVisible = !this.formVisible;
     },
-    novoPedido() {
+    novo() {
       this.formVisible = !this.formVisible;
     },
-    alterarPedido(pedido) {
+    alterar(pedido) {
       this.pedidoEscolhido = pedido;
       this.formVisible = true;
     },
-    async excluirPedido(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
+    async excluir(id) {
       try{
-          const response = await axios.delete(`http://localhost:8080/pedido/${id}`, config);
-          console.log(response.data);
+          const response = await pedidoService.apagar(id);
+          console.log(response);
       }catch(error){
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");
@@ -199,17 +197,18 @@ export default {
           alert(error.message);
         }
       }     
-      this.buscarPedidos();
+      this.buscar();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarPedidos();
-    },formatar(data){
+      this.buscar();
+    },
+    formatar(data){
       return Data.formatoDMA(data);
     }
   },
   mounted() {
-    this.buscarPedidos();
+    this.buscar();
   },
 };
 </script>

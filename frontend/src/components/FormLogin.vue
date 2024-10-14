@@ -1,8 +1,12 @@
+
 <template>
   <div class="container">
     <h4 class="p-1 mb-1 bg-success text-white">Login</h4>
     <hr />
     <form>
+
+      
+
       <div class="mb-3">
         <label class="form-label">Login</label>
         <input
@@ -50,12 +54,22 @@
         <i class="bi bi-x-octagon"></i>
           Logout
         </button>
+
+        <button
+          class="btn btn-warning m-2"
+          type="submit"
+          v-on:click.prevent="registrar"
+        >
+        <i class="bi bi-clipboard2-x"></i>
+          Novo Usuário
+        </button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import FormRegistro from "./FormRegistro.vue";
 import axios from "axios";
 export default {
   data() {
@@ -108,4 +122,3 @@ export default {
   
 };
 </script>
-

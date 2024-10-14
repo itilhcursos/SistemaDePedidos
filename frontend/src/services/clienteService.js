@@ -9,7 +9,7 @@ const criar = async (objeto) => {
 }
 
 const atualizar = async (id, objeto) => {
-    const {data} = await genericService.alterar(path, objeto, id);
+    const {data} = await genericService.atualizar(path, id, objeto);
     return data;
 }
 

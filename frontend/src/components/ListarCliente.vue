@@ -31,7 +31,7 @@
           <th scope="col">Telefone</th>
           <th scope="col">Endereço</th>
           <th scope="col">Bairro</th>
-          <th scope="col">CEP</th>
+          <!-- <th scope="col">CEP</th> -->
           <th scope="col">Nome Municipio</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
@@ -59,9 +59,9 @@
           <td>
             {{ cliente.bairro }}
           </td>
-          <td>
+          <!-- <td>
             {{ cliente.cep }}
-          </td>
+          </td> -->
           <td>
             {{ cliente.municipioNome }}
           </td>
