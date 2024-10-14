@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
+import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
 @Service
@@ -29,8 +31,16 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
 
     private void validar (ClienteDTO dto) throws Exception {
         
-        if(repositorio.existsByNomeRazaoSocial(dto.getNomeRazaoSocial()))   
-            throw new ClienteDuplicadoException(dto.getNomeRazaoSocial());
+        if (repositorio.existsByNomeRazaoSocial(dto.getNomeRazaoSocial())){
+            if(dto.getId() == null){
+                throw new ClienteDuplicadoException(dto.getNomeRazaoSocial());
+            }else{
+                Cliente c = repositorio.getReferenceById(dto.getId());
+                if(!c.getNomeRazaoSocial().equalsIgnoreCase(dto.getNomeRazaoSocial())){
+                    throw new ClienteDuplicadoException(dto.getNomeRazaoSocial());
+                }
+            }            
+        }
 
     }
 
@@ -47,14 +57,7 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
     public ClienteDTO alterarCliente(BigInteger id, ClienteDTO novosDados) throws Exception {
 
         validar(novosDados);
-        if(repositorio.existsByNomeRazaoSocial(novosDados.getNomeRazaoSocial()))   
-            throw new ClienteDuplicadoException(novosDados.getNomeRazaoSocial());
-            
-        try{     
-         return toDTO(repositorio.save(toEntity(novosDados)));
-        }catch(Exception e){
-            throw new Exception("Alteração não foi realizada.");
-        }                                   
+        return toDTO(repositorio.save(toEntity(novosDados)));                           
     }
 
     public String deletePorId(BigInteger id) throws Exception {

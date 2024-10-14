@@ -30,6 +30,11 @@ const router = createRouter({
       component:()=>import('../views/ClienteView.vue')
     },
     {
+      path: '/pedidos',
+      name: 'pedidos',
+      component:()=>import('../views/PedidoView.vue')
+    },
+    {
       path: '/formas-pagamento',
       name: 'formaPagamento',
       component:()=>import('../views/FormaPagamentoView.vue')
@@ -38,6 +43,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component:()=>import('../views/LoginView.vue')
+    },
+    {
+      path: '/cadastro',
+      name: 'cadastro',
+      component:()=>import('../views/Cadastro.vue')
     },
     {
       path: '/logout',

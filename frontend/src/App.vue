@@ -17,6 +17,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/pedidos">Pedidos</RouterLink>
       <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
       <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}</RouterLink>
+      <RouterLink to="/cadastro">Cadastro</RouterLink>
      
     </nav>
     <img src="./assets/carrinho.png" alt=""/>
@@ -62,7 +63,7 @@ img{
 }
 
 nav {
-    text-align: left;
+    text-align: center;
     font-size: 1rem;
     padding: 1rem 0;
     margin-top: 1rem;

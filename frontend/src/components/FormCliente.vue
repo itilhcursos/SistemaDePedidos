@@ -48,7 +48,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Informação</label>
-        <input class="form-control" type="text" v-model="informacoes" placeholder="Informações" />
+        <input class="form-control" type="text" v-model="informacao" placeholder="Informações" />
       </div>
       <label class="form-label">Municipio</label>
       <v-select class="form-control" label="Produto" :filterable="false"
@@ -99,11 +99,11 @@ export default {
       cep: "",
       email: "",
       ativo: false,
-      informacoes: "",
+      informacao: "",
       municipioSelecionado: null,
       municipios: [],
       isInvalido: false,
-      mensagem: '',
+      mensagem: "",
     };
   },
   methods: {
@@ -119,7 +119,7 @@ export default {
         cep: this.cep,
         email: this.email,
         ativo: this.ativo,
-        informacao: this.informacoes,
+        informacao: this.informacao,
         municipioNome: this.municipioNome,
       };
     },
@@ -143,28 +143,27 @@ export default {
       this.isInvalido = false;
 
       try {
-        let response;
-        if (!this.id) {
-          response = await clienteService.criar(this.getDados());
+        if (this.id === "") {
+          const response = await clienteService.criar(this.getDados());
         } else {
-          response = await clienteService.atualizar(this.id, this.getDados());
+          const response = await clienteService.atualizar(this.id, this.getDados());
+          this.listaClientes = response;
         }
-        this.$emit("salvar_cliente", response);
+        this.$emit("salvar_cliente", this.getDados());
         this.limparCampos();
       } catch (error) {
-        this.isInvalido = true;
-        this.mensagem = this.getErrorMessage(error);
+        this.tratarErro(error);
       }
     },
-    getErrorMessage(error) {
-      if (error.response) {
-        if (error.response.status === 403) {
-          return "Usuário não identificado! Faça o login!";
-        } else if (error.response.status === 400 && error.response.data.exception === 'ClienteDuplicadoException') {
-          return error.response.data.mensagem;
-        }
+    tratarErro(error) {
+      this.isInvalido = true;
+      if (error.response && error.response.status === 403) {
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      } else if (error.response && error.response.status === 400) {
+        this.mensagem = error.response.data.mensagem;
+      } else {
+        this.mensagem = error.message;
       }
-      return error.message || "Ocorreu um erro inesperado.";
     },
     cancelar() {
       this.limparCampos();
@@ -181,7 +180,7 @@ export default {
       this.cep = "";
       this.email = "";
       this.ativo = false;
-      this.informacoes = "";
+      this.informacao = "";
       this.municipioNome = "";
       this.municipioSelecionado = null;
     }

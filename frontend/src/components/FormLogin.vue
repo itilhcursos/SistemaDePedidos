@@ -86,7 +86,6 @@ export default {
      
       }catch(error){
         this.isInvalido = true;
-        this.erroMensagem = error.response.data.mensagem;
       }
 
       this.id = "";
