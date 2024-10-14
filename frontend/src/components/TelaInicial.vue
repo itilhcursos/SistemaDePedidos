@@ -12,6 +12,7 @@ defineProps({
 </script>
 
 <template>
+  
   <div>
     <h1 class="cor">{{ msg }}</h1>
     <h2>{{ msg2 }}</h2>
@@ -22,7 +23,7 @@ defineProps({
 
 <style scoped>
 .cor {
-  color: rgb(255, 174, 0)
+  color: rgba(249, 249, 249, 0.945)
 }
 
 img {
@@ -31,19 +32,27 @@ img {
 }
 
 h1 {
-  font-weight: 400;
+  font-weight: 1000;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 5rem;
   position: relative;
   align-content: center;
   margin: 0;
   text-align: center;
+  text-emphasis-color: red;
 }
 
 h2 {
   position: relative;
-  font-size: 70px;
+  font-size: 120px;
   font-family: serif;
   text-align: center;
+}
+h3
+{
+  position: relative;
+  font-size: small;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: left;
 }
 </style>

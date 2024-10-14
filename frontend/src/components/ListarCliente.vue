@@ -2,7 +2,8 @@
     <div class="container">
       <div class="row">
         <div class="col-10">
-          <h3>Listagem de Clientes</h3>
+          <h3 style="font-family: 'Arial', sans-serif;">Listagem de Clientes</h3>
+
         </div>
         <div class="col-2 d-flex justify-content-end">
           <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
