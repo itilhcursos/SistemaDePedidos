@@ -63,7 +63,7 @@ public class Cliente {
     boolean ativo;
 
     @Column(name="tx_informacoes")
-    private String informacao;
+    private String informacoes;
 
 
 }

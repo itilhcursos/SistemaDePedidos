@@ -69,23 +69,31 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
 
     //Validação de duplicidade de CPF e CNPJ
     private void validar(ClienteDTO dto) throws Exception {
-        // Verifica duplicidade de CPF
-    if (dto.getCpf() != null && !dto.getCpf().isEmpty()) {
-        if (clienteRepository.existsByCpf(dto.getCpf())) {
-            throw new ClienteCpfDuplicadoException(dto.getCpf());
-        }
-    }
+        Cliente clienteExistente = null;
 
-    // Verifica duplicidade de CNPJ
-    if (dto.getCnpj() != null && !dto.getCnpj().isEmpty()) {
-        if (clienteRepository.existsByCnpj(dto.getCnpj())) {
-            throw new ClienteCnpjDuplicadoException(dto.getCnpj());
+        if (dto.getId() != null) {
+            clienteExistente = clienteRepository.findById(dto.getId())
+                    .orElse(null);
         }
-    }
+
+        // Verifica duplicidade de CPF
+        if (dto.getCpf() != null && !dto.getCpf().isEmpty() &&
+                (clienteExistente == null || !dto.getCpf().equals(clienteExistente.getCpf()))) {
+            if (clienteRepository.existsByCpf(dto.getCpf())) {
+                throw new ClienteCpfDuplicadoException(dto.getCpf());
+            }
+        }
+
+        if (dto.getCnpj() != null && !dto.getCnpj().isEmpty() &&
+                (clienteExistente == null || !dto.getCnpj().equals(clienteExistente.getCnpj()))) {
+            if (clienteRepository.existsByCnpj(dto.getCnpj())) {
+                throw new ClienteCnpjDuplicadoException(dto.getCnpj());
+            }
+        }
 
         // Verifica se ambos CPF e CNPJ estão preenchidos
-        if (dto.getCpf() != null && !dto.getCpf().isEmpty() && 
-            dto.getCnpj() != null && !dto.getCnpj().isEmpty()) {
+        if (dto.getCpf() != null && !dto.getCpf().isEmpty() &&
+                dto.getCnpj() != null && !dto.getCnpj().isEmpty()) {
             throw new Exception("Não é permitido ter CPF e CNPJ preenchidos simultaneamente.");
         }
     }

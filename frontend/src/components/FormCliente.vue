@@ -135,7 +135,7 @@ export default {
                 endereco: this.endereco,
                 bairro: this.bairro,
                 cep: this.cep,
-                telefone: this.cep,
+                telefone: this.telefone,
                 email: this.email,
                 informacoes: this.informacoes,
                 municipioId: this.selectedMunicipio ? this.selectedMunicipio.id : null,
