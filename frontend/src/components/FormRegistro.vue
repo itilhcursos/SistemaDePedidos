@@ -45,6 +45,7 @@
                <i class="bi bi-clipboard2-check"></i> Cadastrar
             </button>
             <button
+                
                 class="btn btn-warning m-2"
                 type="submit"
                 v-on:click.prevent="cancelar"
@@ -66,7 +67,8 @@
                 senha:"",
                 role:"",
                 isInvalido:false,
-                erroMensagem: ""
+                erroMensagem: "",
+                
                 
             };
         },
@@ -103,7 +105,8 @@
             this.login = "",
             this.senha = "",
             this.role = ""
-            // this.$emit("cancelar", true);
+            
+            this.$emit("cancelar", true);
         },
         
     }

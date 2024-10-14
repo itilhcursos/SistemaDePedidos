@@ -58,7 +58,7 @@ public class ClienteControllerTest {
            "ele esta bem"
         );
           clienteRepository.save(cliente);
-     }
+    }
 
     void setUpMunicipio(){
         setUpEstado();

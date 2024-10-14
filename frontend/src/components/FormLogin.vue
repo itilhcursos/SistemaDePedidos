@@ -5,7 +5,7 @@
         <FormRegistro
           :propsRegistro="registroEscolhido"
           @cancelar="limpar"
-          @salvar_pedido="buscar"
+          
         />
       </div>
     </div>
@@ -96,7 +96,7 @@ export default {
       isInvalido: false,
       erroMensagem: "",
       formVisible: false,
-      
+      registroEscolhido: null
       
     };
   },
@@ -144,6 +144,7 @@ export default {
       this.formVisible = !this.formVisible;
     },
     limpar(){
+      this.registroEscolhido = null
       this.formVisible = !this.formVisible;
     }
   },
