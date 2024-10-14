@@ -314,19 +314,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.meu-select {
-  width: 100%;
-  font-size: 1.0em;
-  color: #252525;
-  background: #fbf4f4;
-  border-radius: 0.375rem;
-}
-
-.mini {
-  height: auto;
-  max-width: 2.5rem;
-  margin-right: 1rem;
-}
-</style>
