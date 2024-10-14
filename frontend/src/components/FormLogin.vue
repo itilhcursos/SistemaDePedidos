@@ -72,9 +72,9 @@ export default {
       if (this.login === "" || this.senha ==="") {
         return;
       }
-
+ 
       try{
-        const response = await axios.post("http://localhost:8080/auth/login", {
+        const response = await axios.post(import.meta.env.VITE_APP_URL_API + "/auth/login", {
             login: this.login,
             senha: this.senha,
           });
