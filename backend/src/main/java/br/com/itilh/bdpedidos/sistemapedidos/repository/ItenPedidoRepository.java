@@ -1,15 +1,11 @@
 package br.com.itilh.bdpedidos.sistemapedidos.repository;
 
 import java.math.BigInteger;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
+import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 
 @Repository
-public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
-
-    boolean existsByNomeRazaoSocial(String nomeRazaoSocial);
+public interface ItenPedidoRepository extends JpaRepository<ItemPedido, BigInteger> {
 
 }

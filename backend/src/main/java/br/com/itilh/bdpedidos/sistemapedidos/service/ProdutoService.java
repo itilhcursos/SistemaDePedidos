@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
@@ -64,5 +65,10 @@ public class ProdutoService {
     private Page<ProdutoDTO> toPageDTO(Page<Produto> entities){
         List<ProdutoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
         return new PageImpl<>(dtos,entities.getPageable(), entities.getTotalElements());
+    }
+
+    public Page<PedidoDTO> getTodos(Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTodos'");
     }
 }

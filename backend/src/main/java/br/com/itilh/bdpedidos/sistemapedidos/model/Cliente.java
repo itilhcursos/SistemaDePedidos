@@ -2,6 +2,10 @@ package br.com.itilh.bdpedidos.sistemapedidos.model;
 
 import java.math.BigInteger;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -64,6 +68,31 @@ public class Cliente {
 
     @Column(name="tx_informacoes")
     private String informacao;
+
+    public Page<ClienteDTO> getTodos(Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTodos'");
+    }
+
+    public ClienteDTO getporId(BigInteger id2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getporId'");
+    }
+
+    public ClienteDTO criarCliente(ClienteDTO dto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'criarCliente'");
+    }
+
+    public ClienteDTO alterarCliente(BigInteger id2, ClienteDTO novosDados) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'alterarCliente'");
+    }
+
+    public String apagar(BigInteger id2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'apagar'");
+    }
 
 
 }
