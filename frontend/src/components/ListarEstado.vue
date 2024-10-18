@@ -1,52 +1,44 @@
 <template>
   <div class="container">
+    <div class="header d-flex justify-content-between align-items-center">
+      <h3>Listagem de Estados</h3>
+      <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
+        <i class="bi bi-clipboard-plus"></i> Novo Estado
+      </button>
+    </div>
+
     <div class="row">
-      <div class="col-10">
-        <h3>ESTADOS</h3>
-      </div>
-      <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
-        </button>
-      </div>
-      <div class="row">
-        <div>
-          <FormEstado
-            v-if="formVisible"
-            :propsEstado="estadoEscolhido"
-            @cancelar="limpar"
-            @salvar_estado="buscarEstados"
-          />
-        </div>
+      <div>
+        <FormEstado
+          v-if="formVisible"
+          :propsEstado="estadoEscolhido"
+          @cancelar="limpar"
+          @salvar_estado="buscarEstados"
+        />
       </div>
     </div>
 
-    <table class="table table-dark table-striped" v-if="!formVisible">
-      <thead>
+    <table class="table table-striped table-hover mt-4" v-if="!formVisible">
+      <thead class="table-dark">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col" class="text-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="estado in listaEstados" :key="estado.id" scope="row">
-          <th>
-            {{ estado.id }}
-          </th>
-          <td>
-            {{ estado.nome }}
-          </td>
-          <td class="d-flex justify-content-end">
+        <tr v-for="estado in listaEstados" :key="estado.id">
+          <td>{{ estado.id }}</td>
+          <td>{{ estado.nome }}</td>
+          <td class="text-end">
             <button
-              class="btn btn-btn btn-primary m-2"
+              class="btn btn-primary m-1"
               @click="alterarEstado(estado)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-
             <button
-              class="btn btn-outline-danger m-2"
+              class="btn btn-danger m-1"
               @click="excluirEstado(estado.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
@@ -55,56 +47,44 @@
         </tr>
       </tbody>
     </table>
-  </div>
-  <div v-if="!formVisible">
-    <hr />
-    <div class="container">
-      <div class="row d-flex justify-content-center">
-        <div class="col-auto">
 
+    <div class="pagination-container" v-if="!formVisible">
+      <hr />
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <div class="pagination-controls d-flex align-items-center">
           <button
             v-for="pagina in totalPages"
             :key="pagina"
             @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
+            class="btn btn-outline-primary ms-1"
           >
             {{ pagina }}
           </button>
-
-
         </div>
-        <div class="col-auto">
+
+        <div class="d-flex align-items-center">
           <input
             type="text"
             v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
+            placeholder="Número da página"
+            class="form-control w-25 me-2"
           />
-        </div>
-        <div class="col-auto">
-          <select v-model="pageSize" class="form-select">
+          <select v-model="pageSize" class="form-select me-2">
             <option value="2">2</option>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
           </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="property" class="form-select">
+          <select v-model="property" class="form-select me-2">
             <option value="id">ID</option>
             <option value="nome">Nome</option>
           </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="direction" class="form-select">
+          <select v-model="direction" class="form-select me-2">
             <option value="ASC">Crescente</option>
             <option value="DESC">Decrescente</option>
           </select>
-        </div>
-        <div class="col-auto">
           <button @click.prevent="buscarEstados" class="btn btn-success">
-            <i class="bi bi-binoculars"></i>
-            Buscar
+            <i class="bi bi-binoculars"></i> Buscar
           </button>
         </div>
       </div>
@@ -112,10 +92,10 @@
   </div>
 </template>
 
-
 <script>
 import FormEstado from "./FormEstado.vue";
 import estadoService from "@/services/estadoService";
+
 export default {
   components: {
     FormEstado,
@@ -136,9 +116,18 @@ export default {
     async buscarEstados() {
       this.estadoEscolhido = null;
       this.formVisible = false;
-      const response = await estadoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
-      this.listaEstados = response.content;
-      this.totalPages = response.totalPages;   
+      try {
+        const response = await estadoService.listar(
+          this.pageNumber,
+          this.pageSize,
+          this.direction,
+          this.property
+        );
+        this.listaEstados = response.content;
+        this.totalPages = response.totalPages;
+      } catch (error) {
+        this.handleError(error);
+      }
     },
     limpar() {
       this.estadoEscolhido = null;
@@ -152,23 +141,25 @@ export default {
       this.formVisible = true;
     },
     async excluirEstado(id) {
-      try{
-          const response = await estadoService.apagar(id);
-          console.log(response);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
-          alert(error.message);
-        }
-      }     
-      this.buscarEstados();
+      try {
+        await estadoService.apagar(id);
+        this.buscarEstados();
+      } catch (error) {
+        this.handleError(error);
+      }
     },
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarEstados();
+    },
+    handleError(error) {
+      if (error.response.status === 403) {
+        alert("Usuário não identificado! Faça o login!!!");
+      } else if (error.response.status === 400) {
+        alert(error.response.data.mensagem);
+      } else {
+        alert(error.message);
+      }
     },
   },
   mounted() {
@@ -176,3 +167,30 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  margin-top: 20px;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.table {
+  border-radius: 12px; 
+  overflow: hidden;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.pagination-container {
+  margin-top: 20px;
+}
+
+.pagination-controls {
+  flex-wrap: wrap;
+}
+</style>

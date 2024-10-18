@@ -1,56 +1,43 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-10">
-        <h3>FORMAS DE PAGAMENTO</h3>
-      </div>
-      <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
-        </button>
-      </div>
-      <div class="row">
-        <div>
-          <FormFormaPagamento
-            v-if="formVisible"
-            :propsFormaPagamento="formaPagamentoEscolhida"
-            @cancelar="limpar"
-            @salvar_formaPagamento="buscarFormaPagamento"
-          />
-        </div>
-      </div>
+  <div class="container bg-dark text-white p-4 rounded">
+    <div class="header d-flex justify-content-between align-items-center mb-4">
+      <h3 class="text-primary">Listagem de Formas de Pagamento</h3>
+      <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
+        <i class="bi bi-clipboard-plus"></i> Nova Forma de Pagamento
+      </button>
     </div>
 
-    <table class="table table-dark table-striped" v-if="!formVisible">
-      <thead>
+    <div v-if="formVisible">
+      <FormFormaPagamento
+        :propsFormaPagamento="formaPagamentoEscolhida"
+        @cancelar="limpar"
+        @salvar_formaPagamento="buscarFormaPagamento"
+      />
+    </div>
+
+    <table class="table table-striped table-hover mt-4 text-white" v-if="!formVisible">
+      <thead class="table-dark">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
           <th scope="col">Ativo</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col" class="text-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
-          <th>
-            {{ formaPagamento.id }}
-          </th>
-          <td>
-            {{ formaPagamento.descricao }}
-          </td>
-          <td>
-            {{ formaPagamento.ativo }}
-          </td>
-          <td class="d-flex justify-content-end">
+        <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id">
+          <td>{{ formaPagamento.id }}</td>
+          <td>{{ formaPagamento.descricao }}</td>
+          <td>{{ formaPagamento.ativo }}</td>
+          <td class="text-end">
             <button
-              class="btn btn-btn btn-primary m-2"
+              class="btn btn-primary m-1"
               @click="alterarFormaPagamento(formaPagamento)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-
             <button
-              class="btn btn-outline-danger m-2"
+              class="btn btn-danger m-1"
               @click="excluirFormaPagamento(formaPagamento.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
@@ -59,63 +46,51 @@
         </tr>
       </tbody>
     </table>
-  </div>
-  <div v-if="!formVisible">
-    <hr />
-    <div class="container">
-      <div class="row d-flex justify-content-center">
-        <div class="col-auto">
 
+    <div class="pagination-container" v-if="!formVisible">
+      <hr />
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <div class="pagination-controls d-flex align-items-center">
           <button
             v-for="pagina in totalPages"
             :key="pagina"
             @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
+            class="btn btn-outline-primary ms-1"
           >
             {{ pagina }}
           </button>
-
-
         </div>
-        <div class="col-auto">
+
+        <div class="d-flex align-items-center">
           <input
-            type="text"
+            type="number"
             v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
+            placeholder="Número da página"
+            min="1"
+            class="form-control w-25 me-2"
           />
-        </div>
-        <div class="col-auto">
-          <select v-model="pageSize" class="form-select">
+          <select v-model="pageSize" class="form-select me-2">
             <option value="2">2</option>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
           </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="property" class="form-select">
+          <select v-model="property" class="form-select me-2">
             <option value="id">ID</option>
             <option value="descricao">Descrição</option>
           </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="direction" class="form-select">
+          <select v-model="direction" class="form-select me-2">
             <option value="ASC">Crescente</option>
             <option value="DESC">Decrescente</option>
           </select>
-        </div>
-        <div class="col-auto">
           <button @click.prevent="buscarFormaPagamento" class="btn btn-success">
-            <i class="bi bi-binoculars"></i>
-            Buscar
+            <i class="bi bi-binoculars"></i> Buscar
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
@@ -141,14 +116,11 @@ export default {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;
 
-      
       const response = await axios.get(
         `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
-      console.log(response.data);
       this.listaFormasPagamento = response.data.content;
       this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
     },
     limpar() {
       this.formaPagamentoEscolhida = null;
@@ -164,22 +136,21 @@ export default {
     async excluirFormaPagamento(id) {
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-    try{
-      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`,config);
-      console.log(response.data);
-    }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+        },
+      };
+      try {
+        await axios.delete(`http://localhost:8080/forma-pagamento/${id}`, config);
+        this.buscarFormaPagamento();
+      } catch (error) {
+        if (error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
           alert(error.message);
         }
-      } 
-      this.buscarFormaPagamento();
+      }
     },
     irPara(pagina) {
       this.pageNumber = pagina;
@@ -191,3 +162,34 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  margin-top: 20px;
+}
+
+.header h3 {
+  font-weight: bold;
+}
+
+.table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pagination-container {
+  margin-top: 20px;
+}
+
+.pagination-controls {
+  flex-wrap: wrap;
+}
+
+input[type="number"] {
+  max-width: 80px;
+}
+</style>

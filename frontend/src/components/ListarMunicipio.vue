@@ -1,60 +1,45 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-10">
-        <h3>Municípios</h3>
-      </div>
-      <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
-        </button>
-      </div>
-      <div class="row">
-        <div>
-          <FormMunicipio
-            v-if="formVisible"
-            :propsMunicipio="municipioEscolhido"
-            @cancelar="limpar"
-            @salvar_municipio="buscar"
-          />
-        </div>
-      </div>
+    <div class="header d-flex justify-content-between align-items-center mb-4">
+      <h3 class="text-primary">Listagem de Municípios</h3>
+      <button v-if="!formVisible" @click="novoMunicipio" class="btn btn-success">
+        <i class="bi bi-clipboard-plus"></i> Novo Município
+      </button>
     </div>
 
-    <table class="table table-dark table-striped" v-if="!formVisible">
-      <thead>
+    <div v-if="formVisible">
+      <FormMunicipio
+        :propsMunicipio="municipioEscolhido"
+        @cancelar="limpar"
+        @salvar_municipio="buscar"
+      />
+    </div>
+
+    <table class="table table-striped table-hover mt-4" v-if="!formVisible">
+      <thead class="table-dark">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome</th>
           <th scope="col">Entrega</th>
           <th scope="col">Estado</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col" class="text-end">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="municipio in listaMunicipios" :key="municipio.id" scope="row">
-          <th>
-            {{ municipio.id }}
-          </th>
-          <td>
-            {{ municipio.nome }}
-          </td>
-          <td>
-            {{ formatarEntrega(municipio.entrega) }}
-          </td>
-          <td>
-            {{ municipio.estadoNome }}
-          </td>
-          <td class="d-flex justify-content-end">
+        <tr v-for="municipio in listaMunicipios" :key="municipio.id">
+          <td>{{ municipio.id }}</td>
+          <td>{{ municipio.nome }}</td>
+          <td>{{ formatarEntrega(municipio.entrega) }}</td>
+          <td>{{ municipio.estadoNome }}</td>
+          <td class="text-end">
             <button
-              class="btn btn-btn btn-primary m-2"
+              class="btn btn-primary m-1"
               @click="alterarMunicipio(municipio)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-
             <button
-              class="btn btn-outline-danger m-2"
+              class="btn btn-danger m-1"
               @click="excluirMunicipio(municipio.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
@@ -63,63 +48,51 @@
         </tr>
       </tbody>
     </table>
-  </div>
-  <div v-if="!formVisible">
-    <hr />
-    <div class="container">
-      <div class="row d-flex justify-content-center">
-        <div class="col-auto">
 
+    <div class="pagination-container" v-if="!formVisible">
+      <hr />
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <div class="pagination-controls d-flex align-items-center">
           <button
             v-for="pagina in totalPages"
             :key="pagina"
             @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
+            class="btn btn-outline-primary ms-1"
           >
             {{ pagina }}
           </button>
-
-
         </div>
-        <div class="col-auto">
+
+        <div class="d-flex align-items-center">
           <input
-            type="text"
+            type="number"
             v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
+            placeholder="Número da página"
+            min="1"
+            class="form-control w-25 me-2"
           />
-        </div>
-        <div class="col-auto">
-          <select v-model="pageSize" class="form-select">
+          <select v-model="pageSize" class="form-select me-2">
             <option value="2">2</option>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
           </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="property" class="form-select">
+          <select v-model="property" class="form-select me-2">
             <option value="id">ID</option>
             <option value="nome">Nome</option>
           </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="direction" class="form-select">
+          <select v-model="direction" class="form-select me-2">
             <option value="ASC">Crescente</option>
             <option value="DESC">Decrescente</option>
           </select>
-        </div>
-        <div class="col-auto">
           <button @click.prevent="buscar" class="btn btn-success">
-            <i class="bi bi-binoculars"></i>
-            Buscar
+            <i class="bi bi-binoculars"></i> Buscar
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import FormMunicipio from "./FormMunicipio.vue";
@@ -149,14 +122,12 @@ export default {
       this.municipioEscolhido = null;
       this.formVisible = false;
       const response = await axios.get(
-        `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        `${this.url}/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
-      //console.log(response.data);
       this.listaMunicipios = response.data.content;
       this.totalPages = response.data.totalPages;
-      //console.log(this.totalPages);
     },
-    formatarEntrega(valor){
+    formatarEntrega(valor) {
       return Logico.toSimNao(valor);
     },
     limpar() {
@@ -171,32 +142,30 @@ export default {
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        },
+      };
+      try {
+        await axios.delete(`${this.url}/municipio/${id}`, config);
+        this.buscar();
+      } catch (error) {
+        this.handleError(error);
       }
-      try{
-          const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
-          console.log(response.data);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
-          alert(error.message);
-        }
-      }     
-      this.buscar();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscar();
+    },
+    handleError(error) {
+      if (error.response.status === 403) {
+        alert("Usuário não identificado! Faça o login!!!");
+      } else if (error.response.status === 400) {
+        alert(error.response.data.mensagem);
+      } else {
+        alert(error.message);
+      }
     },
   },
   mounted() {
@@ -204,3 +173,34 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  margin-top: 20px;
+}
+
+.header h3 {
+  font-weight: bold;
+}
+
+.table {
+  border-radius: 12px; /* Borda arredondada para a tabela */
+  overflow: hidden; /* Para evitar que o conteúdo transborde */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 123, 255, 0.1); /* Cor de fundo alternada */
+}
+
+.pagination-container {
+  margin-top: 20px;
+}
+
+.pagination-controls {
+  flex-wrap: wrap; /* Para permitir que os botões se movam para a linha seguinte, se necessário */
+}
+
+input[type="number"] {
+  max-width: 80px; /* Limitar largura do input de número */
+}
+</style>
