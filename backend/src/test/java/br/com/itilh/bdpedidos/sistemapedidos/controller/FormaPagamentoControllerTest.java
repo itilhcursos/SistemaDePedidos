@@ -1,8 +1,4 @@
-package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
-public class FormaPagamentoControllerTest {
-
-}
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class EstadoControllerTest {
+public class FormaPagamentoControllerTest {
 
     @Autowired
     MockMvc mockMvc;

@@ -1,9 +1,6 @@
-<script setup>
-import TelaInicial from "../components/TelaInicial.vue";
-</script>
-
 <template>
   <main>   
+    <h1>Sistema de Vendas</h1>
     <TelaInicial msg="Sys" msg2="VENDAS "/>
   </main>
 </template>
