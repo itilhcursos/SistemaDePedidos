@@ -22,19 +22,21 @@ defineProps({
     </div>
   </div>
 </template>
+
 <style scoped>
-/* Definindo uma paleta de cores mais suave e uma tipografia moderna */
+/* Paleta de cores com tons suaves e elegante */
 :root {
-  --primary-color: #00bfa6;
-  --secondary-color: #f7f7f7;
-  --accent-color: #ff6f61;
-  --font-family: 'Poppins', sans-serif;
+  --primary-color: #00796b;
+  --secondary-color: #fafafa;
+  --accent-color: #d32f2f;
+  --font-family: 'Inter', sans-serif;
+  --transition-duration: 0.4s;
 }
 
 body {
-  background-color: var(--secondary-color);
   margin: 0;
   font-family: var(--font-family);
+  background-color: var(--secondary-color);
 }
 
 .container {
@@ -42,72 +44,79 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: var(--secondary-color);
 }
 
 .content {
   text-align: center;
   padding: 2rem;
-  background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s ease-out;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.8s ease;
+  max-width: 400px;
+  width: 100%;
 }
 
 .title {
   color: var(--primary-color);
-  font-size: 4rem;
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-size: 3.5rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
-  transition: color 0.3s ease;
+  transition: color var(--transition-duration), transform var(--transition-duration);
 }
 
 .subtitle {
   color: var(--accent-color);
-  font-size: 2.5rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-  transition: color 0.3s ease;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  transition: color var(--transition-duration), transform var(--transition-duration);
 }
 
 .image-container {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
+  border: 4px solid var(--primary-color);
+  border-radius: 50%;
+  overflow: hidden;
+  transition: border var(--transition-duration), transform var(--transition-duration);
 }
 
 .image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  border-radius: 50%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+  transition: transform var(--transition-duration), box-shadow var(--transition-duration);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.image:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-}
-
-/* Animação de entrada suave */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Animação ao passar o mouse sobre os títulos */
+/* Hover effects suaves */
 .title:hover, .subtitle:hover {
   color: var(--accent-color);
+  transform: scale(1.05);
+}
+
+.image-container:hover {
+  transform: scale(1.1);
+  border-color: var(--accent-color);
+}
+
+.image-container:hover .image {
+  transform: scale(1.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Animação de entrada */
+@keyframes slideIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 </style>
-
-
