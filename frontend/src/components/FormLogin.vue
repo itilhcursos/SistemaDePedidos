@@ -144,7 +144,7 @@ export default {
       this.formVisible = !this.formVisible;
     },
     limpar(){
-      this.registroEscolhido = null
+     
       this.formVisible = !this.formVisible;
     }
   },

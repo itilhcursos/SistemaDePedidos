@@ -1,6 +1,9 @@
 package br.com.itilh.bdpedidos.sistemapedidos.controller;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
+import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
@@ -23,6 +27,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.PedidoRepository;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -49,17 +54,18 @@ public class PedidoControllerTest {
 
 
     void setUpPedido(){
+        List<ItemPedido>itens = new ArrayList<ItemPedido>();
+        // ItemPedido item1 = new ItemPedido();
         Pedido p1 = new Pedido(
             BigInteger.ONE,
             clienteRepository.getReferenceById(BigInteger.ONE),
             formaPagamentoRepository.getReferenceById(BigInteger.ONE),
-            1018,
-            "18/08/18",
-            "18/08/18",
-            "18/08/18",
+            BigInteger.ONE,
+            LocalDate.of(2020, 1, 8),
+            LocalDate.of(2020, 1, 8),
+            LocalDate.of(2020, 1, 8),
+            itens
             
-            
-
         );
         pedidoRepository.save(p1);
     }

@@ -8,11 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.CnpjDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.CpfDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.MunicipioDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
@@ -44,12 +42,31 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
     // }
 
      private void validar(ClienteDTO origem) {
-        // se já existe municipio com mesmo nome e no mesmo estado
-        if(repositorio.existsByCpf(origem.getCpf()))
-          throw new CpfDuplicadoException(origem.getCpf());
-
-        if(repositorio.existsByCnpj(origem.getCnpj()))
-          throw new CnpjDuplicadoException(origem.getCnpj());
+        
+        if( origem.getCpf() != null &&  origem.getCpf() != "" && repositorio.existsByCpf(origem.getCpf())){
+            if(origem.getId() == null){    
+                throw new CpfDuplicadoException(origem.getCpf());
+            }else{
+                Cliente c = repositorio.getReferenceById(origem.getId());
+                if (!c.getCpf().equals(origem.getCpf())) {
+                    throw new CpfDuplicadoException(origem.getCpf());
+                }
+            }
+           
+        }
+         
+        if(origem.getCnpj() != null && origem.getCnpj() != "" && repositorio.existsByCnpj(origem.getCnpj())){ //isEmpty verificar se uma String está vazia  utilizando o método isEmpty().
+            if(origem.getId() == null){
+                throw new CnpjDuplicadoException(origem.getCnpj());
+            }else{
+                Cliente c = repositorio.getReferenceById(origem.getId());
+                if(!c.getCnpj().equals(origem.getCnpj())){
+                    throw new CnpjDuplicadoException(origem.getCnpj());
+                }
+            }
+            
+        }
+          
           
     }
 

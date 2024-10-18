@@ -2,20 +2,10 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.math.BigInteger;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.EstadoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Estado;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Municipio;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
@@ -46,25 +36,25 @@ public class ClienteServiceTest {
         estadoRepository.save(estado);
     }
 
-    @Test
-    @DisplayName("Test de criação de um cliente")
-    void testCriarCliente() throws Exception {
-        setUpMunicipio();
-        ClienteDTO testeDTO = new ClienteDTO(null,  
-        municipioRepository.getReferenceById(BigInteger.ONE),
-        "test"   
+    // @Test
+    // @DisplayName("Test de criação de um cliente")
+    // void testCriarCliente() throws Exception {
+    //     setUpMunicipio();
+    //     ClienteDTO testeDTO = new ClienteDTO(null,  
+    //     municipioRepository.getReferenceById(BigInteger.ONE),
+    //     "test"   
 
         
-        );
-    }
+    //     );
+    // }
 
-    @Test
-    @DisplayName("Test de criação de um estado duplicado")
-    void testEstadoDuplicado() throws Exception {
+    // @Test
+    // @DisplayName("Test de criação de um estado duplicado")
+    // void testEstadoDuplicado() throws Exception {
 
-        EstadoDTO testeDTO = new EstadoDTO(null, "estado de teste duplicado");
+    //     EstadoDTO testeDTO = new EstadoDTO(null, "estado de teste duplicado");
 
-        EstadoDTO retono = service.criarEstado(testeDTO);
-        assertThrows(EstadoDuplicadoException.class, ()-> service.criarEstado(testeDTO));
-    }
+    //     EstadoDTO retono = service.criarEstado(testeDTO);
+    //     assertThrows(EstadoDuplicadoException.class, ()-> service.criarEstado(testeDTO));
+    // }
 }

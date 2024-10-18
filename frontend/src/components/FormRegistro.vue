@@ -14,12 +14,13 @@
             />
         </div>
         <div>
-            <label class="form-label">Senha</label>
+            <label for="password" class="form-label">Senha</label>
             <input 
             class="form-control"
             type="password"
             v-model="senha"
             placeholder="senha"
+            
             />
         </div>
         <div>
@@ -100,14 +101,18 @@
             },
 
 
+            cancelar(){
+                        this.login = "";
+                        this.senha = "";
+                        this.role = "";
+                        console.log("cancelar")
+                        this.$emit("cancelar", true);
+                        
+            },
+
+
         },
-        cancelar(){
-            this.login = "",
-            this.senha = "",
-            this.role = ""
-            
-            this.$emit("cancelar", true);
-        },
+        
         
     }
 
