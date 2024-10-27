@@ -202,7 +202,7 @@
           {{ getAcao }}
         </button>
         <button
-          class="btn btn-warning m-2 "
+          class="btn btn-warning m-2"
           type="submit"
           v-on:click.prevent="cancelar"
         >
@@ -292,11 +292,25 @@ export default {
       };
     },
     async salvarPedido() {
-      // if (this.clienteNomeRazaoSocial === "") {
-      //   this.isInvalido = true;
-      //   this.mensagem = "O Nome deve ser preenchido!!";
-      //   return;
-      // }
+      const camposObrigatorios = [
+        { campo: this.numero, mensagem: "O Número deve ser preenchido!!" },
+        { campo: this.selectedFormaPagamento, mensagem: "A forma de Pagamento deve ser preenchida!!" },
+        { campo: this.dataCompra, mensagem: "A Data de Compra deve ser preenchida!!" },
+        { campo: this.dataEntrega, mensagem: "A Data de Entrega deve ser preenchida!!" },
+        { campo: this.dataPagamento, mensagem: "A Data de Pagamento deve ser preenchida!!" },
+        { campo: this.clienteNomeRazaoSocial, mensagem: "O Cliente deve ser preenchido!!" },
+        
+      ];
+
+      for (let { campo, mensagem } of camposObrigatorios) {
+        if (campo === "") {
+          this.isInvalido = true;
+          this.mensagem = mensagem;
+          console.log(`Erro no campo: ${mensagem}`);
+          return;
+        }
+      }
+
       this.isInvalido = false;
       try {
         if (this.id === "") {

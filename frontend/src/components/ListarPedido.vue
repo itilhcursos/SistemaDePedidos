@@ -67,7 +67,7 @@
             </button>
             <button
               class="btn btn-outline-danger m-2"
-              @click.prevent="excluirPedido(pedido.id)"
+              @click="excluirPedido(pedido.id)"
             >
               <i class="bi bi-clipboard2-minus"></i>
               excluir

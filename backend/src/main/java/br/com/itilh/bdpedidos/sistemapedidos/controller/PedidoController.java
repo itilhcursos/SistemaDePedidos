@@ -49,7 +49,7 @@ public class PedidoController {
         return pedidoService.alterarPedido(id, origem);
     }
 
-    @DeleteMapping("/pedidos/{id}")
+    @DeleteMapping("/pedido/{id}")
     public String deletePedido(@PathVariable BigInteger id) throws Exception{
         return pedidoService.deletePorId(id);
     }
