@@ -294,11 +294,11 @@ export default {
     async salvarPedido() {
       const camposObrigatorios = [
         { campo: this.numero, mensagem: "O Número deve ser preenchido!!" },
-        { campo: this.selectedFormaPagamento, mensagem: "A forma de Pagamento deve ser preenchida!!" },
+        // { campo: this.selectedFormaPagamento, mensagem: "A forma de Pagamento deve ser preenchida!!" },
         { campo: this.dataCompra, mensagem: "A Data de Compra deve ser preenchida!!" },
         { campo: this.dataEntrega, mensagem: "A Data de Entrega deve ser preenchida!!" },
         { campo: this.dataPagamento, mensagem: "A Data de Pagamento deve ser preenchida!!" },
-        { campo: this.clienteNomeRazaoSocial, mensagem: "O Cliente deve ser preenchido!!" },
+       // { campo: this.clienteNomeRazaoSocial, mensagem: "O Cliente deve ser preenchido!!" },
         
       ];
 
