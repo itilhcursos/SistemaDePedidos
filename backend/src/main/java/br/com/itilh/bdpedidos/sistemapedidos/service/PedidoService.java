@@ -24,13 +24,12 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
     public PedidoDTO getPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")));
-    }  
-
-    private void validar (PedidoDTO dto) throws Exception {
-
     }
 
-    public PedidoDTO criar(PedidoDTO entityDTO) throws Exception {  
+    private void validar (PedidoDTO dto) throws Exception {
+    }
+
+    public PedidoDTO criarPedido(PedidoDTO entityDTO) throws Exception {  
         
         validar(entityDTO);  
         try{    
@@ -40,7 +39,7 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
         }
     }
 
-    public PedidoDTO alterar(BigInteger id, PedidoDTO novosDados) throws Exception {
+    public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
 
         validar(novosDados); 
         try{     
@@ -53,7 +52,5 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
     public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
-    }  
-
-
+    } 
 }
