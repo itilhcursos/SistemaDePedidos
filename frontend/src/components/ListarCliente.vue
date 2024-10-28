@@ -15,7 +15,7 @@
             v-if="formVisible"
             :propsCliente="clienteEscolhido"
             @cancelar="limpar"
-            @salvar_cliente="buscarClientes"
+            @salvar="buscarClientes"
           />
         </div>
       </div>
@@ -31,7 +31,6 @@
           <th scope="col">Telefone</th>
           <th scope="col">Endereço</th>
           <th scope="col">Bairro</th>
-          <!-- <th scope="col">CEP</th> -->
           <th scope="col">Nome Municipio</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
@@ -59,9 +58,6 @@
           <td>
             {{ cliente.bairro }}
           </td>
-          <!-- <td>
-            {{ cliente.cep }}
-          </td> -->
           <td>
             {{ cliente.municipioNome }}
           </td>
@@ -154,7 +150,6 @@ export default {
   data() {
     return {
       listaClientes: [],
-      clienteEscolhido: null,
       formVisible: false,
       pageNumber: 1,
       pageSize: 10,
@@ -180,7 +175,7 @@ export default {
       novoCliente() {
         this.formVisible = !this.formVisible;
       },
-      alterarCliente(cliente) {
+      alterarCliente(cliente){
         this.clienteEscolhido = cliente;
         this.formVisible = true;
       },

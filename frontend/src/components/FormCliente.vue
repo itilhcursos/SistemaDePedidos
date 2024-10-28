@@ -15,7 +15,7 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">NOME</label>
+        <label class="form-label">NOME/RAZÃO SOCIAL</label>
         <input
           class="form-control"
           type="text"
@@ -114,9 +114,14 @@
         </select>
       </div>
 
+      <div class="mb-3">
+        <label class="form-label">Municipio ID</label>
+        <input class="form-control" type="text" v-model="municipioId" placeholder="Municipio ID" />
+      </div>
+
         <div class="mb-3">
           <label class="form-label">Município</label>
-          <select v-model="municipioSelected" class="form-select">
+          <select v-model="municipioId" class="form-select">
               <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
                 {{ municipio.nome }}
               </option>
@@ -131,7 +136,7 @@
         <button
           class="btn btn-primary m-2"
           type="submit"
-          v-on:click.prevent="salvarCliente"
+          @click.prevent="salvar"
         >
         <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
@@ -179,70 +184,40 @@ export default {
     };
   },
   methods: {
-    async salvarCliente() {
-      if (this.nomeRazaoSocial === "") {
+    async salvar() {
+      if (!this.nomeRazaoSocial) {
         this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
+        this.mensagem = "Nome/Razão Social deve ser preenchido!!";
         return;
       }
+        this.isInvalido = false;
       
-      this.isInvalido = false;
-      
-
-      
-
-    try {
-                if (this.id === "") {
+            try {
+                if (!this.id) {
                     const response = await clienteService.criar(this.getDados());
-                    this.listaClientes = response.data;
+                    this.listaClientes = response;
                 } else {
                     const response = await clienteService.atualizar(
                         this.id,
                         this.getDados()
                     );
-                    this.listaClientes = response.data;
+                    this.listaClientes = response;
                 }
-        this.$emit("salvar_cliente", {
-              id: this.id,
-              nomeRazaoSocial: this.nomeRazaoSocial,
-              cnpj: this.cnpj,
-              cpf: this.cpf,
-              telefone: this.telefone,
-              endereco: this.endereco,
-              bairro: this.bairro,
-              cep: this.cep,
-              email: this.email,
-              informacao: this.informacao,
-              ativo: this.ativo,
-              municipioId: this.municipioId,
-              municipioNome: this.municipioNome,
-              municipioSelected: this.municipioSelected
-      });
-
-              this.id = "";
-              this.nomeRazaoSocial = "";
-              this.cnpj= "";
-              this.cpf= "";
-              this.telefone= "";
-              this.endereco= "";
-              this.bairro= "";
-              this.cep= "";
-              this.email= "";
-              this.informacao= "";
-              this.ativo="";
-              this.municipioId= "";
-              this.municipioNome= "";
+                this.$emit("salvar");
+                this.limparFormulario();
+            
+        
     }catch(error){
      console.log(error);
       this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'ClienteDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'MunicipioDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;          
+       }else if(error.response.status === 400 &&
+                error.response.data.exception === 'ClienteDuplicadoException'){
+         this.mensagem = error.response.data.mensagem;
+       }else if(error.response.status === 400 &&
+                error.response.data.exception === 'MunicipioDuplicadoException'){
+         this.mensagem = error.response.data.mensagem;          
       }else{
         this.mensagem = error.message;
       }
@@ -262,7 +237,9 @@ export default {
               email: this.email,
               informacao: this.informacao,
               ativo: this.ativo,
-              municipioId: this.municipioId
+              municipioId: this.municipioId,
+              municipioNome: this.municipioNome,
+              
             };
           },
   
@@ -291,7 +268,8 @@ export default {
       this.email = this.propsCliente.email;
       this.informacao = this.propsCliente.informacao;
       this.ativo = this.propsCliente.ativo;
-      this.municipioSelected = this.propsCliente.municipioId;
+      this.municipioId = this.propsCliente.municipioId;
+      this.municipioNome = this.propsCliente.municipioNome;
       
     }
     this.buscarMunicipios();
@@ -311,239 +289,3 @@ export default {
   },
 };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

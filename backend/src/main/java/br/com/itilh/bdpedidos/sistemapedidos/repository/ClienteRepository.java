@@ -9,21 +9,24 @@ import org.springframework.stereotype.Repository;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 
-// @Repository
-// public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
-
-        
-//     boolean existsByNomeRazaoSocial(String nomeRazaoSocial);
-
-// }
 
 
 @Repository
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
 
-    Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
+    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);
 
-    boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger id);
 
-    boolean existsByNomeRazaoSocial(String nomeRazaoSocial);
+
+    boolean existsByCpf(String cpf);
+
+    boolean existsByCnpj(String cnpj);
+
+
+
+    
+
+
+
+    
 }

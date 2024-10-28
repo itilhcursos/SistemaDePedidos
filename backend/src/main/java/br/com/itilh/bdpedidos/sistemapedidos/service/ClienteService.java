@@ -9,7 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.CnpjDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.CpfDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
@@ -28,16 +29,33 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
             () -> new Exception("ID inválido.")));
     }
 
-   
-
-         private void validar (ClienteDTO dto) throws Exception {
-
+    private void validar(ClienteDTO origem) {
         
-         if(repositorio.existsByNomeRazaoSocial(dto.getNomeRazaoSocial()))   
-             throw new ClienteDuplicadoException(dto.getNomeRazaoSocial());
+        if( origem.getCpf() != null &&  origem.getCpf() != "" && repositorio.existsByCpf(origem.getCpf())){
+            if(origem.getId() == null){    
+                throw new CpfDuplicadoException(origem.getCpf());
+            }else{
+                Cliente c = repositorio.getReferenceById(origem.getId());
+                if (!c.getCpf().equals(origem.getCpf())) {
+                    throw new CpfDuplicadoException(origem.getCpf());
+                }
+            }
+        }
+         
+        if(origem.getCnpj() != null && origem.getCnpj() != "" && repositorio.existsByCnpj(origem.getCnpj())){
+            if(origem.getId() == null){
+                throw new CnpjDuplicadoException(origem.getCnpj());
+            }else{
+                Cliente c = repositorio.getReferenceById(origem.getId());
+                if(!c.getCnpj().equals(origem.getCnpj())){
+                    throw new CnpjDuplicadoException(origem.getCnpj());
+                }
+            }   
+        }    
+    }
 
-     }
 
+    
      public ClienteDTO criarCliente(ClienteDTO entityDTO) throws Exception {  
          
          try{    
@@ -47,17 +65,13 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
          }
      }
 
-     public ClienteDTO alterarCliente(BigInteger id, ClienteDTO novosDados) throws Exception {
-
-         validar(novosDados);
-         if(repositorio.existsByNomeRazaoSocial(novosDados.getNomeRazaoSocial()))   
-             throw new ClienteDuplicadoException(novosDados.getNomeRazaoSocial());
-            
-         try{     
-          return toDTO(repositorio.save(toEntity(novosDados)));
-         }catch(Exception e){
+     public ClienteDTO alterarCliente(BigInteger id, ClienteDTO origem) throws Exception {
+        validar(origem);
+        try{     
+         return toDTO(repositorio.save(toEntity(origem)));
+        }catch(Exception e){
             throw new Exception("Alteração não foi realizada.");
-         }                                   
+        }                                   
     }
 
      public String deletePorId(BigInteger id) throws Exception {

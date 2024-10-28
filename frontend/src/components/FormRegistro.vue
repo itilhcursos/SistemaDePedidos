@@ -1,12 +1,12 @@
 <template>
     <div class="container">
         <div class="row">
-            <h4 class="p-1 mb-1 bg-success text-white">cadastrar</h4>
+            <h4 class="p-1 mb-1 bg-success text-white">Cadastro</h4>
         </div>
         <hr>
         <div>
             <label class="form-label">Usuário</label>
-            <input class="form-control" type="text" v-model="login" placeholder="Insira seu nome de usuario" />
+            <input class="form-control" type="text" v-model="login" placeholder="Insira seu nome de usuário" />
         </div>
         <div>
             <label class="form-label">Senha</label>
@@ -15,8 +15,8 @@
         <div>
             <label class="form-label">Permissões do Usuário</label>
             <select v-model="role" class="form-select">
-                <option value="0">ADMIN</option>
-                <option value="1">USER</option>
+                <option value="0">Admnistrador</option>
+                <option value="1">Usuário</option>
             </select>
         </div>
 
@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         async registrar() {
-            // Validação de campos vazios
+
             if (this.login === "" || this.senha === "" || this.role === "") {
                 this.isInvalido = true;
                 this.erroMensagem = "Todos os campos são obrigatórios.";
@@ -60,7 +60,7 @@ export default {
 
             try {
                 // Enviando os dados para o servidor
-                const response = await axios.post("http://localhost:8080/registro", {
+                const response = await axios.post("http://localhost:8080/auth/registro", {
                     login: this.login,
                     senha: this.senha,
                     role: this.role,
@@ -71,13 +71,14 @@ export default {
 
                 // Armazenando dados
                 localStorage.setItem('login', dados.login);
+                localStorage.setItem('senha', dados.senha);
                 localStorage.setItem('role', dados.role);
 
                 // Redireciona para pagina principal
                 this.$router.push({ path: '/' }).then(() => { this.$router.go(0) });
 
             } catch (error) {
-                
+
                 this.isInvalido = true;
                 this.erroMensagem = error.response?.data?.mensagem || "Erro ao registrar o usuário.";
             }
