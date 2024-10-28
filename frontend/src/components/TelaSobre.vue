@@ -8,83 +8,94 @@ import SupportIcon from './icons/IconSupport.vue'
 </script>
 
 <template>
-  <SobreItem class="n1">
-    <template #icon>
-      <DocumentationIcon />
-    </template>
-    <template #heading>Orientações</template>
+  <div class="sobre-container">
+    <SobreItem class="n1">
+      <template #icon>
+        <DocumentationIcon />
+      </template>
+      <template #heading>Orientações</template>
+      <p>
+        Navegação intuitiva para uma experiência de usuário excepcional.
+        Oferecemos descrições detalhadas dos produtos, ajudando na sua decisão de compra.
+        Explore nossas opções de pagamento seguras e diversificadas.
+        Acesse <a href="/">Orientações</a> para mais informações.
+      </p>
+    </SobreItem>
 
-    <p>
-      Navegação intuitiva e fácil de usar. <br>
-      <br>
-      Descrições detalhadas para ajudar os clientes a tomar uma decisão de compra.
-      <br>
-      Pagamento seguros e variados para atender às preferências dos clientes.
-      <br>
-      Acesse e veja mais <a href="/">Orientações.com.br</a>
+    <SobreItem>
+      <template #icon>
+        <ToolingIcon />
+      </template>
+      <template #heading>Ferramentas</template>
+      <p>
+        Utilize plataformas de e-commerce como Shopify, Magento ou WooCommerce.
+        Integre gateways de pagamento como PayPal e PagSeguro, além de sistemas de gestão de estoque e CRM.
+        Aproveite também ferramentas de marketing digital, como Google Analytics e Facebook Ads.
+      </p>
+    </SobreItem>
 
-    </p>
-  </SobreItem>
+    <SobreItem>
+      <template #icon>
+        <EcosystemIcon />
+      </template>
+      <template #heading>Ecosistema</template>
+      <p>
+        Sua loja virtual é suportada por plataformas robustas, onde os produtos são exibidos e os pedidos são
+        processados.
+        Opções populares incluem Shopify, WooCommerce e Magento.
+      </p>
+    </SobreItem>
 
-  <SobreItem>
-    <template #icon>
-      <ToolingIcon />
-    </template>
-    <template #heading>Ferramentas</template>
+    <SobreItem>
+      <template #icon>
+        <CommunityIcon />
+      </template>
+      <template #heading>Comunidade</template>
+      <p>
+        Junte-se à Comunidade Sys Vendas em <a href="/">SysVendas.com.br</a>.
+        Interaja com outros membros, compartilhe experiências e obtenha feedback sobre produtos.
+        Participe de fóruns, grupos em redes sociais e muito mais!
+      </p>
+    </SobreItem>
 
-    Plataforma de e-commerce (ex: Shopify, Magento, WooCommerce).
-    <br>
-    Gateway de pagamento (ex: PayPal, PagSeguro).
-    <br>
-    Sistema de gestão de estoque.
-    CRM (Customer Relationship Management).
-    <br>
-    Ferramentas de marketing digital (ex: Google Analytics, Facebook Ads)
-    e muitas outras.
-  </SobreItem>
-
-  <SobreItem>
-    <template #icon>
-      <EcosystemIcon />
-    </template>
-    <template #heading>Ecosistema</template>
-
-    Plataforma de e-commerce: é a base da loja virtual, onde os produtos são exibidos,
-    os pedidos são processados e os pagamentos são realizados. Existem diversas opções de
-    plataformas disponíveis, como Shopify, WooCommerce e Magento.
-    <br>
-    Design e usabilidade do site: uma boa experiência do usuário é essencial para atrair e reter clientes.
-    O design do site, a navegação fácil e a responsividade são aspectos importantes a serem considerados.
-    Acesse e saiba mais sobre o ecossistema do Sys Vendas.
-  </SobreItem>
-
-  <SobreItem>
-    <template #icon>
-      <CommunityIcon />
-    </template>
-    <template #heading>Comunidade</template>
-
-    Acesse e interaja com a Comunidade do <a href="/">Sys Vendas</a>
-    Os membros desta comunidade interagem entre si, compartilham experiências, dicas, avaliações de produtos,
-    feedbacks, além de tirarem dúvidas uns dos outros. A loja online pode criar um espaço específico para esta
-    comunidade,
-    como fóruns de discussão, grupos em redes sociais, e-mails exclusivos, entre outros.
-  </SobreItem>
-
-  <SobreItem>
-    <template #icon>
-      <SupportIcon />
-    </template>
-    <template #heading>Suporte</template>
-
-    Tenha o Suporte do Sys Vendas, pelas Redes Sociais, facebook, whatsapp, instagram e outros. <br>
-    Tenha acesso tambem pelo Numero de Contato (27) 99229-6187.
-  </SobreItem>
+    <SobreItem>
+      <template #icon>
+        <SupportIcon />
+      </template>
+      <template #heading>Suporte</template>
+      <p>
+        O suporte Sys Vendas está ao seu alcance! Entre em contato via redes sociais (Facebook, WhatsApp, Instagram)
+        ou ligue para (27) 99229-6187 ou (27) 3268-1404 para assistência imediata.
+      </p>
+    </SobreItem>
+  </div>
 </template>
 
 <style scoped>
-body {
-  color: var();
+.sobre-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
 
+p {
+  color: #333;
+  line-height: 1.6;
+}
+
+
+.n1 {
+  border: 1px solid rgba(0, 114, 255, 0.5);
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .sobre-container {
+    padding: 10px;
+  }
 }
 </style>
