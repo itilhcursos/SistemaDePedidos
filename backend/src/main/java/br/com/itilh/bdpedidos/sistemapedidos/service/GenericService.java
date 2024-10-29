@@ -19,6 +19,13 @@ public class GenericService<T,D> {
 
     private Type t, d;
 
+    @Autowired
+    public void configureMapper(ModelMapper mapper) {
+        mapper.getConfiguration().setPropertyCondition(context -> 
+            !(context.getSource() instanceof org.hibernate.collection.spi.PersistentBag)
+        );
+    }    
+
     public GenericService() {
         super();
         t = ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];

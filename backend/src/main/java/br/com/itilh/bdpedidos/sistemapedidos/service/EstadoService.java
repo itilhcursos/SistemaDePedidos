@@ -22,7 +22,7 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
     public Page<EstadoDTO> getTodos(Pageable pageable ){
         return toPageDTO(repositorio.findAll(pageable));
     }
-
+  
     public EstadoDTO getPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")));

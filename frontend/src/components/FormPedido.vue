@@ -171,10 +171,23 @@ export default {
 
     getDados() {
       return {
-        id: this.id,
-        nome: this.nome,
+        id: this.id || null,
+        clienteId: this.selectedCliente ? this.selectedCliente.id : null,
+        clienteNomeRazaoSocial: this.selectedCliente.nomeRazaoSocial,
+        formaPagamentoId: this.selectedFormaPagamento ? this.selectedFormaPagamento.id : null,
+        formaPagamentoDescricao: this.selectedFormaPagamento.descricao,
+        numero: this.numero,
+        dataCompra: this.dataCompra,
+        dataEntrega: this.dataEntrega,
+        dataPagamento: this.dataPagamento,
+        itens: this.itens,
       };
     },
+    limparMensagemErro() {
+    this.isInvalido = false;
+    this.mensagem = "";
+  },
+  
     async salvar() {
       console.log(this.selectedCliente, this.selectedProduto);
        if (this.nome === "") {

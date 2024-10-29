@@ -64,9 +64,7 @@ public class EstadoController {
     }
 
     @PutMapping("/estado/{id}")
-    public EstadoDTO alterarEstado(@PathVariable BigInteger id, 
-                                @RequestBody EstadoDTO novosDados) throws Exception {
-
+    public EstadoDTO alterarEstado(@PathVariable BigInteger id, @RequestBody EstadoDTO novosDados) throws Exception {
         return estadoService.alterarEstado(id, novosDados);
     }
 
