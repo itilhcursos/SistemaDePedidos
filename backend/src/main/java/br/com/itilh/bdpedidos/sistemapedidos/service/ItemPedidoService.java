@@ -25,11 +25,11 @@ public Page<ItemPedidoDTO> listarItemPedidos(Pageable pageable){
      return toPageDTO(itemPedidoRepository.findAll(pageable));
 }
 
- public Page<ItemPedidoDTO> listarItemPedidoPorPedidoId(BigInteger id, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findBypedidoId(id, pageable));
+ public Page<ItemPedidoDTO> listarItemPedidoPorPedidoId(Pedido pedidoId, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findBypedidoId(pedidoId, pageable));
     }
-    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoId(BigInteger id, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findByprodutoId(id, pageable));
+    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoId(Produto produtoId, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByprodutoId(produtoId, pageable));
     }
 
     public Page<ItemPedidoDTO> listarItemPedidoPorProdutoNome(String nome, Pageable pageable) {

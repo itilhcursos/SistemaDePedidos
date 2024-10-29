@@ -123,7 +123,7 @@ assertNull(itemPedidoDTO);
     @Test
     @DisplayName("teste de listar itemPedido por pedido id")
     void testListarItemPedidoPorPedidoId() throws Exception{
-        Page<ItemPedidoDTO> itemPedidoList = itemPedidoService.listarItemPedidoPorPedidoId(BigInteger.ONE, null);
+        Page<ItemPedidoDTO> itemPedidoList = itemPedidoService.listarItemPedidoPorPedidoId(pedidoRepository.getReferenceById(BigInteger.ONE), null);
     
         assertEquals(BigInteger.ONE, itemPedidoList);
         ItemPedidoDTO itemPedido1 = null ;
@@ -138,7 +138,7 @@ assertNull(itemPedidoDTO);
     @Test
     @DisplayName("teste de listar itemPedido por produto id")
     void testListarItemPedidoPorProdutoId()throws Exception {
-        Page<ItemPedidoDTO> itemPedidoList = itemPedidoService.listarItemPedidoPorProdutoId(BigInteger.ONE, null);
+        Page<ItemPedidoDTO> itemPedidoList = itemPedidoService.listarItemPedidoPorProdutoId(produtoRepository.getReferenceById(BigInteger.ONE), null);
         assertEquals(BigInteger.ONE, itemPedidoList);
         ItemPedidoDTO itemPedido1 = null ;
         for(ItemPedidoDTO itemPedido : itemPedidoList){
