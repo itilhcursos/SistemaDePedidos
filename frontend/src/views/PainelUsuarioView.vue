@@ -1,12 +1,11 @@
-
 <script setup>
-import ListarEstado from '../components/ListarEstado.vue'
+    import PainelUsuario from '@/components/PainelUsuario.vue';
 </script>
 
 <template>
- <main>
-   <ListarEstado/>
- </main>
+    <main>
+      <PainelUsuario/>
+    </main>
 </template>
 
 <style scoped>
@@ -21,5 +20,4 @@ import ListarEstado from '../components/ListarEstado.vue'
     display: block;
     width: 92%;
   }
-
 </style>

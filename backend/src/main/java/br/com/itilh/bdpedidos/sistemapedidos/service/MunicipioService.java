@@ -17,48 +17,46 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
 
     @Autowired
-    private MunicipioRepository repository;
+    private MunicipioRepository repositorio;
 
 
     public Page<MunicipioDTO> listarMunicipios(Pageable pageable) {
-        return toPageDTO(repository.findAll(pageable));
+        return toPageDTO(repositorio.findAll(pageable));
     }
 
     public Page<MunicipioDTO> listarMunicipiosPorEstadoId(BigInteger id, Pageable pageable) {
-        return toPageDTO(repository.findByEstadoId(id, pageable));
+        return toPageDTO(repositorio.findByEstadoId(id, pageable));
     }
 
     public Page<MunicipioDTO> listarMunicipiosPorEstadoNome(String nome, Pageable pageable) {
-        return toPageDTO(repository.findByEstadoNomeIgnoreCase(nome, pageable));
+        return toPageDTO(repositorio.findByEstadoNomeIgnoreCase(nome, pageable));
     }
 
     public MunicipioDTO buscarMunicipioPorId(BigInteger id) throws Exception {
-        return toDTO(repository.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Município", id)));
+        return toDTO(repositorio.findById(id).orElseThrow(()-> new IdInexistenteException("Município", id)));
     }
 
-    public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
-        validar(origem);
-        return toDTO(repository.save(toEntity(origem)));
+    public MunicipioDTO criarMunicipio(MunicipioDTO dto) throws Exception {    
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
     }
 
-    private void validar(MunicipioDTO origem) {
-        // se já existe municipio com mesmo nome e no mesmo estado
-        if(repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
-          throw new MunicipioDuplicadoException(origem.getNome());
+    private void validar(MunicipioDTO dto) {
+        if(repositorio.existsByNomeAndEstadoId(dto.getNome(), dto.getEstadoId()))
+          throw new MunicipioDuplicadoException(dto.getNome());
     }
 
-    public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
-        validar(origem);
-        return toDTO(repository.save(toEntity(origem)));
+    public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO dto) throws Exception {
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
     }
 
     public String excluirMunicipio(BigInteger id) throws Exception{
         try{ 
-            repository.deleteById(id);
-             return "Excluído com sucesso";
+            repositorio.deleteById(id);
+             return "Registro excluído com sucesso";
         }catch (Exception ex){
-            throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+            throw new Exception("Não foi possível excluir o registro informado." + ex.getMessage());
         }
     }
 }

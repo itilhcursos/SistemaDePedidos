@@ -5,18 +5,11 @@
           <h3>Clientes</h3>
         </div>
         <div class="col-2 d-flex justify-content-end">
-          <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
-            <i class="bi bi-clipboard-plus"></i> Novo
-          </button>
+          <button v-if="!formVisible" @click="novoCliente" class="btn btn-success"><i class="bi bi-clipboard-plus"></i> Novo</button>
         </div>
         <div class="row">
           <div>
-            <FormCliente
-              v-if="formVisible"
-              :propsCliente="clienteEscolhido"
-              @cancelar="limpar"
-              @salvar_cliente="buscar"
-            />
+            <FormCliente v-if="formVisible" :propsCliente="clienteEscolhido" @cancelar="limpar" @salvar_cliente="buscar"/>
           </div>
         </div>
       </div>
@@ -40,12 +33,8 @@
             <td>{{ cliente.cpf }}</td>
             <td>{{ cliente.telefone }}</td>
             <td class="d-flex justify-content-end">
-              <button class="btn btn-primary m-2" @click="alterarCliente(cliente)">
-                <i class="bi bi-clipboard-pulse"></i> Alterar
-              </button>
-              <button class="btn btn-outline-danger m-2" @click="excluirCliente(cliente.id)">
-                <i class="bi bi-clipboard2-minus"></i> Excluir
-              </button>
+              <button class="btn btn-primary m-2" @click="alterarCliente(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
+              <button class="btn btn-outline-danger m-2" @click="excluirCliente(cliente.id)"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
             </td>
           </tr>
         </tbody>
@@ -53,16 +42,14 @@
     </div>
   
     <div v-if="!formVisible">
-      <hr />
+      <hr/>
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-auto">
-            <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">
-              {{ pagina }}
-            </button>
+            <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">{{ pagina }}</button>
           </div>
           <div class="col-auto">
-            <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25" />
+            <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25"/>
           </div>
           <div class="col-auto">
             <select v-model="pageSize" class="form-select">
@@ -85,9 +72,7 @@
             </select>
           </div>
           <div class="col-auto">
-            <button @click.prevent="buscar" class="btn btn-success">
-              <i class="bi bi-binoculars"></i> Buscar
-            </button>
+            <button @click.prevent="buscar" class="btn btn-success"><i class="bi bi-binoculars"></i> Buscar</button>
           </div>
         </div>
       </div>
@@ -115,6 +100,7 @@
       };
     },
     methods: {
+
       async buscar() {
         this.clienteEscolhido = null;
         this.formVisible = false;
@@ -124,17 +110,21 @@
         this.listaClientes = response.data.content;
         this.totalPages = response.data.totalPages;
       },
+
       limpar() {
         this.clienteEscolhido = null;
         this.formVisible = !this.formVisible;
       },
+
       novoCliente() {
         this.formVisible = !this.formVisible;
       },
+
       alterarCliente(cliente) {
         this.clienteEscolhido = cliente;
         this.formVisible = true;
       },
+
       async excluirCliente(id) {
         let config = {
           headers: {
@@ -155,14 +145,17 @@
         }
         this.buscar();
       },
+
       irPara(pagina) {
         this.pageNumber = pagina;
         this.buscar();
       },
     },
+
     mounted() {
       this.buscar();
     },
   };
+  
   </script>
   

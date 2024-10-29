@@ -17,7 +17,6 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/pedidos">Pedidos</RouterLink>
       <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
       <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}</RouterLink>
-     
     </nav>
     <img src="./assets/carrinho.png" alt=""/>
   </div>

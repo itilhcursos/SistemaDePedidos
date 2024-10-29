@@ -3,9 +3,7 @@
     <div class="row">
       <div class="col-10"><h3>ESTADOS</h3></div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
-        </button>
+        <button v-if="!formVisible" @click="novoEstado" class="btn btn-success"><i class="bi bi-clipboard-plus"></i> Novo</button>
       </div>
       <div class="row">
         <div>

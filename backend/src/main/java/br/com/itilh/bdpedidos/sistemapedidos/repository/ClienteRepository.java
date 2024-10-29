@@ -11,12 +11,10 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 
 @Repository
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
-
-  Page<Cliente> findByMunicipioId(BigInteger id, Pageable pageable);
-  Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
-  
-  boolean existsByCnpj(String cnpj);
-  boolean existsByCpf(String cpf);
-  boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger municipioId);
-  
+    Page<Cliente> findByMunicipioId(BigInteger id, Pageable pageable);
+    Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
+    
+    boolean existsByCnpj(String cnpj);
+    boolean existsByCpf(String cpf);
+    boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger municipioId);
 }

@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class MunicipioController {
 
     @Autowired
-    private MunicipioService service;
+    private MunicipioService municipioService;
 
    
     @GetMapping("/municipios")
@@ -39,7 +39,7 @@ public class MunicipioController {
         @RequestParam(required = false, defaultValue = "id") String property
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return service.listarMunicipios(pageable);
+        return municipioService.listarMunicipios(pageable);
     }
 
     @GetMapping("/municipios/estado-id/{id}")
@@ -50,7 +50,7 @@ public class MunicipioController {
         @RequestParam(required = false, defaultValue = "id") String property
     ){
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return service.listarMunicipiosPorEstadoId(id, pageable);
+        return municipioService.listarMunicipiosPorEstadoId(id, pageable);
     }
 
     @GetMapping("/municipios/estado-nome/{nome}")
@@ -61,33 +61,32 @@ public class MunicipioController {
         @RequestParam(required = false, defaultValue = "id") String property
     ){
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return service.listarMunicipiosPorEstadoNome(nome, pageable);
+        return municipioService.listarMunicipiosPorEstadoNome(nome, pageable);
     }
 
     @GetMapping("/municipio/{id}")
     public MunicipioDTO getMunicipioPorId(@PathVariable BigInteger id) throws Exception {
         try{
-            return service.buscarMunicipioPorId(id);
+            return municipioService.buscarMunicipioPorId(id);
         }catch(IdInexistenteException e){
-            //tratar a exceção de forma personalizada
             throw e;
         }
         
     }
 
     @PostMapping("/municipio")
-    public MunicipioDTO postMunicipio(@RequestBody MunicipioDTO origem) throws Exception {    
-        return service.criarMunicipio(origem);
+    public MunicipioDTO postMunicipio(@RequestBody MunicipioDTO dto) throws Exception {    
+        return municipioService.criarMunicipio(dto);
     }
     
     @PutMapping("/municipio/{id}")
-    public MunicipioDTO putMunicipio(@PathVariable BigInteger id, @RequestBody MunicipioDTO origem) throws Exception {
-        return service.alterarMunicipio(id, origem);
+    public MunicipioDTO putMunicipio(@PathVariable BigInteger id, @RequestBody MunicipioDTO dto) throws Exception {
+        return municipioService.alterarMunicipio(id, dto);
     }
 
     @DeleteMapping("/municipio/{id}")
     public String deleteMunicipio(@PathVariable BigInteger id) throws Exception{
-        return service.excluirMunicipio(id);
+        return municipioService.excluirMunicipio(id);
     }
     
     

@@ -49,9 +49,8 @@ public class PedidoController {
     }
 
     @PutMapping("/pedido/{id}")
-    public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO novosDados) throws Exception {
-
-        return pedidoService.alterarPedido(id, novosDados);
+    public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO dto) throws Exception {
+        return pedidoService.alterarPedido(id, dto);
     }
 
     @DeleteMapping("/pedido/{id}")

@@ -3,9 +3,9 @@ import ListarProduto from '../components/ListarProduto.vue'
 </script>
 
 <template>
-    <main>
-        <ListarProduto/>
-    </main>
+  <main>
+      <ListarProduto/>
+  </main>
 </template>
 
 <style scoped>

@@ -14,56 +14,56 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
 @Service
-public class ClienteService extends GenericService<Cliente, ClienteDTO> {
+public class ClienteService extends GenericService<Cliente,ClienteDTO> {
 
     @Autowired
-    private ClienteRepository repository;
+    ClienteRepository repositorio;
 
-    public Page<ClienteDTO> listarClientes(Pageable pageable) {
-        return toPageDTO(repository.findAll(pageable));
+    public Page<ClienteDTO> listarClientes(Pageable pageable){
+        return toPageDTO(repositorio.findAll(pageable));
     }
 
-    public Page<ClienteDTO> listarClientesPorMunicipioId(BigInteger id, Pageable pageable) {
-        return toPageDTO(repository.findByMunicipioId(id, pageable));
+    public Page<ClienteDTO> listarClientesPorMunicipioId(BigInteger id, Pageable pageable){
+        return toPageDTO(repositorio.findByMunicipioId(id, pageable));
     }
 
-    public Page<ClienteDTO> listarClientesPorMunicipioNome(String nome, Pageable pageable) {
-        return toPageDTO(repository.findByMunicipioNomeIgnoreCase(nome, pageable));
+    public Page<ClienteDTO> listarClientesPorMunicipioNome(String nome, Pageable pageable){
+        return toPageDTO(repositorio.findByMunicipioNomeIgnoreCase(nome, pageable));
     }
 
     public ClienteDTO buscarClientePorId(BigInteger id) throws Exception {
-        return toDTO(repository.findById(id)
-            .orElseThrow(() -> new IdInexistenteException("Cliente", id)));
+        return toDTO(repositorio.findById(id)
+        .orElseThrow(() -> new IdInexistenteException("Cliente", id)));
     }
 
-    public ClienteDTO criarCliente(ClienteDTO origem) throws Exception {
-        validar(origem);
-        return toDTO(repository.save(toEntity(origem)));
+    public ClienteDTO criarCliente(ClienteDTO dto) throws Exception {
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
     }
 
-    public ClienteDTO alterarCliente(BigInteger id, ClienteDTO origem) throws Exception {
-        validar(origem);
-        return toDTO(repository.save(toEntity(origem)));
+    public ClienteDTO alterarCliente(BigInteger id, ClienteDTO dto) throws Exception {
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
     }
 
     public String excluirCliente(BigInteger id) throws Exception {
         try {
-            repository.deleteById(id);
-            return "Excluído com sucesso";
+            repositorio.deleteById(id);
+            return "O registro do cliente foi excluído!";
         } catch (Exception ex) {
-            throw new Exception("Não foi possível excluir o id informado. " + ex.getMessage());
+            throw new Exception("Não foi possível excluir o registro informado. " + ex.getMessage());
         }
     }
 
-    private void validar(ClienteDTO origem) {
-        if (origem.getCpf() != null && repository.existsByCpf(origem.getCpf())) {
-            throw new ClienteDuplicadoException("CPF", origem.getCpf());
+    private void validar(ClienteDTO dto) {
+        if (dto.getCpf() != null && repositorio.existsByCpf(dto.getCpf())) {
+            throw new ClienteDuplicadoException("CPF", dto.getCpf());
         }
-        if (origem.getCnpj() != null && repository.existsByCnpj(origem.getCnpj())) {
-            throw new ClienteDuplicadoException("CNPJ", origem.getCnpj());
+        if (dto.getCnpj() != null && repositorio.existsByCnpj(dto.getCnpj())) {
+            throw new ClienteDuplicadoException("CNPJ", dto.getCnpj());
         }
-        if (repository.existsByNomeRazaoSocialAndMunicipioId(origem.getNomeRazaoSocial(), origem.getMunicipioId())) {
-            throw new ClienteDuplicadoException("Nome/Razão Social", origem.getNomeRazaoSocial());
+        if (repositorio.existsByNomeRazaoSocialAndMunicipioId(dto.getNomeRazaoSocial(), dto.getMunicipioId())) {
+            throw new ClienteDuplicadoException("Nome/Razão Social", dto.getNomeRazaoSocial());
         }
     }
 }

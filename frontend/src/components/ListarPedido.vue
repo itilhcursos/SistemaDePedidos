@@ -3,16 +3,16 @@
     <div class="row">
       <div class="col-10">
         <h3>Pedidos</h3>
+      </div>    
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novo" class="btn btn-success"><i class="bi bi-clipboard-plus"></i> Novo</button>
       </div>
-     
-          <FormPedido
-            v-if="formVisible"
-            :propsPedido="pedidoEscolhido"
-            @cancelar="limpar"
-            @salvar_pedido="buscar"
-          />
-        </div>
-      </div> 
+      <div class="row">
+        <div>
+          <FormPedido v-if="formVisible" :propsPedido="pedidoEscolhido" @cancelar="limpar" @salvar_pedido="buscar"/>
+        </div>  
+      </div>
+    </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
@@ -29,34 +29,15 @@
       </thead>
       <tbody>
         <tr v-for="pedido in listaPedidos" :key="pedido.id" scope="row">
-          <th>
-            {{ pedido.id }}
-          </th>
-          <th>
-            {{ pedido.numero }}
-          </th>
-          <td>
-            {{ pedido.clienteNomeRazaoSocial }}
-          </td>
-          <td>
-            {{ pedido.formaPagamentoDescricao }}
-          </td>
-          <td>
-            {{ formatar(pedido.dataCompra) }}
-          </td>
-          <td>
-            {{ formatar(pedido.dataEntrega) }}
-          </td>
-          <td>
-            {{ formatar(pedido.dataPagamento) }}
-          </td>
+          <th>{{ pedido.id }}</th>
+          <th>{{ pedido.numero }}</th>
+          <td>{{ pedido.clienteNomeRazaoSocial }}</td>
+          <td>{{ pedido.formaPagamentoDescricao }}</td>
+          <td>{{ formatar(pedido.dataCompra) }}</td>
+          <td>{{ formatar(pedido.dataEntrega) }}</td>
+          <td>{{ formatar(pedido.dataPagamento) }}</td>
           <td class="d-flex justify-content-end">            
-            <button
-              class="btn btn-btn btn-primary m-2"
-              @click="alterar(pedido)"
-            >
-              <i class="bi bi-clipboard-pulse"></i> Alterar
-            </button>
+            <button class="btn btn-btn btn-primary m-2" @click="alterar(pedido)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
             <table class="table table-dark table-striped">
               <thead>
                 <tr>
@@ -69,9 +50,7 @@
                   <th>
                     <img :src=itens.produtoUrlImagem height="50px">
                   </th>
-                  <th>
-                    {{ itens.produtoDescricao }}
-                  </th>
+                  <th>{{ itens.produtoDescricao }}</th>
                 </tr>
               </tbody>
             </table>
@@ -79,31 +58,17 @@
         </tr>
       </tbody>
     </table>
+  </div> 
 
   <div v-if="!formVisible">
     <hr />
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
-
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
-            {{ pagina }}
-          </button>
-
-
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">{{ pagina }}</button>
         </div>
         <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25"/>
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -116,8 +81,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
-            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
+            <option value="cliente.nomeRazaoSocial">Nome ou Razão Social</option>
+            <option value="formaPagamento.descricao">Forma de Pagamento</option>
           </select>
         </div>
         <div class="col-auto">
@@ -127,16 +92,12 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscar" class="btn btn-success">
-            <i class="bi bi-binoculars"></i>
-            Buscar
-          </button>
+          <button @click.prevent="buscar" class="btn btn-success"><i class="bi bi-binoculars"></i> Buscar</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import pedidoService from "@/services/pedidoService";

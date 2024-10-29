@@ -11,17 +11,13 @@
         <label class="form-label">Senha</label>
         <input class="form-control" type="password" v-model="senha" placeholder="senha"/>
       </div>
-      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill"></i>
+      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{erroMensagem}}</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary m-2" type="submit" @:click.prevent="logar">
-        <i class="bi bi-clipboard2-check"></i>Logar</button>
-        <button class="btn btn-warning m-2" type="submit" @:click.prevent="cancelar">
-        <i class="bi bi-clipboard2-x"></i>Cancelar</button>
-        <button class="btn btn-danger m-2" type="submit" @:click.prevent="logout">
-        <i class="bi bi-x-octagon"></i>Logout</button>
+        <button class="btn btn-primary m-2" type="submit" @click.prevent="logar"><i class="bi bi-clipboard2-check"></i> Logar</button>
+        <button class="btn btn-warning m-2" type="submit" @click.prevent="cancelar"><i class="bi bi-clipboard2-x"></i> Cancelar</button>
+        <button class="btn btn-danger m-2" type="submit" @click.prevent="logout"><i class="bi bi-x-octagon"></i> Logout</button>
       </div>
     </form>
   </div>
@@ -30,6 +26,8 @@
 <script>
 import axios from "axios";
 export default {
+  components: {
+  },
   data() {
     return {
       login: "",
@@ -60,7 +58,6 @@ export default {
         this.isInvalido = true;
         this.erroMensagem = error.response.data.mensagem;
       }
-
       this.id = "";
       this.nome = "";
     },
@@ -78,4 +75,3 @@ export default {
   },
 };
 </script>
-

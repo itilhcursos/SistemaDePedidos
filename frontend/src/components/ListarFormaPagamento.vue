@@ -2,19 +2,18 @@
   <div class="container">
     <div class="row">
       <div class="col-10">
-        <h3>FORMAS DE PAGAMENTO</h3>
+        <h3>Formas de Pagamento</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
-        </button>
+        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success"><i class="bi bi-clipboard-plus"></i> Novo</button>
       </div>
       <div class="row">
         <div>
-          <FormFormaPagamento v-if="formVisible" :propsFormaPagamento="formaPagamentoEscolhida" @cancelar="limpar" @salvar_formaPagamento="buscarFormaPagamento"/>
+          <FormFormaPagamento v-if="formVisible" :propsFormaPagamento="formaPagamentoEscolhida" @cancelar="limpar" @salvar_forma_pagamento="listaFormasPagamento"/>
         </div>
       </div>
     </div>
+
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
@@ -28,7 +27,7 @@
         <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
           <th>{{ formaPagamento.id }}</th>
           <td>{{ formaPagamento.descricao }}</td>
-          <td>{{ formatarAtivo(formaPagamento.ativo) }}</td>
+          <td>{{ formatarLogico(formaPagamento.ativo) }}</td>
           <td class="d-flex justify-content-end">
             <button class="btn btn-btn btn-primary m-2" @click="alterarFormaPagamento(formaPagamento)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
             <button class="btn btn-outline-danger m-2" @click="excluirFormaPagamento(formaPagamento.id)"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
@@ -68,7 +67,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarFormaPagamento" class="btn btn-success"><i class="bi bi-binoculars"></i>Buscar</button>
+          <button @click.prevent="buscarFormaPagamento" class="btn btn-success"><i class="bi bi-binoculars"></i> Buscar</button>
         </div>
       </div>
     </div>
@@ -77,8 +76,8 @@
 
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
-import axios from "axios";
 import Logico from "@/utils/Logico.js";
+import axios from "axios";
 export default {
   components: {
     FormFormaPagamento,
@@ -99,7 +98,6 @@ export default {
     async buscarFormaPagamento() {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;
-      
       const response = await axios.get(
         `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
       );
@@ -107,6 +105,9 @@ export default {
       this.listaFormasPagamento = response.data.content;
       this.totalPages = response.data.totalPages;
       console.log(this.totalPages);
+    },
+    formatarLogico(valor){
+      return Logico.toSimNao(valor);
     },
     limpar() {
       this.formaPagamentoEscolhida = null;
@@ -142,9 +143,6 @@ export default {
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscarFormaPagamento();
-    },
-    formatarAtivo(valor){
-      return Logico.toSimNao(valor);
     },
   },
   mounted() {

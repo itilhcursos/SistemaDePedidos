@@ -14,7 +14,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 @Service
-public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPagamentoDTO>{
+public class FormaPagamentoService extends GenericService<FormaPagamento, FormaPagamentoDTO>{
 
     @Autowired
     private FormaPagamentoRepository repositorio;
@@ -24,19 +24,22 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
         return toPageDTO(repositorio.findAll(pageable));
     }
 
+    public Page<FormaPagamentoDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
+    }
+
     public FormaPagamentoDTO buscarFormaPagamentoPorId(BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id)
-        .orElseThrow(()-> new IdInexistenteException("Forma de Pagamento", id)));
+        return toDTO(repositorio.findById(id).orElseThrow(()-> new IdInexistenteException("Forma de Pagamento", id)));
     }
 
-    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
-        validar(origem);
-        return toDTO(repositorio.save(toEntity(origem)));
+    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO dto) throws Exception {    
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
     }
 
-    public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
-        validar(origem);
-        return toDTO(repositorio.save(toEntity(origem)));
+    public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO dto) throws Exception {
+        validar(dto);
+        return toDTO(repositorio.save(toEntity(dto)));
     }
 
     private void validar (FormaPagamentoDTO dto) throws Exception {
@@ -49,11 +52,9 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
     public String excluirFormaPagamento(BigInteger id) throws Exception{
         try{ 
             repositorio.deleteById(id);
-             return "Excluído";
+             return "Forma de Pagamento Excluída!";
         }catch (Exception ex){
-            throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+            throw new Exception("Não foi possível excluir o registro informado." + ex.getMessage());
         }
     }
-
-
 }

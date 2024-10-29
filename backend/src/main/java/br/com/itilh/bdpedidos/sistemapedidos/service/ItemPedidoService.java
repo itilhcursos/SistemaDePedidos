@@ -14,7 +14,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO> {
+public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>{
 
     @Autowired
     ItemPedidoRepository repositorio;
@@ -23,43 +23,41 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
     ProdutoRepository repositorioProduto;
 
     @Transactional
-    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO entityDTO) throws Exception { 
+    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO dto) throws Exception {  
+        
+        Produto produto = repositorioProduto.getReferenceById(dto.getProdutoId());
+        if(produto!= null 
+            && produto.getQuantidadeEstoque() != null 
+            && dto.getQuantidadeEstoque() > 0 
+            && ((produto.getQuantidadeEstoque() - dto.getQuantidadeEstoque()) >=0 )){
 
-        Produto produto = repositorioProduto.getReferenceById(entityDTO.getProdutoId());
-        if(produto!= null && produto.getQuantidadeEstoque() != null
-            && entityDTO.getQuantidadeEstoque() >0 &&
-            ((produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque())>=0)){
-
-                produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque());
+                produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - dto.getQuantidadeEstoque());
                 repositorioProduto.save(produto);
 
-                entityDTO.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
-                return toDTO(repositorio.save(toEntity(entityDTO)));
+                dto.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
+                return toDTO(repositorio.save(toEntity(dto)));
         }
-        throw new ProdutoEstoqueNegativoException(entityDTO.getProdutoDescricao());
-        
+        throw new ProdutoEstoqueNegativoException(dto.getProdutoDescricao());
     }
 
     @Transactional
-    public ItemPedidoDTO alterarItemPedido(BigInteger id, ItemPedidoDTO novosDados) throws Exception {
+    public ItemPedidoDTO alterarItemPedido(BigInteger id, ItemPedidoDTO dto) throws Exception {
 
         try{     
-         return toDTO(repositorio.save(toEntity(novosDados)));
+         return toDTO(repositorio.save(toEntity(dto)));
         }catch(Exception e){
-            throw new Exception("Alteração não foi realizada.");
+            throw new Exception("A alteração não foi realizada.");
         }                                   
     }
 
     @Transactional
-    public String deletePorId(BigInteger id) throws Exception {
+    public String deleteItemPedido(BigInteger id) throws Exception {
 
         ItemPedido item = repositorio.getReferenceById(id);
         Produto produto = item.getProduto();
         produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + item.getQuantidadeEstoque());
         repositorioProduto.save(produto);
         repositorio.deleteById(id);
-        return "Excluído";
-    }  
-
-
+        return "O registro foi excluído";
+    }
 }

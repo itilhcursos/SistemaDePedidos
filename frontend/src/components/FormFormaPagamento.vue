@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} forma de pagamento</h4>
+    <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Forma de Pagamento</h4>
     <hr />
     <form>
       <div class="mb-3">
         <label class="form-label">Id</label>
-        <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="ID Pagamento"/>
+        <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id Pagamento"/>
       </div>
       <div class="mb-3">
         <label class="form-label">Descrição</label>
@@ -18,15 +18,12 @@
             <option :value="false">Não</option>
           </select>
       </div>
-      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill"></i>
+      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">Descrição e ativo devem ser preenchidos!</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary m-2" type="submit" @click.prevent="salvarFormaPagamento">
-        <i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
-        <button class="btn btn-warning m-2" type="submit" @click.prevent="cancelar">
-        <i class="bi bi-clipboard2-x"></i>Cancelar</button>
+        <button class="btn btn-primary m-2" type="submit" @click.prevent="salvarFormaPagamento"><i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
+        <button class="btn btn-warning m-2" type="submit" @click.prevent="cancelar"><i class="bi bi-clipboard2-x"></i>Cancelar</button>
       </div>
     </form>
   </div>
@@ -56,7 +53,7 @@ export default {
 
       let config = {
         headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
 
@@ -66,7 +63,9 @@ export default {
           id: this.id,
           descricao: this.descricao,
           ativo: this.ativo
-        }, config);
+        }, 
+        config
+      );
         this.listaFormasPagamento = response.data;
       } else {
         // alterar pelo PUT da API
@@ -76,12 +75,13 @@ export default {
             id: this.id,
             descricao: this.descricao,
             ativo: this.ativo
-          }, config
+          }, 
+          config
         );
         this.listaFormasPagamento = response.data;
       }
 
-      this.$emit("salvar_formaPagamento", {
+      this.$emit("salvar_forma_pagamento", {
         id: this.id,
         descricao: this.descricao,
         ativo: this.ativo
@@ -91,6 +91,7 @@ export default {
       this.descricao = "";
       this.ativo = "";
     },
+
     cancelar() {
       this.id = "";
       this.descricao = "";
@@ -98,6 +99,7 @@ export default {
       this.$emit("cancelar", true);
     },
   },
+
   mounted() {
     if (this.propsFormaPagamento) {
       this.id = this.propsFormaPagamento.id;
@@ -105,6 +107,7 @@ export default {
       this.ativo = this.propsFormaPagamento.ativo;
     }
   },
+  
   computed: {
     getAcao() {
       return this.id === "" ? "Incluir" : "Alterar";

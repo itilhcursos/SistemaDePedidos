@@ -37,7 +37,7 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity.csrf(csrf-> csrf.disable())
-        .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests( authorize -> authorize                        
                         .requestMatchers(HttpMethod.POST, "/auth/login").anonymous()
                         .requestMatchers(HttpMethod.POST, "/auth/registro").anonymous()

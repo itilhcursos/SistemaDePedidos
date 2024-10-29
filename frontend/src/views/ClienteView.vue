@@ -4,7 +4,7 @@ import ListarCliente from '../components/ListarCliente.vue';
 
 <template>
   <main>
-    <ListarCliente />
+    <ListarCliente/>
   </main>
 </template>
 

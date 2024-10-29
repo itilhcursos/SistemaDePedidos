@@ -1,11 +1,10 @@
-
 <script setup>
-import ListarEstado from '../components/ListarEstado.vue'
+import FormSignUp from '../components/FormSignUp.vue';
 </script>
 
 <template>
  <main>
-   <ListarEstado/>
+   <FormSignUp/>
  </main>
 </template>
 

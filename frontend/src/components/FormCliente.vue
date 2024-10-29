@@ -1,115 +1,54 @@
 <template>
     <div class="container">
       <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Cliente</h4>
-      <hr />
+      <hr/>
       <form>
         <div class="mb-3">
           <label class="form-label">Id</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="id"
-            :disabled="true"
-            placeholder="Id cliente"
-          />
+          <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id cliente"/>
         </div>
         <div class="mb-3">
           <label class="form-label">Nome/Razão Social</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="nomeRazaoSocial"
-            placeholder="Nome ou Razão Social"
-          />
+          <input class="form-control" type="text" v-model="nomeRazaoSocial" placeholder="Nome ou Razão Social"/>
         </div>
         <div class="mb-3">
           <label class="form-label">CNPJ</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cnpj"
-            placeholder="CNPJ"
-          />
+          <input class="form-control" type="text" v-model="cnpj" placeholder="CNPJ"/>
         </div>
         <div class="mb-3">
           <label class="form-label">CPF</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cpf"
-            placeholder="CPF"
-          />
+          <input class="form-control" type="text" v-model="cpf" placeholder="CPF"/>
         </div>
         <div class="mb-3">
           <label class="form-label">Telefone</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="telefone"
-            placeholder="Telefone"
-          />
+          <input class="form-control" type="text" v-model="telefone" placeholder="Telefone"/>
         </div>
         <div class="mb-3">
           <label class="form-label">Endereço</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="endereco"
-            placeholder="Endereço"
-          />
+          <input class="form-control" type="text" v-model="endereco" placeholder="Endereço"/>
         </div>
         <div class="mb-3">
           <label class="form-label">Bairro</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="bairro"
-            placeholder="Bairro"
-          />
+          <input class="form-control" type="text" v-model="bairro" placeholder="Bairro"/>
         </div>
         <div class="mb-3">
           <label class="form-label">CEP</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cep"
-            placeholder="CEP"
-          />
+          <input class="form-control" type="text" v-model="cep" placeholder="CEP"/>
         </div>
         <div class="mb-3">
           <label class="form-label">Email</label>
-          <input
-            class="form-control"
-            type="email"
-            v-model="email"
-            placeholder="Email"
-          />
+          <input class="form-control" type="email" v-model="email" placeholder="Email"/>
         </div>
         <div class="mb-3">
           <label class="form-label">Ativo</label>
           <input type="checkbox" v-model="ativo" />
         </div>
-        <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-          <i class="bi bi-exclamation-triangle-fill"></i>
+        <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
           <div class="p-2">{{ mensagem }}</div>
         </div>
         <div class="mb-3 d-flex justify-content-end">
-          <button
-            class="btn btn-primary m-2"
-            type="submit"
-            v-on:click.prevent="salvarCliente"
-          >
-          <i class="bi bi-clipboard2-check"></i>
-            {{ getAcao }}
-          </button>
-          <button
-            class="btn btn-warning m-2"
-            type="submit"
-            v-on:click.prevent="cancelar"
-          >
-          <i class="bi bi-clipboard2-x"></i>
-            Cancelar
-          </button>
+          <button class="btn btn-primary m-2" type="submit" @click.prevent="salvarCliente"><i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
+          <button class="btn btn-warning m-2" type="submit" @click.prevent="cancelar"><i class="bi bi-clipboard2-x"></i>Cancelar</button>
         </div>
       </form>
     </div>
@@ -147,7 +86,7 @@
         this.isInvalido = false;
         let config = {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
+            'Authorization' : 'Bearer ' + localStorage.getItem('token')
           }
         }
   
@@ -165,7 +104,9 @@
               cep: this.cep,
               email: this.email,
               ativo: this.ativo,
-            }, config);
+              }, 
+              config
+            );
             this.$emit("salvar_cliente", response.data);
           } else {
             // Alterar pelo PUT da API

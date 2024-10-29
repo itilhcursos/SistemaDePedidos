@@ -16,6 +16,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Usuario;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.UsuarioRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.security.TokenService;
 
+
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController {
@@ -39,7 +40,8 @@ public class AuthenticationController {
 
     @PostMapping("/registro")
     public String registro(@RequestBody RegistroDTO dto) {
-        if(repository.findByLogin(dto.getLogin()) !=null) throw new RuntimeException("Usario já existe");
+        if(repository.findByLogin(dto.getLogin()) !=null)
+            throw new RuntimeException("Usario já existe");
         String senhaCriptografado = new BCryptPasswordEncoder().encode(dto.getSenha());
         Usuario user = new Usuario(dto.getLogin(), senhaCriptografado, dto.role);
         repository.save(user);

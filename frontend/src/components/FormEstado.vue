@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Estado</h4>
-    <hr />
+    <hr/>
     <form>
       <div class="mb-3">
         <label class="form-label">Id</label>
@@ -11,15 +11,12 @@
         <label class="form-label">Nome</label>
         <input class="form-control" type="text" v-model="nome" placeholder="Nome"/>
       </div>
-      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill"></i>
+      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary m-2" type="submit" @:click.prevent="salvarEstado">
-        <i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
-        <button class="btn btn-warning m-2" type="submit" @:click.prevent="cancelar">
-        <i class="bi bi-clipboard2-x"></i>Cancelar</button>
+        <button class="btn btn-primary m-2" type="submit" @:click.prevent="salvarEstado"><i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
+        <button class="btn btn-warning m-2" type="submit" @:click.prevent="cancelar"><i class="bi bi-clipboard2-x"></i>Cancelar</button>
       </div>
     </form>
   </div>
