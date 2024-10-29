@@ -30,12 +30,6 @@ public class PedidoService  extends GenericService<Pedido, PedidoDTO> {
 
     private void validar (PedidoDTO dto) throws Exception {
 
-        // if(dto.getNome().length() < 3 || dto.getNome().length() > 50)
-        //     throw new NomeEstadoInvalidoException(dto.getNome());
-        
-        // if(repositorio.existsByNome(dto.getNome()))   
-        //     throw new EstadoDuplicadoException(dto.getNome());
-
     }
 
     public PedidoDTO criarPedido(PedidoDTO entityDTO) throws Exception {  
@@ -48,18 +42,16 @@ public class PedidoService  extends GenericService<Pedido, PedidoDTO> {
         }
     }
 
-    // public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
+    public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
 
-    //     validar(novosDados);
-    //     if(repositorio.existsByNome(novosDados.getNome()))   
-    //         throw new EstadoDuplicadoException(novosDados.getNome());
-            
-    //     try{     
-    //      return toDTO(repositorio.save(toEntity(novosDados)));
-    //     }catch(Exception e){
-    //         throw new Exception("Alteração não foi realizada.");
-    //     }                                   
-    // }
+        validar(novosDados); 
+        try{     
+         return toDTO(repositorio.save(toEntity(novosDados)));
+        }catch(Exception e){
+            throw new Exception("Alteração não foi realizada.");
+        }                                   
+    }
+
 
     public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);

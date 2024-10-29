@@ -42,21 +42,18 @@
           <input class="form-control" type="date" v-model="dataPagamento" placeholder="Data Pagamento" />
         </div>
       </div>
+      
+
       <div class="mb-3">
-        <label class="form-label">Cliente</label>
-        <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
-          @search="onSearch">
-          <template v-slot:no-options>
-            Não encontrado.
-          </template>
-          <template v-slot:option="option">
-            {{ option.nomeRazaoSocial }}
-          </template>
-          <template v-slot:selected-option="option">
-            {{ option.nomeRazaoSocial }}
-          </template>
-        </v-select>
-      </div>
+          <label class="form-label">CLIENTE</label>
+          <select v-model="nomeRazaoSocialId" class="form-select">
+              <option v-for="nomeRazaoSocial in nomeRazaoSocial" :value="nomeRazaoSocial.id" :key="nomeRazaoSocial.id">
+                {{ cliente.nomeRazaoSocial }}
+              </option>
+          </select>
+        </div>
+
+
       <div class="mb-3">
         <label class="form-label">Itens Pedido</label>
         <table class="table table-dark table-striped">
@@ -166,6 +163,7 @@ export default {
       dataCompra: '',
       dataEntrega: '',
       dataPagamento: '',
+      clienteNomeRazaoSocialId: '',
       itens: [],
 
       isInvalido: false,
@@ -215,7 +213,7 @@ export default {
     getDados() {
       return {
         id: this.id,
-        nome: this.nome,
+        cliente: this.clienteId,
       };
     },
     async salvar() {
@@ -263,6 +261,12 @@ export default {
       this.nome = "";
       this.$emit("cancelar", true);
     },
+
+    async buscar(){
+      const response = await clienteService.listar(1,1000, 'ASC', 'id');
+      this.clientes = response.content;
+    },
+
     async incluirItem(){
         const itemPedido = {
               id : null,
@@ -318,11 +322,10 @@ export default {
       this.dataEntrega= this.propsPedido.dataEntrega;
       this.dataPagamento= this.propsPedido.dataPagamento;
       this.itens= this.propsPedido.itens;
-
-      this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao };
       this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
 
     }
+    this.buscarClientes();
   },
   computed: {
     getAcao() {
