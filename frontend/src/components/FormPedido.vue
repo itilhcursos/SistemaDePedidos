@@ -148,9 +148,9 @@
 
 <script>
 import clienteService from "@/services/clienteService";
-import produtoService from "@/services/produtoService";
-import itemPedidoService from "@/services/itemPedidoService";
 import formaPagamentoService from "@/services/formaPagamentoService";
+import itemPedidoService from "@/services/itemPedidoService";
+import produtoService from "@/services/produtoService";
 export default {
   props: {
     propsPedido: Object,
@@ -220,23 +220,23 @@ export default {
     },
     async salvar() {
       console.log(this.selectedCliente, this.selectedProduto);
-      // if (this.nome === "") {
-      //   this.isInvalido = true;
-      //   this.mensagem = "Nome deve ser preenchido!!";
-      //   return;
-      // }
-      // this.isInvalido = false;
+      if (this.nome === "") {
+        this.isInvalido = true;
+        this.mensagem = "Nome deve ser preenchido!!";
+        return;
+      }
+      this.isInvalido = false;
 
       try {
         if (this.id === "") {
-          //  const response = await estadoService.criar(this.getDados());
-          //  this.options = response;
+           const response = await produtoService.criar(this.getDados());
+           this.options = response;
         } else {
-          // const response = await estadoService.atualizar(
-          //   this.id,
-          //   this.getDados()
-          // );
-          //this.listaEstados = response;
+          const response = await produtoService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaEstados = response;
         }
         this.$emit("salvar_pedido", {
           id: this.id,

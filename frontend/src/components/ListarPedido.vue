@@ -14,6 +14,14 @@
         </div>
       </div> 
 
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novo" class="btn btn-success">
+          <i class="bi bi-clipboard-plus"></i> Novo
+        </button>
+      </div>
+      <div class="row">
+      </div>
+
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
