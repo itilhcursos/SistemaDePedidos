@@ -59,6 +59,11 @@ const router = createRouter({
       name: 'usuarios',
       component:()=>import('../views/PainelUsuarioView.vue')
     },
+    {
+      path: '/itens-pedido',
+      name: 'itensPedido',
+      component:()=>import('../views/PainelUsuarioView.vue')
+    },
 
   ]
 })
