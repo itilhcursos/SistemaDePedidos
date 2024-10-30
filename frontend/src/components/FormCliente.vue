@@ -138,6 +138,20 @@
       };
     },
     methods: {
+      resetarFormulario() {
+      this.id = "";
+      this.nomeRazaoSocial = "";
+      this.cnpj = "";
+      this.cpf = "";
+      this.telefone = "";
+      this.endereco = "";
+      this.bairro = "";
+      this.cep = "";
+      this.email = "";
+      this.ativo = false;
+      this.isInvalido = false;
+      this.mensagem = "";
+    },
       async salvarCliente() {
         if (this.nomeRazaoSocial === "" || this.cnpj === "" || this.cpf === "") {
           this.isInvalido = true;
@@ -167,6 +181,7 @@
               ativo: this.ativo,
             }, config);
             this.$emit("salvar_cliente", response.data);
+            this.resetarFormulario();
           } else {
             // Alterar pelo PUT da API
             const response = await axios.put(
@@ -220,6 +235,7 @@
         this.cep = "";
         this.email = "";
         this.ativo = false;
+        this.resetarFormulario();
         this.$emit("cancelar", true);
       },
     },
@@ -235,7 +251,9 @@
         this.cep = this.propsCliente.cep;
         this.email = this.propsCliente.email;
         this.ativo = this.propsCliente.ativo;
-      }
+      } else {
+        this.resetarFormulario();
+    }
     },
     computed: {
       getAcao() {
