@@ -25,15 +25,15 @@ public Page<ItemPedidoDTO> listarItemPedidos(Pageable pageable){
      return toPageDTO(itemPedidoRepository.findAll(pageable));
 }
 
- public Page<ItemPedidoDTO> listarItemPedidoPorPedidoId(Pedido pedidoId, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findBypedidoId(pedidoId, pageable));
+ public Page<ItemPedidoDTO> listarItemPedidoPorPedidoId(BigInteger pedidoid, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByPedidoId(pedidoid, pageable));
     }
-    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoId(Produto produtoId, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findByprodutoId(produtoId, pageable));
+    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoId(BigInteger produtoid, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByProdutoId(produtoid, pageable));
     }
 
-    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoNome(String nome, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findByprodutoNomeIgnoreCase(nome, pageable));
+    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoDescricao(String descricao, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByProdutoDescricaoIgnoreCase(descricao, pageable));
     }
      public ItemPedidoDTO buscarItemPedidoPorId(BigInteger id) throws Exception {
         return toDTO(itemPedidoRepository.findById(id)
@@ -47,6 +47,8 @@ private void validar(ItemPedidoDTO origem){
     throw new ItemPedidoEstoqueNegativoException(origem.getQuantidadeEstoque());
     if(itemPedidoRepository.existsByPrecoUnidadeAtual(origem.getPrecoUnidadeAtual()))
     throw new ItemPedidoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+    if(itemPedidoRepository.existsByProdutoId(origem.getProdutoId()))
+    throw new ItemPedidoDuplicadoException(origem.getProdutoId());
 }
 
     public ItemPedidoDTO criarItemPedido(ItemPedidoDTO origem) throws Exception {    

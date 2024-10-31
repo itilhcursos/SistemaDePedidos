@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ItemPedidoService;
 @RestController
 @SecurityRequirement(name = "bearerAuth")
@@ -41,7 +39,7 @@ ItemPedidoService itemPedidoService;
         return itemPedidoService.listarItemPedidos(pageable);
     }
      @GetMapping("/itemPedidos/pedido-id/{id}")
-    public Page<ItemPedidoDTO> BuscarItemPedidosPorPedidoId(@PathVariable Pedido pedidoId,
+    public Page<ItemPedidoDTO> BuscarItemPedidosPorPedidoId(@PathVariable BigInteger pedidoId,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -50,19 +48,8 @@ ItemPedidoService itemPedidoService;
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return itemPedidoService.listarItemPedidoPorPedidoId(pedidoId, pageable);
     }
-
-    @GetMapping("/itemPedidos/produto-nome/{nome}")
-    public Page<ItemPedidoDTO> BuscarItemPedidosPorProdutoNome(@PathVariable String nome,
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ){
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return itemPedidoService.listarItemPedidoPorProdutoNome(nome, pageable);
-    }
     @GetMapping("/itemPedidos/produto-id/{id}")
-    public Page<ItemPedidoDTO> BuscarItemPedidosPorProdutoId(@PathVariable Produto produtoId,
+    public Page<ItemPedidoDTO> BuscarItemPedidosPorProdutoId(@PathVariable BigInteger produtoId,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
