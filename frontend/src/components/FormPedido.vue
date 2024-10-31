@@ -15,7 +15,8 @@
         <div class="col">
           <label class="form-label">Forma de pagamento</label>
           <v-select class="meu-select" v-model="selectedFormaPagamento" :filterable="false" :options="optionsFormaPagamento" @search="onSearchFormaPagamento">
-            <template v-slot:no-options> Não encontrado.</template>
+            <template v-slot:></template>
+            <template v-slot:no-options> Não encontrado</template>
             <template v-slot:option="option">{{ option.descricao }}</template>
             <template v-slot:selected-option="option">{{ option.descricao }}</template>
           </v-select>

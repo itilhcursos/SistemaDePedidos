@@ -10,6 +10,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, BigInteger> {
 
-
+    boolean existsByNumero(BigInteger numero);
 
 }

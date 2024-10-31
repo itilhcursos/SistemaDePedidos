@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +20,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.PedidoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-@CrossOrigin
 @RestController
 @SecurityRequirement(name = "bearerAuth")
 public class PedidoController {
@@ -30,6 +27,9 @@ public class PedidoController {
     @Autowired
     PedidoService pedidoService;
 
+// LISTAGENS (GET) //
+
+    // Listar todos os pedidos
     @GetMapping("/pedidos")
     public Page<PedidoDTO> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -40,22 +40,28 @@ public class PedidoController {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return pedidoService.getTodos(pageable);
     }
-        
+
+    // Listar pedidos por ID
     @GetMapping("/pedido/{id}")
     public PedidoDTO getPorId(@PathVariable BigInteger id) throws Exception {
         return pedidoService.getPorId(id);
     }    
 
+// POST - PUT - DELETE //
+
+    // Criar registro de pedido
     @PostMapping("/pedido")
     public PedidoDTO criarPedido(@RequestBody PedidoDTO entityDTO) throws Exception { 
        return pedidoService.criarPedido(entityDTO);
     }
 
+    // Atualizar registro de pedido
     @PutMapping("/pedido/{id}")
-    public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO dto) throws Exception {
-        return pedidoService.alterarPedido(id, dto);
+    public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO novosDados) throws Exception {
+        return pedidoService.alterarPedido(id, novosDados);
     }
 
+    // Excluir registro de pedido
     @DeleteMapping("/pedido/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return pedidoService.deletePorId(id);

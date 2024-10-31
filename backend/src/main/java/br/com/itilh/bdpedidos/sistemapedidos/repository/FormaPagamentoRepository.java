@@ -17,8 +17,10 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
 
     List<FormaPagamento> findByDescricaoStartingWithIgnoreCase(String descricao);
 
+    List<FormaPagamento> findByDescricaoContainingIgnoreCase(String descricao);
+
     boolean existsByDescricao (String descricao);
 
-    Page<FormaPagamento> findByDescricaoContainingIgnoreCase(Pageable pageable, String txtBusca);
+    Page<FormaPagamento> findByDescricaoContainingIgnoreCase(Pageable pageable, String descricao);
 
 }

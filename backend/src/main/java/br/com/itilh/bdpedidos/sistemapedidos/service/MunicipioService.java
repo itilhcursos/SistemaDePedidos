@@ -17,46 +17,73 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.MunicipioRepository;
 public class MunicipioService extends GenericService<Municipio, MunicipioDTO>{
 
     @Autowired
-    private MunicipioRepository repositorio;
+    private MunicipioRepository municipioRepository;
 
+// LISTAGENS (GET) //
 
+    // Listar todos os municípios
     public Page<MunicipioDTO> listarMunicipios(Pageable pageable) {
-        return toPageDTO(repositorio.findAll(pageable));
+        return toPageDTO(municipioRepository.findAll(pageable));
     }
 
+    // Listar os municípios pelo texto
+    public Page<MunicipioDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(municipioRepository.findByNomeContainingIgnoreCase(pageable, txtBusca));
+    }
+
+    // Listar municípios pelo ID do estado
     public Page<MunicipioDTO> listarMunicipiosPorEstadoId(BigInteger id, Pageable pageable) {
-        return toPageDTO(repositorio.findByEstadoId(id, pageable));
+        return toPageDTO(municipioRepository.findByEstadoId(id, pageable));
     }
 
+    // Listar municípios pelo nome do estado
     public Page<MunicipioDTO> listarMunicipiosPorEstadoNome(String nome, Pageable pageable) {
-        return toPageDTO(repositorio.findByEstadoNomeIgnoreCase(nome, pageable));
+        return toPageDTO(municipioRepository.findByEstadoNomeIgnoreCase(nome, pageable));
     }
 
+    // Listar município pelo ID
     public MunicipioDTO buscarMunicipioPorId(BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id).orElseThrow(()-> new IdInexistenteException("Município", id)));
+        return toDTO(municipioRepository.findById(id).orElseThrow(() -> new IdInexistenteException("Município", id)));
     }
 
-    public MunicipioDTO criarMunicipio(MunicipioDTO dto) throws Exception {    
-        validar(dto);
-        return toDTO(repositorio.save(toEntity(dto)));
+// POST - PUT - DELETE //
+
+    // Criar registro de município
+    public MunicipioDTO criarMunicipio(MunicipioDTO origem) throws Exception {    
+        validar(origem);
+        return toDTO(municipioRepository.save(toEntity(origem)));
     }
 
-    private void validar(MunicipioDTO dto) {
-        if(repositorio.existsByNomeAndEstadoId(dto.getNome(), dto.getEstadoId()))
-          throw new MunicipioDuplicadoException(dto.getNome());
+    // Atualizar registro de município
+    public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO origem) throws Exception {
+        validar(origem);
+        return toDTO(municipioRepository.save(toEntity(origem)));
     }
 
-    public MunicipioDTO alterarMunicipio(BigInteger id, MunicipioDTO dto) throws Exception {
-        validar(dto);
-        return toDTO(repositorio.save(toEntity(dto)));
-    }
-
+    // Excluir registro de município 
     public String excluirMunicipio(BigInteger id) throws Exception{
         try{ 
-            repositorio.deleteById(id);
-             return "Registro excluído com sucesso";
+            municipioRepository.deleteById(id);
+             return "Excluído com sucesso";
         }catch (Exception ex){
-            throw new Exception("Não foi possível excluir o registro informado." + ex.getMessage());
+            throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
         }
+    }
+    
+// VALIDAÇÕES //
+
+    // Validação de duplicidade de município
+    private void validar(MunicipioDTO dto) throws Exception {
+        if (municipioRepository.existsByNomeAndEstadoId(dto.getNome(), dto.getEstadoId())) {
+            if (dto.getId() == null) {
+                throw new MunicipioDuplicadoException(dto.getNome());
+            } else {
+                Municipio m = municipioRepository.getReferenceById(dto.getId());
+                if (!m.getNome().equalsIgnoreCase(dto.getNome())) {
+                    throw new MunicipioDuplicadoException(dto.getNome());
+                }
+            }
+        }
+
     }
 }

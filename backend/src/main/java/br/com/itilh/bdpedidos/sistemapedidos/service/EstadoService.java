@@ -17,53 +17,57 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 public class EstadoService extends GenericService<Estado,EstadoDTO>{
 
     @Autowired
-    EstadoRepository repositorio;
+    EstadoRepository estadoRepository;
 
+// LISTAGENS (GET) //
+
+    // Listar todos os estados
     public Page<EstadoDTO> getTodos(Pageable pageable ){
-        return toPageDTO(repositorio.findAll(pageable));
+        return toPageDTO(estadoRepository.findAll(pageable));
     }
-  
+
+    // Listar estado pelo ID
     public EstadoDTO getPorId(BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id).orElseThrow(
-            () -> new Exception("ID inválido.")));
-    }  
+        return toDTO(estadoRepository.findById(id).orElseThrow(() -> new Exception("ID inválido.")));
+    } 
 
-    private void validar (EstadoDTO dto) throws Exception {
+// POST - PUT - DELETE //
 
-        if(dto.getNome().length() < 3 || dto.getNome().length() > 50)
-            throw new NomeEstadoInvalidoException(dto.getNome());
-        
-        if(repositorio.existsByNome(dto.getNome()))   
-            throw new EstadoDuplicadoException(dto.getNome());
-
-    }
-
+    // Criar registro de estado
     public EstadoDTO criarEstado(EstadoDTO entityDTO) throws Exception {  
-        
         validar(entityDTO);  
         try{    
-            return toDTO(repositorio.save(toEntity(entityDTO)));
+            return toDTO(estadoRepository.save(toEntity(entityDTO)));
         }catch(Exception e){
             throw new Exception("Erro ao salvar o estado.");
         }
     }
 
+    // Atualizar registro de estado
     public EstadoDTO alterarEstado(BigInteger id, EstadoDTO novosDados) throws Exception {
-
         validar(novosDados);
-        if(repositorio.existsByNome(novosDados.getNome()))   
-            throw new EstadoDuplicadoException(novosDados.getNome());
-            
+        if(estadoRepository.existsByNome(novosDados.getNome())) throw new EstadoDuplicadoException(novosDados.getNome());
         try{     
-         return toDTO(repositorio.save(toEntity(novosDados)));
+            return toDTO(estadoRepository.save(toEntity(novosDados)));
         }catch(Exception e){
             throw new Exception("Alteração não foi realizada.");
         }                                   
     }
-
+    // Excluir registro de estado
     public String deletePorId(BigInteger id) throws Exception {
-        repositorio.deleteById(id);
+        estadoRepository.deleteById(id);
         return "Excluído";
     }  
+
+// VALIDAÇÕES //
+
+    // Validação de duplicidade e nome para estado
+    private void validar (EstadoDTO dto) throws Exception {
+        if(dto.getNome().length() < 3 || dto.getNome().length() > 50)
+            throw new NomeEstadoInvalidoException(dto.getNome());
+        
+        if(estadoRepository.existsByNome(dto.getNome()))   
+            throw new EstadoDuplicadoException(dto.getNome());
+    }
     
 }

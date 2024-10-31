@@ -28,58 +28,54 @@ public class FormaPagamentoController {
     @Autowired
     FormaPagamentoService formaPagamentoService;
 
+// LISTAGENS (GET) //
+
+    // Listar todas as formas de pagamento
     @GetMapping("/formas-pagamento")
     public Page<FormaPagamentoDTO> getTodos(
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property
+            ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return formaPagamentoService.listarFormasPagamento(pageable);
     }
 
-    // @GetMapping("/formas-pagamento/descricao/{descricao}")
-    // public List<FormaPagamentoDTO> getFormaPagamentoPorDescricao(@PathVariable String descricao,
-    // @RequestParam(required = true) ModoBusca modoBusca) {
-    //     if(modoBusca.equals(ModoBusca.EXATO)){
-    //         return repositorio.findByDescricao(descricao);
-    //     }else if (modoBusca.equals(ModoBusca.INICIADO)){
-    //         return repositorio.findByDescricaoStartingWithIgnoreCase(descricao);
-    //     }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
-    //         return repositorio.findByDescricaoStartingWithIgnoreCase(descricao);
-    //     }else{
-    //         return repositorio.findByDescricaoStartingWithIgnoreCase(descricao);
-    //     }       
-    // }
-
+    // Listar formas de pagamento filtrando por texto
     @GetMapping("/formas-pagamento/{txtBusca}")
-    public Page<FormaPagamentoDTO> getBusca(
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property,
-        @PathVariable String txtBusca
-    ) {
+    public Page<FormaPagamentoDTO> getFormasPagamento(
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property,
+            @PathVariable String txtBusca
+            ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-            return formaPagamentoService.buscar(pageable, txtBusca);
+        return formaPagamentoService.buscar(pageable, txtBusca);
     }
 
+    // Listar formas de pagamento por ID
     @GetMapping("/forma-pagamento/{id}")
     public FormaPagamentoDTO getPorId(@PathVariable BigInteger id) throws Exception {
         return formaPagamentoService.buscarFormaPagamentoPorId(id);
     }  
 
+// POST - PUT - DELETE //
+
+    // Criar registro de forma de pagamento
     @PostMapping("/forma-pagamento")
     public FormaPagamentoDTO criarFormaPagamento(@RequestBody FormaPagamentoDTO dto) throws Exception { 
         return formaPagamentoService.criarFormaPagamento(dto);       
     }
     
+    // Atualizar registro de forma de pagamento
     @PutMapping("/forma-pagamento/{id}")
-    public FormaPagamentoDTO alterarFormaPagamento(@PathVariable BigInteger id, @RequestBody FormaPagamentoDTO dto) throws Exception {
-        return formaPagamentoService.alterarFormaPagamento(id, dto);
+    public FormaPagamentoDTO alterarFormaPagamento(@PathVariable BigInteger id, @RequestBody FormaPagamentoDTO novosDados) throws Exception {
+            return formaPagamentoService.alterarFormaPagamento(id, novosDados);
     }
 
+    // Excluir registro de forma de pagamento
     @DeleteMapping("/forma-pagamento/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return formaPagamentoService.excluirFormaPagamento(id);

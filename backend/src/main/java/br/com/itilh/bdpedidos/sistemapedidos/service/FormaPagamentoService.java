@@ -14,47 +14,70 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.FormaPagamento;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.FormaPagamentoRepository;
 
 @Service
-public class FormaPagamentoService extends GenericService<FormaPagamento, FormaPagamentoDTO>{
+public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPagamentoDTO>{
 
     @Autowired
-    private FormaPagamentoRepository repositorio;
+    private FormaPagamentoRepository formaPagamentoRepository;
 
+// LISTAGENS (GET) //
 
+    // Listar todas as formas de pagamento
     public Page<FormaPagamentoDTO> listarFormasPagamento(Pageable pageable) {
-        return toPageDTO(repositorio.findAll(pageable));
+        return toPageDTO(formaPagamentoRepository.findAll(pageable));
     }
 
+    // Listar formas de pagamento filtrando por texto
     public Page<FormaPagamentoDTO> buscar(Pageable pageable, String txtBusca) {
-        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
+        return toPageDTO(formaPagamentoRepository.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
     }
 
+    // Listar formas de pagamento por ID
     public FormaPagamentoDTO buscarFormaPagamentoPorId(BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id).orElseThrow(()-> new IdInexistenteException("Forma de Pagamento", id)));
+        return toDTO(formaPagamentoRepository.findById(id).orElseThrow(() -> new IdInexistenteException("Forma de Pagamento", id)));
     }
 
-    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO dto) throws Exception {    
-        validar(dto);
-        return toDTO(repositorio.save(toEntity(dto)));
+// POST - PUT - DELETE //
+
+    // Criar registro de forma de pagamento
+    public FormaPagamentoDTO criarFormaPagamento(FormaPagamentoDTO origem) throws Exception {    
+        validar(origem);
+        return toDTO(formaPagamentoRepository.save(toEntity(origem)));
     }
 
-    public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO dto) throws Exception {
-        validar(dto);
-        return toDTO(repositorio.save(toEntity(dto)));
+    // Atualizar registro de forma de pagamento
+    public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
+        validar(origem);
+        return toDTO(formaPagamentoRepository.save(toEntity(origem)));
     }
 
-    private void validar (FormaPagamentoDTO dto) throws Exception {
-
-        if(repositorio.existsByDescricao(dto.getDescricao()))   
-            throw new FormaPagamentoDuplicadoException(dto.getDescricao());
-
-    }
-
+    // Excluir registro de forma de pagamento
     public String excluirFormaPagamento(BigInteger id) throws Exception{
         try{ 
-            repositorio.deleteById(id);
-             return "Forma de Pagamento Excluída!";
+            formaPagamentoRepository.deleteById(id);
+            return "Forma de Pagamento excluída!";
         }catch (Exception ex){
-            throw new Exception("Não foi possível excluir o registro informado." + ex.getMessage());
+            throw new Exception("Não foi possível excluir o ID informado." + ex.getMessage());
         }
     }
+
+// VALIDAÇÕES //
+
+    // Validação de duplicidade da Forma de Pagamento
+    private void validar(FormaPagamentoDTO dto) throws Exception {
+        if (formaPagamentoRepository.existsByDescricao(dto.getDescricao())) {
+            if (dto.getId() == null) {
+                throw new FormaPagamentoDuplicadoException(dto.getDescricao());
+            } else {
+                FormaPagamento f = formaPagamentoRepository.getReferenceById(dto.getId());
+                if (!f.getDescricao().equalsIgnoreCase(dto.getDescricao())) {
+                    throw new FormaPagamentoDuplicadoException(dto.getDescricao());
+                }
+            }
+        }
+
+    }
+
+
+
+
 }

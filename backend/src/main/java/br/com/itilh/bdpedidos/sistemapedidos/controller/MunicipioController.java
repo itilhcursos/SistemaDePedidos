@@ -21,8 +21,6 @@ import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.MunicipioService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
-
-
 @RestController
 @SecurityRequirement(name = "bearerAuth")
 public class MunicipioController {
@@ -30,7 +28,9 @@ public class MunicipioController {
     @Autowired
     private MunicipioService municipioService;
 
-   
+// LISTAGENS (GET) //
+
+    // Listar todos os municípios
     @GetMapping("/municipios")
     public Page<MunicipioDTO> getMunicipios(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -42,6 +42,20 @@ public class MunicipioController {
         return municipioService.listarMunicipios(pageable);
     }
 
+    // Listar os municípios pelo texto
+    @GetMapping("/municipios/{txtBusca}")
+    public Page<MunicipioDTO> getBuscarMunicipios(
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property,
+        @PathVariable String txtBusca
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return municipioService.buscar(pageable, txtBusca);
+    }
+
+    // Listar municípios pelo ID do estado
     @GetMapping("/municipios/estado-id/{id}")
     public Page<MunicipioDTO> getMunicipiosPorEstadoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -53,6 +67,7 @@ public class MunicipioController {
         return municipioService.listarMunicipiosPorEstadoId(id, pageable);
     }
 
+    // Listar municípios pelo nome do estado
     @GetMapping("/municipios/estado-nome/{nome}")
     public Page<MunicipioDTO> getMunicipiosPorEstadoNome(@PathVariable String nome,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -64,30 +79,34 @@ public class MunicipioController {
         return municipioService.listarMunicipiosPorEstadoNome(nome, pageable);
     }
 
+    // Listar município pelo ID
     @GetMapping("/municipio/{id}")
     public MunicipioDTO getMunicipioPorId(@PathVariable BigInteger id) throws Exception {
         try{
             return municipioService.buscarMunicipioPorId(id);
         }catch(IdInexistenteException e){
-            throw e;
+            throw e; //tratar a exceção de forma personalizada
         }
-        
     }
 
+// POST - PUT - DELETE //
+
+    // Criar registro de município
     @PostMapping("/municipio")
-    public MunicipioDTO postMunicipio(@RequestBody MunicipioDTO dto) throws Exception {    
-        return municipioService.criarMunicipio(dto);
+    public MunicipioDTO postMunicipio(@RequestBody MunicipioDTO origem) throws Exception {    
+        return municipioService.criarMunicipio(origem);
     }
     
+    // Atualizar registro de município
     @PutMapping("/municipio/{id}")
-    public MunicipioDTO putMunicipio(@PathVariable BigInteger id, @RequestBody MunicipioDTO dto) throws Exception {
-        return municipioService.alterarMunicipio(id, dto);
+    public MunicipioDTO putMunicipio(@PathVariable BigInteger id, @RequestBody MunicipioDTO origem) throws Exception {
+        return municipioService.alterarMunicipio(id, origem);
     }
 
+    // Excluir registro de município 
     @DeleteMapping("/municipio/{id}")
     public String deleteMunicipio(@PathVariable BigInteger id) throws Exception{
         return municipioService.excluirMunicipio(id);
     }
-    
     
 }

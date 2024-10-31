@@ -27,6 +27,9 @@ public class ProdutoController {
     @Autowired
     ProdutoService produtoService;
 
+// LISTAGENS (GET) //
+
+    // Listar todos os produtos
     @GetMapping("/produtos")
     public Page<ProdutoDTO> getTodosProdutos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -38,13 +41,9 @@ public class ProdutoController {
         return produtoService.listarProdutos(pageable);
     }
 
-    @GetMapping("/produto/{id}")
-    public ProdutoDTO getProdutoPorId(@PathVariable BigInteger id) throws Exception {
-        return produtoService.buscarProdutoPorId(id);
-    }    
-
+    // Listar produto pelo texto
     @GetMapping("/produtos/{txtBusca}")
-    public Page<ProdutoDTO> getTodosProdutos(
+    public Page<ProdutoDTO> getBuscarProdutos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
@@ -55,16 +54,27 @@ public class ProdutoController {
         return produtoService.buscar(pageable, txtBusca);
     }
 
+    // Listar produtos pelo ID  
+    @GetMapping("/produto/{id}")
+    public ProdutoDTO getProdutoPorId(@PathVariable BigInteger id) throws Exception {
+        return produtoService.buscarProdutoPorId(id);
+    }    
+
+// POST - PUT - DELETE //
+
+    // Criar registro de produto
     @PostMapping("/produto")
     public ProdutoDTO criarProduto(@RequestBody ProdutoDTO entity) throws Exception {
         return produtoService.criarProduto(entity);
     }
     
+    // Atualizar registro de produto
     @PutMapping("/produto/{id}")
     public ProdutoDTO alterarProduto(@PathVariable BigInteger id, @RequestBody ProdutoDTO novosDados) throws Exception {
         return produtoService.alterarProduto(id, novosDados);
     }
 
+    // Excluir registro de produto
     @DeleteMapping("/produto/{id}")
     public String deleteProduto(@PathVariable BigInteger id) throws Exception {
         return produtoService.excluirProduto(id);

@@ -22,12 +22,10 @@ public class SistemapedidosApplication {
             public void addViewControllers(@SuppressWarnings("null") ViewControllerRegistry registry) {
                 registry.addViewController( "/" ).setViewName("forward:/app/dist/index.html");
             }
-            @SuppressWarnings("null")
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
                 registry.addMapping("/**").allowedMethods("*");
             }
-
         };
     }
 

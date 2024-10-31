@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.repository.EstadoRepository;
 import br.com.itilh.bdpedidos.sistemapedidos.service.EstadoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -27,6 +28,12 @@ public class EstadoController {
     @Autowired
     EstadoService estadoService;
 
+    @Autowired
+    EstadoRepository estadoRepository;
+
+// LISTAGENS (GET) //
+
+    // Listar todos os estados
     @GetMapping("/estados")
     public Page<EstadoDTO> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
@@ -35,39 +42,30 @@ public class EstadoController {
         @RequestParam(required = false, defaultValue = "id") String property
     ) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-
         return estadoService.getTodos(pageable);
     }
-
-    // @GetMapping("/estados/nome/{nome}")
-    // public List<Estado> getEstadosPorNome(@PathVariable String nome,
-    // @RequestParam(required = true) ModoBusca modoBusca) {
-    //     if(modoBusca.equals(ModoBusca.EXATO)){
-    //         return repositorio.findByNome(nome);
-    //     }else if (modoBusca.equals(ModoBusca.INICIADO)){
-    //         return repositorio.findByNomeStartingWithIgnoreCase(nome);
-    //     }else if (modoBusca.equals(ModoBusca.FINALIZADO)){
-    //         return repositorio.findByNomeEndingWithIgnoreCase(nome);
-    //     }else{
-    //         return repositorio.findByNomeContainingIgnoreCase(nome);
-    //     }       
-    // }
         
+    // Listar estado pelo ID
     @GetMapping("/estado/{id}")
     public EstadoDTO getPorId(@PathVariable BigInteger id) throws Exception {
         return estadoService.getPorId(id);
     }    
 
+    // Criar registro de estado (POST)
     @PostMapping("/estado")
     public EstadoDTO criarEstado(@RequestBody EstadoDTO entityDTO) throws Exception { 
        return estadoService.criarEstado(entityDTO);
     }
 
+// POST - PUT - DELETE //
+
+    // Atualizar registro de estado pelo ID (PUT)
     @PutMapping("/estado/{id}")
     public EstadoDTO alterarEstado(@PathVariable BigInteger id, @RequestBody EstadoDTO novosDados) throws Exception {
         return estadoService.alterarEstado(id, novosDados);
     }
 
+    // Excluir registro de estado pelo ID (DELETE)
     @DeleteMapping("/estado/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return estadoService.deletePorId(id);

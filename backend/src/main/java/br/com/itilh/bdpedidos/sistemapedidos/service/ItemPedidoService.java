@@ -3,9 +3,12 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
@@ -14,50 +17,52 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>{
+public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO> {
 
     @Autowired
-    ItemPedidoRepository repositorio;
+    private ItemPedidoRepository itemPedidoRepository;
 
     @Autowired
-    ProdutoRepository repositorioProduto;
+    ProdutoRepository produtoRepository;
 
+// LISTAGENS (GET) //
+
+    // Listar todos os itens do pedido
+    public Page<ItemPedidoDTO> listarItensPedido(Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findAll(pageable));
+    }
+
+    // Buscar produto pelo ID, para que venha ser um item do pedido
+    public ItemPedidoDTO buscarProdutoPorId(BigInteger id) throws Exception {
+        return toDTO(itemPedidoRepository.findById(id).orElseThrow(() -> new IdInexistenteException("Produto", id)));
+    }
+
+    // Criar registro de item no pedido
     @Transactional
-    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO dto) throws Exception {  
-        
-        Produto produto = repositorioProduto.getReferenceById(dto.getProdutoId());
-        if(produto!= null 
-            && produto.getQuantidadeEstoque() != null 
-            && dto.getQuantidadeEstoque() > 0 
-            && ((produto.getQuantidadeEstoque() - dto.getQuantidadeEstoque()) >=0 )){
+    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO entityDTO) throws Exception { 
+        Produto produto = produtoRepository.getReferenceById(entityDTO.getProdutoId());
+        if (produto!= null && 
+            produto.getQuantidadeEstoque() != null && 
+            entityDTO.getQuantidadeEstoque() >0 &&
+            ((produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque()) >=0 )){
 
-                produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - dto.getQuantidadeEstoque());
-                repositorioProduto.save(produto);
-
-                dto.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
-                return toDTO(repositorio.save(toEntity(dto)));
+                produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque());
+                produtoRepository.save(produto);
+                entityDTO.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
+                return toDTO(itemPedidoRepository.save(toEntity(entityDTO)));
         }
-        throw new ProdutoEstoqueNegativoException(dto.getProdutoDescricao());
+        throw new ProdutoEstoqueNegativoException(entityDTO.getProdutoDescricao());
     }
-
+    
+    // Excluir registro de item no pedido
     @Transactional
-    public ItemPedidoDTO alterarItemPedido(BigInteger id, ItemPedidoDTO dto) throws Exception {
-
-        try{     
-         return toDTO(repositorio.save(toEntity(dto)));
-        }catch(Exception e){
-            throw new Exception("A alteração não foi realizada.");
-        }                                   
-    }
-
-    @Transactional
-    public String deleteItemPedido(BigInteger id) throws Exception {
-
-        ItemPedido item = repositorio.getReferenceById(id);
+    public String deletePorId(BigInteger id) throws Exception {
+        ItemPedido item = itemPedidoRepository.getReferenceById(id);
         Produto produto = item.getProduto();
         produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + item.getQuantidadeEstoque());
-        repositorioProduto.save(produto);
-        repositorio.deleteById(id);
-        return "O registro foi excluído";
-    }
+        produtoRepository.save(produto);
+        itemPedidoRepository.deleteById(id);
+        return "Excluído";
+    }  
+
 }
