@@ -171,7 +171,8 @@ export default {
       this.formVisible = false;
       const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
       this.listaPedidos = response.content;
-      this.totalPages = response.totalPages;   
+      this.totalPages = response.totalPages;
+      console.log(response);
     },
     limpar() {
       this.pedidoEscolhido = null;

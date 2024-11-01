@@ -60,42 +60,40 @@
       <div class="mb-3">
         <label class="form-label">Itens Pedido</label>
         <table class="table table-dark table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Itens</th>
-                  <th scope="col">Descricão</th>
-                  <th scope="col">Quantidade</th>
-                  <th scope="col">valor</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Excluir</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in itens" :key="item.id" scope="row">
-                  <th>
-                    <img :src=item.produtoUrlImagem height="50px">
-                  </th>
-                  <th>
-                    {{ item.produtoDescricao }}
-                  </th>
-                  <th>
-                    {{ item.quantidadeEstoque }}
-                  </th>
-                  <th>
-                    {{ item.precoUnidadeAtual }}
-                  </th>
-                  <th>
-                    {{ item.quantidadeEstoque * item.precoUnidadeAtual }}
-                  </th>
-                  <th>
-                    <button
-                      class="btn btn-outline-danger m-2"
-                      @click.prevent="excluirItemPedido(item.id)">
-                      <i class="bi bi-clipboard2-minus"></i> 
-                    </button>
-                  </th>
-                </tr>
-              </tbody>
+          <thead>
+            <tr>
+              <th scope="col">Itens</th>
+              <th scope="col">Descricão</th>
+              <th scope="col">Quantidade</th>
+              <th scope="col">valor</th>
+              <th scope="col">Total</th>
+              <th scope="col">Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in listaItens" :key="item.id" scope="row">
+              <th>
+                <img :src=item.produtoUrlImagem height="50px">
+              </th>
+              <th>
+                {{ item.produtoDescricao }}
+              </th>
+              <th>
+                {{ item.quantidadeEstoque }}
+              </th>
+              <th>
+                {{ item.precoUnidadeAtual }}
+              </th>
+              <th>
+                {{ item.quantidadeEstoque * item.precoUnidadeAtual }}
+              </th>
+              <th>
+                <button class="btn btn-outline-danger m-2" @click.prevent="excluirItemPedido(item.id)">
+                  <i class="bi bi-clipboard2-minus"></i>
+                </button>
+              </th>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div class="row">
@@ -121,11 +119,12 @@
           <input class="form-control" type="number" v-model="quantidadeItem" placeholder="0" />
         </div>
         <div class="col-2 position-relative">
-         
-          <button class="btn btn-primary position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="incluirItem">
-          <i class="bi bi-clipboard2-check"></i>
+
+          <button class="btn btn-primary position-absolute top-50 start-50 translate-middle" type="submit"
+            v-on:click.prevent="incluirItem">
+            <i class="bi bi-clipboard2-check"></i>
             Incluir
-        </button>
+          </button>
         </div>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -168,6 +167,7 @@ export default {
       dataEntrega: '',
       dataPagamento: '',
       itens: [],
+      listaItens: [],
       isInvalido: false,
       isLoading: false,
       mensagem: "",
@@ -229,93 +229,84 @@ export default {
       };
     },
     async salvar() {
-      console.log(this.selectedCliente, this.selectedProduto);
-      if (this.nome === "") {
-        this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
-        return;
-      }
-      this.isInvalido = false;
+      if (this.selectedCliente == null || this.selectedProduto == null) {
+    this.isInvalido = true;
+    this.mensagem = "Selecione cliente e produto!";
+    return;
+  }
+  this.isInvalido = false;
 
-      try {
-        if (this.id === "") {
-           const response = await pedidoService.criar(this.getDados());
-           this.listaPedidos = response;
-        } else {
-          const response = await pedidoService.atualizar(
-            this.id,
-            this.getDados()
-          );
-          this.listaPedidos = response;
-        }
-        this.$emit("salvar_pedido", this.getDados());
+  try {
+    if (!this.id) {
+      const response = await pedidoService.criar(this.getDados());
+      this.id = response.id; 
+    }
 
-        limparForm();
-      } catch (error) {
-        this.isInvalido = true;
-        if (error.response.status === 403) {
-          this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else if (
-          error.response.status === 400
-        ) {
-          this.mensagem = error.response.data.mensagem;
-        } else {
-          this.mensagem = error.message;
-        }
-      }
+    for (const item of this.listaItens) {
+      item.pedidoId = this.id;
+      const itemResponse = await itemPedidoService.criar(item);
+      this.itens.push(itemResponse);
+    }
+
+    this.listaItens = [];
+
+    alert("Pedido e itens salvos com sucesso!");
+    this.$emit("salvar_pedido", this.getDados());
+  } catch (error) {
+    this.isInvalido = true;
+    this.mensagem = error.response ? error.response.data.mensagem : error.message;
+  }
     },
-    limparForm() {
-        this.id = "";
-        this.pedidoId =  "";
-        this.numero = "";
-        this.dataCompra = "";
-        this.dataEntrega = "";
-        this.dataPagamento = "";
-        this.formaPagamentoId = "";
-        this.formaPagamentoDescricao = "";
-        this.clienteId = "";
-        this.clienteNomeRazaoSocial = "";
-        this.itens = "";
+    cancelar() {
+      this.id = "";
+      this.pedidoId = "";
+      this.numero = "";
+      this.dataCompra = "";
+      this.dataEntrega = "";
+      this.dataPagamento = "";
+      this.formaPagamentoId = "";
+      this.formaPagamentoDescricao = "";
+      this.clienteId = "";
+      this.clienteNomeRazaoSocial = "";
+      this.itens = "";
       this.$emit("cancelar", true);
     },
-    async incluirItem(){
-        const itemPedido = {
-              id : null,
-              pedidoId : this.id,
-              produtoId : this.selectedProduto.id,
-              produtoDescricao : this.selectedProduto.descricao,
-              produtoUrlImagem : this.selectedProduto.urlImagem,
-              quantidadeEstoque : this.quantidadeItem,
-              precoUnidadeAtual : null
-            }
-        console.log(itemPedido);
-        try{
-          const response = await itemPedidoService.criar(itemPedido);
-          // lista de itens na tela
-          this.itens.push(response);
-        }catch(error){
-          if(error.response.status === 403){        
+    async incluirItem() {
+      const itemPedido = {
+        id: null,
+        pedidoId: this.id,
+        produtoId: this.selectedProduto.id,
+        produtoDescricao: this.selectedProduto.descricao,
+        produtoUrlImagem: this.selectedProduto.urlImagem,
+        quantidadeEstoque: this.quantidadeItem,
+        precoUnidadeAtual: this.selectedProduto.precoUnidadeAtual
+      };
+      console.log(itemPedido);
+      try {
+        this.listaItens.push(itemPedido);
+      } catch (error) {
+        if (error.response.status === 403) {
           alert("Usuário não identificado! Faça o login!!!");
-          }else if(error.response.status === 400 ){
-            alert(error.response.data.mensagem);     
-          }else{
-            alert(error.message);
+        } else if (error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
+          alert(error.message);
         }
       }
 
     },
-    async excluirItemPedido(id){
-      try{
+    async excluirItemPedido(id) {
+      try {
         const response = await itemPedidoService.apagar(id);
         console.log(response);
         // lista de itens na tela
         this.itens = this.itens.filter(item => item.id !== id);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
+      } catch (error) {
+        if (error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
           alert(error.message);
         }
       }
@@ -324,17 +315,17 @@ export default {
   mounted() {
     if (this.propsPedido) {
       this.id = this.propsPedido.id;
-      this.clienteId= this.propsPedido.clienteId;
-      this.clienteNomeRazaoSocial= this.propsPedido.clienteNomeRazaoSocial;
-      this.formaPagamentoId= this.propsPedido.formaPagamentoId;
-      this.formaPagamentoDescricao= this.propsPedido.formaPagamentoDescricao;
-      this.numero= this.propsPedido.numero;
-      this.dataCompra= this.propsPedido.dataCompra;
-      this.dataEntrega= this.propsPedido.dataEntrega;
-      this.dataPagamento= this.propsPedido.dataPagamento;
-      this.itens= this.propsPedido.itens;
-      this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao };
-      this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
+      this.clienteId = this.propsPedido.clienteId;
+      this.clienteNomeRazaoSocial = this.propsPedido.clienteNomeRazaoSocial;
+      this.formaPagamentoId = this.propsPedido.formaPagamentoId;
+      this.formaPagamentoDescricao = this.propsPedido.formaPagamentoDescricao;
+      this.numero = this.propsPedido.numero;
+      this.dataCompra = this.propsPedido.dataCompra;
+      this.dataEntrega = this.propsPedido.dataEntrega;
+      this.dataPagamento = this.propsPedido.dataPagamento;
+      this.itens = this.propsPedido.itens;
+      this.selectedFormaPagamento = { id: this.propsPedido.formaPagamentoId, descricao: this.propsPedido.formaPagamentoDescricao };
+      this.selectedCliente = { id: this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial };
     }
   },
   computed: {
