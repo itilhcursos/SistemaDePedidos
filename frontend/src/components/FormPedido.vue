@@ -217,11 +217,15 @@ export default {
       return {
         id: this.id,
         pedidoId: this.pedidoId,
-        precoUnidadeAtual: this.precoUnidadeAtual,
-        produtoDescricao: this.produtoDescricao,
-        produtoId: this.produtoId,
-        produtoUrlImagem: this.produtoUrlImagem,
-        quantidadeEstoque: this.quantidadeEstoque,
+        numero: this.numero,
+        dataCompra: this.dataCompra,
+        dataEntrega: this.dataEntrega,
+        dataPagamento: this.dataPagamento,
+        formaPagamentoId: this.selectedFormaPagamento.id,
+        formaPagamentoDescricao: this.selectedFormaPagamento.descricao,
+        clienteId: this.selectedCliente.id,
+        clienteNomeRazaoSocial: this.selectedCliente.nomeRazaoSocial,
+        itens: this.itens
       };
     },
     async salvar() {
@@ -246,13 +250,7 @@ export default {
         }
         this.$emit("salvar_pedido", this.getDados());
 
-        this.id = "";
-        this.pedidoId =  "";
-        this.precoUnidadeAtual = "";
-        this.produtoDescricao = "";
-        this.produtoId = "";
-        this.produtoUrlImagem = "";
-        this.quantidadeEstoque = "";
+        limparForm();
       } catch (error) {
         this.isInvalido = true;
         if (error.response.status === 403) {
@@ -266,9 +264,18 @@ export default {
         }
       }
     },
-    cancelar() {
-      this.id = "";
-      this.nome = "";
+    limparForm() {
+        this.id = "";
+        this.pedidoId =  "";
+        this.numero = "";
+        this.dataCompra = "";
+        this.dataEntrega = "";
+        this.dataPagamento = "";
+        this.formaPagamentoId = "";
+        this.formaPagamentoDescricao = "";
+        this.clienteId = "";
+        this.clienteNomeRazaoSocial = "";
+        this.itens = "";
       this.$emit("cancelar", true);
     },
     async incluirItem(){
@@ -328,7 +335,6 @@ export default {
       this.itens= this.propsPedido.itens;
       this.selectedFormaPagamento = {id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao };
       this.selectedCliente = { id:this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial};
-
     }
   },
   computed: {
