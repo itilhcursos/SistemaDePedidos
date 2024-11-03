@@ -3,9 +3,12 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
@@ -52,6 +55,10 @@ public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO>
         repositorioProduto.save(produto);
         repositorio.deleteById(id);
         return "Excluído";
+    }
+
+    public static Page<PedidoDTO> getTodos(Pageable pageable) {
+        throw new UnsupportedOperationException("Unimplemented method 'getTodos'");
     }  
 
 
