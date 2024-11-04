@@ -68,10 +68,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscar" class="btn btn-success">
-            <i class="bi bi-binoculars"></i>
-            Buscar
-          </button>
+          <button @click.prevent="buscar" class="btn btn-success"><i class="bi bi-binoculars"></i> Buscar</button>
         </div>
       </div>
     </div>
@@ -81,8 +78,7 @@
 <script>
 import FormMunicipio from "./FormMunicipio.vue";
 import Logico from "@/utils/Logico.js";
-import axios from "axios";
-
+import municipioService from "@/services/municipioService";
 export default {
   components: {
     FormMunicipio,
@@ -105,13 +101,9 @@ export default {
     async buscar() {
       this.municipioEscolhido = null;
       this.formVisible = false;
-      const response = await axios.get(
-        `http://localhost:8080/municipios?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      //console.log(response.data);
-      this.listaMunicipios = response.data.content;
-      this.totalPages = response.data.totalPages;
-      //console.log(this.totalPages);
+      const response = await municipioService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      this.listaMunicipios = response.content;
+      this.totalPages = response.totalPages;  
     },
     formatarEntrega(valor){
       return Logico.toSimNao(valor);
@@ -122,24 +114,22 @@ export default {
     },
     novoMunicipio() {
       this.formVisible = !this.formVisible;
+      this.municipioEscolhido = {
+        id: "",
+        nome: "",
+        entrega: false,
+        estadoId: null,
+        estadoNome: "",
+      };
     },
     alterarMunicipio(municipio) {
       this.municipioEscolhido = municipio;
       this.formVisible = true;
     },
     async excluirMunicipio(id) {
-      // if(localStorage.getItem('token') === null) {
-      //     alert("Usuário não identificado! Faça o login!!!");
-      //     return;
-      // }
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
       try{
-          const response = await axios.delete(`http://localhost:8080/municipio/${id}`, config);
-          console.log(response.data);
+          const response = await municipioService.apagar(id);
+          console.log(response);
       }catch(error){
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");

@@ -3,7 +3,7 @@
       <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Cliente</h4>
       <hr/>
       <form>
-        <div class="mb-3">
+        <div v-if="id !== ''" class="col-md-1 mb-3">
           <label class="form-label">Id</label>
           <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id cliente"/>
         </div>
@@ -11,37 +11,50 @@
           <label class="form-label">Nome/Razão Social</label>
           <input class="form-control" type="text" v-model="nomeRazaoSocial" placeholder="Nome ou Razão Social"/>
         </div>
-        <div class="mb-3">
-          <label class="form-label">CNPJ</label>
-          <input class="form-control" type="text" v-model="cnpj" placeholder="CNPJ"/>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">CPF</label>
-          <input class="form-control" type="text" v-model="cpf" placeholder="CPF"/>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Telefone</label>
-          <input class="form-control" type="text" v-model="telefone" placeholder="Telefone"/>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Endereço</label>
-          <input class="form-control" type="text" v-model="endereco" placeholder="Endereço"/>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Bairro</label>
-          <input class="form-control" type="text" v-model="bairro" placeholder="Bairro"/>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">CEP</label>
-          <input class="form-control" type="text" v-model="cep" placeholder="CEP"/>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input class="form-control" type="email" v-model="email" placeholder="Email"/>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Ativo</label>
-          <input type="checkbox" v-model="ativo" />
+        <div class="row">
+            <div class="col-md-6 mb-3" v-if="getCpf">
+                <label class="form-label">CPF</label>
+                <input class="form-control" type="text" v-model="cpf" placeholder="CPF"/>
+            </div>
+            <div class="col-md-6 mb-3" v-if="getCnpj">
+                <label class="form-label">CNPJ</label>
+                <input class="form-control" type="text" v-model="cnpj" placeholder="CNPJ"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Telefone</label>
+                <input class="form-control" type="text" v-model="telefone" placeholder="Telefone"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" v-model="email" placeholder="Email"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Município</label>
+                <v-select class="meu-select" v-model="selectedMunicipio" :filterable="false" :options="optionsMunicipio" @search="onSearchMunicipio">
+                    <template v-slot:no-options> Não encontrado.</template>
+                    <template v-slot:option="option">{{ option.nome }}</template>
+                    <template v-slot:selected-option="option">{{ option.nome }}</template>
+                </v-select>
+            </div>
+                        <div class="col-md-6 mb-3">
+                <label class="form-label">CEP</label>
+                <input class="form-control" type="text" v-model="cep" placeholder="CEP"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Endereço</label>
+                <input class="form-control" type="text" v-model="endereco" placeholder="Endereço"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Bairro</label>
+                <input class="form-control" type="text" v-model="bairro" placeholder="Bairro"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Ativo</label>
+                <select v-model="ativo" class="form-select">
+                    <option :value="true">Sim</option>
+                    <option :value="true">Não</option>
+                </select>
+            </div>
         </div>
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
           <div class="p-2">{{ mensagem }}</div>
@@ -55,134 +68,160 @@
   </template>
   
   <script>
-  import axios from "axios";
+  import clienteService from '@/services/clienteService';
+  import municipioService from '@/services/municipioService';
+  
   export default {
-    props: {
-      propsCliente: Object,
-    },
-    data() {
-      return {
-        id: "",
-        nomeRazaoSocial: "",
-        cnpj: "",
-        cpf: "",
-        telefone: "",
-        endereco: "",
-        bairro: "",
-        cep: "",
-        email: "",
-        ativo: false,
-        isInvalido: false,
-        mensagem: '',
-      };
-    },
-    methods: {
-      async salvarCliente() {
-        if (this.nomeRazaoSocial === "" || this.cnpj === "" || this.cpf === "") {
-          this.isInvalido = true;
-          this.mensagem = "Nome/Razão Social, CNPJ e CPF são obrigatórios!";
-          return;
-        }
-        this.isInvalido = false;
-        let config = {
-          headers: {
-            'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      props: {
+          propsCliente: Object,
+      },
+      data() {
+          return {
+              id: "",
+              nomeRazaoSocial: "",
+              cnpj: "",
+              cpf: "",
+              endereco: "",
+              bairro: "",
+              cep: "",
+              telefone: "",
+              email: "",
+              informacoes: "",
+              selectedMunicipio: null,
+              optionsMunicipio: [],
+              ativo: "",
+              isInvalido: false,
+              mensagem: "",
+          };
+      },
+      methods: {
+          async onSearchMunicipio(search, loading) {
+              if (search == "") return;
+              loading(true);
+              await municipioService.buscar(search).then((response) => {
+                  this.optionsMunicipio = response.content;
+                  loading(false);
+              });
+          },
+          getDados() {
+              return {
+                  id: this.id,
+                  nomeRazaoSocial: this.nomeRazaoSocial,
+                  cnpj: this.cnpj,
+                  cpf: this.cpf,
+                  endereco: this.endereco,
+                  bairro: this.bairro,
+                  cep: this.cep,
+                  telefone: this.telefone,
+                  email: this.email,
+                  informacoes: this.informacoes,
+                  municipioId: this.selectedMunicipio ? this.selectedMunicipio.id : null,
+                  ativo: this.ativo,
+              };
+          },
+          async salvarCliente() {
+              if (this.nomeRazaoSocial === "") {
+                  this.isInvalido = true;
+                  this.mensagem = "Nome do Cliente ou Razão social deve ser preenchido!";
+                  return;
+              }
+              if (this.cpf === "" && this.cnpj === "") {
+                  this.isInvalido = true;
+                  this.mensagem = "Número do CPF ou CNPJ deve ser preenchido!";
+                  return;
+              }
+              if (!this.selectedMunicipio) {
+                  this.isInvalido = true;
+                  this.mensagem = "Município deve ser selecionado!";
+                  return;
+              }
+              this.isInvalido = false;
+              try {
+                  let response;
+                  if (this.id === "") {
+                      response = await clienteService.criar(this.getDados());
+                  } else {
+                      response = await clienteService.atualizar(this.id, this.getDados());
+                  }
+                  this.listaClientes = response;
+                  this.$emit("salvar_cliente", this.getDados());
+                  this.resetarCampos();
+              } catch (error) {
+                  this.isInvalido = true;
+                  this.mensagem = this.getMensagemErro(error);
+              }
+          },
+          cancelar() {
+              this.resetarCampos();
+              this.$emit("cancelar", true);
+          },
+          resetarCampos() {
+              this.id = "";
+              this.nomeRazaoSocial = "";
+              this.cnpj = "";
+              this.cpf = "";
+              this.endereco = "";
+              this.bairro = "";
+              this.cep = "";
+              this.telefone = "";
+              this.email = "";
+              this.informacoes = "";
+              this.selectedMunicipio = null;
+              this.ativo = "";
+          },
+          getMensagemErro(error) {
+              if (error.response && error.response.status === 403) {
+                  return "Usuário não identificado! Faça o login!!!";
+              } else if (error.response && error.response.status === 400) {
+                  return error.response.data.mensagem;
+              } else {
+                  return error.message;
+              }
           }
-        }
+      },
+      mounted() {
+          if (this.propsCliente) {
+              this.id = this.propsCliente.id;
+              this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
+              this.cnpj = this.propsCliente.cnpj;
+              this.cpf = this.propsCliente.cpf;
+              this.endereco = this.propsCliente.endereco;
+              this.bairro = this.propsCliente.bairro;
+              this.cep = this.propsCliente.cep;
+              this.telefone = this.propsCliente.telefone;
+              this.email = this.propsCliente.email;
+              this.informacoes = this.propsCliente.informacoes;
+              this.selectedMunicipio = { id: this.propsCliente.municipioId, nome: this.propsCliente.municipioNome };
+              this.ativo = this.propsCliente.ativo;
   
-        try {
-          if (this.id === "") {
-            // Incluir pelo POST da API
-            const response = await axios.post("http://localhost:8080/cliente", {
-              id: this.id,
-              nomeRazaoSocial: this.nomeRazaoSocial,
-              cnpj: this.cnpj,
-              cpf: this.cpf,
-              telefone: this.telefone,
-              endereco: this.endereco,
-              bairro: this.bairro,
-              cep: this.cep,
-              email: this.email,
-              ativo: this.ativo,
-              }, 
-              config
-            );
-            this.$emit("salvar_cliente", response.data);
-          } else {
-            // Alterar pelo PUT da API
-            const response = await axios.put(
-              `http://localhost:8080/cliente/${this.id}`,
-              {
-                id: this.id,
-                nomeRazaoSocial: this.nomeRazaoSocial,
-                cnpj: this.cnpj,
-                cpf: this.cpf,
-                telefone: this.telefone,
-                endereco: this.endereco,
-                bairro: this.bairro,
-                cep: this.cep,
-                email: this.email,
-                ativo: this.ativo,
-              },
-              config
-            );
-            this.$emit("salvar_cliente", response.data);
+              if (this.cpf && this.cpf !== "") {
+                  this.cnpj = "";
+              } else if (this.cnpj && this.cnpj !== "") {
+                  this.cpf = "";
+              }
           }
-  
-          this.id = "";
-          this.nomeRazaoSocial = "";
-          this.cnpj = "";
-          this.cpf = "";
-          this.telefone = "";
-          this.endereco = "";
-          this.bairro = "";
-          this.cep = "";
-          this.email = "";
-          this.ativo = false;
-        } catch (error) {
-          this.isInvalido = true;
-          if (error.response.status === 403) {
-            this.mensagem = "Usuário não identificado! Faça o login!";
-          } else if (error.response.status === 400 && error.response.data.exception === 'ClienteDuplicadoException') {
-            this.mensagem = error.response.data.mensagem;
-          } else {
-            this.mensagem = error.message;
+      },
+      computed: {
+          getAcao() {
+              return this.id === "" ? "Incluir" : "Alterar";
+          },
+          getCnpj() {
+              return this.cpf === '' ? true : false;
+          },
+          getCpf() {
+              return this.cnpj === '' ? true : false;
           }
-        }
       },
-      cancelar() {
-        this.id = "";
-        this.nomeRazaoSocial = "";
-        this.cnpj = "";
-        this.cpf = "";
-        this.telefone = "";
-        this.endereco = "";
-        this.bairro = "";
-        this.cep = "";
-        this.email = "";
-        this.ativo = false;
-        this.$emit("cancelar", true);
-      },
-    },
-    mounted() {
-      if (this.propsCliente) {
-        this.id = this.propsCliente.id;
-        this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
-        this.cnpj = this.propsCliente.cnpj;
-        this.cpf = this.propsCliente.cpf;
-        this.telefone = this.propsCliente.telefone;
-        this.endereco = this.propsCliente.endereco;
-        this.bairro = this.propsCliente.bairro;
-        this.cep = this.propsCliente.cep;
-        this.email = this.propsCliente.email;
-        this.ativo = this.propsCliente.ativo;
-      }
-    },
-    computed: {
-      getAcao() {
-        return this.id === "" ? "Incluir" : "Alterar";
-      },
-    },
   };
   </script>
+  
+  <style>
+  .meu-select {
+      width: 100%;
+      font-size: 1.0em;
+      color: #252525;
+      background: #fbf4f4;
+      border-radius: 0.375rem;
+  }
+  </style>
   

@@ -50,7 +50,7 @@ public class ClienteController {
         @RequestParam(required = false, defaultValue = "id") String property,
         @PathVariable String txtBusca
     ) {
-        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return clienteService.buscar(pageable, txtBusca);
     }
 

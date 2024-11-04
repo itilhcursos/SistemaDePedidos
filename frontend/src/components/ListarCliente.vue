@@ -13,25 +13,28 @@
           </div>
         </div>
       </div>
-  
       <table class="table table-dark table-striped" v-if="!formVisible">
         <thead>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Nome/Razão Social</th>
-            <th scope="col">CNPJ</th>
-            <th scope="col">CPF</th>
             <th scope="col">Telefone</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Município</th>
+            <th scope="col">Ativo</th>
             <th scope="col" class="d-flex justify-content-end">Ações</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
-            <th>{{ cliente.id }}</th>
-            <td>{{ cliente.nomeRazaoSocial }}</td>
-            <td>{{ cliente.cnpj }}</td>
-            <td>{{ cliente.cpf }}</td>
-            <td>{{ cliente.telefone }}</td>
+            <th class="align-middle">{{ cliente.id }}</th>
+            <td class="align-middle">{{ cliente.nomeRazaoSocial }}</td>
+            <td class="align-middle">{{ cliente.telefone }}</td>
+            <td class="align-middle">{{ cliente.email }}</td>
+            <td class="align-middle">{{ cliente.municipioEstadoNome }}</td>
+            <td class="align-middle">{{ cliente.municipioNome }}</td>
+            <td class="align-middle">{{ formatarLogico(cliente.ativo) }}</td>
             <td class="d-flex justify-content-end">
               <button class="btn btn-primary m-2" @click="alterarCliente(cliente)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
               <button class="btn btn-outline-danger m-2" @click="excluirCliente(cliente.id)"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
@@ -40,7 +43,6 @@
         </tbody>
       </table>
     </div>
-  
     <div v-if="!formVisible">
       <hr/>
       <div class="container">
@@ -79,83 +81,71 @@
     </div>
   </template>
   
-  <script>
-  import axios from "axios";
-  import FormCliente from "./FormCliente.vue";
-  
-  export default {
-    components: {
-      FormCliente,
+<script>
+import FormCliente from "./FormCliente.vue";
+import clienteService from "@/services/clienteService";
+import Logico from "@/utils/Logico.js";
+export default {
+  components: {
+    FormCliente,
+  },
+  data() {
+    return {
+      listaClientes: [],
+      clienteEscolhido: null,
+      formVisible: false,
+      pageNumber: 1,
+      pageSize: 10,
+      direction: "ASC",
+      property: "id",
+      totalPages: 0,
+    };
+  },
+  methods: {
+    async buscar() {
+      this.clienteEscolhido = null;
+      this.formVisible = false;
+      const response = await clienteService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      this.listaClientes = response.content;
+      this.totalPages = response.totalPages;   
     },
-    data() {
-      return {
-        listaClientes: [],
-        clienteEscolhido: null,
-        formVisible: false,
-        pageNumber: 1,
-        pageSize: 10,
-        direction: "ASC",
-        property: "id",
-        totalPages: 0,
-      };
+    limpar() {
+      this.clienteEscolhido = null;
+      this.formVisible = !this.formVisible;
     },
-    methods: {
-
-      async buscar() {
-        this.clienteEscolhido = null;
-        this.formVisible = false;
-        const response = await axios.get(
-          `http://localhost:8080/clientes?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-        );
-        this.listaClientes = response.data.content;
-        this.totalPages = response.data.totalPages;
-      },
-
-      limpar() {
-        this.clienteEscolhido = null;
-        this.formVisible = !this.formVisible;
-      },
-
-      novoCliente() {
-        this.formVisible = !this.formVisible;
-      },
-
-      alterarCliente(cliente) {
-        this.clienteEscolhido = cliente;
-        this.formVisible = true;
-      },
-
-      async excluirCliente(id) {
-        let config = {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        };
-        try {
-          const response = await axios.delete(`http://localhost:8080/cliente/${id}`, config);
-          console.log(response.data);
-        } catch (error) {
-          if (error.response.status === 403) {
-            alert("Usuário não identificado! Faça o login!");
-          } else if (error.response.status === 400) {
-            alert(error.response.data.mensagem);
-          } else {
-            alert(error.message);
-          }
+    novoCliente() {
+      this.formVisible = !this.formVisible;
+    },
+    alterarCliente(cliente) {
+      this.clienteEscolhido = cliente;
+      this.formVisible = true;
+    },
+    async excluirCliente(id) {
+      try{
+          const response = await clienteService.apagar(id);
+          console.log(response);
+      }catch(error){
+        if(error.response.status === 403){        
+          alert("Usuário não identificado! Faça o login!!!");
+        }else if(error.response.status === 400 ){
+          alert(error.response.data.mensagem);     
+        }else{
+          alert(error.message);
         }
-        this.buscar();
-      },
-
-      irPara(pagina) {
-        this.pageNumber = pagina;
-        this.buscar();
-      },
-    },
-
-    mounted() {
+      }     
       this.buscar();
     },
-  };
-  
-  </script>
+    irPara(pagina) {
+      this.pageNumber = pagina;
+      this.buscar();
+    },
+    formatarLogico(valor){
+        return Logico.toSimNao(valor);
+      },
+  },
+  mounted() {
+    this.buscar();
+  },
+};
+</script>
   

@@ -5,11 +5,18 @@
         <h3>Formas de Pagamento</h3>
       </div>
       <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success"><i class="bi bi-clipboard-plus"></i> Novo</button>
+        <button v-if="!formVisible" @click="novaFormaPagamento" class="btn btn-success">
+          <i class="bi bi-clipboard-plus"></i> Novo
+        </button>
       </div>
       <div class="row">
         <div>
-          <FormFormaPagamento v-if="formVisible" :propsFormaPagamento="formaPagamentoEscolhida" @cancelar="limpar" @salvar_forma_pagamento="listaFormasPagamento"/>
+          <FormFormaPagamento
+            v-if="formVisible"
+            :propsFormaPagamento="formaPagamentoEscolhida"
+            @cancelar="limpar"
+            @salvar_formaPagamento="buscarFormasPagamento"
+          />
         </div>
       </div>
     </div>
@@ -19,18 +26,35 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Descrição</th>
-          <th scope="col">Ativo</th>
+          <th scope="col" class="text-center align-middle">Ativo</th>
           <th scope="col" class="d-flex justify-content-end">Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="formaPagamento in listaFormasPagamento" :key="formaPagamento.id" scope="row">
-          <th>{{ formaPagamento.id }}</th>
-          <td>{{ formaPagamento.descricao }}</td>
-          <td>{{ formatarLogico(formaPagamento.ativo) }}</td>
+          <th class="align-middle">
+            {{ formaPagamento.id }}
+          </th>
+          <td class="align-middle">
+            {{ formaPagamento.descricao }}
+          </td>
+          <td class="text-center align-middle">
+            {{ formatarLogico(formaPagamento.ativo) }}
+          </td>
           <td class="d-flex justify-content-end">
-            <button class="btn btn-btn btn-primary m-2" @click="alterarFormaPagamento(formaPagamento)"><i class="bi bi-clipboard-pulse"></i> Alterar</button>
-            <button class="btn btn-outline-danger m-2" @click="excluirFormaPagamento(formaPagamento.id)"><i class="bi bi-clipboard2-minus"></i> Excluir</button>
+            <button
+              class="btn btn-btn btn-primary m-2"
+              @click="alterarFormaPagamento(formaPagamento)"
+            >
+              <i class="bi bi-clipboard-pulse"></i> Alterar
+            </button>
+
+            <button
+              class="btn btn-outline-danger m-2"
+              @click="excluirFormaPagamento(formaPagamento.id)"
+            >
+              <i class="bi bi-clipboard2-minus"></i> Excluir
+            </button>
           </td>
         </tr>
       </tbody>
@@ -41,10 +65,25 @@
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
-          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">{{ pagina }}</button>
+
+          <button
+            v-for="pagina in totalPages"
+            :key="pagina"
+            @click.prevent="irPara(pagina)"
+            class="btn btn-light ms-1"
+          >
+            {{ pagina }}
+          </button>
+
+
         </div>
         <div class="col-auto">
-          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25"/>
+          <input
+            type="text"
+            v-model="pageNumber"
+            placeholder="Número da pagina"
+            class="form-control w-25"
+          />
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -67,17 +106,21 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarFormaPagamento" class="btn btn-success"><i class="bi bi-binoculars"></i> Buscar</button>
+          <button @click.prevent="buscarFormasPagamento" class="btn btn-success">
+            <i class="bi bi-binoculars"></i>
+            Buscar
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+
 <script>
 import FormFormaPagamento from "./FormFormaPagamento.vue";
+import formaPagamentoService from"@/services/formaPagamentoService";
 import Logico from "@/utils/Logico.js";
-import axios from "axios";
 export default {
   components: {
     FormFormaPagamento,
@@ -95,19 +138,13 @@ export default {
     };
   },
   methods: {
-    async buscarFormaPagamento() {
+    async buscarFormasPagamento() {
       this.formaPagamentoEscolhida = null;
       this.formVisible = false;
-      const response = await axios.get(
-        `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
-      console.log(response.data);
-      this.listaFormasPagamento = response.data.content;
-      this.totalPages = response.data.totalPages;
-      console.log(this.totalPages);
-    },
-    formatarLogico(valor){
-      return Logico.toSimNao(valor);
+      const response = await formaPagamentoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      this.listaFormasPagamento = response.content;
+      this.totalPages = response.totalPages; 
+     
     },
     limpar() {
       this.formaPagamentoEscolhida = null;
@@ -121,15 +158,10 @@ export default {
       this.formVisible = true;
     },
     async excluirFormaPagamento(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
-        }
-      }
-    try{
-      const response = await axios.delete(`http://localhost:8080/forma-pagamento/${id}`,config);
-      console.log(response.data);
-    }catch(error){
+      try{
+          const response = await formaPagamentoService.apagar(id);
+          console.log(response);
+      }catch(error){
         if(error.response.status === 403){        
          alert("Usuário não identificado! Faça o login!!!");
         }else if(error.response.status === 400 ){
@@ -137,16 +169,19 @@ export default {
         }else{
           alert(error.message);
         }
-      } 
-      this.buscarFormaPagamento();
+      }     
+      this.buscarFormasPagamento();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscarFormaPagamento();
+      this.buscarFormasPagamento();
     },
+    formatarLogico(valor){
+        return Logico.toSimNao(valor);
+      },
   },
   mounted() {
-    this.buscarFormaPagamento();
+    this.buscarFormasPagamento();
   },
 };
 </script>

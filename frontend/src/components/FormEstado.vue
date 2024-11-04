@@ -3,11 +3,11 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Estado</h4>
     <hr/>
     <form>
-      <div class="mb-3">
+      <div v-if="id !== ''" class="col-md-1 mb-3">
         <label class="form-label">Id</label>
         <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id estado"/>
       </div>
-      <div class="mb-3">
+      <div class="col-md-6 mb-3">
         <label class="form-label">Nome</label>
         <input class="form-control" type="text" v-model="nome" placeholder="Nome"/>
       </div>
@@ -39,14 +39,14 @@ export default {
   methods: {
     getDados(){
       return {
-              id: this.id,
-              nome: this.nome,
-            };
+        id: this.id,
+        nome: this.nome,
+      };
     },
     async salvarEstado() {
       if (this.nome === "") {
         this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
+        this.mensagem = "Nome do Estado deve ser preenchido!";
         return;
       }
       this.isInvalido = false;
