@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.dto.MunicipioDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ItemPedidoService;
 @RestController
 @SecurityRequirement(name = "bearerAuth")
@@ -39,24 +40,35 @@ ItemPedidoService itemPedidoService;
         return itemPedidoService.listarItemPedidos(pageable);
     }
      @GetMapping("/itemPedidos/pedido-id/{id}")
-    public Page<ItemPedidoDTO> BuscarItemPedidosPorPedidoId(@PathVariable BigInteger pedidoId,
+    public Page<ItemPedidoDTO> BuscarItemPedidosPorPedidoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
         @RequestParam(required = false, defaultValue = "id") String property
     ){
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return itemPedidoService.listarItemPedidoPorPedidoId(pedidoId, pageable);
+        return itemPedidoService.listarItemPedidoPorPedidoId(id, pageable);
     }
     @GetMapping("/itemPedidos/produto-id/{id}")
-    public Page<ItemPedidoDTO> BuscarItemPedidosPorProdutoId(@PathVariable BigInteger produtoId,
+    public Page<ItemPedidoDTO> BuscarItemPedidosPorProdutoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
         @RequestParam(required = false, defaultValue = "id") String property
     ){
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return itemPedidoService.listarItemPedidoPorProdutoId(produtoId, pageable);
+        return itemPedidoService.listarItemPedidoPorProdutoId(id, pageable);
+    }
+    
+     @GetMapping("/itemPedidos/produto-descricao/{descricao}")
+    public Page<ItemPedidoDTO> getMunicipiosPorEstadoNome(@PathVariable String descricao,
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property
+    ){
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return itemPedidoService.listarItemPedidoPorProdutoDescricao(descricao, pageable);
     }
     @GetMapping("/itemPedido/{id}")
     public ItemPedidoDTO BuscarItemPedidoPorId(@PathVariable BigInteger id) throws Exception {

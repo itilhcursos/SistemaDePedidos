@@ -4,7 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.data.domain.Page;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoPedidoIdDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoEstoqueNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
@@ -68,7 +68,7 @@ dtoitemPedidoCerto = itemPedidoService.criarItemPedido(dtoitemPedidoCerto);
 ItemPedidoDTO dtoCorrigido = new ItemPedidoDTO(dtoitemPedidoErrado.getId(), Double.valueOf(1L), 
 BigDecimal.valueOf(10L), BigInteger.ONE, BigInteger.ONE, "produto certo");
 
-assertThrows(ItemPedidoDuplicadoException.class, ()-> itemPedidoService.alterarItemPedido(dtoCorrigido.getId(), dtoCorrigido));
+assertThrows(ItemPedidoPedidoIdDuplicadoException.class, ()-> itemPedidoService.alterarItemPedido(dtoCorrigido.getId(), dtoCorrigido));
     }
     @Test
     @DisplayName("teste de buscar itemPedido por id")
@@ -97,7 +97,7 @@ void testCriarItemPedidoDuplicado()throws Exception{
     BigDecimal.valueOf(10L), BigInteger.ONE, BigInteger.ONE, "produto teste duplucado");
     ItemPedidoDTO dtoRetorno = itemPedidoService.criarItemPedido(dto);
 
-    assertThrows(ItemPedidoDuplicadoException.class, ()-> itemPedidoService.criarItemPedido(dto));
+    assertThrows(ItemPedidoPedidoIdDuplicadoException.class, ()-> itemPedidoService.criarItemPedido(dto));
 }
 
     @Test

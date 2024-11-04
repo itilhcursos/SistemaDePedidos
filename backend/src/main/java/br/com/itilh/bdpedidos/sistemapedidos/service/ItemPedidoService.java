@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoPedidoIdDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoEstoqueNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoPrecoNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoProdutoIdDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
+
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ItemPedidoRepository;
 @Service
 public class ItemPedidoService extends GenericService<ItemPedido,ItemPedidoDTO> {
@@ -25,15 +27,15 @@ public Page<ItemPedidoDTO> listarItemPedidos(Pageable pageable){
      return toPageDTO(itemPedidoRepository.findAll(pageable));
 }
 
- public Page<ItemPedidoDTO> listarItemPedidoPorPedidoId(BigInteger pedidoid, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findByPedidoId(pedidoid, pageable));
+ public Page<ItemPedidoDTO> listarItemPedidoPorPedidoId(BigInteger id, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByPedidoId(id, pageable));
     }
-    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoId(BigInteger produtoid, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findByProdutoId(produtoid, pageable));
+    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoId(BigInteger id, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByProdutoId(id, pageable));
     }
 
     public Page<ItemPedidoDTO> listarItemPedidoPorProdutoDescricao(String descricao, Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findByProdutoDescricaoIgnoreCase(descricao, pageable));
+        return toPageDTO(itemPedidoRepository.findByProduto_DescricaoIgnoreCase(descricao, pageable));
     }
      public ItemPedidoDTO buscarItemPedidoPorId(BigInteger id) throws Exception {
         return toDTO(itemPedidoRepository.findById(id)
@@ -42,13 +44,13 @@ public Page<ItemPedidoDTO> listarItemPedidos(Pageable pageable){
 
 private void validar(ItemPedidoDTO origem){
     if(itemPedidoRepository.existsByPedidoId(origem.getPedidoId()))
-    throw new ItemPedidoDuplicadoException(origem.getPedidoId());
+    throw new ItemPedidoPedidoIdDuplicadoException(origem.getPedidoId());
     if(itemPedidoRepository.existsByQuantidadeEstoque(origem.getQuantidadeEstoque()))
     throw new ItemPedidoEstoqueNegativoException(origem.getQuantidadeEstoque());
     if(itemPedidoRepository.existsByPrecoUnidadeAtual(origem.getPrecoUnidadeAtual()))
     throw new ItemPedidoPrecoNegativoException(origem.getPrecoUnidadeAtual());
     if(itemPedidoRepository.existsByProdutoId(origem.getProdutoId()))
-    throw new ItemPedidoDuplicadoException(origem.getProdutoId());
+    throw new ItemPedidoProdutoIdDuplicadoException(origem.getProdutoId());
 }
 
     public ItemPedidoDTO criarItemPedido(ItemPedidoDTO origem) throws Exception {    
