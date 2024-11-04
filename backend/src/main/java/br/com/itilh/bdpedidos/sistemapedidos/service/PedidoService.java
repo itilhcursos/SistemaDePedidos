@@ -15,7 +15,7 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.PedidoRepository;
 public class PedidoService  extends GenericService<Pedido, PedidoDTO> {
 
 
-// FALTA ALTERAR
+
     @Autowired
     PedidoRepository repositorio;
 

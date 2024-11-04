@@ -35,5 +35,6 @@ export default{
     criar,
     atualizar,
     apagar,
-    listar
+    listar,
+    
 }

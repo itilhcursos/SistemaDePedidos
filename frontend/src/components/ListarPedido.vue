@@ -30,7 +30,7 @@
         </div>
         <div class="card-body">
           <p><strong>Cliente:</strong> {{ pedido.clienteNomeRazaoSocial }}</p>
-          <p><strong>Forma de Pagamento:</strong> {{ pedido.formaPagamentoDescricao }}</p>
+          <p><strong>Forma de Pagamento:</strong> {{ pedido.formaPagamento }}</p>
           <p><strong>Data Compra:</strong> {{ formatar(pedido.dataCompra) }}</p>
           <p><strong>Data Entrega:</strong> {{ formatar(pedido.dataEntrega) }}</p>
           <p><strong>Data Pagamento:</strong> {{ formatar(pedido.dataPagamento) }}</p>
@@ -87,8 +87,8 @@
         <div class="col-auto">
           <select v-model="property" class="form-select">
             <option value="id">ID</option>
-            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
-            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
+            <option value="clientenome.RazaoSocial">Nome/RazaoSocial</option>
+            <option value="formaPagamentoD.descricao">Forma Pagamento</option>
           </select>
         </div>
         <div class="col-auto">
@@ -111,6 +111,7 @@
 import FormPedido from "./FormPedido.vue";
 import Data from "../utils/Data";
 import pedidoService from "@/services/pedidoService";
+
 
 export default {
   components: {
@@ -168,7 +169,10 @@ export default {
     },
     formatar(data) {
       return Data.formatoDMA(data);
-    },
+    }
+
+
+    
   },
   mounted() {
     this.buscar();
