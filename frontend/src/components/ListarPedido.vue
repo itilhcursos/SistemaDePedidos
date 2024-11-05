@@ -149,19 +149,24 @@ export default {
       this.formVisible = true;
     },
     async excluir(id) {
+      // Exibe uma confirmação antes de excluir
+      const confirmacao = confirm("Tem certeza que deseja excluir este pedido?");
+      if (!confirmacao) return;
+
       try {
-        const response = await pedidoService.apagar(id);
-        console.log(response);
+        await pedidoService.apagar(id); // Exclui o pedido
+        this.listaPedidos = this.listaPedidos.filter(pedido => pedido.id !== id); // Remove o pedido da lista
+        alert("Pedido excluído com sucesso!");
       } catch (error) {
-        if (error.response.status === 403) {
+        // Exibe mensagens de erro apropriadas
+        if (error.response && error.response.status === 403) {
           alert("Usuário não identificado! Faça o login!!!");
-        } else if (error.response.status === 400) {
+        } else if (error.response && error.response.status === 400) {
           alert(error.response.data.mensagem);
         } else {
-          alert(error.message);
+          alert("Erro ao excluir pedido: " + error.message);
         }
       }
-      this.buscar();
     },
     irPara(pagina) {
       this.pageNumber = pagina;

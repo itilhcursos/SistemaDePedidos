@@ -53,8 +53,8 @@
       <div class="mb-3">
         <label class="form-label">Forma de Pagamento</label>
         <select v-model="selectedFormaPagamento" class="form-select">
-          <option v-for="formaPagamento in optionsformaPagamento" :value="formaPagamento.id" :key="formaPagamento.id">
-              {{ options.formaPagamento }}
+          <option v-for="formaPagamento in optionsFormaPagamento" :value="formaPagamento.id" :key="formaPagamento.id">
+              {{ formaPagamento.descricao }}
           </option>
         </select>
       </div>
@@ -142,6 +142,10 @@
           <i class="bi bi-clipboard2-x"></i>
           Cancelar
         </button>
+        <button v-if="id" class="btn btn-danger m-2" type="button" v-on:click.prevent="excluirPedido">
+          <i class="bi bi-clipboard2-minus"></i>
+          Excluir Pedido
+        </button>
       </div>
     </form>
   </div>
@@ -201,7 +205,7 @@ export default {
     },
     async buscarFormaPagamento() {
       try {
-        const response = await formaPagamentoService.listar(1, 1000, 'ASC', 'id');
+        const response = await formaPagamentoService.buscar(1, 1000, 'ASC', 'id');
         this.optionsFormaPagamento = response.content;
       } catch (error) {
         console.error("Erro ao buscar formas de pagamento:", error);
@@ -220,32 +224,75 @@ export default {
       };
     },
     async salvar() {
-      if (!this.selectedCliente) {
-        this.isInvalido = true;
-        this.mensagem = "Selecione um cliente";
-        return;
+  if (!this.selectedCliente) {
+    this.isInvalido = true;
+    this.mensagem = "Selecione um cliente";
+    return;
+  }
+  this.isInvalido = false;
+
+  try {
+    // Verifique se estamos atualizando (pedido existente com id) ou criando um novo
+    if (this.id) {
+      // Atualizar pedido existente
+      await pedidoService.atualizar(this.id, this.getDados());
+    } else {
+      // Criar novo pedido
+      const response = await pedidoService.criar(this.getDados());
+      this.id = response.id;
+    }
+
+    // Limpar e recriar itens associados a este pedido
+    for (const item of this.listaItens) {
+      item.pedidoId = this.id;
+      if (item.id) {
+        // Atualizar item se existir
+        await itemPedidoService.atualizar(item.id, item);
+      } else {
+        // Cria um novo item se ele não existir
+        await itemPedidoService.criar(item);
       }
-      this.isInvalido = false;
+    }
 
-      try {
-        if (!this.id) {
-          const response = await pedidoService.criar(this.getDados());
-          this.id = response.id;
-        }
+    this.listaItens = [];
+    alert("Pedido e itens salvos com sucesso!");
+    this.$emit("salvar_pedido", this.getDados());
+  } catch (error) {
+    this.isInvalido = true;
+    this.mensagem = error.response ? error.response.data.mensagem : error.message;
+  }
+},
 
-        for (const item of this.listaItens) {
-          item.pedidoId = this.id;
-          await itemPedidoService.criar(item);
-        }
 
-        this.listaItens = [];
-        alert("Pedido e itens salvos com sucesso!");
-        this.$emit("salvar_pedido", this.getDados());
-      } catch (error) {
-        this.isInvalido = true;
-        this.mensagem = error.response ? error.response.data.mensagem : error.message;
-      }
-    },
+async excluirPedido() {
+  if (!this.id) return; // Verifica se o pedido tem um ID para exclusão
+
+  try {
+    // Remove todos os itens associados a este pedido primeiro
+    for (const item of this.listaItens) {
+      await itemPedidoService.apagar(item.id); // Exclui cada item pelo ID
+    }
+
+    // Após excluir todos os itens, exclui o próprio pedido
+    await pedidoService.apagar(this.id);
+
+    // Notifica o sucesso da exclusão
+    alert("Pedido e todos os itens foram excluídos com sucesso!");
+
+    // Redefine os dados do formulário após exclusão
+    this.cancelar();
+
+    // Emite um evento para o componente pai, notificando sobre a exclusão
+    this.$emit("pedido_excluido", this.id);
+
+  } catch (error) {
+    // Trata os erros e exibe mensagem apropriada ao usuário
+    this.isInvalido = true;
+    this.mensagem = error.response ? error.response.data.mensagem : error.message;
+  }
+},
+
+
     cancelar() {
       this.id = '';
       this.numero = '';
@@ -279,10 +326,8 @@ export default {
       this.selectedProduto = null;
       this.quantidadeItem = 0;
     },
-    excluirItemPedido(id) {
-      this.listaItens = this.listaItens.filter(item => item.id !== id);
-      }
-    },
+  },
+
 
   mounted() {
     if (this.propsPedido) {
