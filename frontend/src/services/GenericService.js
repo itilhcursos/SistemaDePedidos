@@ -1,55 +1,38 @@
-import axios from "axios";
+import axios from 'axios';
 
-//const mode = import.meta.env.MODE;
-const url= import.meta.env.VITE_APP_URL_API;
+const urlBase = 'http://localhost:8080'; // Ajuste para a URL do seu servidor
 
-const getConfig = (
-    {
-        headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+// Método para criar um recurso
+const criar = async (path, objeto) => {
+    return await axios.post(`${urlBase}${path}`, objeto);
+};
+
+// Método para atualizar um recurso
+const atualizar = async (path, id, objeto) => {
+    return await axios.put(`${urlBase}${path}/${id}`, objeto);
+};
+
+// Método para apagar um recurso
+const apagar = async (path, id) => {
+    return await axios.delete(`${urlBase}${path}/${id}`);
+};
+
+// Método para listar recursos com paginação e ordenação
+const listar = async (path, pageNumber = 1, pageSize = 10, direction = 'ASC', property = 'id') => {
+    return await axios.get(`${urlBase}${path}`, {
+        params: {
+            pageNumber,
+            pageSize,
+            direction,
+            property
         }
-    }
-);
+    });
+};
 
-// post
-const criar = async (path, objeto) =>{
-
-    return await axios.post(url + path, objeto, getConfig );
-
-}
-
-// put
-const atualizar = async (path, id, objeto) =>{
-
-    return await axios.put(url + path + "/"+ id, objeto, getConfig );
-
-}
-
-//delete
-const apagar = async (path, id) =>{
-
-    return await axios.delete(url + path + "/"+ id,  getConfig );
-
-}
-
-//get
-const listar = async (path, pageNumber, pageSize, direction, property) =>{
-
-    return await axios.get(url + path +`?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`);
-
-}
-
-const buscar = async (path, pageNumber, pageSize, direction, property, txtBusca) =>{
-    
-    return await axios.get(url + path + "/"+ txtBusca  +`?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`);
-
-}
-
-export default{
+// Exportando todos os métodos para uso
+export default {
     criar,
     atualizar,
     apagar,
-    listar,
-    buscar
-}
-
+    listar
+};

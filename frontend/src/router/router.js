@@ -52,7 +52,7 @@ const router = createRouter({
     {
       path: '/pedidos',
       name: 'pedidos',
-      component: () => import('../views/PedidoView.vue')
+      component: () => import('c:/Users/vitor/SistemaDePedidos/SistemaDePedidos/frontend/src/views/PedidoView.vue')
     }
   ]
 })

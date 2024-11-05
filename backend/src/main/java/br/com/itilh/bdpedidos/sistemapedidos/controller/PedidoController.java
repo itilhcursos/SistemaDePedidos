@@ -10,15 +10,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.PedidoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @SecurityRequirement(name = "bearerAuth")
@@ -38,26 +38,18 @@ public class PedidoController {
         return pedidoService.getTodos(pageable);
     }
 
-    @GetMapping("/pedido/{id}")
-    public PedidoDTO criarPedido(@PathVariable BigInteger id) throws Exception {
-        return pedidoService.getPorId(id);
-    }
-
     @PostMapping("/pedido")
-    public PedidoDTO criarPedidoDTO(@RequestBody PedidoDTO entityDTO) throws Exception {
-        return pedidoService.criar(entityDTO);
+    public PedidoDTO postMunicipio(@RequestBody PedidoDTO origem) throws Exception {
+        return pedidoService.criarPedido(origem);
     }
 
     @PutMapping("/pedido/{id}")
-    public PedidoDTO alterarPedido(@PathVariable BigInteger id,
-     @RequestBody PedidoDTO novosDados) throws Exception{
-
-        return pedidoService.alterar(id, novosDados);
+    public PedidoDTO putMunicipio(@PathVariable BigInteger id, @RequestBody PedidoDTO origem) throws Exception {
+        return pedidoService.alterarPedido(id, origem);
     }
 
     @DeleteMapping("/pedido/{id}")
-    public String deletPedido(@PathVariable BigInteger id) throws Exception{
+    public String deletePedido(@PathVariable BigInteger id) throws Exception {
         return pedidoService.deletePorId(id);
     }
-
 }

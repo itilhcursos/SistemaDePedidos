@@ -2,7 +2,6 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
 
-import org.apache.el.lang.ELArithmetic.BigIntegerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +30,7 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
 
     }
 
-    public PedidoDTO criar(PedidoDTO entityDTO) throws Exception {
+    public PedidoDTO criarPedido(PedidoDTO entityDTO) throws Exception {
 
         validar(entityDTO);
         try {
@@ -41,35 +40,21 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
         }
     }
 
-    public PedidoDTO alterar(BigInteger id, PedidoDTO novosDados) throws Exception {
+    public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
 
         validar(novosDados);
+
         try {
             return toDTO(repositorio.save(toEntity(novosDados)));
         } catch (Exception e) {
             throw new Exception("Alteração não foi realizada.");
         }
+
     }
 
     public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
-    }
-
-    public PedidoDTO criarPedido(PedidoDTO entityDTO) {
-
-        throw new UnsupportedOperationException("Unimplemented method 'criarPedido'");
-    }
-
-    public PedidoDTO alterarPedido(BigIntegerDelegate id, PedidoDTO origem) {
-
-        throw new UnsupportedOperationException("Unimplemented method 'alterarPedido'");
-    }
-
-    @SuppressWarnings("hiding")
-    public <BigInteger> String deletePorId(BigInteger id) {
-
-        throw new UnsupportedOperationException("Unimplemented method 'deletePorId'");
     }
 
 }
