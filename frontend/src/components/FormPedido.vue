@@ -301,6 +301,7 @@ export default {
         console.log(response);
         // lista de itens na tela
         this.itens = this.itens.filter(item => item.id !== id);
+        this.listaItens.pop(id);
       } catch (error) {
         if (error.response.status === 403) {
           alert("Usuário não identificado! Faça o login!!!");
