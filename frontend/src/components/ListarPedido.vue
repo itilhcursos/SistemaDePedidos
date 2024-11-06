@@ -182,7 +182,7 @@ export default {
       this.formVisible = !this.formVisible;
     },
     alterar(pedido) {
-      this.pedidoEscolhido = pedido;
+      this.pedidoEscolhido = { ...pedido };
       this.formVisible = true;
     },
     async excluir(id) {

@@ -323,7 +323,7 @@ export default {
       this.dataCompra = this.propsPedido.dataCompra;
       this.dataEntrega = this.propsPedido.dataEntrega;
       this.dataPagamento = this.propsPedido.dataPagamento;
-      this.itens = this.propsPedido.itens;
+      this.listaItens = [...this.propsPedido.itens];
       this.selectedFormaPagamento = { id: this.propsPedido.formaPagamentoId, descricao: this.propsPedido.formaPagamentoDescricao };
       this.selectedCliente = { id: this.propsPedido.clienteId, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial };
     }
