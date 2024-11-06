@@ -30,7 +30,7 @@
         </div>
         <div class="card-body">
           <p><strong>Cliente:</strong> {{ pedido.clienteNomeRazaoSocial }}</p>
-          <p><strong>Forma de Pagamento:</strong> {{ pedido.formaPagamento }}</p>
+          <p><strong>Forma de Pagamento:</strong> {{ pedido.formaPagamentoDescricao }}</p>
           <p><strong>Data Compra:</strong> {{ formatar(pedido.dataCompra) }}</p>
           <p><strong>Data Entrega:</strong> {{ formatar(pedido.dataEntrega) }}</p>
           <p><strong>Data Pagamento:</strong> {{ formatar(pedido.dataPagamento) }}</p>

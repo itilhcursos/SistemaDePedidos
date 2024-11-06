@@ -181,6 +181,7 @@ export default {
       isInvalido: false,
       ativo: false,
       mensagem : '',
+      
     };
   },
   methods: {
@@ -203,9 +204,8 @@ export default {
                     );
                     this.listaClientes = response;
                 }
-                this.$emit("salvar");
-                this.limparFormulario();
-            
+                this.$emit("salvar", this.getDados());
+                this.limparFormulario();  
         
     }catch(error){
      console.log(error);
@@ -273,6 +273,7 @@ export default {
       
     }
     this.buscarMunicipios();
+  
   },
   computed: {
     getAcao() {

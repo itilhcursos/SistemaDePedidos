@@ -27,6 +27,7 @@ const apagar = async(id) =>{
 const listar = async (pageNumber = 1, pageSize = 10, direction = 'ASC', property ='id') =>{
 
     const {data} = await genericService.listar(pathGet, pageNumber, pageSize, direction, property);
+    console.log(data)
     return data;
 
 }

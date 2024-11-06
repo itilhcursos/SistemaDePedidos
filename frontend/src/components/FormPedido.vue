@@ -155,8 +155,9 @@
 import clienteService from "@/services/clienteService";
 import produtoService from "@/services/produtoService"; 
 import itemPedidoService from "@/services/itemPedidoService";
-import formaPagamentoService from "@/services/formaPagamentoService";
+//import formaPagamentoService from "@/services/formaPagamentoService";
 import pedidoService from "@/services/pedidoService";
+import axios from "axios";
 
 
 export default {
@@ -184,6 +185,10 @@ export default {
       quantidadeItem: 0,
       optionsFormaPagamento: [],
       selectedFormaPagamento: null,
+      pageNumber: 1,
+      pageSize: 10,
+      direction: "ASC",
+      property: "id",
     };
   },
   methods: {
@@ -205,9 +210,13 @@ export default {
     },
     async buscarFormaPagamento() {
       try {
-        const response = await formaPagamentoService.buscar(1, 1000, 'ASC', 'id');
-        this.optionsFormaPagamento = response.content;
+        console.log('111')
+        const response = await axios.get( `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`);
+           //await formaPagamentoService.listar(1, 1000, 'ASC', 'id');
+           console.log(response.data.content)
+        this.optionsFormaPagamento = response.data.content;
       } catch (error) {
+        console.log('222')
         console.error("Erro ao buscar formas de pagamento:", error);
       }
     },
