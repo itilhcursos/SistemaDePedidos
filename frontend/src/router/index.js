@@ -40,6 +40,11 @@ const router = createRouter({
       component:()=>import('../views/LogoutView.vue')
     },
     {
+      path: '/cadastrar',
+      name: 'cadastrar',
+      component:()=>import('../views/CadastroView.vue')
+    },
+    {
       path: '/municipios',
       name: 'municipios',
       component:()=>import('../views/MunicipioView.vue')
