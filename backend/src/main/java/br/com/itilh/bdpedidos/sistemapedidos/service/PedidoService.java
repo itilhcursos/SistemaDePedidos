@@ -43,126 +43,95 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
 
 // LISTAGENS (GET) //
 
-    // Listar todos os pedidos
+    // Buscar todos os pedidos
     public Page<PedidoDTO> getTodos(Pageable pageable) {
         return toPageDTO(pedidoRepository.findAll(pageable));
     }
 
-    // Listar pedidos por ID
+    // Buscar pedido por ID
     public PedidoDTO getPorId(BigInteger id) throws Exception {
-        return toDTO(pedidoRepository.findById(id)
-            .orElseThrow(() -> new Exception("Pedido com ID inválido: " + id)));
+        return toDTO(pedidoRepository.findById(id).orElseThrow(() -> new Exception("Pedido com ID inválido: " + id)));
+    }
+
+    // Buscar cliente pelo ID
+    private Cliente buscarCliente(BigInteger clienteId) throws Exception {
+        return clienteRepository.findById(clienteId).orElseThrow(() -> new Exception("Cliente não encontrado com ID: " + clienteId));
+    }
+
+    // Buscar forma de pagamento pelo ID
+    private FormaPagamento buscarFormaPagamento(BigInteger formaPagamentoId) throws Exception {
+        return formaPagamentoRepository.findById(formaPagamentoId).orElseThrow(() -> new Exception("Forma de pagamento não encontrada com ID: " + formaPagamentoId));
+    }
+
+    // Buscar produto pelo ID
+    private Produto buscarProduto(BigInteger produtoId) throws Exception {
+        return produtoRepository.findById(produtoId).orElseThrow(() -> new Exception("Produto não encontrado com ID: " + produtoId));
     }
 
 // POST - PUT - DELETE //
 
-    // Criar registro de pedido
+    // Criar novo registro de pedido
     public PedidoDTO criarPedido(PedidoDTO novosDados) throws Exception {
         validar(novosDados);
         try {
             Pedido pedido = toEntity(novosDados);  
             Pedido pedidoSalvo = pedidoRepository.save(pedido);  
-            
+    
             for (ItemPedidoDTO itemDTO : novosDados.getItens()) {
                 ItemPedido itemPedido = new ItemPedido();
                 itemPedido.setPedido(pedidoSalvo);  
                 itemPedido.setProduto(buscarProduto(itemDTO.getProdutoId()));  
                 itemPedido.setQuantidadeEstoque(itemDTO.getQuantidadeEstoque());
-                itemPedido.setPrecoUnidadeAtual(itemDTO.getPrecoUnidadeAtual());                
+                itemPedido.setPrecoUnidadeAtual(itemDTO.getPrecoUnidadeAtual());
                 itemPedidoRepository.save(itemPedido);
             }
-    
             return toDTO(pedidoSalvo);  
         } catch (Exception e) {
             throw new Exception("Erro ao salvar o pedido e os itens.");
         }
     }
 
-    // Atualizar registro de pedido
+    // Alterar registro já existente de pedido
     public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
         validar(novosDados);
         Pedido pedidoExistente = pedidoRepository.findById(id).orElseThrow(() -> new Exception("Pedido não encontrado com ID: " + id));
         Cliente cliente = clienteRepository.findById(novosDados.getClienteId()).orElseThrow(() -> new Exception("Cliente não encontrado com ID: " + novosDados.getClienteId()));
         FormaPagamento formaPagamento = formaPagamentoRepository.findById(novosDados.getFormaPagamentoId()).orElseThrow(() -> new Exception("Forma de pagamento não encontrada com ID: " + novosDados.getFormaPagamentoId()));
-
         pedidoExistente.setCliente(cliente);
         pedidoExistente.setFormaPagamento(formaPagamento);
-       
         pedidoExistente.setDataCompra(novosDados.getDataCompra());
         pedidoExistente.setDataEntrega(novosDados.getDataEntrega());
         pedidoExistente.setDataPagamento(novosDados.getDataPagamento());
-        // Atualizar ou criar os itens do pedido
+    
         for (ItemPedidoDTO itemDTO : novosDados.getItens()) {
             if (itemDTO.getId() != null) {
-                
                 ItemPedido itemExistente = itemPedidoRepository.findById(itemDTO.getId()).orElseThrow(() -> new Exception("Item do Pedido não encontrado com ID: " + itemDTO.getId()));
-                // Atualizando o item
                 itemExistente.setQuantidadeEstoque(itemDTO.getQuantidadeEstoque());
                 itemExistente.setPrecoUnidadeAtual(itemDTO.getPrecoUnidadeAtual());
-    
                 itemPedidoRepository.save(itemExistente);
             } else {
-                // Se o item é novo
                 ItemPedido novoItem = new ItemPedido();
                 novoItem.setPedido(pedidoExistente);
                 novoItem.setProduto(buscarProduto(itemDTO.getProdutoId()));
                 novoItem.setQuantidadeEstoque(itemDTO.getQuantidadeEstoque());
                 novoItem.setPrecoUnidadeAtual(itemDTO.getPrecoUnidadeAtual());
-    
                 itemPedidoRepository.save(novoItem);
             }
         }
-        // Salvar o pedido atualizado
         pedidoRepository.save(pedidoExistente);
         return toDTO(pedidoExistente);
     }
     
-
-    // Excluir registro de pedido
+    // Excluir registro de pedido e itens vinculados
     public String deletePorId(BigInteger id) throws Exception {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new Exception("Pedido não encontrado com ID: " + id));
-        itemPedidoRepository.deleteAll(pedido.getItens()); 
+        itemPedidoRepository.deleteAll(pedido.getItens());
         pedidoRepository.delete(pedido);
         return "Pedido excluído com sucesso.";
     }
 
 // VALIDAÇÕES //
 
-    // Buscar cliente
-    private Cliente buscarCliente(BigInteger clienteId) throws Exception {
-        return clienteRepository.findById(clienteId).orElseThrow(() -> new Exception("Cliente não encontrado com ID: " + clienteId));
-    }
-
-    // Buscar forma de pagamento
-    private FormaPagamento buscarFormaPagamento(BigInteger formaPagamentoId) throws Exception {
-        return formaPagamentoRepository.findById(formaPagamentoId).orElseThrow(() -> new Exception("Forma de pagamento não encontrada com ID: " + formaPagamentoId));
-    }
-
-    // Buscar produto e validar itens do pedido
-    private Produto buscarProduto(BigInteger produtoId) throws Exception {
-        return produtoRepository.findById(produtoId).orElseThrow(() -> new Exception("Produto não encontrado com ID: " + produtoId));
-    }
-
-    // Validação de pedido
-    private void validar(PedidoDTO dto) throws Exception {
-        if (dto.getId() == null) {
-            if (pedidoRepository.existsByNumero(dto.getNumero())) {
-                throw new PedidoNumeroException(dto.getNumero());
-            }
-        } else {
-            Pedido pedidoExistente = pedidoRepository.findById(dto.getId()).orElseThrow(() -> new Exception("Pedido não encontrado com ID: " + dto.getId()));
-    
-            if (!pedidoExistente.getNumero().equals(dto.getNumero()) &&
-                pedidoRepository.existsByNumero(dto.getNumero())) {
-                throw new PedidoNumeroException(dto.getNumero());
-            }
-        }
-        buscarCliente(dto.getClienteId());
-        buscarFormaPagamento(dto.getFormaPagamentoId());
-        validarItens(dto.getItens());
-    }
-        
-    // Validar itens do pedido
     private void validarItens(List<ItemPedidoDTO> itens) throws Exception {
         for (ItemPedidoDTO item : itens) {
             buscarProduto(item.getProdutoId());
@@ -173,5 +142,22 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
                 throw new Exception("O preço unitário do produto não pode ser negativo.");
             }
         }
+    }
+
+    private void validar(PedidoDTO dto) throws Exception {
+        if (dto.getId() == null) {
+            if (pedidoRepository.existsByNumero(dto.getNumero())) {
+                throw new PedidoNumeroException(dto.getNumero());
+            }
+        } else {
+            Pedido pedidoExistente = pedidoRepository.findById(dto.getId()).orElseThrow(() -> new Exception("Pedido não encontrado com ID: " + dto.getId()));
+            if (!pedidoExistente.getNumero().equals(dto.getNumero()) &&
+                pedidoRepository.existsByNumero(dto.getNumero())) {
+                throw new PedidoNumeroException(dto.getNumero());
+            }
+        }
+        buscarCliente(dto.getClienteId());
+        buscarFormaPagamento(dto.getFormaPagamentoId());
+        validarItens(dto.getItens());
     }
 }

@@ -29,19 +29,16 @@ public class PedidoController {
 
 // LISTAGENS (GET) //
 
-    // Listar todos os pedidos
     @GetMapping("/pedidos")
     public Page<PedidoDTO> getTodos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return pedidoService.getTodos(pageable);
+        @RequestParam(required = false, defaultValue = "id") String property) {
+            Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+            return pedidoService.getTodos(pageable);
     }
 
-    // Listar pedidos por ID
     @GetMapping("/pedido/{id}")
     public PedidoDTO getPorId(@PathVariable BigInteger id) throws Exception {
         return pedidoService.getPorId(id);
@@ -49,19 +46,16 @@ public class PedidoController {
 
 // POST - PUT - DELETE //
 
-    // Criar registro de pedido
     @PostMapping("/pedido")
     public PedidoDTO criarPedido(@RequestBody PedidoDTO entityDTO) throws Exception { 
        return pedidoService.criarPedido(entityDTO);
     }
 
-    // Atualizar registro de pedido
     @PutMapping("/pedido/{id}")
     public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO novosDados) throws Exception {
         return pedidoService.alterarPedido(id, novosDados);
     }
 
-    // Excluir registro de pedido
     @DeleteMapping("/pedido/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return pedidoService.deletePorId(id);

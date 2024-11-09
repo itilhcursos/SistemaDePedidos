@@ -29,32 +29,30 @@ public class ProdutoController {
 
 // LISTAGENS (GET) //
 
-    // Listar todos os produtos
+    // Listar todos os produtos com paginação
     @GetMapping("/produtos")
     public Page<ProdutoDTO> getTodosProdutos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ) {
-        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
-        return produtoService.listarProdutos(pageable);
-    }
+        @RequestParam(required = false, defaultValue = "id") String property) {
+            Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
+            return produtoService.listarProdutos(pageable);
+        }
 
-    // Listar produto pelo texto
+    // Listar produtos por texto na busca
     @GetMapping("/produtos/{txtBusca}")
     public Page<ProdutoDTO> getBuscarProdutos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
         @RequestParam(required = false, defaultValue = "id") String property,
-        @PathVariable String txtBusca
-    ) {
-        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
-        return produtoService.buscar(pageable, txtBusca);
-    }
+        @PathVariable String txtBusca) {
+            Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
+            return produtoService.buscar(pageable, txtBusca);
+        }
 
-    // Listar produtos pelo ID  
+    // Listar produtos por ID
     @GetMapping("/produto/{id}")
     public ProdutoDTO getProdutoPorId(@PathVariable BigInteger id) throws Exception {
         return produtoService.buscarProdutoPorId(id);
@@ -74,7 +72,7 @@ public class ProdutoController {
         return produtoService.alterarProduto(id, novosDados);
     }
 
-    // Excluir registro de produto
+    // Excluir registro de produto 
     @DeleteMapping("/produto/{id}")
     public String deleteProduto(@PathVariable BigInteger id) throws Exception {
         return produtoService.excluirProduto(id);

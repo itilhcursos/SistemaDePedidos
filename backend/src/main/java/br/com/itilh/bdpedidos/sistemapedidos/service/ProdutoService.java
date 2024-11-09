@@ -23,36 +23,30 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
 
 // LISTAGENS (GET) //
 
-    // Listar todos os produtos
     public Page<ProdutoDTO> listarProdutos(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
     }
 
-    // Listar produto pelo texto
     public Page<ProdutoDTO> buscar(Pageable pageable, String txtBusca) {
         return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
     }
 
-    // Listar produtos pelo ID  
     public ProdutoDTO buscarProdutoPorId(BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id).orElseThrow(() -> new IdInexistenteException("Produto", id)));
+        return toDTO(repositorio.findById(id).orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
 // POST - PUT - DELETE //
 
-    // Criar registro de produto
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {
         validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
-    // Atualizar registro de produto
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
         validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
-    // Excluir registro de produto
     public String excluirProduto(BigInteger id) throws Exception{
         try{ 
             repositorio.deleteById(id);
@@ -63,39 +57,23 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
     }
 
 // VALIDAÇÕES //
-
-    // Valida a duplicidade de produto
+ 
     private void validar(ProdutoDTO dto) throws Exception {
-        verificarDuplicidadeProduto(dto);
-        verificarQuantidadeEstoque(dto);
-        verificarPrecoUnidadeAtual(dto);
-    }
-
-    // Valida a duplicidade do produto pela descrição
-    private void verificarDuplicidadeProduto(ProdutoDTO dto) throws ProdutoDuplicadoException {
-        if (repositorio.existsByDescricao(dto.getDescricao())) {
-            if (dto.getId() == null) { 
+        if (repositorio.existsByDescricao(dto.getDescricao())){
+            if(dto.getId() == null){ 
                 throw new ProdutoDuplicadoException(dto.getDescricao());
-            } else {
+            }else{
                 Produto p = repositorio.getReferenceById(dto.getId());
-                if (!p.getDescricao().equalsIgnoreCase(dto.getDescricao())) {
+                if(!p.getDescricao().equalsIgnoreCase(dto.getDescricao())){
                     throw new ProdutoDuplicadoException(dto.getDescricao());
                 }
-            }
+            }            
         }
-    }
 
-    // Valida se a quantidade em estoque é válida
-    private void verificarQuantidadeEstoque(ProdutoDTO dto) throws ProdutoEstoqueNegativoException {
-        if (dto.getQuantidadeEstoque() == null || dto.getQuantidadeEstoque().floatValue() < 0.0) {
+        if (dto.getQuantidadeEstoque() == null || dto.getQuantidadeEstoque().floatValue() < 0.0)
             throw new ProdutoEstoqueNegativoException(dto.getDescricao());
-        }
-    }
 
-    // Valida se o preço por unidade é válido
-    private void verificarPrecoUnidadeAtual(ProdutoDTO dto) throws ProdutoPrecoNegativoException {
-        if (dto.getPrecoUnidadeAtual() == null || dto.getPrecoUnidadeAtual().floatValue() < 0.0) {
+        if (dto.getPrecoUnidadeAtual() == null || dto.getPrecoUnidadeAtual().floatValue() < 0.0)
             throw new ProdutoPrecoNegativoException(dto.getDescricao());
-        }
     }
 }

@@ -19,25 +19,16 @@ public class GenericService<T,D> {
 
     private Type t, d;
 
-    @Autowired
-    public void configureMapper(ModelMapper mapper) {
-        mapper.getConfiguration().setPropertyCondition(context -> 
-            !(context.getSource() instanceof org.hibernate.collection.spi.PersistentBag)
-        );
-    }    
-
     public GenericService() {
         super();
         t = ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         d = ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];        
     }
 
-
     protected D toDTO(T entity){
         D dto = mapper.map(entity, d);
         return dto;
-    }
-    
+    }    
 
     protected T toEntity(D dto){
         T entity = mapper.map(dto, t);

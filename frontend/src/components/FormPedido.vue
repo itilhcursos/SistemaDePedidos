@@ -98,8 +98,8 @@
         <div class="p-2">{{ mensagem }}</div>
       </div>
       <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarPedido"><i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
-        <button class="btn btn-warning m-2" type="submit" v-on:click.prevent="cancelar"><i class="bi bi-clipboard2-x"></i> Cancelar</button>
+        <button class="btn btn-primary m-2" type="submit" @click.prevent="salvarPedido"><i class="bi bi-clipboard2-check"></i>{{ getAcao }}</button>
+        <button class="btn btn-warning m-2" type="submit" @click.prevent="cancelar"><i class="bi bi-clipboard2-x"></i> Cancelar</button>
       </div>
     </form>
   </div>
@@ -145,8 +145,7 @@ export default {
   },
   methods: {
     async onSearchCliente(search, loading) {
-      if (search == "")
-        return;
+      if (search == "") return;
       loading(true);
       await clienteService.buscar(search).then((response) => {
         this.optionsCliente = response.content;
@@ -154,8 +153,7 @@ export default {
       });
     },
     async onSearchFormaPagamento(search, loading) {
-      if (search == "")
-        return;
+      if (search == "") return;
       loading(true);
       await formaPagamentoService.buscar(search).then((response) => {
         this.optionsFormaPagamento = response.content;
@@ -163,15 +161,13 @@ export default {
       });
     },
     async onSearchProduto(search, loading) {
-      if (search == "")
-        return;
+      if (search == "") return;
       loading(true);
       await produtoService.buscar(search).then((response) => {
         this.optionsProduto = response.content;
         loading(false);
       });
     },
-
     getDados() {
       return {
         id: this.id || null,
@@ -187,9 +183,9 @@ export default {
       };
     },
     limparMensagemErro() {
-    this.isInvalido = false;
-    this.mensagem = "";
-  },
+      this.isInvalido = false;
+      this.mensagem = "";
+    },
     async salvarPedido() {
       if (!this.numero || this.numero === "") {
         this.isInvalido = true;
@@ -222,17 +218,11 @@ export default {
         return;
       }
       this.isInvalido = false;
-      
-      try {
-        if (this.id === "") {
-          const response = await pedidoService.criar(this.getDados());
-          this.listaPedidos = response;
-        } else {
-          const response = await pedidoService.atualizar(this.id, this.getDados());
-          this.listaPedidos = response;
-        }
-        this.$emit("salvar_pedido", this.getDados()); // Emite o evento
 
+      try {
+        const response = this.id === "" ? await pedidoService.criar(this.getDados()) : await pedidoService.atualizar(this.id, this.getDados());
+        this.listaPedidos = response;
+        this.$emit("salvar_pedido", this.getDados());
       } catch (error) {
         this.isInvalido = true;
         if (error.response && error.response.status === 403) {
@@ -256,68 +246,47 @@ export default {
       this.quantidadeItem = "";
       this.$emit("cancelar", true);
     },
-    async incluirItem() {
 
-      if (!this.id && (!this.selectedProduto || !this.selectedProduto.id)) {
-        this.isInvalido = true;
-        this.mensagem = "Selecione um Produto válido para adicionar ao pedido!";
-        return;
-      }
-      if (!this.id && this.quantidadeItem <= 0) {
-        this.isInvalido = true;
-        this.mensagem = "A quantidade deve ser maior que zero(0)!";
-        return;
-      }
-      if (this.id && (!this.selectedProduto || !this.selectedProduto.id)) {
-        this.isInvalido = true;
-        this.mensagem = "Selecione um Produto válido para adicionar ao pedido!";
-        return;
-      }
-      if (this.id && this.quantidadeItem <= 0) {
-        this.isInvalido = true;
-        this.mensagem = "A quantidade deve ser maior que zero(0)!";
-        return;
-      }
+async incluirItem() {
+  if ((!this.id && (!this.selectedProduto || !this.selectedProduto.id)) ||
+      (this.id && (!this.selectedProduto || !this.selectedProduto.id))) {
+    this.isInvalido = true;
+    this.mensagem = "Selecione um Produto válido para adicionar ao pedido!";
+    return;
+  }
 
-      this.isInvalido = false;
+  if ((!this.id && this.quantidadeItem <= 0) ||
+      (this.id && this.quantidadeItem <= 0)) {
+    this.isInvalido = true;
+    this.mensagem = "A quantidade deve ser maior que zero(0)!";
+    return;
+  }
 
-      const itemPedido = {
-        id: null,
-        pedidoId: this.id,
-        produtoId: this.selectedProduto.id,
-        produtoDescricao: this.selectedProduto.descricao,
-        produtoUrlImagem: this.selectedProduto.urlImagem,
-        quantidadeEstoque: this.quantidadeItem,
-        precoUnidadeAtual: this.selectedProduto.precoUnidadeAtual
-      };
+  this.isInvalido = false;
+  const itemPedido = {
+    id: null,
+    pedidoId: this.id,
+    produtoId: this.selectedProduto.id,
+    produtoDescricao: this.selectedProduto.descricao,
+    produtoUrlImagem: this.selectedProduto.urlImagem,
+    quantidadeEstoque: this.quantidadeItem,
+    precoUnidadeAtual: this.selectedProduto.precoUnidadeAtual
+  };
 
-      console.log("Item a ser incluído:", itemPedido);
+  this.itens.push(itemPedido);
+},
 
-      try {
-        const response = await itemPedidoService.criar(itemPedido);
-        this.itens.push(response);
-      } catch (error) {
-        if (error.response && error.response.status === 403) {
-          alert("Usuário não identificado! Faça o login!!!");
-        } else if (error.response && error.response.status === 400) {
-          alert(error.response.data.mensagem);
-        } else {
-          alert(error.message);
-        }
-      }
-    },
     async excluirItemPedido(id) {
       try {
         await itemPedidoService.apagar(id);
         this.itens = this.itens.filter(item => item.id !== id);
       } catch (error) {
-        if (error.response && error.response.status === 403) {
-          alert("Usuário não identificado! Faça o login!!!");
-        } else if (error.response && error.response.status === 400) {
-          alert(error.response.data.mensagem);
-        } else {
-          alert(error.message);
-        }
+        const msg = error.response && error.response.status === 403
+          ? "Usuário não identificado! Faça o login!!!"
+          : error.response && error.response.status === 400
+            ? error.response.data.mensagem
+            : error.message;
+        alert(msg);
       }
     },
     formatarPreco(valor) {
@@ -329,25 +298,26 @@ export default {
   },
   mounted() {
     if (this.propsPedido) {
-      this.id = this.propsPedido.id;
-      this.numero = this.propsPedido.numero;
-      this.clienteId = this.propsPedido.clienteId;
-      this.clienteNomeRazaoSocial = this.propsPedido.clienteNomeRazaoSocial;
-      this.formaPagamentoId = this.propsPedido.formaPagamentoId;
-      this.formaPagamentoDescricao = this.propsPedido.formaPagamentoDescricao;
-      this.dataCompra = this.propsPedido.dataCompra;
-      this.dataEntrega = this.propsPedido.dataEntrega;
-      this.dataPagamento = this.propsPedido.dataPagamento;
-      this.itens = this.propsPedido.itens;
-
-      this.selectedCliente = {
-        id: this.propsPedido.clienteId,
-        nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
-      };
-      this.selectedFormaPagamento = {
-        id: this.propsPedido.formaPagamentoId,
-        descricao: this.propsPedido.formaPagamentoDescricao
-      };
+      Object.assign(this, {
+        id: this.propsPedido.id,
+        numero: this.propsPedido.numero,
+        clienteId: this.propsPedido.clienteId,
+        clienteNomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial,
+        formaPagamentoId: this.propsPedido.formaPagamentoId,
+        formaPagamentoDescricao: this.propsPedido.formaPagamentoDescricao,
+        dataCompra: this.propsPedido.dataCompra,
+        dataEntrega: this.propsPedido.dataEntrega,
+        dataPagamento: this.propsPedido.dataPagamento,
+        itens: this.propsPedido.itens,
+        selectedCliente: {
+          id: this.propsPedido.clienteId,
+          nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
+        },
+        selectedFormaPagamento: {
+          id: this.propsPedido.formaPagamentoId,
+          descricao: this.propsPedido.formaPagamentoDescricao
+        }
+      });
     }
   },
   computed: {

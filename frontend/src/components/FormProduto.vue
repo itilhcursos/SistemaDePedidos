@@ -56,7 +56,7 @@ export default {
             urlImagem: "",
             quantidadeEstoque: "",
             precoUnidadeAtual: "",
-            ativo: "",
+            ativo: true,  // Definido como booleano
             isInvalido: false,
             mensagem: "",
         };
@@ -67,25 +67,23 @@ export default {
                 id: this.id,
                 descricao: this.descricao,
                 urlImagem: this.urlImagem,
-                quantidadeEstoque: this.quantidadeEstoque,
-                precoUnidadeAtual: this.precoUnidadeAtual,
+                quantidadeEstoque: Number(this.quantidadeEstoque),  // Convertendo para número
+                precoUnidadeAtual: Number(this.precoUnidadeAtual),  // Convertendo para número
                 ativo: this.ativo,
             };
         },
         async salvarProduto() {
             if (this.descricao === "") {
                 this.isInvalido = true;
-                this.mensagem = "Descrição do Produto deve ser preenchido!";
+                this.mensagem = "Descrição do Produto deve ser preenchida!";
                 return;
             }
             this.isInvalido = false;
             try {
                 if (this.id === "") {
-                    const response = await produtoService.criar(this.getDados());
-                    this.listaProdutos = response;
+                    await produtoService.criar(this.getDados());
                 } else {
-                    const response = await produtoService.atualizar(this.id, this.getDados());
-                    this.listaProdutos = response;
+                    await produtoService.atualizar(this.id, this.getDados());
                 }
                 this.$emit("salvar_produto", this.getDados());
                 this.resetarCampos();
@@ -96,7 +94,7 @@ export default {
         },
         cancelar() {
             this.resetarCampos();
-            this.$emit("cancelar", true);
+            this.$emit("cancelar");
         },
         resetarCampos() {
             this.id = "";
@@ -104,11 +102,11 @@ export default {
             this.urlImagem = "";
             this.quantidadeEstoque = "";
             this.precoUnidadeAtual = "";
-            this.ativo = "";
+            this.ativo = true;
         },
         getMensagemErro(error) {
             if (error.response && error.response.status === 403) {
-                return "Usuário não identificado! Faça o login!!!";
+                return "Usuário não identificado! Faça o login!";
             } else if (error.response && error.response.status === 400) {
                 return error.response.data.mensagem;
             } else {

@@ -28,27 +28,23 @@ public class ItemPedidoController {
 
 // LISTAGENS (GET) //
 
-    // Listar todos os itens do pedido
     @GetMapping("/itens-pedido")
     public Page<ItemPedidoDTO> getTodos(
-            @RequestParam(required = false, defaultValue = "1") int pageNumber,
-            @RequestParam(required = false, defaultValue = "10") int pageSize,
-            @RequestParam(required = false, defaultValue = "ASC") String direction,
-            @RequestParam(required = false, defaultValue = "id") String property
-            ) {
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return itemPedidoService.listarItensPedido(pageable);
-    }    
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property) {
+            Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+            return itemPedidoService.listarItensPedido(pageable);
+    }   
 
 // POST - DELETE //
 
-    // Criar registro de item no pedido
     @PostMapping("/item-pedido")
     public ItemPedidoDTO criarItemPedido(@RequestBody ItemPedidoDTO entityDTO) throws Exception { 
        return itemPedidoService.criarItemPedido(entityDTO);
     }
 
-    // Excluir registro de item no pedido
     @DeleteMapping("/item-pedido/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return itemPedidoService.deletePorId(id);

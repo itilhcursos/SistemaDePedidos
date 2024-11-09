@@ -16,7 +16,6 @@
       </div>
     </div>
 
-    <!-- Tabela principal de pedidos -->
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
@@ -30,7 +29,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Loop pelos pedidos -->
         <tr v-for="pedido in listaPedidos" :key="pedido.id" scope="row">
           <th>{{ pedido.id }}</th>
           <th>{{ pedido.numero }}</th>
@@ -67,11 +65,9 @@
           </th>
         </tr>
 
-        <!-- Sub-tabela de Itens do Pedido, logo abaixo de cada pedido -->
       </tbody>
     </table>
 
-    <!-- Paginação -->
     <div v-if="!formVisible">
       <hr />
       <div class="container">

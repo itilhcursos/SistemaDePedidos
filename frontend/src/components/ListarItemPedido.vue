@@ -4,18 +4,12 @@
       <div class="col-10">
         <h3>Itens de Pedidos </h3>
       </div>
-      <!-- <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novoItemPedido" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Novo
-        </button>
-      </div> -->
       <div class="row">
         <div>
           <FormProduto v-if="formVisible" :propsItemPedido="pedidoItemEscolhido" @cancelar="limpar" @salvar_itemPedido="buscarItensPedido" />
         </div>
       </div>
     </div>
-    
     <div v-for="itemPedido in listaItensPedido" :key="itemPedido.id" scope="row">
     <table class="table table-dark table-striped" >
       <thead  v-if="novoPedido(itemPedido.pedidoId)">
@@ -32,18 +26,10 @@
       <thead  v-if="!novoPedido(itemPedido.pedidoId)">
         <tr>
           <th scope="col" colspan="6" ></th>
-          <!-- <th scope="col">Id Pedido</th>
-          <th scope="col">Id Produto</th>
-          <th scope="col">Produto Descrição</th>
-          <th scope="col">Quantidade</th>
-          <th scope="col">Preço Unitário</th>
-          <th scope="col">Total</th> -->
         </tr>
       </thead>
       <tbody>
-          
-          <tr>
-            
+          <tr>            
             <td>{{ itemPedido.id }}</td>
             <td>{{ itemPedido.pedidoId}}</td>
             <td>{{ itemPedido.produtoId}}</td>
@@ -57,28 +43,14 @@
     </div>
     </div>
     <div v-if="!formVisible">
-    <hr />
+    <hr/>
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-auto">
-
-          <button
-            v-for="pagina in totalPages"
-            :key="pagina"
-            @click.prevent="irPara(pagina)"
-            class="btn btn-light ms-1"
-          >
-            {{ pagina }}
-          </button>
-
+          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)" class="btn btn-light ms-1">{{ pagina }}</button>
         </div>
         <div class="col-auto">
-          <input
-            type="text"
-            v-model="pageNumber"
-            placeholder="Número da pagina"
-            class="form-control w-25"
-          />
+          <input type="text" v-model="pageNumber" placeholder="Número da pagina" class="form-control w-25"/>
         </div>
         <div class="col-auto">
           <select v-model="pageSize" class="form-select">
@@ -101,10 +73,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button @click.prevent="buscarItensPedido" class="btn btn-success">
-            <i class="bi bi-binoculars"></i>
-            Buscar
-          </button>
+          <button @click.prevent="buscarItensPedido" class="btn btn-success"><i class="bi bi-binoculars"></i> Buscar</button>
         </div>
       </div>
     </div>
@@ -113,11 +82,10 @@
 
 <script>
 import itemPedidoService from '@/services/itemPedidoService';
-
 export default {
   data() {
     return {
-      itensPedido: [],
+      listaItensPedido: [],
       pedidoItemEscolhido: null,
       auxPedidoId: 0,
       formVisible: false,
@@ -135,7 +103,6 @@ export default {
       const response = await itemPedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
       this.listaItensPedido = response.content;
       this.totalPages = response.totalPages; 
-     
     },
     irPara(pagina) {
       this.pageNumber = pagina;
@@ -148,7 +115,7 @@ export default {
     }
   },
   mounted() {
-    this.buscarItensPedido(); 
+    this.buscarItensPedido();
   },
 };
 </script>

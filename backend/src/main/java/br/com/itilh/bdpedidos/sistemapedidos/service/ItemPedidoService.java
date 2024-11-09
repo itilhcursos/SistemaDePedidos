@@ -20,48 +20,49 @@ import jakarta.transaction.Transactional;
 public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO> {
 
     @Autowired
-    private ItemPedidoRepository itemPedidoRepository;
+    private ItemPedidoRepository repositorio;
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    ProdutoRepository repositorioProduto;
 
 // LISTAGENS (GET) //
 
-    // Listar todos os itens do pedido
+    // Listar os itens do pedido
     public Page<ItemPedidoDTO> listarItensPedido(Pageable pageable) {
-        return toPageDTO(itemPedidoRepository.findAll(pageable));
+        return toPageDTO(repositorio.findAll(pageable));
     }
 
-    // Buscar produto pelo ID, para que venha ser um item do pedido
+    // Buscar os itens pelo ID
     public ItemPedidoDTO buscarProdutoPorId(BigInteger id) throws Exception {
-        return toDTO(itemPedidoRepository.findById(id).orElseThrow(() -> new IdInexistenteException("Produto", id)));
+        return toDTO(repositorio.findById(id).orElseThrow(() -> new IdInexistenteException("Produto", id)));
     }
+
+// POST - DELETE //
 
     // Criar registro de item no pedido
     @Transactional
     public ItemPedidoDTO criarItemPedido(ItemPedidoDTO entityDTO) throws Exception { 
-        Produto produto = produtoRepository.getReferenceById(entityDTO.getProdutoId());
-        if (produto!= null && 
-            produto.getQuantidadeEstoque() != null && 
-            entityDTO.getQuantidadeEstoque() >0 &&
-            ((produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque()) >=0 )){
-
+        Produto produto = repositorioProduto.getReferenceById(entityDTO.getProdutoId());
+        if(produto!= null 
+        && produto.getQuantidadeEstoque() != null 
+        && entityDTO.getQuantidadeEstoque() >0 
+        && ((produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque())>=0)){
                 produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque());
-                produtoRepository.save(produto);
+                repositorioProduto.save(produto);
                 entityDTO.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
-                return toDTO(itemPedidoRepository.save(toEntity(entityDTO)));
-        }
+                return toDTO(repositorio.save(toEntity(entityDTO)));
+            }
         throw new ProdutoEstoqueNegativoException(entityDTO.getProdutoDescricao());
     }
-    
+
     // Excluir registro de item no pedido
     @Transactional
     public String deletePorId(BigInteger id) throws Exception {
-        ItemPedido item = itemPedidoRepository.getReferenceById(id);
+        ItemPedido item = repositorio.getReferenceById(id);
         Produto produto = item.getProduto();
         produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + item.getQuantidadeEstoque());
-        produtoRepository.save(produto);
-        itemPedidoRepository.deleteById(id);
+        repositorioProduto.save(produto);
+        repositorio.deleteById(id);
         return "Excluído";
     }  
 
