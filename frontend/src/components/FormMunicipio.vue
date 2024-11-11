@@ -10,9 +10,24 @@
           type="text"
           v-model="id"
           :disabled="true"
-          placeholder="Id municipio"
+          placeholder="ID municipio"
         />
       </div>
+
+      <label class="form-label">Estado</label>
+        <v-select class="meu-select" v-model="selectedEstado"
+        :filterable="false" :options="optionsEstado"
+        @search="onSearch">
+        <template v-slot:no-options>
+            Não encontrado.
+        </template>
+        <template v-slot:option="option">
+            {{ option.nome }}
+        </template>
+        <template v-slot:selected-option="option">
+            {{ option.nome }}
+        </template>
+        </v-select>
 
       <div class="mb-3">
         <label class="form-label">Nome</label>
@@ -20,17 +35,7 @@
           class="form-control"
           type="text"
           v-model="nome"
-          placeholder="Nome"
-        />
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Estado</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="estadoNome"
-          placeholder="Nome do Estado"
+          placeholder="Nome Município"
         />
       </div>
 
@@ -70,6 +75,8 @@
 
 <script>
 import municipioService from '@/services/municipioService';
+import estadoService from '@/services/estadoService';
+import "vue-select/dist/vue-select.css";
 export default {
   props: {
     propsMunicipio: Object,
@@ -82,9 +89,21 @@ export default {
       estadoNome: "",
       isInvalido: false,
       mensagem : '',
+      optionsEstado: [],
+      selectedEstado: null,
     };
   },
   methods: {
+    async onSearch(search, loading) {
+        if (search == "")
+          return;
+        loading(true);
+        await estadoService.buscar(search).then((response) => {
+          this.optionsEstado = response.content;
+          loading(false);
+        });
+      },
+      
     async salvarMunicipio() {
       if (this.nome === "") {
         this.isInvalido = true;
@@ -94,7 +113,7 @@ export default {
       this.isInvalido = false;
       
       if (this.id === "") {
-        const response = await municipioService.criar( {
+        const response = await municipioService.criar({
           id: this.id,
           nome: this.nome,
           entrega: this.entrega,
@@ -122,18 +141,6 @@ export default {
 
       this.id = "";
       this.nome = "";
-
-    /* } catch(error) {
-        this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400 &&
-               error.response.data.exception === 'MunicipioDuplicadoException'){
-        this.mensagem = error.response.data.mensagem;     
-      }else{
-        this.mensagem = error.message;
-      }
-     }, */
     },
     cancelar() {
       this.id = "";

@@ -10,34 +10,18 @@
             type="text"
             v-model="id"
             :disabled="true"
-            placeholder="Id cliente"
+            placeholder="ID cliente"
           />
         </div>
 
-        <!-- <div class="mb-3">
+        <div class="mb-3">
           <label class="form-label">Município</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="municipioNome"
-            placeholder="Nome do Municipio"
-          />
-        </div> -->
-
-        <label class="form-label">Município</label>
-        <v-select class="meu-select" v-model="selectedMunicipio"   :filterable="false" :options="optionsMunicipio"
-        @search="onSearch">
-        <template v-slot:no-options>
-            Não encontrado.
-        </template>
-        <template v-slot:option="option">
-            {{ option.nomeRazaoSocial }}
-        </template>
-        <template v-slot:selected-option="option">
-            {{ option.nomeRazaoSocial }}
-        </template>
-        </v-select>
-
+          <select v-model="municipioId" class="form-select">
+              <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
+                {{ municipio.nome }}
+              </option>
+          </select>
+        </div>
 
         <div class="mb-3">
           <label class="form-label">Nome</label>
@@ -45,7 +29,7 @@
             class="form-control"
             type="text"
             v-model="nomeRazaoSocial"
-            placeholder="Nome"
+            placeholder="Insira o nome da empresa"
           />
         </div>
 
@@ -55,7 +39,7 @@
             class="form-control"
             type="text"
             v-model="cnpj"
-            placeholder="CNPJ"
+            placeholder="Insira o CNPJ"
           />
         </div>
 
@@ -65,7 +49,7 @@
             class="form-control"
             type="text"
             v-model="cpf"
-            placeholder="CPF"
+            placeholder="Inira o CPF"
           />
         </div>
 
@@ -75,7 +59,7 @@
             class="form-control"
             type="text"
             v-model="telefone"
-            placeholder="Telefone"
+            placeholder="Insira o telefone"
           />
         </div>
 
@@ -85,7 +69,7 @@
             class="form-control"
             type="text"
             v-model="endereco"
-            placeholder="Endereço"
+            placeholder="Insira o endereço"
           />
         </div>
 
@@ -94,8 +78,8 @@
           <input
             class="form-control"
             type="text"
-            v-model="endereco"
-            placeholder="Bairro"
+            v-model="bairro"
+            placeholder="Insira o bairro"
           />
         </div>
 
@@ -105,7 +89,7 @@
             class="form-control"
             type="text"
             v-model="cep"
-            placeholder="CEP"
+            placeholder="Insira o CEP"
           />
         </div>
 
@@ -115,7 +99,7 @@
             class="form-control"
             type="text"
             v-model="email"
-            placeholder="E-mail"
+            placeholder="Insira o email"
           />
         </div>
 
@@ -125,7 +109,7 @@
             class="form-control"
             type="text"
             v-model="informacao"
-            placeholder="Informação"
+            placeholder="Insira as informações"
           />
         </div>
 
@@ -166,7 +150,6 @@
 <script>
   import clienteService from '@/services/clienteService';
   import municipioService from '@/services/municipioService';
-  import "vue-select/dist/vue-select.css";
   export default {
     props: {
       propsCliente: Object,
@@ -184,24 +167,15 @@
         email: "",
         informacao: "",
         ativo: "",
-
         isInvalido: false,
         mensagem : '',
-        optionsMunicipio: [],
-        selectedMunicipio: null,
+        municipioId: "",
+        municipioNome: "",
+        municipioSelected:"",
+        municipios:[],
       };
     },
     methods: {
-      async onSearch(search, loading) {
-        if (search == "")
-          return;
-        loading(true);
-        await municipioService.buscar(search).then((response) => {
-          this.optionsMunicipio = response.content;
-          loading(false);
-        });
-      },
-
       async salvarCliente() {
         if (this.nomeRazaoSocial === "") {
           this.isInvalido = true;
@@ -209,15 +183,9 @@
           return;
         }
         this.isInvalido = false;
-        let config = {
-          headers: {
-            'Authorization': 'Bearer ' +localStorage.getItem('token')
-          }
-        }
   
         if (this.id === "") {
-          //incluir pelo POST da API
-          const response = await clienteService.post("http://localhost:8080/cliente", {
+          const response = await clienteService.criar({
             id: this.id,
             nomeRazaoSocial: this.nomeRazaoSocial,
             municipioNome: this.municipioNome,
@@ -230,13 +198,10 @@
             email: this.email,
             informacao: this.informacao,
             ativo: this.ativo,
-          }, config);
+          });
           this.listaClientes = response.data;
         } else {
-          // alterar pelo PUT da API
-          const response = await clienteService.put(
-            `http://localhost:8080/cliente/${this.id}`,
-            {
+          const response = await clienteService.atualizar({
               id: this.id,
               nomeRazaoSocial: this.nomeRazaoSocial,
               municipioNome: this.municipioNome,
@@ -249,8 +214,7 @@
               email: this.email,
               informacao: this.informacao,
               ativo: this.ativo,
-            }
-          ,config );
+            });
           this.listaClientes = response.data;
         }
   
@@ -287,11 +251,17 @@
         this.ativo = "",
         this.$emit("cancelar", true);
       },
+
+      async buscarMunicipios(){
+        const response = await municipioService.listar(1,1000, 'ASC', 'id');
+        this.municipios = response.content;
+      }
     },
     mounted() {
       if (this.propsCliente) {
         this.id = this.propsCliente.id;
         this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
+        this.municipioId = this.propsCliente.municipioId;
         this.municipioNome = this.propsCliente.municipioNome;
         this.cnpj = this.propsCliente.cnpj;
         this.cpf = this.propsCliente.cpf;
@@ -303,6 +273,7 @@
         this.informacao = this.propsCliente.informacao;
         this.ativo = this.propsCliente.ativo;
       }
+      this.buscarMunicipios();
     },
     computed: {
       getAcao() {

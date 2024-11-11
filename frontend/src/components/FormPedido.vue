@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="mb-3">
-        <label class="form-label">Cliente</label>
+        <label class="form-label">Empresa</label>
         <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
           @search="onSearch">
           <template v-slot:no-options>

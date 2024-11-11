@@ -30,9 +30,6 @@
             <th scope="col">CNPJ</th>
             <th scope="col">CPF</th>
             <th scope="col">Telefone</th>
-            <th scope="col">Endereço</th>
-            <th scope="col">Bairro</th>
-            <th scope="col">CEP</th>
             <th scope="col" class="d-flex justify-content-center">Ações</th>
           </tr>
         </thead>
@@ -55,15 +52,6 @@
             </td>
             <td>
               {{ cliente.telefone }}
-            </td>
-            <td>
-              {{ cliente.endereco }}
-            </td>
-            <td>
-              {{ cliente.bairro }}
-            </td>
-            <td>
-              {{ cliente.cep }}
             </td>
             <td class="d-flex justify-content-center">
               <button

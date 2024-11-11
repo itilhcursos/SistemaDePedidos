@@ -25,7 +25,7 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Cliente</th>
+          <th scope="col">Empresa</th>
           <th scope="col">Forma Pagamento</th>
           <th scope="col">Número</th>
           <th scope="col">data Compra</th>
