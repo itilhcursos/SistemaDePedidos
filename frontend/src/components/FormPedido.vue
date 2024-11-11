@@ -220,6 +220,23 @@ export default {
         console.error("Erro ao buscar formas de pagamento:", error);
       }
     },
+
+    // Função para excluir o item do pedido
+  async excluirItemPedido(itemId) {
+    try {
+      // Chama a API para excluir o item, se necessário
+      await itemPedidoService.apagar(itemId);
+
+      // Remove o item da lista de itens localmente
+      this.listaItens = this.listaItens.filter(item => item.id !== itemId);
+
+      // Alerta o usuário
+      alert("Item excluído com sucesso!");
+    } catch (error) {
+      this.isInvalido = true;
+      this.mensagem = error.response ? error.response.data.mensagem : error.message;
+    }
+  },
     getDados() {
       return {
         id: this.id,

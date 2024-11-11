@@ -24,27 +24,27 @@
         />
       </div>
 
-        <div class="mb-3" v-if="getCnpj">
-              <label class="form-label">CNPJ</label>
-              <input
-              class="form-control"
-              type="text"
-              v-model="cnpj"
-              placeholder="CNPJ"
-              disable="!getCnpj"
-              />
-          </div>
+      <div class="mb-3" v-if="getCnpj">
+        <label class="form-label">CNPJ</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="cnpj"
+          placeholder="CNPJ"
+          :disabled="!getCnpj"
+        />
+      </div>
 
-          <div class="mb-3" v-if="getCpf">
-              <label class="form-label">CPF</label>
-              <input
-              class="form-control"
-              type="text"
-              v-model="cpf"
-              placeholder="CPF"
-              disable="!getCpf"
-              />
-          </div>
+      <div class="mb-3" v-if="getCpf">
+        <label class="form-label">CPF</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="cpf"
+          placeholder="CPF"
+          :disabled="!getCpf"
+        />
+      </div>
 
       <div class="mb-3">
         <label class="form-label">TELEFONE</label>
@@ -119,35 +119,32 @@
         <input class="form-control" type="text" v-model="municipioId" placeholder="Municipio ID" />
       </div>
 
-        <div class="mb-3">
-          <label class="form-label">Município</label>
-          <select v-model="municipioId" class="form-select">
-              <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
-                {{ municipio.nome }}
-              </option>
-          </select>
-        </div>
- 
+      <div class="mb-3">
+        <label class="form-label">Município</label>
+        <select v-model="municipioId" class="form-select">
+          <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
+            {{ municipio.nome }}
+          </option>
+        </select>
+      </div>
+
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <div class="p-2">{{ mensagem }}</div>
       </div>
+
       <div class="mb-3 d-flex justify-content-end">
-        <button
-          class="btn btn-primary m-2"
-          type="submit"
-          @click.prevent="salvar"
-        >
-        <i class="bi bi-clipboard2-check"></i>
+        <button class="btn btn-primary m-2" type="submit" @click.prevent="salvar">
+          <i class="bi bi-clipboard2-check"></i>
           {{ getAcao }}
         </button>
-        <button
-          class="btn btn-warning m-2"
-          type="submit"
-          v-on:click.prevent="cancelar"
-        >
-        <i class="bi bi-clipboard2-x"></i>
+        <button class="btn btn-warning m-2" type="button" v-on:click.prevent="cancelar">
+          <i class="bi bi-clipboard2-x"></i>
           Cancelar
+        </button>
+        <button class="btn btn-danger m-2" type="button" v-on:click.prevent="excluir" v-if="id">
+          <i class="bi bi-trash"></i>
+          Excluir
         </button>
       </div>
     </form>
@@ -156,8 +153,8 @@
 
 <script>
 import clienteService from "@/services/clienteService";
-//import axios from "axios";
 import municipioService from "@/services/municipioService";
+
 export default {
   props: {
     propsCliente: Object,
@@ -176,12 +173,10 @@ export default {
       informacao: "",
       municipioId: "",
       municipioNome: "",
-      municipioSelected:"",
-      municipios:[],
+      municipios: [],
       isInvalido: false,
       ativo: false,
-      mensagem : '',
-      
+      mensagem: "",
     };
   },
   methods: {
@@ -191,69 +186,91 @@ export default {
         this.mensagem = "Nome/Razão Social deve ser preenchido!!";
         return;
       }
-        this.isInvalido = false;
-      
-            try {
-                if (!this.id) {
-                    const response = await clienteService.criar(this.getDados());
-                    this.listaClientes = response;
-                } else {
-                    const response = await clienteService.atualizar(
-                        this.id,
-                        this.getDados()
-                    );
-                    this.listaClientes = response;
-                }
-                this.$emit("salvar", this.getDados());
-                this.limparFormulario();  
-        
-    }catch(error){
-     console.log(error);
-      this.isInvalido = true;
-      if(error.response.status === 403){        
-        this.mensagem = "Usuário não identificado! Faça o login!!!";
-       }else if(error.response.status === 400 &&
-                error.response.data.exception === 'ClienteDuplicadoException'){
-         this.mensagem = error.response.data.mensagem;
-       }else if(error.response.status === 400 &&
-                error.response.data.exception === 'MunicipioDuplicadoException'){
-         this.mensagem = error.response.data.mensagem;          
-      }else{
-        this.mensagem = error.message;
+      this.isInvalido = false;
+
+      try {
+        if (!this.id) {
+          const response = await clienteService.criar(this.getDados());
+          this.listaClientes = response;
+        } else {
+          const response = await clienteService.atualizar(this.id, this.getDados());
+          this.listaClientes = response;
+        }
+        this.$emit("salvar", this.getDados());
+        this.limparFormulario();
+      } catch (error) {
+        console.log(error);
+        this.isInvalido = true;
+        if (error.response.status === 403) {
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        } else if (error.response.status === 400 && error.response.data.exception === 'ClienteDuplicadoException') {
+          this.mensagem = error.response.data.mensagem;
+        } else if (error.response.status === 400 && error.response.data.exception === 'MunicipioDuplicadoException') {
+          this.mensagem = error.response.data.mensagem;
+        } else {
+          this.mensagem = error.message;
+        }
       }
-    }
-  },
+    },
+
+    async excluir() {
+      if (confirm("Tem certeza que deseja excluir este cliente?")) {
+        try {
+          await clienteService.excluir(this.id);
+          this.$emit("excluir", this.id);
+          this.limparFormulario();
+        } catch (error) {
+          console.error(error);
+          this.isInvalido = true;
+          this.mensagem = error.response?.data?.mensagem || "Erro ao excluir o cliente!";
+        }
+      }
+    },
 
     getDados() {
-            return {
-              id: this.id,
-              nomeRazaoSocial: this.nomeRazaoSocial,
-              cnpj: this.cnpj,
-              cpf: this.cpf,
-              telefone: this.telefone,
-              endereco: this.endereco,
-              bairro: this.bairro,
-              cep: this.cep,
-              email: this.email,
-              informacao: this.informacao,
-              ativo: this.ativo,
-              municipioId: this.municipioId,
-              municipioNome: this.municipioNome,
-              
-            };
-          },
-  
+      return {
+        id: this.id,
+        nomeRazaoSocial: this.nomeRazaoSocial,
+        cnpj: this.cnpj,
+        cpf: this.cpf,
+        telefone: this.telefone,
+        endereco: this.endereco,
+        bairro: this.bairro,
+        cep: this.cep,
+        email: this.email,
+        informacao: this.informacao,
+        ativo: this.ativo,
+        municipioId: this.municipioId,
+        municipioNome: this.municipioNome,
+      };
+    },
+
     cancelar() {
       this.id = "";
       this.nomeRazaoSocial = "";
       this.$emit("cancelar", true);
     },
 
-    async buscarMunicipios(){
-      const response = await municipioService.listar(1,1000, 'ASC', 'id');
+    async buscarMunicipios() {
+      const response = await municipioService.listar(1, 1000, 'ASC', 'id');
       this.municipios = response.content;
-    }
+    },
 
+    limparFormulario() {
+      this.id = "";
+      this.nomeRazaoSocial = "";
+      this.cnpj = "";
+      this.cpf = "";
+      this.telefone = "";
+      this.endereco = "";
+      this.bairro = "";
+      this.cep = "";
+      this.email = "";
+      this.informacao = "";
+      this.municipioId = "";
+      this.municipioNome = "";
+      this.ativo = false;
+    },
   },
   mounted() {
     if (this.propsCliente) {
@@ -270,23 +287,19 @@ export default {
       this.ativo = this.propsCliente.ativo;
       this.municipioId = this.propsCliente.municipioId;
       this.municipioNome = this.propsCliente.municipioNome;
-      
     }
     this.buscarMunicipios();
-  
   },
   computed: {
     getAcao() {
       return this.id === "" ? "Incluir" : "Alterar";
     },
-
-   
-    getCnpj(){
-          return this.cpf === '' ? true : false;
-      },
-      getCpf(){
-          return this.cnpj === '' ? true : false;
-      }
+    getCnpj() {
+      return this.cpf === "" ? true : false;
+    },
+    getCpf() {
+      return this.cnpj === "" ? true : false;
+    },
   },
 };
 </script>
