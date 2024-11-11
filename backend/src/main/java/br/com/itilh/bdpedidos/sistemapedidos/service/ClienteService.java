@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ClienteRepository;
 
 @Service
@@ -22,6 +20,10 @@ public class ClienteService extends GenericService<Cliente,ClienteDTO>{
 
     public Page<ClienteDTO> getTodos(Pageable pageable ){
         return toPageDTO(repositorio.findAll(pageable));
+    }
+
+    public Page<ClienteDTO> buscar (Pageable pageable, String txtBusca ){
+        return toPageDTO(repositorio.findByNomeRazaoSocialContainingIgnoreCase(pageable , txtBusca));
     }
 
     public ClienteDTO getPorId(BigInteger id) throws Exception {

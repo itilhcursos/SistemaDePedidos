@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 
 @Repository
@@ -24,6 +25,8 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
 
     @Override
     Page<Produto> findAll(Pageable pageable);
+
+    Page<Produto> findByDescricaoContainingIgnoreCase(Pageable pageable, String descricao);
 
     boolean existsByDescricao (String descricao);
 }

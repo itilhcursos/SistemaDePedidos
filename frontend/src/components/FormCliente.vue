@@ -120,7 +120,8 @@ export default {
         email: this.email,
         ativo: this.ativo,
         informacao: this.informacao,
-        municipioNome: this.municipioNome,
+        municipioId: this.municipioSelecionado.id,
+        municipioNome: this.municipioSelecionado.nome,
       };
     },
     async onSearchMunicipios(search, loading) {

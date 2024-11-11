@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
@@ -15,6 +14,12 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
     @Override
     Page<Cliente> findAll(Pageable pageable);
+
+    List<Cliente> findByNomeRazaoSocial(String descricao);
+
+    List<Cliente> findByNomeRazaoSocialStartingWithIgnoreCase(String descricao);
+
+    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);
 
     Boolean existsByNomeRazaoSocial (String nomeRazaoSocial);
 

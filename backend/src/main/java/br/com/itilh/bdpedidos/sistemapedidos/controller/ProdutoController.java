@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ProdutoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -36,6 +37,19 @@ public class ProdutoController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, Sort.Direction.valueOf(direction), property);
         return produtoService.listarProdutos(pageable);
+    }
+
+     @GetMapping("/produtos/{txtBusca}")
+    public Page<ProdutoDTO> getPorDescricao(
+        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+        @RequestParam(required = false, defaultValue = "10") int pageSize,
+        @RequestParam(required = false, defaultValue = "ASC") String direction,
+        @RequestParam(required = false, defaultValue = "id") String property,
+        @PathVariable String txtBusca
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+
+        return produtoService.buscar(pageable, txtBusca);
     }
 
     @GetMapping("/produto/{id}")

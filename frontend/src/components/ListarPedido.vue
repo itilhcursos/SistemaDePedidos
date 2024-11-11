@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="row">
-        <div class="col-10">
+      <div class="col-10">
           <h3>PEDIDOS</h3>
-        </div>
-        <div class="col-2 d-flex justify-content-end">
+      </div>
+      <div class="col-2 d-flex justify-content-end">
         <button v-if="!formVisible" @click="novoPedido" class="btn btn-success">
-          <i class="bi bi-clipboard-plus"></i> Incluir
+          <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
       <div class="row">
@@ -18,59 +18,76 @@
             @salvar_pedido="buscarPedidos"
           />
         </div>
-      </div>
+      </div> 
     </div>
 
     <table class="table table-dark table-striped" v-if="!formVisible">
       <thead>
         <tr>
           <th scope="col">ID</th>
+          <th scope="col">Número</th>
           <th scope="col">Cliente</th>
           <th scope="col">Forma Pagamento</th>
-          <th scope="col">Número</th>
-          <th scope="col">data Compra</th>
-          <th scope="col">data Entrega</th>
-          <th scope="col">data Pagamento</th>
-          <th scope="col" class="d-flex justify-content-center">Ações</th>
+          <th scope="col">Data Compra</th>
+          <th scope="col">Data Entrega</th>
+          <th scope="col">Data Pagamento</th>
+          <th scope="col">Itens</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="pedido in listaPedidos" :key="pedido.id" scope="row">
-            <th>
-                {{ pedido.id }}
-            </th>
-            <td>
-                {{ pedido.clienteNomeRazaoSocial }}
-            </td>
-            <td>
-                {{ pedido.formaPagamentoDescricao }}
-            </td> 
-            <td>
-                {{ pedido.numero }}
-            </td>                   
-            <td>
-                {{ formatar(pedido.dataCompra) }}
-            </td>          
-            <td>
-                {{ formatar(pedido.dataEntrega) }}
-            </td>  
-            <td>
-                {{ formatar(pedido.dataPagamento) }}
-            </td>
-            <td class="d-flex justify-content-center">
+          <th>
+            {{ pedido.id }}
+          </th>
+          <th>
+            {{ pedido.numero }}
+          </th>
+          <td>
+            {{ pedido.clienteNomeRazaoSocial }}
+          </td>
+          <td>
+            {{ pedido.formaPagamentoDescricao }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataCompra) }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataEntrega) }}
+          </td>
+          <td>
+            {{ formatar(pedido.dataPagamento) }}
+          </td>
+          <td class="d-flex justify-content-end">            
             <button
-              class="btn btn-outline-warning m-2"
+              class="btn btn-btn btn-primary m-2"
               @click="alterar(pedido)"
             >
               <i class="bi bi-clipboard-pulse"></i> Alterar
             </button>
-
             <button
               class="btn btn-outline-danger m-2"
               @click="excluir(pedido.id)"
             >
               <i class="bi bi-clipboard2-minus"></i> Excluir
             </button>
+            <table class="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Itens</th>
+                  <th scope="col">Descricão</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="itens in pedido.itens" :key="itens.id" scope="row">
+                  <th>
+                    <img :src=itens.produtoUrlImagem height="50px">
+                  </th>
+                  <th>
+                    {{ itens.produtoDescricao }}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
           </td>
         </tr>
       </tbody>
@@ -79,65 +96,66 @@
   <div v-if="!formVisible">
     <hr />
     <div class="container">
-        <div class="row d-flex justify-content-center">
-          <div class="col-auto">
+      <div class="row d-flex justify-content-center">
+        <div class="col-auto">
 
-            <button
-              v-for="pagina in totalPages"
-              :key="pagina"
-              @click.prevent="irPara(pagina)"
-              class="btn btn-light ms-1"
-            >
-              {{ pagina }}
-            </button>
-          </div>
-          <div class="col-auto">
-            <input
-              type="text"
-              v-model="pageNumber"
-              placeholder="Número da pagina"
-              class="form-control w-25"
-            />
-          </div>
-          <div class="col-auto">
-            <select v-model="pageSize" class="form-select">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <select v-model="property" class="form-select">
-                <option value="id">ID</option>
-                <option value="clienteNomeRazaoSocial">Nome Razão Social</option>
-              <option value="formaPagamentoDescricao">FormaPagamento Descricao</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <select v-model="direction" class="form-select">
-                <option value="ASC">Crescente</option>
-                <option value="DESC">Decrescente</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <button @click.prevent="buscarPedidos" class="btn btn-primary m-2">
-              <i class="bi bi-binoculars"></i>
-              Buscar
-            </button>
-          </div>
+          <button
+            v-for="pagina in totalPages"
+            :key="pagina"
+            @click.prevent="irPara(pagina)"
+            class="btn btn-light ms-1"
+          >
+            {{ pagina }}
+          </button>
         </div>
+        <div class="col-auto">
+          <input
+            type="text"
+            v-model="pageNumber"
+            placeholder="Número da pagina"
+            class="form-control w-25"
+          />
+        </div>
+        <div class="col-auto">
+          <select v-model="pageSize" class="form-select">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <select v-model="property" class="form-select">
+            <option value="id">ID</option>
+            <option value="cliente.nomeRazaoSocial">Nome RazaoSocial</option>
+            <option value="formaPagamento.descricao">FormaPagamento Descricao</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <select v-model="direction" class="form-select">
+            <option value="ASC">Crescente</option>
+            <option value="DESC">Decrescente</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <button @click.prevent="buscarPedidos" class="btn btn-success">
+            <i class="bi bi-binoculars"></i>
+            Buscar
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
+
 <script>
-import pedidoService from '@/services/pedidoService';
-import Data from "../utils/Data"
 import FormPedido from "./FormPedido.vue";
+import Data from "../utils/Data"
+import pedidoService from "@/services/pedidoService";
 export default {
   components: {
-   FormPedido,
+    FormPedido,
   },
   data() {
     return {
@@ -157,7 +175,7 @@ export default {
       this.formVisible = false;
       const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
       this.listaPedidos = response.content;
-      this.totalPages = response.totalPages;
+      this.totalPages = response.totalPages;   
     },
     limpar() {
       this.pedidoEscolhido = null;
@@ -183,11 +201,11 @@ export default {
           alert(error.message);
         }
       }     
-      this.buscar();
+      this.buscarPedidos();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscar();
+      this.buscarPedidos();
     },
     formatar(data){
       return Data.formatoDMA(data);
@@ -197,5 +215,4 @@ export default {
     this.buscarPedidos();
   },
 };
-
 </script>

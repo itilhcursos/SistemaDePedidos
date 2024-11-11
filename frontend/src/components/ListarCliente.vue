@@ -26,9 +26,13 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nome/Razão Social</th>
+          <th scope="col">CNPJ</th>
+          <th scope="col">CPF</th>
           <th scope="col">Telefone</th>
           <th scope="col">Endereço</th>
-          <th scope="col" class="d-flex justify-content-end">Ações</th>
+          <th scope="col">Bairro</th>
+          <th scope="col">Município</th>
+          <th scope="col">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -40,10 +44,22 @@
             {{ cliente.nomeRazaoSocial }}
           </th>
           <th>
+            {{ cliente.cnpj }}
+          </th>
+          <th>
+            {{ cliente.cpf }}
+          </th>
+          <th>
             {{ cliente.telefone }}
           </th>
-          <td>
+          <th>
             {{ cliente.endereco }}
+          </th>
+          <th>
+            {{ cliente.bairro }}
+          </th>
+          <td>
+            {{ cliente.municipioNome }}
           </td>
           <td class="d-flex justify-content-end">
             <button

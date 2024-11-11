@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
@@ -60,6 +61,11 @@ public class ProdutoService extends GenericService<Produto, ProdutoDTO> {
         if (dto.getQuantidadeEstoque() == null || dto.getQuantidadeEstoque().floatValue() < 0.0)
             throw new ProdutoEstoqueNegativoException(dto.getDescricao());
 
+    }
+
+
+    public Page<ProdutoDTO> buscar (Pageable pageable, String txtBusca ){
+        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable , txtBusca));
     }
 
     public String excluirProduto(BigInteger id) throws Exception {
