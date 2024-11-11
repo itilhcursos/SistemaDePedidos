@@ -14,20 +14,15 @@
         />
       </div>
 
-      <label class="form-label">Estado</label>
-        <v-select class="meu-select" v-model="selectedEstado"
-        :filterable="false" :options="optionsEstado"
-        @search="onSearch">
-        <template v-slot:no-options>
-            Não encontrado.
-        </template>
-        <template v-slot:option="option">
-            {{ option.nome }}
-        </template>
-        <template v-slot:selected-option="option">
-            {{ option.nome }}
-        </template>
-        </v-select>
+      <div class="mb-3">
+          <label class="form-label">Estado</label>
+          <select v-model="estadoId" class="form-select">
+              <option v-for="estado in estados" :value="estado.id"
+              :key="estado.id">
+                {{ estado.nome }}
+              </option>
+          </select>
+        </div>
 
       <div class="mb-3">
         <label class="form-label">Nome</label>
@@ -74,9 +69,8 @@
 </template>
 
 <script>
-import municipioService from '@/services/municipioService';
 import estadoService from '@/services/estadoService';
-import "vue-select/dist/vue-select.css";
+import municipioService from '@/services/municipioService';
 export default {
   props: {
     propsMunicipio: Object,
@@ -86,24 +80,15 @@ export default {
       id: "",
       nome: "",
       entrega: "",
-      estadoNome: "",
       isInvalido: false,
       mensagem : '',
-      optionsEstado: [],
-      selectedEstado: null,
+      estadoId: "",
+      estadoNome: "",
+      estadoSelected:"",
+      estados:[],
     };
   },
   methods: {
-    async onSearch(search, loading) {
-        if (search == "")
-          return;
-        loading(true);
-        await estadoService.buscar(search).then((response) => {
-          this.optionsEstado = response.content;
-          loading(false);
-        });
-      },
-      
     async salvarMunicipio() {
       if (this.nome === "") {
         this.isInvalido = true;
@@ -149,6 +134,11 @@ export default {
       this.estadoNome = "",
       this.$emit("cancelar", true);
     },
+
+    async buscarEstados(){
+      const response = await estadoService.listar(1,1000, 'ASC', 'id');
+      this.estados = response.content;
+    }
   },
   mounted() {
     if (this.propsMunicipio) {
@@ -156,7 +146,9 @@ export default {
       this.nome = this.propsMunicipio.nome;
       this.entrega = this.propsMunicipio.entrega;
       this.estadoNome = this.propsMunicipio.estadoNome;
+      this.estadoId = this.propsMunicipio.estadoId;
     }
+    this.buscarEstados();
   },
   computed: {
     getAcao() {
