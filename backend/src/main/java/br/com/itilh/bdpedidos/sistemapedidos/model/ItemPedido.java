@@ -33,11 +33,11 @@ private BigInteger id;
 
 @ManyToOne
 @JoinColumn(name = "id_pedido")
-private Pedido pedidoId;
+private Pedido pedido;
 
 @ManyToOne
 @JoinColumn(name = "id_produto")
-private Produto produtoId;
+private Produto produto;
 
 @Column(name = "dbl_quantidade_estoque")
 private Double quantidadeEstoque;

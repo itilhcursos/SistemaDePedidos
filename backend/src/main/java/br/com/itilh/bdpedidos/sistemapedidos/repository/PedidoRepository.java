@@ -15,8 +15,8 @@ public interface PedidoRepository extends JpaRepository<Pedido, BigInteger>{
     Page<Pedido> findByclienteId(BigInteger id,Pageable pageable);
     Page<Pedido> findByformaPagamentoId(BigInteger id,Pageable pageable);
     Page<Pedido>findByitens( List<ItemPedidoDTO> itens,Pageable pageable);
-    Page<Pedido> findByclienteNomeIgnoreCase(String nome,Pageable pageable);
-    Page<Pedido> findByformaPagamentoNomeIgnoreCase(String nome,Pageable pageable);
+    Page<Pedido> findByclienteNomeIgnoreCase(String nomeRazaoSocial ,Pageable pageable);
+    Page<Pedido> findByformaPagamentoNomeIgnoreCase(String descricao,Pageable pageable);
 
     boolean existsByNumero (Integer numero);
 

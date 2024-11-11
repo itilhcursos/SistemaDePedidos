@@ -64,26 +64,26 @@ public class PedidoController {
 
 
     @GetMapping("/Pedidos/cliente-nome/{nome}")
-    public Page<PedidoDTO> BuscarPedidosPorClienteNome(@PathVariable String nome,
+    public Page<PedidoDTO> BuscarPedidosPorClienteNome(@PathVariable String nomeRazaoSocial,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
         @RequestParam(required = false, defaultValue = "id") String property
     ){
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return pedidoService.listarPedidoPorClienteNome(nome, pageable);
+        return pedidoService.listarPedidoPorClienteNome(nomeRazaoSocial, pageable);
     }
 
 
     @GetMapping("/Pedidos/formaPagamento-nome/{nome}")
-    public Page<PedidoDTO> BuscarPedidosPorFormaPagamentoNome(@PathVariable String nome,
+    public Page<PedidoDTO> BuscarPedidosPorFormaPagamentoNome(@PathVariable String descricao,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
         @RequestParam(required = false, defaultValue = "ASC") String direction,
         @RequestParam(required = false, defaultValue = "id") String property
     ){
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return pedidoService.listarPedidoPorFormaPagamentoNome(nome, pageable);
+        return pedidoService.listarPedidoPorFormaPagamentoNome(descricao, pageable);
     }
 
 

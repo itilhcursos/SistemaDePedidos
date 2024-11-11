@@ -37,11 +37,11 @@ public class PedidoService extends GenericService<Pedido,PedidoDTO> {
         return toPageDTO(pedidoRepository.findByitens(itens, pageable));
     }
 
-    public Page<PedidoDTO> listarPedidoPorClienteNome(String nome, Pageable pageable) {
-        return toPageDTO(pedidoRepository.findByclienteNomeIgnoreCase(nome, pageable));
+    public Page<PedidoDTO> listarPedidoPorClienteNome(String nomeRazaoSocial, Pageable pageable) {
+        return toPageDTO(pedidoRepository.findByclienteNomeIgnoreCase(nomeRazaoSocial, pageable));
     }
-    public Page<PedidoDTO> listarPedidoPorFormaPagamentoNome(String nome, Pageable pageable) {
-        return toPageDTO(pedidoRepository.findByformaPagamentoNomeIgnoreCase(nome, pageable));
+    public Page<PedidoDTO> listarPedidoPorFormaPagamentoNome(String descricao, Pageable pageable) {
+        return toPageDTO(pedidoRepository.findByformaPagamentoNomeIgnoreCase(descricao, pageable));
     }
     
 

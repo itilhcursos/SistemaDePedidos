@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ItemPedidoPedidoIdDuplicadoException extends RuntimeException  {
 
-    public ItemPedidoPedidoIdDuplicadoException(BigInteger pedidoId){
+    public ItemPedidoPedidoIdDuplicadoException(BigInteger pedido){
 
-        super("ItemPedido = " + pedidoId + "duplicado");
+        super("ItemPedido = " + pedido + "duplicado");
     }
 
 }

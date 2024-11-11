@@ -17,8 +17,8 @@ public interface ItemPedidoRepository  extends JpaRepository<ItemPedido, BigInte
 
     boolean existsByQuantidadeEstoque(Double quantidadeEstoque );
     boolean existsByPrecoUnidadeAtual(BigDecimal precoUnidadeAtual);
-    boolean existsByPedidoId( BigInteger id);
-    boolean existsByProdutoId( BigInteger id);
+    boolean existsByPedidoId( BigInteger pedido);
+    boolean existsByProdutoId( BigInteger produto);
 
     @SuppressWarnings("null")
     @Override
