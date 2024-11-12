@@ -9,7 +9,7 @@
           class="form-control"
           type="text"
           v-model="login"
-          placeholder="login"
+          placeholder="Insira o seu login"
         />
       </div>
       <div class="mb-3">
@@ -18,7 +18,7 @@
           class="form-control"
           type="password"
           v-model="senha"
-          placeholder="senha"
+          placeholder="Insira a sua senha"
         />
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">

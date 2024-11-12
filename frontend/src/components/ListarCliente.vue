@@ -153,9 +153,13 @@ export default {
     async buscarClientes() {
       this.clienteEscolhido = null;
       this.formVisible = false;
-      const response = await clienteService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      const response = await clienteService.listar(
+        this.pageNumber,
+        this.pageSize,
+        this.direction,
+        this.property
+      );     
       this.listaClientes = response.content;
-      console.log(this.listaClientes);
       this.totalPages = response.totalPages;   
     },
     limpar() {
@@ -170,13 +174,18 @@ export default {
       this.formVisible = true;
     },
     async excluirCliente(id) {
-      let config = {
-        headers: {
-          'Authorization': 'Bearer ' +localStorage.getItem('token')
+      try {
+        const response = await clienteService.apagar(id);
+        console.log(response);
+      } catch (error) {
+        if (error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
+          alert(error.message);
         }
       }
-      const response = await clienteService.apagar(`http://localhost:8080/cliente/${id}`, config);
-      console.log(response.data);
       this.buscarClientes();
     },
     irPara(pagina) {

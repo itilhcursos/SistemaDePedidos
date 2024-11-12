@@ -19,14 +19,14 @@
         class="form-control"
         type="password"
         v-model="senha"
-        placeholder="senha"
+        placeholder="Insira a sua senha"
       />
     </div>
     <div>
       <label class="form-label">Permissões</label>
       <select v-model="role" class="form-select">
-        <option value="0">ADMINISTRADOR</option>
-        <option value="1">USUÁRIO</option>
+        <option value="0">Administrador</option>
+        <option value="1">Usuário</option>
       </select>
     </div>
 

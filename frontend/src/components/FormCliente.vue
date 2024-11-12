@@ -150,6 +150,7 @@
 <script>
   import clienteService from '@/services/clienteService';
   import municipioService from '@/services/municipioService';
+
   export default {
     props: {
       propsCliente: Object,
@@ -176,52 +177,11 @@
       };
     },
     methods: {
-      async salvarCliente() {
-        if (this.nomeRazaoSocial === "") {
-          this.isInvalido = true;
-          this.mensagem = "Nome deve ser preenchido!!";
-          return;
-        }
-        this.isInvalido = false;
-  
-        if (this.id === "") {
-          const response = await clienteService.criar({
-            id: this.id,
-            nomeRazaoSocial: this.nomeRazaoSocial,
-            municipioNome: this.municipioNome,
-            cnpj: this.cnpj,
-            cpf: this.cpf,
-            telefone: this.telefone,
-            endereco: this.endereco,
-            bairro: this.bairro,
-            cep: this.cep,
-            email: this.email,
-            informacao: this.informacao,
-            ativo: this.ativo,
-          });
-          this.listaClientes = response.data;
-        } else {
-          const response = await clienteService.atualizar({
-              id: this.id,
-              nomeRazaoSocial: this.nomeRazaoSocial,
-              municipioNome: this.municipioNome,
-              cnpj: this.cnpj,
-              cpf: this.cpf,
-              telefone: this.telefone,
-              endereco: this.endereco,
-              bairro: this.bairro,
-              cep: this.cep,
-              email: this.email,
-              informacao: this.informacao,
-              ativo: this.ativo,
-            });
-          this.listaClientes = response.data;
-        }
-  
-        this.$emit("salvar_cliente", {
+      getDados() {
+        return {
           id: this.id,
           nomeRazaoSocial: this.nomeRazaoSocial,
-          municipioNome: this.municipioNome,
+          municipioId: this.municipioId,
           cnpj: this.cnpj,
           cpf: this.cpf,
           telefone: this.telefone,
@@ -231,25 +191,61 @@
           email: this.email,
           informacao: this.informacao,
           ativo: this.ativo,
-        });
-  
+        };
+      },
+
+      async salvarCliente() {
+        if (!this.nomeRazaoSocial || !this.cpf || !this.cnpj) {
+          this.isInvalido = true;
+          this.mensagem = "Nome, CPF e CNPJ devem ser preenchidos!";
+          return;
+        }
+        this.isInvalido = false;
+
+        try {
+          if (this.id === "") {
+            const response = await clienteService.criar(this.getDados());
+            console.log(response);
+          } else {
+            const response = await clienteService.atualizar(this.id, this.getDados());
+            this.listaClientes = response;
+          }
+          this.$emit("salvar_cliente", this.getDados());
+          this.limparCampos();
+        } catch (error) {
+          this.tratarErro(error);
+        }
+      },
+      tratarErro(error) {
+        this.isInvalido = true;
+        if (error.response && error.response.status === 403) {
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        } else if (error.response && error.response.status === 400) {
+          this.mensagem = error.response.data.mensagem;
+        } else {
+          this.mensagem = error.message;
+        }
+      },
+
+      cancelar() {
+        this.limparCampos();
+        this.$emit("cancelar", true);
+      },
+      
+      limparCampos() {
         this.id = "";
         this.nomeRazaoSocial = "";
-      },
-      cancelar() {
-        this.id = "",
-        this.nomeRazaoSocial = "",
-        this.municipioNome = "",
-        this.cnpj = "",
-        this.cpf = "",
-        this.telefone = "",
-        this.endereco = "",
-        this.bairro = "",
-        this.cep = "",
-        this.email = "",
-        this.informacao = "",
-        this.ativo = "",
-        this.$emit("cancelar", true);
+        this.cnpj = "";
+        this.cpf = "";
+        this.telefone = "";
+        this.endereco = "";
+        this.bairro = "";
+        this.cep = "";
+        this.email = "";
+        this.ativo = false;
+        this.informacao = "";
+        this.municipioNome = "";
+        this.municipioSelecionado = null;
       },
 
       async buscarMunicipios(){
@@ -259,19 +255,7 @@
     },
     mounted() {
       if (this.propsCliente) {
-        this.id = this.propsCliente.id;
-        this.nomeRazaoSocial = this.propsCliente.nomeRazaoSocial;
-        this.municipioId = this.propsCliente.municipioId;
-        this.municipioNome = this.propsCliente.municipioNome;
-        this.cnpj = this.propsCliente.cnpj;
-        this.cpf = this.propsCliente.cpf;
-        this.telefone = this.propsCliente.telefone;
-        this.endereco = this.propsCliente.endereco;
-        this.bairro = this.propsCliente.bairro;
-        this.cep = this.propsCliente.cep;
-        this.email = this.propsCliente.email;
-        this.informacao = this.propsCliente.informacao;
-        this.ativo = this.propsCliente.ativo;
+        Object.assign(this, this.propsCliente);
       }
       this.buscarMunicipios();
     },
