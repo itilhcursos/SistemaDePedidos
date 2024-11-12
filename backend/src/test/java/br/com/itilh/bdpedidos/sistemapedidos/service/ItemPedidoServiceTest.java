@@ -200,7 +200,7 @@ produtoRepository.getReferenceById(BigInteger.ONE), Double.valueOf(1L), BigDecim
 
     void setupPedido(){
 
-        Pedido pedido = new Pedido(BigInteger.ONE, null, null, Integer.valueOf(5), null, null, null);
+        Pedido pedido = new Pedido(BigInteger.ONE, null, null, Integer.valueOf(5), null, null, null,null);
         pedidoRepository.save(pedido);
     }
 

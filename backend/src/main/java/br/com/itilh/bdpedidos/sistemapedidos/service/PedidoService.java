@@ -1,7 +1,10 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,15 +36,16 @@ public class PedidoService extends GenericService<Pedido,PedidoDTO> {
     public Page<PedidoDTO> listarPedidoPorFormaPagamentoId(BigInteger id, Pageable pageable) {
         return toPageDTO(pedidoRepository.findByformaPagamentoId(id, pageable));
     }
-    public Page<PedidoDTO> listarPedidoPorItens(List<ItemPedidoDTO> itens, Pageable pageable) {
-        return toPageDTO(pedidoRepository.findByitens(itens, pageable));
+    public Page<PedidoDTO> listarPedidoPorItens(Optional<List<ItemPedidoDTO>> optionalitens, Pageable pageable) {
+    List<ItemPedidoDTO> itens = optionalitens.orElse(Collections.emptyList());
+        return toPageDTO(pedidoRepository.findByItens(itens, pageable));
     }
 
     public Page<PedidoDTO> listarPedidoPorClienteNome(String nomeRazaoSocial, Pageable pageable) {
-        return toPageDTO(pedidoRepository.findByclienteNomeIgnoreCase(nomeRazaoSocial, pageable));
+        return toPageDTO(pedidoRepository.findByclienteNomeRazaoSocialIgnoreCase(nomeRazaoSocial, pageable));
     }
     public Page<PedidoDTO> listarPedidoPorFormaPagamentoNome(String descricao, Pageable pageable) {
-        return toPageDTO(pedidoRepository.findByformaPagamentoNomeIgnoreCase(descricao, pageable));
+        return toPageDTO(pedidoRepository.findByformaPagamentoDescricaoIgnoreCase(descricao, pageable));
     }
     
 

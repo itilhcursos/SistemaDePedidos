@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.model;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -50,5 +52,8 @@ private LocalDate entrega;
 
 @Column(name = "dt_pagamento")
 private LocalDate pagamento;
+
+ @OneToMany(mappedBy = "pedido")
+ private List<ItemPedido> itens;
 
 }

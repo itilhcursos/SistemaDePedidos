@@ -229,7 +229,7 @@ void setupPedido(){
     setupCliente();
     setupFormaPagamento();
         Pedido pedido = new Pedido(BigInteger.ONE, clienteRepository.getReferenceById(BigInteger.ONE), formaPagamentoRepository.getReferenceById(BigInteger.ONE), 
-        Integer.valueOf(5), null , null, null);
+        Integer.valueOf(5), null , null, null,null);
         pedidoRepository.save(pedido);
 }
 
