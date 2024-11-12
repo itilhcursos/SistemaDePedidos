@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.PedidoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido1;
+import br.com.itilh.bdpedidos.sistemapedidos.model.Pedido;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.PedidoRepository;
 
 @Service
-public class PedidoService extends GenericService <Pedido1,PedidoDTO> {
+public class PedidoService extends GenericService <Pedido,PedidoDTO> {
 
     @Autowired
     PedidoRepository repositorio;
