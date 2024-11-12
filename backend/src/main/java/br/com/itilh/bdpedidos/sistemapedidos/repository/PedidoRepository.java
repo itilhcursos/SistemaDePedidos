@@ -22,9 +22,4 @@ public interface PedidoRepository extends JpaRepository<Pedido, BigInteger> {
     Page<Pedido> findByformaPagamentoId(BigInteger id, Pageable pageable);
 
     Page<Pedido> findByitens(List<ItemPedidoDTO> itens, Pageable pageable);
-
-    Page<Pedido> findByclienteNomeIgnoreCase(String nome, Pageable pageable);
-
-    Page<Pedido> findByformaPagamentoNomeIgnoreCase(String nome, Pageable pageable);
-
 }

@@ -72,28 +72,6 @@ public class PedidoController {
         return pedidoService.listarPedidoPorClienteId(id, pageable);
     }
 
-    @GetMapping("/pedidos/cliente-nome/{nome}")
-    public Page<PedidoDTO> BuscarPedidosPorClienteNome(@PathVariable String nome,
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ){
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return pedidoService.listarPedidoPorClienteNome(nome, pageable);
-    }
-
-    @GetMapping("/pedidos/formaPagamento-nome/{nome}")
-    public Page<PedidoDTO> BuscarPedidosPorFormaPagamentoNome(@PathVariable String nome,
-        @RequestParam(required = false, defaultValue = "1") int pageNumber,
-        @RequestParam(required = false, defaultValue = "10") int pageSize,
-        @RequestParam(required = false, defaultValue = "ASC") String direction,
-        @RequestParam(required = false, defaultValue = "id") String property
-    ){
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return pedidoService.listarPedidoPorFormaPagamentoNome(nome, pageable);
-    }
-
     @GetMapping("/pedidos/formaPagamento-id/{id}")
     public Page<PedidoDTO> BuscarPedidosPorformaPagamentoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,

@@ -17,30 +17,23 @@ import br.com.itilh.bdpedidos.sistemapedidos.repository.PedidoRepository;
 public class PedidoService extends GenericService <Pedido,PedidoDTO> {
 
     @Autowired
-    PedidoRepository repositorio;
+    PedidoRepository pedidoRepository;
 
     public Page<PedidoDTO> getTodos(Pageable pageable ){
-        return toPageDTO(repositorio.findAll(pageable));
+        return toPageDTO(pedidoRepository.findAll(pageable));
     }
     public Page<PedidoDTO> listarPedidoPorClienteId(BigInteger id, Pageable pageable) {
-        return toPageDTO(repositorio.findByclienteId(id, pageable));
+        return toPageDTO(pedidoRepository.findByclienteId(id, pageable));
     }
     public Page<PedidoDTO> listarPedidoPorFormaPagamentoId(BigInteger id, Pageable pageable) {
-        return toPageDTO(repositorio.findByformaPagamentoId(id, pageable));
+        return toPageDTO(pedidoRepository.findByformaPagamentoId(id, pageable));
     }
     public Page<PedidoDTO> listarPedidoPorItens(List<ItemPedidoDTO> itens, Pageable pageable) {
-        return toPageDTO(repositorio.findByitens(itens, pageable));
-    }
-
-    public Page<PedidoDTO> listarPedidoPorClienteNome(String nome, Pageable pageable) {
-        return toPageDTO(repositorio.findByclienteNomeIgnoreCase(nome, pageable));
-    }
-    public Page<PedidoDTO> listarPedidoPorFormaPagamentoNome(String nome, Pageable pageable) {
-        return toPageDTO(repositorio.findByformaPagamentoNomeIgnoreCase(nome, pageable));
+        return toPageDTO(pedidoRepository.findByitens(itens, pageable));
     }
 
     public PedidoDTO getPorId(BigInteger id) throws Exception {
-        return toDTO(repositorio.findById(id).orElseThrow(
+        return toDTO(pedidoRepository.findById(id).orElseThrow(
             () -> new Exception("ID inválido.")));
     }  
 
@@ -52,7 +45,7 @@ public class PedidoService extends GenericService <Pedido,PedidoDTO> {
         
         validar(entityDTO);  
         try{    
-            return toDTO(repositorio.save(toEntity(entityDTO)));
+            return toDTO(pedidoRepository.save(toEntity(entityDTO)));
         }catch(Exception e){
             throw new Exception("Erro ao salvar o pedido.");
         }
@@ -61,14 +54,14 @@ public class PedidoService extends GenericService <Pedido,PedidoDTO> {
     public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
 
         try{     
-         return toDTO(repositorio.save(toEntity(novosDados)));
+         return toDTO(pedidoRepository.save(toEntity(novosDados)));
         }catch(Exception e){
             throw new Exception("Alteração não foi realizada.");
         }                                   
     }
 
     public String deletePorId(BigInteger id) throws Exception {
-        repositorio.deleteById(id);
+        pedidoRepository.deleteById(id);
         return "Excluído";
     }  
     
