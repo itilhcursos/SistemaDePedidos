@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import br.com.itilh.bdpedidos.sistemapedidos.dto.EstadoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ProdutoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoPrecoNegativoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
 
@@ -28,17 +29,34 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
-    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {    
+    public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {  
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
     public ProdutoDTO alterarProduto(BigInteger id, ProdutoDTO origem) throws Exception {
+        validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
-    private void validar (ProdutoDTO dto) throws Exception {
+    private void validar(ProdutoDTO dto) throws Exception {
 
-        
+        if (repositorio.existsByDescricao(dto.getDescricao())) {
+            if (dto.getId() == null) {
+                throw new ProdutoDuplicadoException(dto.getDescricao());
+            } else {
+                Produto produto = repositorio.getReferenceById(dto.getId());
+                if (!produto.getDescricao().equalsIgnoreCase(dto.getDescricao())) {
+                    throw new ProdutoDuplicadoException(dto.getDescricao());
+                }
+            }
+        }
+
+        if (dto.getQuantidadeEstoque() == null || dto.getQuantidadeEstoque().floatValue() < 0.0)
+            throw new ProdutoEstoqueNegativoException(dto.getDescricao());
+
+        if (dto.getPrecoUnidadeAtual() == null || dto.getPrecoUnidadeAtual().floatValue() < 0.0)
+            throw new ProdutoPrecoNegativoException(dto.getDescricao());
 
     }
 
