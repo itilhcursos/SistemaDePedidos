@@ -1,0 +1,15 @@
+package br.com.itilh.bdpedidos.sistemapedidos.exception;
+
+import java.math.BigInteger;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class ItemPedidoProdutoIdDuplicadoException extends RuntimeException {
+
+    public ItemPedidoProdutoIdDuplicadoException(BigInteger produtoId) {
+
+        super("ItemPedido = " + produtoId + "duplicado");
+    }
+}
