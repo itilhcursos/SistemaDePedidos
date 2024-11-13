@@ -85,6 +85,5 @@ import SupportIcon from './icons/IconSupport.vue'
 <style scoped>
  body{
   color: var();
-  
- } 
+ }
 </style>

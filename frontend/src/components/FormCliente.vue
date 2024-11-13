@@ -195,9 +195,9 @@
       },
 
       async salvarCliente() {
-        if (!this.nomeRazaoSocial || !this.cpf || !this.cnpj) {
+        if (!this.getDados) {
           this.isInvalido = true;
-          this.mensagem = "Nome, CPF e CNPJ devem ser preenchidos!";
+          this.mensagem = "Todos os campos devem ser preenchidos!";
           return;
         }
         this.isInvalido = false;
@@ -205,34 +205,40 @@
         try {
           if (this.id === "") {
             const response = await clienteService.criar(this.getDados());
-            console.log(response);
+            this.listaClientes = response;
           } else {
-            const response = await clienteService.atualizar(this.id, this.getDados());
+            const response = await clienteService.atualizar(
+              this.id,
+              this.getDados()
+            );
             this.listaClientes = response;
           }
           this.$emit("salvar_cliente", this.getDados());
-          this.limparCampos();
-        } catch (error) {
-          this.tratarErro(error);
-        }
-      },
-      tratarErro(error) {
-        this.isInvalido = true;
-        if (error.response && error.response.status === 403) {
-          this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else if (error.response && error.response.status === 400) {
-          this.mensagem = error.response.data.mensagem;
-        } else {
-          this.mensagem = error.message;
+          this.limparForm();
+        }catch(error){
+          console.log(error);
+          this.isInvalido = true;
+          if(error.response.status === 403){        
+            this.mensagem = "Usuário não identificado! Faça o login!!!";
+          }else if(error.response.status === 400 && 
+                   error.response.data.exception === 'ClienteDuplicadoException'){
+                    this.mensagem = error.response.data.mensagem;
+          }else if(error.response.status === 400 &&
+                   error.response.data.exception === 'MunicipioDuplicadoException'){
+                    this.mensagem = error.response.data.mensagem;          
+          }else{
+            this.mensagem = error.message;
+          }
         }
       },
 
       cancelar() {
-        this.limparCampos();
+        this.id = "";
+        this.nomeRazaoSocial = "";
         this.$emit("cancelar", true);
       },
       
-      limparCampos() {
+      limparForm() {
         this.id = "";
         this.nomeRazaoSocial = "";
         this.cnpj = "";

@@ -64,6 +64,7 @@ img{
 nav {
     text-align: left;
     font-size: 0.9rem;
+    font-family: Arial, Helvetica, sans-serif;
     padding: 1rem 0;
     margin-top: 1rem;
     background: #23232e;
@@ -96,7 +97,7 @@ nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-text);
-  color: rgb(255, 255, 255);
+  color: rgb(208, 208, 38);
 }
 
 nav a:first-of-type {
@@ -104,7 +105,6 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-
 
   .logo {
     margin: 0 2rem 0 0;
