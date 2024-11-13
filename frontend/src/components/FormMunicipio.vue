@@ -15,14 +15,14 @@
       </div>
 
       <div class="mb-3">
-          <label class="form-label">Estado</label>
+        <label class="form-label">Estado</label>
           <select v-model="estadoId" class="form-select">
-              <option v-for="estado in estados" :value="estado.id"
-              :key="estado.id">
-                {{ estado.nome }}
-              </option>
+            <option v-for="estado in estados" :value="estado.id"
+            :key="estado.id">
+              {{ estado.nome }}
+            </option>
           </select>
-        </div>
+      </div>
 
       <div class="mb-3">
         <label class="form-label">Nome</label>
@@ -71,6 +71,7 @@
 <script>
 import estadoService from '@/services/estadoService';
 import municipioService from '@/services/municipioService';
+
 export default {
   props: {
     propsMunicipio: Object,
@@ -89,50 +90,72 @@ export default {
     };
   },
   methods: {
+    getDados() {
+      return {
+        id: this.id,
+        nomeRazaoSocial: this.nomeRazaoSocial,
+        municipioId: this.municipioId,
+        cnpj: this.cnpj,
+        cpf: this.cpf,
+        telefone: this.telefone,
+        endereco: this.endereco,
+        bairro: this.bairro,
+        cep: this.cep,
+        email: this.email,
+        informacao: this.informacao,
+        ativo: this.ativo,
+      };
+    },
+
     async salvarMunicipio() {
-      if (this.nome === "") {
+      if (this.getDados) {
         this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
+        this.mensagem = "Todos os campos devem ser preenchidos!";
         return;
       }
       this.isInvalido = false;
       
-      if (this.id === "") {
-        const response = await municipioService.criar({
-          id: this.id,
-          nome: this.nome,
-          entrega: this.entrega,
-          estadoNome: this.estadoNome,
-        });
-        this.listaMunicipios = response.data;
-      } else {
-        const response = await municipioService.atualizar(
-          this.id,
-          {
-            id: this.id,
-            nome: this.nome,
-            entrega: this.entrega,
-            estadoNome: this.estadoNome,
-          }
-        );
-        this.listaMunicipios = response.data;
+      try {
+        if (this.id === "") {
+          const response = await municipioService.criar(this.getDados());
+          this.listaMunicipios = response;
+        } else {
+          const response = await municipioService.atualizar(
+            this.id,
+            this.getDados()
+          );
+          this.listaMunicipios = response;
+        }
+        this.$emit("salvar_municipio", this.getDados());
+        this.limparForm();
+      } catch(error) {
+        console.log(error);
+        this.isInvalido = true;
+        if (error.response.status === 403) {        
+          this.mensagem = "Usuário não identificado! Faça o login!!!";
+        } else if (error.response.status === 400 && 
+                   error.response.data.exception === 'MunicipioDuplicadoException'){
+                    this.mensagem = error.response.data.mensagem;
+        } else if (error.response.status === 400 &&
+                   error.response.data.exception === 'EstadoDuplicadoException'){
+                    this.mensagem = error.response.data.mensagem;          
+        } else {
+          this.mensagem = error.message;
+        }
       }
-      this.$emit("salvar_municipio", {
-        id: this.id,
-        nome: this.nome,
-        entrega: this.entrega,
-        estadoNome: this.estadoNome,
-      });
-
-      this.id = "";
-      this.nome = "";
     },
+
     cancelar() {
       this.id = "";
       this.nome = "";
-      this.entrega = "",
-      this.estadoNome = "",
       this.$emit("cancelar", true);
+    },
+
+    limparForm() {
+      this.id = "";
+      this.nome = "";
+      this.entrega = "",
+      this.estadoNome = "";
     },
 
     async buscarEstados(){
@@ -142,11 +165,7 @@ export default {
   },
   mounted() {
     if (this.propsMunicipio) {
-      this.id = this.propsMunicipio.id;
-      this.nome = this.propsMunicipio.nome;
-      this.entrega = this.propsMunicipio.entrega;
-      this.estadoNome = this.propsMunicipio.estadoNome;
-      this.estadoId = this.propsMunicipio.estadoId;
+      Object.assign(this, this.propsMunicipio);
     }
     this.buscarEstados();
   },

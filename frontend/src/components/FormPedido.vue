@@ -4,58 +4,46 @@
     <hr />
     <form>
       <div class="row">
-        <div class="col">
-          <label class="form-label">Id</label>
-          <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id" />
+        <div class="mb-3">
+          <label class="form-label">ID</label>
+          <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="ID Pedido" />
         </div>
-        <div class="col">
-          <label class="form-label">Número</label>
-          <input class="form-control" type="number" v-model="numero" placeholder="Número" />
+        <div class="mb-3">
+          <label class="form-label">Empresa</label>
+          <select v-model="selectedCliente" class="form-select">
+            <option v-for="cliente in optionsCliente" :key="cliente.id" :value="cliente.id">
+              {{ cliente.nomeRazaoSocial }}
+            </option>
+          </select>
         </div>
-        <div class="col">
-          <label class="form-label">Forma de pagamento</label>
-          <v-select class="meu-select" v-model="selectedFormaPagamento" :filterable="false"
-            :options="optionsFormaPagamento" @search="onSearchFormaPagamento">
-            <template v-slot:no-options>
-              Não encontrado.
-            </template>
-            <template v-slot:option="option">
-              {{ option.descricao }}
-            </template>
-            <template v-slot:selected-option="option">
-              {{ option.descricao }}
-            </template>
-          </v-select>
+
+        <div class="mb-3">
+          <label class="form-label">Forma de Pagamento</label>
+          <select v-model="selectedFormaPagamento" class="form-select">
+            <option v-for="formaPagamento in optionsFormaPagamento" :value="formaPagamento.id" :key="formaPagamento.id">
+              {{ formaPagamento.descricao }}
+            </option>
+          </select>
         </div>
       </div>
+      
       <div class="row">
         <div class="col">
-          <label class="form-label">Data Compra</label>
-          <input class="form-control" type="date" v-model="dataCompra" placeholder="Data Compra" />
+          <label class="form-label">Número</label>
+          <input class="form-control" type="number" v-model="numero" placeholder="Insira o número do pedido" />
         </div>
         <div class="col">
-          <label class="form-label">Data Entrega</label>
-          <input class="form-control" type="date" v-model="dataEntrega" placeholder="Data Entrega" />
+          <label class="form-label">Data da Compra</label>
+          <input class="form-control" type="date" v-model="dataCompra" />
         </div>
         <div class="col">
-          <label class="form-label">Data Pagamento</label>
-          <input class="form-control" type="date" v-model="dataPagamento" placeholder="Data Pagamento" />
+          <label class="form-label">Data da Entrega</label>
+          <input class="form-control" type="date" v-model="dataEntrega" />
         </div>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Empresa</label>
-        <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
-          @search="onSearch">
-          <template v-slot:no-options>
-            Não encontrado.
-          </template>
-          <template v-slot:option="option">
-            {{ option.nomeRazaoSocial }}
-          </template>
-          <template v-slot:selected-option="option">
-            {{ option.nomeRazaoSocial }}
-          </template>
-        </v-select>
+        <div class="col">
+          <label class="form-label">Data do Pagamento</label>
+          <input class="form-control" type="date" v-model="dataPagamento" />
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label">Itens Pedido</label>
@@ -124,8 +112,8 @@
          
           <button class="btn btn-success position-absolute top-50 start-50 translate-middle"  type="submit" v-on:click.prevent="incluirItem">
           <i class="bi bi-clipboard2-check"></i>
-            IncluirProduto
-        </button>
+            IncluirItem
+          </button>
         </div>
       </div>
       <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -148,9 +136,12 @@
 
 <script>
 import clienteService from "@/services/clienteService";
+// import formaPagamentoService from "@/services/formaPagamentoService";
 import produtoService from "@/services/produtoService";
 import itemPedidoService from "@/services/itemPedidoService";
-import formaPagamentoService from "@/services/formaPagamentoService";
+import pedidoService from "@/services/pedidoService";
+import axios from "axios";
+
 export default {
   props: {
     propsPedido: Object,
@@ -177,28 +168,51 @@ export default {
       selectedProduto: null,
       optionsFormaPagamento: [],
       selectedFormaPagamento: null,
-      quantidadeItem: 0
+      quantidadeItem: 0,
+      pageNumber: 1,
+      pageSize: 10,
+      direction: "ASC",
+      property: "id",
     };
   },
   methods: {
-    async onSearch(search, loading) {
-      if (search == "")
-        return;
-      loading(true);
-      await clienteService.buscar(search).then((response) => {
+
+    getDados() {
+      return {
+        id: this.id,
+        clienteId: this.selectedCliente,
+        formaPagamentoId: this.selectedFormaPagamento,
+        numero: this.numero,
+        dataCompra: this.dataCompra,
+        dataEntrega: this.dataEntrega,
+        dataPagamento: this.dataPagamento,
+        itens: this.listaItens,
+      };
+    },
+
+    async buscarClientes() {
+      try {
+        const response = await clienteService.listar(1, 1000, 'ASC', 'id');
         this.optionsCliente = response.content;
-        loading(false);
-      });
+      } catch (error) {
+        console.error("Erro ao buscar clientes:", error);
+      }
     },
-    async onSearchFormaPagamento(search, loading) {
-      if (search == "")
-        return;
-      loading(true);
-      await formaPagamentoService.buscar(search).then((response) => {
-        this.optionsFormaPagamento = response.content;
-        loading(false);
-      });
+
+    async buscarFormaPagamento() {
+      try {
+        console.log('111')
+        const response = await axios.get(
+          `http://localhost:8080/formas-pagamento?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+        );
+        console.log(response.data.content)
+        this.optionsFormaPagamento = response.data.content;
+      } catch (error) {
+        console.log('222')
+        console.error("Erro ao buscar formas de pagamento:", error);
+      }
     },
+
     async onSearchProduto(search, loading) {
       if (search == "")
         return;
@@ -208,115 +222,116 @@ export default {
         loading(false);
       });
     },
-    async salvar() {
-      console.log(this.selectedCliente, this.selectedProduto);
-      // if (this.nome === "") {
-      //   this.isInvalido = true;
-      //   this.mensagem = "Nome deve ser preenchido!!";
-      //   return;
-      // }
-      // this.isInvalido = false;
 
+    async excluirItemPedido(itemId) {
       try {
-        if (this.id === "") {
-          const response = await itemPedidoService.criar(this.getDados());
-          this.options = response;
-        } else {
-          const response = await itemPedidoService.atualizar(
-            this.id,
-            this.getDados()
-          );
-          this.listaPedidos = response;
-        }
-        this.$emit("salvar_pedido",
-          this.getDados(),
-        );
-
-        this.id = "";
-        this.nome = "";
+        await itemPedidoService.apagar(itemId);
+        this.listaItens = this.listaItens.filter(item => item.id !== itemId);
+        alert("Item excluído com sucesso!");
       } catch (error) {
         this.isInvalido = true;
-        if (error.response.status === 403) {
-          this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else if (
-          error.response.status === 400
-        ) {
-          this.mensagem = error.response.data.mensagem;
-        } else {
-          this.mensagem = error.message;
-        }
+        this.mensagem = error.response ? error.response.data.mensagem : error.message;
       }
     },
+
+    async salvar() {
+      if (!this.selectedCliente) {
+        this.isInvalido = true;
+        this.mensagem = "Selecione um cliente";
+        return;
+      }
+      this.isInvalido = false;
+      
+      try { // Verifique se estamos atualizando ou criando um novo ID;
+        if (this.id) {
+          await pedidoService.atualizar(this.id, this.getDados());
+        } else {
+          const response = await pedidoService.criar(this.getDados());
+          this.id = response.id;
+        } // Limpar e recriar itens associados a este pedido
+
+        for (const item of this.listaItens) {
+          item.pedidoId = this.id;
+          if (item.id) {
+            await itemPedidoService.atualizar(item.id, item);
+          } else {
+            await itemPedidoService.criar(item);
+          }
+        }
+        this.listaItens = [];
+        alert("Pedido e itens salvos com sucesso!");
+        this.$emit("salvar_pedido", this.getDados());
+      } catch (error) {
+        this.isInvalido = true;
+        this.mensagem = error.response ? error.response.data.mensagem : error.message;
+      }
+    },
+
+    async excluirPedido() {
+      if (!this.id) return;
+      try {// Remove todos os itens associados a este pedido primeiro
+        for (const item of this.listaItens) {
+          await itemPedidoService.apagar(item.id);
+        }
+        await pedidoService.apagar(this.id);
+        alert("Pedido e todos os itens foram excluídos com sucesso!");
+        this.cancelar();
+        this.$emit("pedido_excluido", this.id);
+      } catch (error) {
+        this.isInvalido = true;
+        this.mensagem = error.response ? error.response.data.mensagem : error.message;
+      }
+    },
+
     cancelar() {
-      this.id = "";
-      this.nome = "";
+      this.id = '';
+      this.numero = '';
+      this.dataCompra = '';
+      this.dataEntrega = '';
+      this.dataPagamento = '';
+      this.listaItens = [];
+      this.selectedCliente = null;
+      this.selectedFormaPagamento = null;
+      this.mensagem = '';
       this.$emit("cancelar", true);
     },
-    async incluirItem(){
-        const itemPedido = {
-              id : this.id,
-              pedidoId : this.id,
-              produtoId : this.selectedProduto.id,
-              produtoDescricao : this.selectedProduto.descricao,
-              produtoUrlImagem : this.selectedProduto.urlImagem,
-              quantidadeEstoque : this.quantidadeItem,
-              precoUnidadeAtual : this.precoUnidadeAtual
-            }
-        console.log(itemPedido);
-        try{
-          const response = await itemPedidoService.criar(itemPedido);
-          // lista de itens na tela
-          this.itens.push(response);
-        }catch(error){
-          if(error.response.status === 403){        
-          alert("Usuário não identificado! Faça o login!!!");
-          }else if(error.response.status === 400 ){
-            alert(error.response.data.mensagem);     
-          }else{
-            alert(error.message);
-        }
+
+    incluirItem() {
+      if (!this.selectedProduto || !this.quantidadeItem) {
+        this.isInvalido = true;
+        this.mensagem = "Selecione um produto e informe a quantidade";
+        return;
       }
 
+      const itemPedido = {
+        id: null,
+        pedidoId: this.id,
+        produtoId: this.selectedProduto.id,
+        produtoDescricao: this.selectedProduto.descricao,
+        produtoUrlImagem: this.selectedProduto.urlImagem,
+        quantidadeEstoque: this.quantidadeItem,
+        precoUnidadeAtual: this.selectedProduto.precoUnidadeAtual,
+      };
+      this.listaItens.push(itemPedido);
+      this.selectedProduto = null;
+      this.quantidadeItem = 0;
     },
-    async excluirItemPedido(id){
-      try{
-        const response = await itemPedidoService.apagar(id);
-        console.log(response);
-        // lista de itens na tela
-        this.itens = this.itens.filter(item => item.id !== id);
-      }catch(error){
-        if(error.response.status === 403){        
-         alert("Usuário não identificado! Faça o login!!!");
-        }else if(error.response.status === 400 ){
-          alert(error.response.data.mensagem);     
-        }else{
-          alert(error.message);
-        }
-      }
-    }
   },
   mounted() {
     if (this.propsPedido) {
       this.id = this.propsPedido.id;
-      this.clienteId= this.propsPedido.clienteId;
-      this.clienteNomeRazaoSocial= this.propsPedido.clienteNomeRazaoSocial;
-      this.formaPagamentoId= this.propsPedido.formaPagamentoId;
-      this.formaPagamentoDescricao= this.propsPedido.formaPagamentoDescricao;
-      this.numero= this.propsPedido.numero;
-      this.dataCompra= this.propsPedido.dataCompra;
-      this.dataEntrega= this.propsPedido.dataEntrega;
-      this.dataPagamento= this.propsPedido.dataPagamento;
-      this.itens= this.propsPedido.itens;
-
-      this.selectedFormaPagamento = {
-        id: this.propsPedido.formaPagamentoId, descricao:this.propsPedido.formaPagamentoDescricao 
-      };
-      this.selectedCliente = { 
-        id:this.propsPedido.clienteID, nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
-      };
-
+      this.selectedCliente = this.propsPedido.clienteId;
+      this.numero = this.propsPedido.numero;
+      this.dataCompra = this.propsPedido.dataCompra;
+      this.dataEntrega = this.propsPedido.dataEntrega;
+      this.dataPagamento = this.propsPedido.dataPagamento;
+      this.selectedFormaPagamento = this.propsPedido.formaPagamentoId;
+      this.listaItens = this.propsPedido.itens || [];
     }
+    this.buscarClientes();
+    this.buscarFormaPagamento();
   },
+
   computed: {
     getAcao() {
       return this.id === "" ? "Incluir" : "Alterar";

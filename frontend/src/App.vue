@@ -15,7 +15,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/formas-pagamento">Formas de Pagamento</RouterLink>
       <RouterLink to="/clientes">Clientes</RouterLink>
       <RouterLink to="/pedidos">Pedidos</RouterLink>
-      <RouterLink to="/registro">Cadastro</RouterLink>
+      <RouterLink to="/registro" v-if="!isLogado">Cadastro</RouterLink>
       <RouterLink to="/login" v-if="!isLogado">Login</RouterLink>
       <RouterLink to="/logout" v-if="isLogado">Usuário: {{ login }}</RouterLink>
      
@@ -97,7 +97,7 @@ nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-text);
-  color: rgb(208, 208, 38);
+  color: rgb(255, 255, 255);
 }
 
 nav a:first-of-type {
@@ -105,9 +105,9 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-
   .logo {
     margin: 0 2rem 0 0;
   }
 }
+
 </style> 
