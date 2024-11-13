@@ -3,122 +3,90 @@
       <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Cliente</h4>
       <hr />
       <form>
-        <div class="mb-3">
-          <label class="form-label">ID</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="id"
-            :disabled="true"
-            placeholder="ID cliente"
-          />
-        </div>
+        <div class="row">
+          <div class="mb-3">
+            <label class="form-label">ID</label>
+            <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="ID cliente" />
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label">Município</label>
-          <select v-model="municipioId" class="form-select">
+          <div class="mb-3">
+            <label class="form-label">Município</label>
+            <select v-model="municipioId" class="form-select">
               <option v-for="municipio in municipios" :value="municipio.id" :key="municipio.id">
                 {{ municipio.nome }}
               </option>
-          </select>
+            </select>
+          </div>
         </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Nome</label>
+            <input class="form-control" type="text" v-model="nomeRazaoSocial"
+            placeholder="Insira o nome da empresa" />
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label">Nome</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="nomeRazaoSocial"
-            placeholder="Insira o nome da empresa"
-          />
+          <div class="col">
+            <label class="form-label">CNPJ</label>
+            <input class="form-control" type="text" v-model="cnpj"
+            placeholder="Insira o CNPJ" />
+          </div>
+
+          <div class="col">
+            <label class="form-label">CPF</label>
+            <input class="form-control" type="text" v-model="cpf"
+            placeholder="Insira o CPF" />
+          </div>
         </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Telefone</label>
+            <input class="form-control" type="text" v-model="telefone"
+            placeholder="Insira o telefone" />
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label">CNPJ</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cnpj"
-            placeholder="Insira o CNPJ"
-          />
+          <div class="col">
+            <label class="form-label">Endereço</label>
+            <input class="form-control" type="text" v-model="endereco"
+            placeholder="Insira o endereço" />
+          </div>
+
+          <div class="col">
+            <label class="form-label">Bairro</label>
+            <input class="form-control" type="text" v-model="bairro"
+            placeholder="Insira o bairro" />
+          </div>
         </div>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <label class="form-label">CEP</label>
+            <input class="form-control" type="text" v-model="cep"
+            placeholder="Insira o CEP" />
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label">CPF</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cpf"
-            placeholder="Inira o CPF"
-          />
+          <div class="col">
+            <label class="form-label">E-mail</label>
+            <input class="form-control" type="text" v-model="email"
+            placeholder="Insira o email" />
+          </div>
         </div>
+        <hr>
+        <div class="row">
+          <div class="mb-3">
+            <label class="form-label">Informação</label>
+            <input class="form-control" type="text" v-model="informacao"
+            placeholder="Insira as informações" />
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label">Telefone</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="telefone"
-            placeholder="Insira o telefone"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Endereço</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="endereco"
-            placeholder="Insira o endereço"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Bairro</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="bairro"
-            placeholder="Insira o bairro"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">CEP</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="cep"
-            placeholder="Insira o CEP"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">E-mail</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="email"
-            placeholder="Insira o email"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Informação</label>
-          <input
-            class="form-control"
-            type="text"
-            v-model="informacao"
-            placeholder="Insira as informações"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Entrega</label>
-          <select v-model="ativo" class="form-select">
-            <option :value="true">Sim</option>
-            <option :value="false">Não</option>
-          </select>
+          <div class="mb-3">
+            <label class="form-label">Entrega</label>
+            <select v-model="ativo" class="form-select">
+              <option :value="true">Sim</option>
+              <option :value="false">Não</option>
+            </select>
+          </div>
         </div>
 
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
@@ -194,7 +162,7 @@
         };
       },
 
-      async salvarCliente() {
+      /* async salvarCliente() {
         if (!this.getDados) {
           this.isInvalido = true;
           this.mensagem = "Todos os campos devem ser preenchidos!";
@@ -229,6 +197,29 @@
           }else{
             this.mensagem = error.message;
           }
+        }
+      }, */
+
+      async salvarCliente() {
+        const dados = this.getDados ? this.getDados() : null;
+        if (!dados) {
+          this.isInvalido = true;
+          this.mensagem = "Todos os campos devem ser preenchidos!";
+          return;
+        }
+        this.isInvalido = false;
+
+        try {
+          const response = this.id === ""
+          ? await clienteService.criar(dados)
+          : await clienteService.atualizar(this.id, dados);
+      
+          this.listaClientes = response;
+          this.$emit("salvar_cliente", dados);
+          this.limparForm();
+        } catch (error) {
+          console.error(error);
+          this.mensagem = this.tratarErro(error);
         }
       },
 

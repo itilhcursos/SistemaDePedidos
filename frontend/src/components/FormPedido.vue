@@ -8,6 +8,7 @@
           <label class="form-label">ID</label>
           <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="ID Pedido" />
         </div>
+
         <div class="mb-3">
           <label class="form-label">Empresa</label>
           <select v-model="selectedCliente" class="form-select">
