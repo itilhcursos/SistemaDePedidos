@@ -164,8 +164,8 @@ export default {
           alert(error.message);
         }
       }
-      this.buscar();
     },
+
     irPara(pagina) {
       this.pageNumber = pagina;
       this.buscar();

@@ -27,8 +27,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, BigInteger> {
     @Query("FROM Produto e WHERE e.descricao like %?1")
     List<Produto> findByMinhaQuery(String descricao);
 
-    @SuppressWarnings("null")
-    @Override
+    @Override 
     Page<Produto> findAll(Pageable pageable);
 
     boolean existsByDescricao (String descricao);

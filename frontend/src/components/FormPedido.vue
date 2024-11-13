@@ -78,7 +78,7 @@
           <label class="form-label">Novo Produto</label>
           <v-select class="meu-select" v-model="selectedProduto" :filterable="false" :options="optionsProduto" @search="onSearchProduto">
             <template v-slot:no-options> Não encontrado.</template>
-            <template v-slot:option="option"><img class="mini" :src='option.urlImagem'/>
+            <template v-slot:option="option"><img class="mini" :src='option.urlImagem'/> 
               {{ option.descricao }} Qtd({{ option.quantidadeEstoque }}) - Preço({{ option.precoUnidadeAtual }})
             </template>
             <template v-slot:selected-option="option"><img class="mini" :src='option.urlImagem'/>
@@ -276,19 +276,21 @@ async incluirItem() {
   this.itens.push(itemPedido);
 },
 
-    async excluirItemPedido(id) {
+async excluirItemPedido(id) {
       try {
         await itemPedidoService.apagar(id);
         this.itens = this.itens.filter(item => item.id !== id);
       } catch (error) {
-        const msg = error.response && error.response.status === 403
-          ? "Usuário não identificado! Faça o login!!!"
-          : error.response && error.response.status === 400
-            ? error.response.data.mensagem
-            : error.message;
-        alert(msg);
+        if (error.response && error.response.status === 403) {
+          alert("Usuário não identificado! Faça o login!!!");
+        } else if (error.response && error.response.status === 400) {
+          alert(error.response.data.mensagem);
+        } else {
+          alert(error.message);
+        }
       }
     },
+
     formatarPreco(valor) {
       return Monetario.toTela(valor);
     },
