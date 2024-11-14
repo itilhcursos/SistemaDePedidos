@@ -3,16 +3,16 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Produto</h4>
     <hr />
     <form>
-      <div class="mb-3">
-        <label class="form-label">Id</label>
-        <input
-          class="form-control"
-          type="text"
-          v-model="id"
-          :disabled="true"
-          placeholder="Id produto"
-        />
-      </div>
+      <div class="row">
+        <div class="mb-3">
+          <label class="form-label">Id</label>
+          <input 
+            class="form-control"
+            type="text" v-model="id"
+            :disabled="true"
+            placeholder="Id produto" 
+          />
+        </div>
         <div class="mb-3">
           <label class="form-label">Descrição</label>
           <input
@@ -31,7 +31,10 @@
             placeholder="Link da Imagem"
           />
         </div>
-        <div class="mb-3">
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
           <label class="form-label">Quantidade em Estoque</label>
           <input
             class="form-control"
@@ -40,7 +43,7 @@
             placeholder="Quantidade em Estoque"
           />
         </div>
-        <div class="mb-3">
+        <div class="col">
           <label class="form-label">Preço Unitário</label>
             <input
               class="form-control"
@@ -49,13 +52,14 @@
               placeholder="Preço Unitário"
             />
         </div>
-        <div class="mb-3">
+        <div class="col">
           <label class="form-label">Ativo</label>
           <select v-model="ativo" class="form-select">
             <option :value="true">Sim</option>
             <option :value="false">Não</option>
           </select>
         </div>
+      </div>
 
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
                 <i class="bi bi-exclamation-triangle-fill"></i>

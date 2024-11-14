@@ -71,6 +71,14 @@
             <input class="form-control" type="text" v-model="email"
             placeholder="Insira o email" />
           </div>
+
+          <div class="col">
+            <label class="form-label">Entrega</label>
+            <select v-model="ativo" class="form-select">
+              <option :value="true">Sim</option>
+              <option :value="false">Não</option>
+            </select>
+          </div>
         </div>
         <hr>
         <div class="row">
@@ -78,14 +86,6 @@
             <label class="form-label">Informação</label>
             <input class="form-control" type="text" v-model="informacao"
             placeholder="Insira as informações" />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Entrega</label>
-            <select v-model="ativo" class="form-select">
-              <option :value="true">Sim</option>
-              <option :value="false">Não</option>
-            </select>
           </div>
         </div>
 
@@ -162,69 +162,40 @@
         };
       },
 
-      /* async salvarCliente() {
-        if (!this.getDados) {
-          this.isInvalido = true;
-          this.mensagem = "Todos os campos devem ser preenchidos!";
-          return;
-        }
-        this.isInvalido = false;
-
-        try {
-          if (this.id === "") {
-            const response = await clienteService.criar(this.getDados());
-            this.listaClientes = response;
-          } else {
-            const response = await clienteService.atualizar(
-              this.id,
-              this.getDados()
-            );
-            this.listaClientes = response;
-          }
-          this.$emit("salvar_cliente", this.getDados());
-          this.limparForm();
-        }catch(error){
-          console.log(error);
-          this.isInvalido = true;
-          if(error.response.status === 403){        
-            this.mensagem = "Usuário não identificado! Faça o login!!!";
-          }else if(error.response.status === 400 && 
-                   error.response.data.exception === 'ClienteDuplicadoException'){
-                    this.mensagem = error.response.data.mensagem;
-          }else if(error.response.status === 400 &&
-                   error.response.data.exception === 'MunicipioDuplicadoException'){
-                    this.mensagem = error.response.data.mensagem;          
-          }else{
-            this.mensagem = error.message;
-          }
-        }
-      }, */
-
       async salvarCliente() {
-        const dados = this.getDados ? this.getDados() : null;
-        if (!dados) {
-          this.isInvalido = true;
-          this.mensagem = "Todos os campos devem ser preenchidos!";
-          return;
-        }
-        this.isInvalido = false;
+      if (!this.nomeRazaoSocial || !this.cpf || !this.cnpj) {
+        this.isInvalido = true;
+        this.mensagem = "Nome, CPF e CNPJ devem ser preenchidos!";
+        return;
+      }
+      this.isInvalido = false;
 
-        try {
-          const response = this.id === ""
-          ? await clienteService.criar(dados)
-          : await clienteService.atualizar(this.id, dados);
-      
+      try {
+        if (this.id === "") {
+          const response = await clienteService.criar(this.getDados());
           this.listaClientes = response;
-          this.$emit("salvar_cliente", dados);
-          this.limparForm();
-        } catch (error) {
-          console.error(error);
-          this.mensagem = this.tratarErro(error);
+        } else {
+          const response = await clienteService.atualizar(this.id, this.getDados());
+          this.listaClientes = response;
         }
-      },
+        this.$emit("salvar_cliente", this.getDados());
+        this.limparCampos();
+      } catch (error) {
+        this.tratarErro(error);
+      }
+    },
+    tratarErro(error) {
+      this.isInvalido = true;
+      if (error.response && error.response.status === 403) {
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+      } else if (error.response && error.response.status === 400) {
+        this.mensagem = error.response.data.mensagem;
+      } else {
+        this.mensagem = error.message;
+      }
+    },
 
       cancelar() {
-        this.id = "";
         this.nomeRazaoSocial = "";
         this.$emit("cancelar", true);
       },
