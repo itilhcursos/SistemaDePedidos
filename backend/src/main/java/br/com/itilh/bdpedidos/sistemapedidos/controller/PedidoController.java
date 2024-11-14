@@ -29,7 +29,7 @@ public class PedidoController {
 
 
 
-    @GetMapping("/Pedidos")
+    @GetMapping("/pedidos")
     public Page<PedidoDTO> BuscarPedidos(
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,

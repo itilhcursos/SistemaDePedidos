@@ -160,10 +160,11 @@ export default {
     };
   },
   methods: {
-    async buscar() {
+    async buscarPedidos() {
       this.pedidoEscolhido = null;
       this.formVisible = false;
-      const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);     
+      const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);
+      console.log(response.data);
       this.listaPedidos = response.content;
       this.totalPages = response.totalPages;   
     },

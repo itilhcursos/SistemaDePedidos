@@ -185,8 +185,7 @@ export default {
       this.clienteEscolhido = null;
       this.formVisible = false;
       const response = await axios.get(
-        `http://localhost:8080/cliente?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-      );
+        `http://localhost:8080/clientes?pageNumber=1&pageSize=10&direction=ASC&property=id`);
       console.log(response.data);
       this.listaClientes= response.data.content;
       this.totalPages = response.data.totalPages;
