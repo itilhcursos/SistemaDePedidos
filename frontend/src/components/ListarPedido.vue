@@ -143,6 +143,7 @@
 import FormPedido from "./FormPedido.vue";
 import Data from "../utils/Data"
 import pedidoService from "@/services/pedidoService";
+
 export default {
   components: {
     FormPedido,
@@ -160,13 +161,13 @@ export default {
     };
   },
   methods: {
-    async buscarPedidos() {
+    async BuscarPedidos() {
       this.pedidoEscolhido = null;
       this.formVisible = false;
-      const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);
-      console.log(response.data);
-      this.listaPedidos = response.content;
-      this.totalPages = response.totalPages;   
+      const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);   
+        this.listaPedidos = response.content;
+        this.totalPages = response.totalPages;   
+        console.log(this.totalPages);
     },
     limpar() {
       this.pedidoEscolhido = null;
@@ -192,18 +193,18 @@ export default {
           alert(error.message);
         }
       }     
-      this.buscar();
+      this.BuscarPedidos();
     },
     irPara(pagina) {
       this.pageNumber = pagina;
-      this.buscar();
+      this.BuscarPedidos();
     },
     formatar(data){
       return Data.formatoDMA(data);
     }
   },
   mounted() {
-    this.buscar();
+    this.BuscarPedidos();
   },
 };
 </script>

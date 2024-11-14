@@ -39,7 +39,7 @@ public class PedidoController {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
         return pedidoService.listarPedidos(pageable);
     }
-     @GetMapping("/Pedidos/cliente-id/{id}")
+     @GetMapping("/pedidos/cliente-id/{id}")
     public Page<PedidoDTO> BuscarPedidosPorClienteId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -51,7 +51,7 @@ public class PedidoController {
     }
 
 
-    @GetMapping("/Pedidos/formaPagamento-id/{id}")
+    @GetMapping("/pedidos/formaPagamento-id/{id}")
     public Page<PedidoDTO> BuscarPedidosPorformaPagamentoId(@PathVariable BigInteger id,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -63,7 +63,7 @@ public class PedidoController {
     }
 
 
-    @GetMapping("/Pedidos/cliente-nome/{nome}")
+    @GetMapping("/pedidos/cliente-nome/{nome}")
     public Page<PedidoDTO> BuscarPedidosPorClienteNome(@PathVariable String nomeRazaoSocial,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -75,7 +75,7 @@ public class PedidoController {
     }
 
 
-    @GetMapping("/Pedidos/formaPagamento-nome/{nome}")
+    @GetMapping("/pedidos/formaPagamento-nome/{nome}")
     public Page<PedidoDTO> BuscarPedidosPorFormaPagamentoNome(@PathVariable String descricao,
         @RequestParam(required = false, defaultValue = "1") int pageNumber,
         @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -88,25 +88,25 @@ public class PedidoController {
 
 
 
-      @GetMapping("/Pedido/{id}")
+      @GetMapping("/pedido/{id}")
     public PedidoDTO BuscarPedidoPorId(@PathVariable BigInteger id) throws Exception {
         return pedidoService.buscarPedidoPorId(id);
     }    
 
 
-    @PostMapping("/Pedido")
+    @PostMapping("/pedido")
     public PedidoDTO criarPedido(@RequestBody PedidoDTO entity) throws Exception {
         return pedidoService.criarPedido(entity);
     }
     
 
-    @PutMapping("/Pedido/{id}")
+    @PutMapping("/pedido/{id}")
     public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO origem) throws Exception {
         return pedidoService.alterarPedido(id,origem);
     }
 
 
-    @DeleteMapping("/Pedido/{id}")
+    @DeleteMapping("/pedido/{id}")
     public String deletePedido(@PathVariable BigInteger id) throws Exception {
         return pedidoService.excluirPedido(id);
     }
