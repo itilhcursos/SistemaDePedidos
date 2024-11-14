@@ -31,6 +31,7 @@
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col">
           <label class="form-label">Data Compra</label>
@@ -73,6 +74,7 @@
           </tbody>
         </table>
       </div>
+
       <div class="row align-items-end">
         <div class="col-8">
           <label class="form-label">Novo Produto</label>
@@ -220,9 +222,16 @@ export default {
       this.isInvalido = false;
 
       try {
-        const response = this.id === "" ? await pedidoService.criar(this.getDados()) : await pedidoService.atualizar(this.id, this.getDados());
-        this.listaPedidos = response;
-        this.$emit("salvar_pedido", this.getDados());
+        // const dadosPedido = this.getDados();
+        if (this.id === "") {
+          const response = await pedidoService.criar(this.getDados());
+          this.listaPedidos = response;
+        } else {
+          const response = await pedidoService.atualizar(this.id, this.getDados());
+          this.listaPedidos = response;
+        }
+        this.$emit("salvar_pedido", this.getDados()); // Emite o evento
+
       } catch (error) {
         this.isInvalido = true;
         if (error.response && error.response.status === 403) {
@@ -273,7 +282,18 @@ async incluirItem() {
     precoUnidadeAtual: this.selectedProduto.precoUnidadeAtual
   };
 
-  this.itens.push(itemPedido);
+  try {
+      const response = await itemPedidoService.criar(itemPedido);
+      this.itens.push(response);
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        alert("Usuário não identificado! Faça o login!!!");
+      } else if (error.response && error.response.status === 400) {
+        alert(error.response.data.mensagem);
+      } else {
+        alert(error.message);
+      }
+  }
 },
 
 async excluirItemPedido(id) {
@@ -300,26 +320,25 @@ async excluirItemPedido(id) {
   },
   mounted() {
     if (this.propsPedido) {
-      Object.assign(this, {
-        id: this.propsPedido.id,
-        numero: this.propsPedido.numero,
-        clienteId: this.propsPedido.clienteId,
-        clienteNomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial,
-        formaPagamentoId: this.propsPedido.formaPagamentoId,
-        formaPagamentoDescricao: this.propsPedido.formaPagamentoDescricao,
-        dataCompra: this.propsPedido.dataCompra,
-        dataEntrega: this.propsPedido.dataEntrega,
-        dataPagamento: this.propsPedido.dataPagamento,
-        itens: this.propsPedido.itens,
-        selectedCliente: {
-          id: this.propsPedido.clienteId,
-          nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
-        },
-        selectedFormaPagamento: {
-          id: this.propsPedido.formaPagamentoId,
-          descricao: this.propsPedido.formaPagamentoDescricao
-        }
-      });
+      this.id = this.propsPedido.id;
+      this.numero = this.propsPedido.numero;
+      this.clienteId = this.propsPedido.clienteId;
+      this.clienteNomeRazaoSocial = this.propsPedido.clienteNomeRazaoSocial;
+      this.formaPagamentoId = this.propsPedido.formaPagamentoId;
+      this.formaPagamentoDescricao = this.propsPedido.formaPagamentoDescricao;
+      this.dataCompra = this.propsPedido.dataCompra;
+      this.dataEntrega = this.propsPedido.dataEntrega;
+      this.dataPagamento = this.propsPedido.dataPagamento;
+      this.itens = this.propsPedido.itens;
+
+      this.selectedCliente = {
+        id: this.propsPedido.clienteId,
+        nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial
+      };
+      this.selectedFormaPagamento = {
+        id: this.propsPedido.formaPagamentoId,
+        descricao: this.propsPedido.formaPagamentoDescricao
+      };
     }
   },
   computed: {
