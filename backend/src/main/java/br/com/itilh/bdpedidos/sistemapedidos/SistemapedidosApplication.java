@@ -20,9 +20,13 @@ public class SistemapedidosApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController( "/" )
+                registry.addViewController("/")
                         .setViewName("forward:/app/dist/index.html");
+                registry.addViewController("/app/dist/")
+                        .setViewName("forward:/app/dist/index.html");
+
             }
+
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedMethods("*");
