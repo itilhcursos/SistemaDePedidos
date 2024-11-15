@@ -67,6 +67,7 @@ export default {
       descricao: "",
       ativo: "",
       isInvalido: false,
+      mensagem: "",
     };
   },
     methods: {
