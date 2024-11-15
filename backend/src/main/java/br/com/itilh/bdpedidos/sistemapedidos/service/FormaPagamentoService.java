@@ -24,6 +24,10 @@ public class FormaPagamentoService extends GenericService<FormaPagamento,FormaPa
         return toPageDTO(repositorio.findAll(pageable));
     }
 
+    public Page<FormaPagamentoDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
+    }
+
     public FormaPagamentoDTO buscarFormaPagamentoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id)
         .orElseThrow(()-> new IdInexistenteException("Forma de Pagamento", id)));

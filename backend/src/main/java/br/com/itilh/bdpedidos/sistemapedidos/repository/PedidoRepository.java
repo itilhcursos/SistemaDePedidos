@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, BigInteger> {
-    
+    boolean existsByNumero(BigInteger numero);
 
 }
