@@ -29,6 +29,10 @@ public class ProdutoService extends GenericService<Produto,ProdutoDTO> {
         .orElseThrow(()-> new IdInexistenteException("Produto", id)));
     }
 
+    public Page<ProdutoDTO> buscar(Pageable pageable, String txtBusca){
+        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable,txtBusca));
+    }
+
     public ProdutoDTO criarProduto(ProdutoDTO origem) throws Exception {  
         validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
