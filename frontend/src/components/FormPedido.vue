@@ -168,7 +168,7 @@ import Decimal from '@/utils/Decimal';
 
 export default {
     props: {
-        propsProduto: Object,
+        propsPedido: Object,
     },
     data() {
         return {
