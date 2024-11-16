@@ -35,7 +35,7 @@
     
         <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
             <i class="bi bi-exclamation-triangle-fill"></i>
-            <div class="p-2">mensagem</div>
+            <div class="p-2">{{ mensagem }}</div>
         </div>
         <div class="mb-3 d-flex justify-content-end">
 
@@ -120,10 +120,10 @@ export default {
         getMensagemErro(error) {
             if (error.response && error.response.status === 403) {
                 return "Usuário não identificado! Faça o login!!!";
-            } else if (error.response && error.response.status === 400) {
-                return error.response.data.mensagem;
+            } else if (error.response && error.response.status === 500) {
+                return error.response.data.mensagem || "Erro interno no servidor.";
             } else {
-                return error.message;
+                return error.message || "Erro desconhecido";
             }
         }
     },

@@ -95,14 +95,14 @@ export default {
 
       this.id = "";
       this.nome = "";
-    }catch( error){
+    }catch(error){
       this.isInvalido = true;
       if(error.response.status === 403){        
         this.mensagem = "Usuário não identificado! Faça o login!!!";
-      }else if(error.response.status === 400){
-         return error.response.data.mensagem;     
+      }else if(error.response.status === 500){
+         this.mensagem = error.response.data.mensagem;     
       }else{
-      return error.message;
+      this.mensagem = error.message;
       }
     }
    },
