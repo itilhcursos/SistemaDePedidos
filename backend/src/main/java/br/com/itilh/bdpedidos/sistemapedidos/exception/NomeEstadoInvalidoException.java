@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public class NomeEstadoInvalidoException extends  RuntimeException{
 
     public NomeEstadoInvalidoException(String nome){
-        super("O nome :" + nome + " é invalido para o estado.");
+        super("O nome:" + nome + " é invalido para o estado.");
     }
 
 }

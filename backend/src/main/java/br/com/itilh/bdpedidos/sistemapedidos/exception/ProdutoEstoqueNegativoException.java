@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class ProdutoEstoqueNegativoException extends RuntimeException{
 
     public ProdutoEstoqueNegativoException(String produto){
-        super("Produto :" + produto + " não pode ter estoque negativo.");
+        super("Produto: " + produto + " não pode ter estoque negativo.");
     }
 }
