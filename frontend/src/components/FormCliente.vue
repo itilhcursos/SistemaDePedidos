@@ -154,6 +154,11 @@ export default {
                 this.mensagem = "Nome do Cliente ou Razão Social deve ser preenchido!";
                 return;
             }
+            if(this.selectedMunicipio) {
+                this.isInvalido = true;
+                this.mensagem = "Município deve ser selecionado";
+                return;
+            }
             this.isInvalido = false;
 
             try {
@@ -196,10 +201,10 @@ export default {
             getMensagemErro(error) {
                 if (error.response && error.response.status === 403) {
                     return "Usuário não identificado! Faça o login!!!";
-                } else if (error.response && error.response.status === 400) {
-                    return error.response.data.mensagem;
+                } else if (error.response && error.response.status === 500) {
+                    return error.response.data.mensagem || "Erro interno ao servidor.";
                 } else {
-                    return error.message;
+                    return error.message || "Erro desconhecido.";
                 }
             }
         },

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteCnpjDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteCpfDuplicadoException;
 //import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteCnpjDuplicadoException;
 //import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteCpfDuplicadoException;
 //import br.com.itilh.bdpedidos.sistemapedidos.exception.ClienteDuplicadoException;
@@ -43,7 +45,7 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
 
     // Criar um novo cliente
     public ClienteDTO criarCliente(ClienteDTO origem) throws Exception {
-       // validar(origem);
+        validar(origem);
         Cliente cliente = toEntity(origem);
         cliente.setMunicipio(buscarMunicipio(origem.getMunicipioId()));  // Associa o município
         return toDTO(clienteRepository.save(cliente));
@@ -51,7 +53,7 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
 
     // Atualizar cliente existente
     public ClienteDTO alterarCliente(BigInteger id, ClienteDTO origem) throws Exception {
-       // validar(origem);
+        validar(origem);
         Cliente cliente = toEntity(origem);
         cliente.setMunicipio(buscarMunicipio(origem.getMunicipioId()));  // Associa o município
         return toDTO(clienteRepository.save(cliente));
@@ -68,21 +70,21 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
     }
 
     //Validação de CPF e CNPJ
-    // private void validar(ClienteDTO dto) throws Exception {
+     private void validar(ClienteDTO dto) throws Exception {
     
-    // if (dto.getCpf() != null && !dto.getCpf().isEmpty()) {
-    //     if (clienteRepository.existsByCpf(dto.getCpf())) {
-    //         throw new ClienteCpfDuplicadoException(dto.getCpf());
-    //     }
-    // }
+     if (dto.getCpf() != null && !dto.getCpf().isEmpty()) {
+        if (clienteRepository.existsByCpf(dto.getCpf())) {
+             throw new ClienteCpfDuplicadoException(dto.getCpf());
+        }
+     }
 
     
-    // if (dto.getCnpj() != null && !dto.getCnpj().isEmpty()) {
-    //     if (clienteRepository.existsByCnpj(dto.getCnpj())) {
-    //         throw new ClienteCnpjDuplicadoException(dto.getCnpj());
-    //     }
-    // }
-    // }
+     if (dto.getCnpj() != null && !dto.getCnpj().isEmpty()) {
+         if (clienteRepository.existsByCnpj(dto.getCnpj())) {
+             throw new ClienteCnpjDuplicadoException(dto.getCnpj());
+         }
+     }
+     }
 
     // Conversão de Cliente para ClienteDTO, incluindo município
     @Override
