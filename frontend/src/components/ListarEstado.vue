@@ -114,6 +114,7 @@
 
 
 <script>
+import axios from "axios";
 import FormEstado from "./FormEstado.vue";
 import estadoService from "@/services/estadoService";
 export default {
@@ -138,9 +139,9 @@ export default {
     async buscarEstados() {
       this.estadoEscolhido = null;
       this.formVisible = false;
-     
-      const response = await estadoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);   
-   
+      const response = await axios.get(
+        `http://localhost:8080/estados?pageNumber=1&pageSize=10&direction=ASC&property=id`
+      )
       this.listaEstados = response.data.content;
       this.totalPages = response.data.totalPages;
       

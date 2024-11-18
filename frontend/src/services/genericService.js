@@ -34,11 +34,15 @@ const apagar = async (path, id) =>{
 
 //get
 const listar = async (path, pageNumber, pageSize, direction, property) =>{
-
-    return await axios.get(url + path +`?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`);
-
-}
-
+    try {
+     const url = `http://localhost:8080/${path}?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`;
+     const response = await axios.get(url);
+     return response.data;
+    }catch (error) { 
+        console.error('Erro ao listar :', error);
+        throw error; 
+    }
+};
 export default{
     criar,
     atualizar,

@@ -143,7 +143,7 @@
 import FormPedido from "./FormPedido.vue";
 import Data from "../utils/Data"
 import pedidoService from "@/services/pedidoService";
-
+import axios from "axios";
 export default {
   components: {
     FormPedido,
@@ -164,7 +164,10 @@ export default {
     async BuscarPedidos() {
       this.pedidoEscolhido = null;
       this.formVisible = false;
-      const response = await pedidoService.listar(this.pageNumber, this.pageSize,this.direction, this.property);   
+      const response = await axios.get(
+ `http://localhost:8080/pedidos?pageNumber=1&pageSize=10&direction=ASC&property=id`
+      );
+      console.log(response.data);
         this.listaPedidos = response.content;
         this.totalPages = response.totalPages;   
         console.log(this.totalPages);
