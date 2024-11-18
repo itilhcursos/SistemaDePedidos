@@ -72,17 +72,17 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente")
-    public ClienteDTO postCliente(@RequestBody ClienteDTO origem) throws Exception {
+    public ClienteDTO criarCliente(@RequestBody ClienteDTO origem) throws Exception {
         return service.criarCliente(origem);
     }
 
     @PutMapping("/cliente/{id}")
-    public ClienteDTO putCliente(@PathVariable BigInteger id, @RequestBody ClienteDTO origem) throws Exception {
+    public ClienteDTO alterarCliente(@PathVariable BigInteger id, @RequestBody ClienteDTO origem) throws Exception {
         return service.alterarCliente(id, origem);
     }
 
     @DeleteMapping("/cliente/{id}")
-    public String deleteCliente(@PathVariable BigInteger id) throws Exception {
+    public String excluirCliente(@PathVariable BigInteger id) throws Exception {
         return service.excluirCliente(id);
     }
 
@@ -96,4 +96,5 @@ public Page<ClienteDTO> getClientesPorNome(@PathVariable String nome,
     Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
     return service.listarClientesPorNome(nome, pageable);
 }
+
 }
