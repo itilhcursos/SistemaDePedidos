@@ -151,6 +151,7 @@ import clienteService from "@/services/clienteService";
 import produtoService from "@/services/produtoService";
 import itemPedidoService from "@/services/itemPedidoService";
 import formaPagamentoService from "@/services/formaPagamentoService";
+import pedidoService from "@/services/pedidoService";
 export default {
   props: {
     propsPedido: Object,
@@ -211,7 +212,15 @@ export default {
     getDados() {
       return {
         id: this.id,
-        nome: this.nome,
+        clienteId: this.selectedCliente.id,
+        clienteNomeRazaoSocial: this.selectedCliente.nomeRazaoSocial,
+        formaPagamentoId: this.selectedFormaPagamento.id,
+        formaPagamentoDescricao: this.selectedFormaPagamento.descricao,
+        numero: this.numero,
+        dataCompra: this.dataCompra,
+        dataEntrega: this.dataEntrega,
+        dataPagamento: this.dataPagamento,
+        itens: this.itens,
       };
     },
     async salvar() {
@@ -224,30 +233,20 @@ export default {
       // this.isInvalido = false;
 
       try {
-        if (this.id === "") {
-          //  const response = await estadoService.criar(this.getDados());
-          //  this.options = response;
+        const dadosPedido = this.getDados();
+        if (!this.id) {
+          const response = await pedidoService.criar(dadosPedido);
+          this.listaPedidos = response;
         } else {
-          // const response = await estadoService.atualizar(
-          //   this.id,
-          //   this.getDados()
-          // );
-          //this.listaEstados = response;
+          const response = await pedidoService.atualizar(this.id, dadosPedido);
+          this.listaPedidos = response;
         }
-        this.$emit("salvar_pedido", {
-          id: this.id,
-          nome: this.nome,
-        });
-
-        this.id = "";
-        this.nome = "";
+        this.$emit("salvar_pedido", dadosPedido);
       } catch (error) {
         this.isInvalido = true;
-        if (error.response.status === 403) {
+        if (error.response && error.response.status === 403) {
           this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else if (
-          error.response.status === 400
-        ) {
+        } else if (error.response && error.response.status === 400) {
           this.mensagem = error.response.data.mensagem;
         } else {
           this.mensagem = error.message;
@@ -267,7 +266,7 @@ export default {
               produtoDescricao : this.selectedProduto.descricao,
               produtoUrlImagem : this.selectedProduto.urlImagem,
               quantidadeEstoque : this.quantidadeItem,
-              precoUnidadeAtual : null
+              precoUnidadeAtual : this.selectedProduto.precoUnidadeAtual
             }
         console.log(itemPedido);
         try{
