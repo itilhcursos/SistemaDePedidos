@@ -29,6 +29,7 @@
             type="text"
             v-model="cnpj"
             placeholder="CNPJ"
+            :disabled="!getCnpj"
           />
         </div>
         <div class="mb-3">
@@ -38,6 +39,7 @@
             type="text"
             v-model="cpf"
             placeholder="CPF"
+           :disabled="!getCpf" 
           />
         </div>
         <div class="mb-3">
@@ -110,6 +112,11 @@
           <i class="bi bi-clipboard2-x"></i>
             Cancelar
           </button>
+          <button class="btn btn-danger m-2" type="submit" 
+          v-on:click.prevent="excluir" v-if="id">
+          <i class="bi bi-trash"></i>
+          Excluir
+        </button>
         </div>
       </form>
     </div>
@@ -259,6 +266,12 @@
       getAcao() {
         return this.id === "" ? "Incluir" : "Alterar";
       },
+    },
+    getCnpj() {
+      return this.cpf === "" ? true : false;
+    },
+    getCpf() {
+      return this.cnpj === "" ? true : false;
     },
   };
   </script>
