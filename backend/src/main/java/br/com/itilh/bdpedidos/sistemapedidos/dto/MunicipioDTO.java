@@ -17,5 +17,4 @@ public class MunicipioDTO {
 
     private BigInteger estadoId;
     private String estadoNome;
-
 }

@@ -4,17 +4,12 @@ import java.math.BigInteger;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class ClienteDTO {
-
 
     private BigInteger id;
     private String nomeRazaoSocial;
@@ -26,8 +21,7 @@ public class ClienteDTO {
     private String cep;
     private String email;
     private Boolean ativo;
-    private String informacao;
-    private BigInteger estadoId;
-    private String estadoNome;
-
+    private String informacoes;
+    private BigInteger municipioId;
+    private String municipioNome;
 }

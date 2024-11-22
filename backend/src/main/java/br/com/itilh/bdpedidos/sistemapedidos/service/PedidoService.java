@@ -27,7 +27,6 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
     }
 
     private void validar(PedidoDTO dto) throws Exception {
-
     }
 
     public PedidoDTO criarPedido(PedidoDTO entityDTO) throws Exception {
@@ -36,25 +35,22 @@ public class PedidoService extends GenericService<Pedido, PedidoDTO> {
         try {
             return toDTO(repositorio.save(toEntity(entityDTO)));
         } catch (Exception e) {
-            throw new Exception("Erro ao salvar o Pedido.");
+            throw new Exception(e);
         }
     }
 
     public PedidoDTO alterarPedido(BigInteger id, PedidoDTO novosDados) throws Exception {
 
         validar(novosDados);
-
         try {
             return toDTO(repositorio.save(toEntity(novosDados)));
         } catch (Exception e) {
             throw new Exception("Alteração não foi realizada.");
         }
-
     }
 
     public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
     }
-
 }

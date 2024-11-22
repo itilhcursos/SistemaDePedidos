@@ -14,5 +14,4 @@ public class FormaPagamentoDTO {
     private BigInteger id;
     private String descricao;
     private Boolean ativo;
-
 }

@@ -23,6 +23,10 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO> {
         return toPageDTO(repository.findAll(pageable));
     }
 
+    public Page<MunicipioDTO> buscar(Pageable pageable, String txtBusca) {
+        return toPageDTO(repository.findByNomeContainingIgnoreCase(pageable, txtBusca));
+    }
+
     public Page<MunicipioDTO> listarMunicipiosPorEstadoId(BigInteger id, Pageable pageable) {
         return toPageDTO(repository.findByEstadoId(id, pageable));
     }
@@ -42,7 +46,7 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO> {
     }
 
     private void validar(MunicipioDTO origem) {
-        // se já existe municipio com mesmo nome e no mesmo estado
+
         if (repository.existsByNomeAndEstadoId(origem.getNome(), origem.getEstadoId()))
             throw new MunicipioDuplicadoException(origem.getNome());
     }

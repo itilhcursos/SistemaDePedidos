@@ -14,7 +14,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, BigInteger> {
 
     Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
 
-    boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger id);
+    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);
 
-    boolean existsByNomeRazaoSocial(String nomeRazaoSocial);
+    boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger id);
 }
