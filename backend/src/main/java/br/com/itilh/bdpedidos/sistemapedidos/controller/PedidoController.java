@@ -38,18 +38,25 @@ public class PedidoController {
         return pedidoService.getTodos(pageable);
     }
 
+    @GetMapping("/pedido/{id}")
+    public PedidoDTO getPorId(@PathVariable BigInteger id) throws Exception {
+        return pedidoService.getPorId(id);
+    }
+
     @PostMapping("/pedido")
-    public PedidoDTO postMunicipio(@RequestBody PedidoDTO origem) throws Exception {
-        return pedidoService.criarPedido(origem);
+    public PedidoDTO criarPedido(@RequestBody PedidoDTO entityDTO) throws Exception {
+        return pedidoService.criarPedido(entityDTO);
     }
 
     @PutMapping("/pedido/{id}")
-    public PedidoDTO putMunicipio(@PathVariable BigInteger id, @RequestBody PedidoDTO origem) throws Exception {
-        return pedidoService.alterarPedido(id, origem);
+    public PedidoDTO alterarPedido(@PathVariable BigInteger id,
+            @RequestBody PedidoDTO novosDados) throws Exception {
+
+        return pedidoService.alterarPedido(id, novosDados);
     }
 
     @DeleteMapping("/pedido/{id}")
-    public String deletePedido(@PathVariable BigInteger id) throws Exception {
+    public String deletePorId(@PathVariable BigInteger id) throws Exception {
         return pedidoService.deletePorId(id);
     }
 }
