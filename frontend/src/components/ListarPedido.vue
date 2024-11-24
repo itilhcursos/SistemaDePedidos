@@ -49,13 +49,13 @@
             {{ pedido.formaPagamentoDescricao }}
           </td>
           <td>
-            {{ formatar(pedido.dataCompra) }}
+            {{ formatar(pedido.compra) }}
           </td>
           <td>
-            {{ formatar(pedido.dataEntrega) }}
+            {{ formatar(pedido.entrega) }}
           </td>
           <td>
-            {{ formatar(pedido.dataPagamento) }}
+            {{ formatar(pedido.pagamento) }}
           </td>
           <td class="d-flex justify-content-end">
             <table class="table table-dark table-striped">
@@ -168,8 +168,9 @@ export default {
  `http://localhost:8080/pedidos?pageNumber=1&pageSize=10&direction=ASC&property=id`
       );
       console.log(response.data);
-        this.listaPedidos = response.content;
-        this.totalPages = response.totalPages;   
+      console.log(response.totalPages);
+        this.listaPedidos = response.data.content;
+        this.totalPages = response.data.totalPages;   
         console.log(this.totalPages);
     },
     limpar() {
