@@ -86,7 +86,7 @@ public class ClienteController {
         return service.excluirCliente(id);
     }
 
-    @GetMapping("/clientes/nome/{nome}")
+    @GetMapping("/clientes/{nome}")
 public Page<ClienteDTO> getClientesPorNome(@PathVariable String nome,
     @RequestParam(required = false, defaultValue = "1") int pageNumber,
     @RequestParam(required = false, defaultValue = "10") int pageSize,
