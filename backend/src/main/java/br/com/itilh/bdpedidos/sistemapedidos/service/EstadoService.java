@@ -66,12 +66,17 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
             
         try{     
          return toDTO(repositorio.save(toEntity(novosDados)));
-        }catch(Exception e){
-            throw new Exception("Alteração não foi realizada.");
-        }                                   
-    }
-
-    public String deletePorId(BigInteger id) throws Exception {
+                 }catch(Exception e){
+                     throw new Exception("Alteração não foi realizada.");
+                 }                                   
+             }
+         
+             private EstadoDTO toDTO(Object save) {
+                 // TODO Auto-generated method stub
+                 throw new UnsupportedOperationException("Unimplemented method 'toDTO'");
+             }
+         
+             public String deletePorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
     }  
