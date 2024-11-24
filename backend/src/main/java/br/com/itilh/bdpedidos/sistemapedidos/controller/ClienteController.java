@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ClienteDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
 import br.com.itilh.bdpedidos.sistemapedidos.service.ClienteService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
@@ -77,7 +77,7 @@ public class ClienteController {
     }
 
     @PutMapping("/cliente/{id}")
-    public ClienteDTO alterarCliente(@PathVariable BigInteger id, @RequestBody ClienteDTO origem) throws Exception {
+    public ClienteDTO putCliente(@PathVariable BigInteger id, @RequestBody ClienteDTO origem) throws Exception {
         return service.alterarCliente(id, origem);
     }
 

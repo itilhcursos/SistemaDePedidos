@@ -29,7 +29,6 @@
             type="text"
             v-model="cnpj"
             placeholder="CNPJ"
-            :disabled="!getCnpj"
           />
         </div>
         <div class="mb-3">
@@ -38,8 +37,7 @@
             class="form-control"
             type="text"
             v-model="cpf"
-            placeholder="CPF"
-           :disabled="!getCpf" 
+            placeholder="CPF" 
           />
         </div>
         <div class="mb-3">

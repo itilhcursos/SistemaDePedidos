@@ -46,16 +46,9 @@ public class ClienteService extends GenericService<Cliente, ClienteDTO> {
     }
 
     public ClienteDTO alterarCliente(BigInteger id, ClienteDTO origem) throws Exception {
-        repository.findById(id)
-            .orElseThrow(() -> new IdInexistenteException("Cliente", id));
-    
-        validar(origem);
-    
-        Cliente clienteAtualizado = toEntity(origem);
-        clienteAtualizado.setId(id);
-    
-        return toDTO(repository.save(clienteAtualizado));
+        return toDTO(repository.save(toEntity(origem)));
     }
+
 
     public String excluirCliente(BigInteger id) throws Exception {
         try {
