@@ -150,6 +150,7 @@
 import clienteService from "@/services/clienteService";
 import formaPagamentoService from "@/services/formaPagamentoService";
 import itemPedidoService from "@/services/itemPedidoService";
+import pedidoService from "@/services/pedidoService";
 import produtoService from "@/services/produtoService";
 export default {
   props: {
@@ -157,17 +158,16 @@ export default {
   },
   data() {
     return {
-      id: '',
-      clienteId: '',
-      clienteNomeRazaoSocial: '',
-      formaPagamentoId: '',
-      formaPagamentoDescricao: '',
-      numero: '',
-      dataCompra: '',
-      dataEntrega: '',
-      dataPagamento: '',
+      id: "",
+      clienteId: "",
+      clienteNomeRazaoSocial: "",
+      formaPagamentoId: "",
+      formaPagamentoDescricao: "",
+      numero: "",
+      dataCompra: "",
+      dataEntrega: "",
+      dataPagamento: "",
       itens: [],
-
       isInvalido: false,
       isLoading: false,
       mensagem: "",
@@ -214,45 +214,42 @@ export default {
 
     getDados() {
       return {
-        id: this.id,
-        nome: this.nome,
+        formaPagamentoId: this.selectedFormaPagamento.id,
+        formaPagamentoDescricao: this.formaPagamentoDescricao,
+        numero: this.numero,
+        dataCompra: this.dataCompra,
+        dataEntrega: this.dataEntrega,
+        dataPagamento: this.dataPagamento,
+        clienteId: this.clienteSelecionado.id,
       };
     },
     async salvar() {
       console.log(this.selectedCliente, this.selectedProduto);
       if (this.nome === "") {
         this.isInvalido = true;
-        this.mensagem = "Nome deve ser preenchido!!";
+        this.mensagem = "Nome deve ser preenchido.";
         return;
       }
       this.isInvalido = false;
 
       try {
         if (this.id === "") {
-           const response = await produtoService.criar(this.getDados());
-           this.options = response;
+           const response = await pedidoService.criar(this.getDados());
+           alert("deu ruin aqui2");
+           this.listaProdutos = response.data;
         } else {
-          const response = await produtoService.atualizar(
+          const response = await pedidoService.atualizar(
             this.id,
             this.getDados()
           );
-          this.listaEstados = response;
-        }
-        this.$emit("salvar_pedido", {
-          id: this.id,
-          nome: this.nome,
-        });
-
-        this.id = "";
-        this.nome = "";
-      } catch (error) {
-        this.isInvalido = true;
-        if (error.response.status === 403) {
-          this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else if (
-          error.response.status === 400
-        ) {
-          this.mensagem = error.response.data.mensagem;
+          this.listaProdutos = response.data;
+        } this.$emit("salvar_pedido", this.getDados());
+} catch (error) {
+alert(error);
+this.isInvalido = true;
+if (error.response.status === 403) {
+  this.mensagem = "Usuário não identificado! Realizar login.";
+} else if (error.response.status === 400) {          this.mensagem = error.response.data.mensagem;
         } else {
           this.mensagem = error.message;
         }
