@@ -32,5 +32,4 @@ public class Estado {
 
     @Column(name = "tx_nome")
     private String nome;
-
 }

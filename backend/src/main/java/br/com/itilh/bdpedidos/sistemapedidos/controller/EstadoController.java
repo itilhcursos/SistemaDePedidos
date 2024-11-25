@@ -28,30 +28,19 @@ public class EstadoController {
     EstadoService estadoService;
 
     @GetMapping("/estados")
-    public Page<EstadoDTO> getTodos(
+    public Page<EstadoDTO> getEstados(
             @RequestParam(required = false, defaultValue = "1") int pageNumber,
             @RequestParam(required = false, defaultValue = "10") int pageSize,
             @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false, defaultValue = "id") String property) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
 
-        return estadoService.getTodos(pageable);
-    }
-
-    @GetMapping("/estados/{txtBusca}")
-    public Page<EstadoDTO> getBusca(
-            @RequestParam(required = false, defaultValue = "1") int pageNumber,
-            @RequestParam(required = false, defaultValue = "10") int pageSize,
-            @RequestParam(required = false, defaultValue = "ASC") String direction,
-            @RequestParam(required = false, defaultValue = "id") String property,
-            @PathVariable String txtBusca) {
-        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
-        return estadoService.buscar(pageable, txtBusca);
+        return estadoService.listarEstados(pageable);
     }
 
     @GetMapping("/estado/{id}")
-    public EstadoDTO getPorId(@PathVariable BigInteger id) throws Exception {
-        return estadoService.getPorId(id);
+    public EstadoDTO getEstadoPorId(@PathVariable BigInteger id) throws Exception {
+        return estadoService.buscarEstadoPorId(id);
     }
 
     @PostMapping("/estado")
@@ -68,6 +57,6 @@ public class EstadoController {
 
     @DeleteMapping("/estado/{id}")
     public String deletePorId(@PathVariable BigInteger id) throws Exception {
-        return estadoService.deletePorId(id);
+        return estadoService.excluirEstadoPorId(id);
     }
 }

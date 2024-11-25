@@ -3,6 +3,7 @@ import genericService from "./GenericService";
 const path ='/item-pedido';
 
 
+
 const criar = async(objeto) =>{
 
     const {data} = await genericService.criar(path, objeto);

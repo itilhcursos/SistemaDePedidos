@@ -2,11 +2,15 @@ package br.com.itilh.bdpedidos.sistemapedidos.service;
 
 import java.math.BigInteger;
 
+import java.util.stream.Collectors;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import org.modelmapper.ModelMapper;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.FormaPagamentoDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.FormaPagamentoDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
@@ -19,12 +23,11 @@ public class FormaPagamentoService extends GenericService<FormaPagamento, FormaP
     @Autowired
     private FormaPagamentoRepository repositorio;
 
+    @Autowired
+    private ModelMapper mapper;
+
     public Page<FormaPagamentoDTO> listarFormasPagamento(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
-    }
-
-    public Page<FormaPagamentoDTO> buscar(Pageable pageable, String txtBusca) {
-        return toPageDTO(repositorio.findByDescricaoContainingIgnoreCase(pageable, txtBusca));
     }
 
     public FormaPagamentoDTO buscarFormaPagamentoPorId(BigInteger id) throws Exception {
@@ -37,16 +40,15 @@ public class FormaPagamentoService extends GenericService<FormaPagamento, FormaP
         return toDTO(repositorio.save(toEntity(origem)));
     }
 
+    private void validar(FormaPagamentoDTO origem) {
+        if (repositorio.existsByDescricao(origem.getDescricao()))
+            ;
+        throw new FormaPagamentoDuplicadoException(origem.getDescricao());
+    }
+
     public FormaPagamentoDTO alterarFormaPagamento(BigInteger id, FormaPagamentoDTO origem) throws Exception {
         validar(origem);
         return toDTO(repositorio.save(toEntity(origem)));
-    }
-
-    private void validar(FormaPagamentoDTO dto) throws Exception {
-
-        if (repositorio.existsByDescricao(dto.getDescricao()))
-            throw new FormaPagamentoDuplicadoException(dto.getDescricao());
-
     }
 
     public String excluirFormaPagamento(BigInteger id) throws Exception {
@@ -54,7 +56,22 @@ public class FormaPagamentoService extends GenericService<FormaPagamento, FormaP
             repositorio.deleteById(id);
             return "Excluído";
         } catch (Exception ex) {
-            throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+            throw new Exception("Não foi possível excluir o ID solicitado." + ex.getMessage());
         }
+    }
+
+    protected FormaPagamentoDTO toDTO(FormaPagamento formaPagamento) {
+        FormaPagamentoDTO dto = mapper.map(formaPagamento, FormaPagamentoDTO.class);
+        return dto;
+    }
+
+    protected FormaPagamento toEntity(FormaPagamentoDTO dto) {
+        FormaPagamento entity = mapper.map(dto, FormaPagamento.class);
+        return entity;
+    }
+
+    protected Page<FormaPagamentoDTO> toPageDTO(Page<FormaPagamento> entities) {
+        List<FormaPagamentoDTO> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
+        return new PageImpl<>(dtos, entities.getPageable(), entities.getTotalElements());
     }
 }

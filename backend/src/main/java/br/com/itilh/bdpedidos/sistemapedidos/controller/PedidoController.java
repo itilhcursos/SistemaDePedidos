@@ -28,35 +28,72 @@ public class PedidoController {
     PedidoService pedidoService;
 
     @GetMapping("/pedidos")
-    public Page<PedidoDTO> getTodos(
+    public Page<PedidoDTO> BuscarPedidos(
             @RequestParam(required = false, defaultValue = "1") int pageNumber,
             @RequestParam(required = false, defaultValue = "10") int pageSize,
             @RequestParam(required = false, defaultValue = "ASC") String direction,
             @RequestParam(required = false, defaultValue = "id") String property) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return pedidoService.listarPedidos(pageable);
+    }
 
-        return pedidoService.getTodos(pageable);
+    @GetMapping("/pedidos/cliente-id/{id}")
+    public Page<PedidoDTO> BuscarPedidosPorClienteId(@PathVariable BigInteger id,
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return pedidoService.listarPedidoPorClienteId(id, pageable);
+    }
+
+    @GetMapping("/pedidos/formaPagamento-id/{id}")
+    public Page<PedidoDTO> BuscarPedidosPorformaPagamentoId(@PathVariable BigInteger id,
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return pedidoService.listarPedidoPorFormaPagamentoId(id, pageable);
+    }
+
+    @GetMapping("/pedidos/cliente-nome/{nome}")
+    public Page<PedidoDTO> BuscarPedidosPorClienteNome(@PathVariable String nomeRazaoSocial,
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return pedidoService.listarPedidoPorClienteNome(nomeRazaoSocial, pageable);
+    }
+
+    @GetMapping("/pedidos/formaPagamento-nome/{nome}")
+    public Page<PedidoDTO> BuscarPedidosPorFormaPagamentoNome(@PathVariable String descricao,
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam(required = false, defaultValue = "ASC") String direction,
+            @RequestParam(required = false, defaultValue = "id") String property) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.Direction.valueOf(direction), property);
+        return pedidoService.listarPedidoPorFormaPagamentoNome(descricao, pageable);
     }
 
     @GetMapping("/pedido/{id}")
-    public PedidoDTO getPorId(@PathVariable BigInteger id) throws Exception {
-        return pedidoService.getPorId(id);
+    public PedidoDTO BuscarPedidoPorId(@PathVariable BigInteger id) throws Exception {
+        return pedidoService.buscarPedidoPorId(id);
     }
 
     @PostMapping("/pedido")
-    public PedidoDTO criarPedido(@RequestBody PedidoDTO entityDTO) throws Exception {
-        return pedidoService.criarPedido(entityDTO);
+    public PedidoDTO criarPedido(@RequestBody PedidoDTO entity) throws Exception {
+        return pedidoService.criarPedido(entity);
     }
 
     @PutMapping("/pedido/{id}")
-    public PedidoDTO alterarPedido(@PathVariable BigInteger id,
-            @RequestBody PedidoDTO novosDados) throws Exception {
-
-        return pedidoService.alterarPedido(id, novosDados);
+    public PedidoDTO alterarPedido(@PathVariable BigInteger id, @RequestBody PedidoDTO origem) throws Exception {
+        return pedidoService.alterarPedido(id, origem);
     }
 
     @DeleteMapping("/pedido/{id}")
-    public String deletePorId(@PathVariable BigInteger id) throws Exception {
-        return pedidoService.deletePorId(id);
+    public String deletePedido(@PathVariable BigInteger id) throws Exception {
+        return pedidoService.excluirPedido(id);
     }
 }

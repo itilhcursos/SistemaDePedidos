@@ -23,10 +23,6 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO> {
         return toPageDTO(repository.findAll(pageable));
     }
 
-    public Page<MunicipioDTO> buscar(Pageable pageable, String txtBusca) {
-        return toPageDTO(repository.findByNomeContainingIgnoreCase(pageable, txtBusca));
-    }
-
     public Page<MunicipioDTO> listarMunicipiosPorEstadoId(BigInteger id, Pageable pageable) {
         return toPageDTO(repository.findByEstadoId(id, pageable));
     }
@@ -61,7 +57,7 @@ public class MunicipioService extends GenericService<Municipio, MunicipioDTO> {
             repository.deleteById(id);
             return "Excluído com sucesso";
         } catch (Exception ex) {
-            throw new Exception("Não foi possível excluir o id informado." + ex.getMessage());
+            throw new Exception("Não foi possível excluir o ID solicitado." + ex.getMessage());
         }
     }
 }

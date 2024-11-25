@@ -1,6 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,11 +37,7 @@ const router = createRouter({
     {
       path: '/logout',
       name: 'logout',
-    },
-    {
-      path: '/municipios',
-      name: 'municipios',
-      component: () => import('c:/Users/vitor/SistemaDePedidos/SistemaDePedidos/frontend/src/views/MunicipiosView.vue')
+      component: () => import('../views/LogoutView.vue')
     },
     {
       path: '/clientes',
@@ -52,8 +47,15 @@ const router = createRouter({
     {
       path: '/pedidos',
       name: 'pedidos',
-      component: () => import('c:/Users/vitor/SistemaDePedidos/SistemaDePedidos/frontend/src/views/PedidoView.vue')
-    }
+      component: () => import('../views/PedidoView.vue')
+    },
+
+    {
+      path: '/municipios',
+      name: 'municipios',
+      component: () => import('../views/MunicipioView.vue')
+    },
+
   ]
 })
 

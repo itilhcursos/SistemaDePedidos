@@ -19,15 +19,11 @@ public class EstadoService extends GenericService<Estado, EstadoDTO> {
     @Autowired
     EstadoRepository repositorio;
 
-    public Page<EstadoDTO> getTodos(Pageable pageable) {
+    public Page<EstadoDTO> listarEstados(Pageable pageable) {
         return toPageDTO(repositorio.findAll(pageable));
     }
 
-    public Page<EstadoDTO> buscar(Pageable pageable, String txtBusca) {
-        return toPageDTO(repositorio.findByNomeContainingIgnoreCase(pageable, txtBusca));
-    }
-
-    public EstadoDTO getPorId(BigInteger id) throws Exception {
+    public EstadoDTO buscarEstadoPorId(BigInteger id) throws Exception {
         return toDTO(repositorio.findById(id).orElseThrow(
                 () -> new Exception("ID inválido.")));
     }
@@ -48,7 +44,7 @@ public class EstadoService extends GenericService<Estado, EstadoDTO> {
         try {
             return toDTO(repositorio.save(toEntity(entityDTO)));
         } catch (Exception e) {
-            throw new Exception("Erro ao salvar o estado.");
+            throw new Exception("Erro ao salvar estado.");
         }
     }
 
@@ -61,11 +57,11 @@ public class EstadoService extends GenericService<Estado, EstadoDTO> {
         try {
             return toDTO(repositorio.save(toEntity(novosDados)));
         } catch (Exception e) {
-            throw new Exception("Alteração não foi realizada.");
+            throw new Exception("Alteração não realizada.");
         }
     }
 
-    public String deletePorId(BigInteger id) throws Exception {
+    public String excluirEstadoPorId(BigInteger id) throws Exception {
         repositorio.deleteById(id);
         return "Excluído";
     }

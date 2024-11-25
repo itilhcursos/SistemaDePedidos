@@ -3,31 +3,28 @@
     <h4 class="p-1 mb-1 bg-success text-white">{{ getAcao }} Pedido</h4>
     <hr />
     <form>
+      <!-- Informações principais -->
       <div class="row">
         <div class="col">
           <label class="form-label">Id</label>
-          <input class="form-control" type="text" v-model="id" :disabled="true" placeholder="Id" />
+          <input class="form-control" type="text" v-model="id" disabled placeholder="Id" />
         </div>
-
         <div class="col">
-          <label class="form-label">Numero</label>
-          <input class="form-control" type="text" v-model="numero" placeholder="Numero" />
+          <label class="form-label">Número</label>
+          <input class="form-control" type="text" v-model="numero" placeholder="Número" />
         </div>
-
         <div class="col">
-          <label class="form-label">Forma de Pagemento</label>
+          <label class="form-label">Forma de pagamento</label>
           <v-select class="meu-select" v-model="selectedFormaPagamento" :filterable="false"
             :options="optionsFormaPagamento" @search="onSearchFormaPagamento">
-            <template v-slot:no-options> Não encontrado. </template>
-            <template v-slot:option="option">
-              {{ option.descricao }}
-            </template>
-            <template v-slot:selected-option="option">
-              {{ option.descricao }}
-            </template>
+            <template v-slot:no-options>Não encontrado.</template>
+            <template v-slot:option="option">{{ option.descricao }}</template>
+            <template v-slot:selected-option="option">{{ option.descricao }}</template>
           </v-select>
         </div>
       </div>
+
+      <!-- Datas -->
       <div class="row">
         <div class="col">
           <label class="form-label">Data Compra</label>
@@ -43,25 +40,24 @@
         </div>
       </div>
 
+      <!-- Cliente -->
       <div class="mb-3">
         <label class="form-label">Cliente</label>
-        <v-select class="meu-select" label="Cliente" v-model="clienteSelecionado" :filterable="false"
-          placeholder="Cliente" :options="clientes" @search="onSearchClientes">
-          <template v-slot:no-options> Sem clientes para exibir. </template>
-          <template v-slot:option="option">
-            {{ option.nomeRazaoSocial }}
-          </template>
-          <template v-slot:selected-option="option">
-            {{ option.nomeRazaoSocial }}
-          </template>
+        <v-select class="meu-select" v-model="selectedCliente" :filterable="false" :options="optionsCliente"
+          @search="onSearchCliente">
+          <template v-slot:no-options>Não encontrado.</template>
+          <template v-slot:option="option">{{ option.nomeRazaoSocial }}</template>
+          <template v-slot:selected-option="option">{{ option.nomeRazaoSocial }}</template>
         </v-select>
       </div>
+
+      <!-- Itens do pedido -->
       <div class="mb-3">
         <label class="form-label">Itens Pedido</label>
         <table class="table table-dark table-striped">
           <thead>
             <tr>
-              <th scope="col">Itens</th>
+              <th scope="col">Imagem</th>
               <th scope="col">Descrição</th>
               <th scope="col">Quantidade</th>
               <th scope="col">Valor</th>
@@ -70,46 +66,36 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in itens" :key="item.id" scope="row">
-              <th>
-                <img :src="item.produtoUrlImagem" height="50px" />
-              </th>
-              <th>
-                {{ item.produtoDescricao }}
-              </th>
-              <th>
-                {{ item.quantidadeEstoque }}
-              </th>
-              <th>
-                {{ item.precoUnidadeAtual }}
-              </th>
-              <th>
-                {{ item.quantidadeEstoque * item.precoUnidadeAtual }}
-              </th>
-              <th>
-                <button class="btn btn-outline-danger m-2" @click.prevent="excluirItemPedido(item.id)">
-                  <i class="bi bi-clipboard2-minus"></i>
+            <tr v-for="item in itens" :key="item.id">
+              <td><img :src="item.produtoUrlImagem" height="50px" /></td>
+              <td>{{ item.produtoDescricao }}</td>
+              <td>{{ item.quantidadeEstoque }}</td>
+              <td>{{ item.precoUnidadeAtual }}</td>
+              <td>{{ item.quantidadeEstoque * item.precoUnidadeAtual }}</td>
+              <td>
+                <button class="btn btn-outline-danger" @click.prevent="excluirItemPedido(item.id)">
+                  <i class="bi bi-trash"></i>
                 </button>
-              </th>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <!-- Novo Produto -->
       <div class="row">
-        <div class="col">
-          <label class="form-label"> Novo Produto</label>
-          <v-select class="meu-select" label="Produto" :filterable="false" placeholder="Produto"
-            v-model="produtoSelecionado" :options="produtos" @search="onSearchProdutos">
-            <template v-slot:no-options> Sem produtos para exibir. </template>
+        <div class="col-8">
+          <label class="form-label">Novo Produto</label>
+          <v-select class="meu-select" v-model="selectedProduto" :filterable="false" :options="optionsProduto"
+            @search="onSearchProduto">
+            <template v-slot:no-options>Não encontrado.</template>
             <template v-slot:option="option">
-              <img class="mini" :src="option.urlImagem" height="50 px" />
-              {{ option.descricao }} -Qtd( {{ option.quantidadeEstoque }})
-              -Preço({{ option.precoUnidadeAtual }})
+              <img class="mini" :src="option.urlImagem" /> {{ option.descricao }}
+              Qtd({{ option.quantidadeEstoque }}) - Preço({{ option.precoUnidadeAtual }})
             </template>
             <template v-slot:selected-option="option">
-              <img class="mini" :src="option.urlImagem" height="50 px" />
-              {{ option.descricao }} -Qtd({{ option.quantidadeEstoque }})
-              -Preço({{ option.precoUnidadeAtual }})
+              <img class="mini" :src="option.urlImagem" /> {{ option.descricao }}
+              - Qtd({{ option.quantidadeEstoque }}) - Preço({{ option.precoUnidadeAtual }})
             </template>
           </v-select>
         </div>
@@ -117,29 +103,26 @@
           <label class="form-label">Quantidade</label>
           <input class="form-control" type="number" v-model="quantidadeItem" placeholder="0" />
         </div>
-
-        <div class="col-2 position-relative">
-          <button class="btn btn-success position-absolute top-50 start-50 translate-middle" type="submit"
-            v-on:click.prevent="incluirItem">
-            <i class="bi bi-clipboard2-check"></i>
-            Incluir Item
+        <div class="col-2 d-flex align-items-center justify-content-center">
+          <button class="btn btn-primary" @click.prevent="incluirItem">
+            <i class="bi bi-plus"></i> Incluir
           </button>
         </div>
       </div>
 
-      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill"></i>
-        <div class="p-2">{{ mensagem }}</div>
+      <!-- Mensagem de erro -->
+      <div v-if="isInvalido" class="alert alert-danger d-flex align-items-center mt-3">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span>{{ mensagem }}</span>
       </div>
 
-      <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary m-2" type="submit" v-on:click.prevent="salvarPedido">
-          <i class="bi bi-clipboard2-check"></i>
-          {{ getAcao }}
+      <!-- Ações -->
+      <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-primary m-2" @click.prevent="salvar">
+          <i class="bi bi-save"></i> {{ getAcao }}
         </button>
-        <button class="btn btn-warning m-2" type="submit" v-on:click.prevent="cancelar">
-          <i class="bi bi-clipboard2-x"></i>
-          Cancelar
+        <button class="btn btn-warning m-2" @click.prevent="cancelar">
+          <i class="bi bi-x-circle"></i> Cancelar
         </button>
       </div>
     </form>
@@ -147,11 +130,12 @@
 </template>
 
 <script>
-import itemPedidoService from "@/services/ItemPedidoService";
-import produtoService from "@/services/ProdutoSevice";
-import formaPagamentoService from "@/services/FormaPagamentoService";
+// Importação dos serviços
 import clienteService from "@/services/ClienteService";
-import pedidoService from "@/services/PedidoService";
+import produtoService from "@/services/ProdutoSevice";
+import itemPedidoService from "@/services/ItemPedidoService";
+import formaPagamentoService from "@/services/FormaPagamentoService";
+
 export default {
   props: {
     propsPedido: Object,
@@ -167,218 +151,111 @@ export default {
       dataCompra: "",
       dataEntrega: "",
       dataPagamento: "",
-
-      isInvalido: false,
-      isLoading: false,
-      mensagem: "",
-      selectedFormaPagamento: null,
-      optionsFormaPagamento: [],
-      clienteSelecionado: null,
-      clientes: [],
-      produtoSelecionado: null,
-      produtos: [],
-      quantidadeItem: 0,
       itens: [],
+      isInvalido: false,
+      mensagem: "",
+      optionsCliente: [],
+      selectedCliente: null,
+      optionsProduto: [],
+      selectedProduto: null,
+      optionsFormaPagamento: [],
+      selectedFormaPagamento: null,
+      quantidadeItem: 0,
     };
   },
   methods: {
-    async onSearchProdutos(search, loading) {
-      if (search.length) {
-        loading(true);
-        await produtoService.buscar(search).then((response) => {
-          console.log(response);
-          this.produtos = response.content;
-          loading(false);
-        });
-      }
-    },
-
-    async onSearchFormaPagamento(search, loading) {
-      if (search == "") return;
+    async onSearchCliente(search, loading) {
+      if (!search) return;
       loading(true);
-      await formaPagamentoService.buscar(search).then((response) => {
-        console.log(response);
-        this.optionsFormaPagamento = response.content;
-        loading(false);
-      });
-    },
-    async onSearchClientes(search, loading) {
-      if (search == "") return;
-      loading(true);
-      await clienteService.buscar(search).then((response) => {
-        console.log(response);
-        this.clientes = response.content;
-        loading(false);
-      });
-    },
-    getDados() {
-      return {
-        id: this.id,
-        formaPagamentoId: this.selectedFormaPagamento.id,
-        formaPagamentoDescricao: this.formaPagamentoDescricao,
-        numero: this.numero,
-        dataCompra: this.dataCompra,
-        dataEntrega: this.dataEntrega,
-        dataPagamento: this.dataPagamento,
-        clienteId: this.clienteSelecionado.id,
-      };
-    },
-    async salvarPedido() {
-      const camposObrigatorios = [
-        { campo: this.numero, mensagem: "O Número deve ser preenchido!!" },
-
-        { campo: this.dataCompra, mensagem: "A Data de Compra deve ser preenchida!!" },
-        { campo: this.dataEntrega, mensagem: "A Data de Entrega deve ser preenchida!!" },
-        { campo: this.dataPagamento, mensagem: "A Data de Pagamento deve ser preenchida!!" },
-
-
-      ];
-
-      for (let { campo, mensagem } of camposObrigatorios) {
-        if (campo === "") {
-          this.isInvalido = true;
-          this.mensagem = mensagem;
-          console.log(`Erro no campo: ${mensagem}`);
-          return;
-        }
-      }
-
-      this.isInvalido = false;
       try {
-        if (this.id === "") {
-
-          const response = await pedidoService.criar(this.getDados());
-          this.listaPedidos = response.data;
-        } else {
-
-          const response = await pedidoService.atualizar(
-            this.id,
-            this.getDados()
-          );
-          this.listaPedidos = response.data;
-        }
-        this.$emit("salvar_pedido", this.getDados());
-
-        (this.id = ""),
-          (this.selectedFormaPagamento.id = ""),
-          (this.formaPagamentoDescricao = ""),
-          (this.numero = ""),
-          (this.dataCompra = ""),
-          (this.dataEntrega = ""),
-          (this.dataPagamento = ""),
-          (this.clienteSelecionado.id = "");
-      } catch (error) {
-
-        this.isInvalido = true;
-        if (error.response.status === 403) {
-
-          this.mensagem = "Usuário não identificado! Faça o login!!!";
-        } else if (error.response.status === 400) {
-          this.mensagem = error.response.data.mensagem;
-        } else {
-          this.mensagem = error.message;
-        }
+        const response = await clienteService.buscar(search);
+        this.optionsCliente = response.content;
+      } finally {
+        loading(false);
       }
     },
-
-    cancelar() {
-      this.id = "";
-
-      this.formaPagamentoDescricao = "";
-      this.numero = "";
-      this.dataCompra = "";
-      this.dataEntrega = "";
-      this.dataPagamento = "";
-
-      this.$emit("cancelar", true);
+    async onSearchFormaPagamento() {
+      try {
+        const response = await formaPagamentoService.buscar();
+        this.optionsFormaPagamento = response.content;
+      } catch (error) {
+        console.error("Erro ao buscar formas de pagamento:", error);
+      }
     },
-
+    async onSearchProduto(search, loading) {
+      if (!search) return;
+      loading(true);
+      try {
+        const response = await produtoService.buscar(search);
+        this.optionsProduto = response.content;
+      } finally {
+        loading(false);
+      }
+    },
     async incluirItem() {
+      if (!this.selectedProduto || this.quantidadeItem <= 0) {
+        alert("Produto inválido ou quantidade inválida!");
+        return;
+      }
+
       const itemPedido = {
         id: null,
         pedidoId: this.id,
-        produtoId: this.produtoSelecionado.id,
-        produtoDescricao: this.produtoSelecionado.descricao,
-        produtoUrlImagem: this.produtoSelecionado.urlImagem,
+        produtoId: this.selectedProduto.id,
+        produtoDescricao: this.selectedProduto.descricao,
+        produtoUrlImagem: this.selectedProduto.urlImagem,
         quantidadeEstoque: this.quantidadeItem,
-        precoUnidadeAtual: null,
+        precoUnidadeAtual: this.selectedProduto.precoUnidadeAtual,
       };
-      console.log(itemPedido);
+
       try {
         const response = await itemPedidoService.criar(itemPedido);
-
         this.itens.push(response);
+        this.selectedProduto = null;
+        this.quantidadeItem = 0;
       } catch (error) {
-        if (error.response.status === 403) {
-
-          alert("Usuário não identificado! Faça o login!!!");
-        } else if (error.response.status === 400) {
-          alert(error.response.data.mensagem);
-        } else {
-          alert(error.message);
-        }
+        console.error("Erro ao incluir item:", error);
       }
     },
     async excluirItemPedido(id) {
       try {
-        const response = await itemPedidoService.apagar(id);
-        console.log(response);
-
+        await itemPedidoService.apagar(id);
         this.itens = this.itens.filter((item) => item.id !== id);
       } catch (error) {
-        if (error.response.status === 403) {
-
-          alert("Usuário não identificado! Faça o login!!!");
-        } else if (error.response.status === 400) {
-          alert(error.response.data.mensagem);
-        } else {
-          alert(error.message);
-        }
+        console.error("Erro ao excluir item:", error);
       }
+    },
+    async salvar() {
+      alert("Salvo com!");
+    },
+    cancelar() {
+      this.$emit("cancelar");
     },
   },
   mounted() {
     if (this.propsPedido) {
-      this.id = this.propsPedido.id;
-      this.clienteId = this.propsPedido.clienteId;
-      this.clienteNomeRazaoSocial = this.propsPedido.clienteNomeRazaoSocial;
-      this.formaPagamentoId = this.propsPedido.formaPagamentoId;
-      this.formaPagamentoDescricao = this.propsPedido.formaPagamentoDescricao;
-      this.numero = this.propsPedido.numero;
-      this.dataCompra = this.propsPedido.dataCompra;
-      this.dataEntrega = this.propsPedido.dataEntrega;
-      this.dataPagamento = this.propsPedido.dataPagamento;
-      this.itens = this.propsPedido.itens;
-
+      Object.assign(this, this.propsPedido);
       this.selectedFormaPagamento = {
-        id: this.propsPedido.formaPagamentoId,
-        descricao: this.propsPedido.formaPagamentoDescricao,
+        id: this.formaPagamentoId,
+        descricao: this.formaPagamentoDescricao,
       };
-      this.clienteSelecionado = {
-        id: this.propsPedido.clienteId,
-        nomeRazaoSocial: this.propsPedido.clienteNomeRazaoSocial,
+      this.selectedCliente = {
+        id: this.clienteId,
+        nomeRazaoSocial: this.clienteNomeRazaoSocial,
       };
     }
   },
   computed: {
     getAcao() {
-      return this.id === "" ? "Incluir" : "Alterar";
+      return this.id ? "Editar" : "Cadastrar";
     },
   },
 };
 </script>
-<style>
-.meu-select {
-  width: 100%;
-  font-size: 1em;
-  color: #252525;
-  background: #fbf4f4;
-  border-radius: 0.375rem;
-}
 
+<style>
 .mini {
-  height: auto;
-  max-width: 2.5rem;
-  margin-right: 1rem;
+  width: 40px;
+  height: 40px;
 }
 </style>

@@ -1,16 +1,16 @@
 
 const toBD = (valor) => {
-   let texto = valor.toString();
-   return texto.replace(".","").replace(",",".").replace("R$","");
+    let texto = valor.toString();
+    return texto.replace(".", "").replace(",", ".").replace("R$", "");
 };
 
 const toTela = (valor) => {
     let texto = String(valor.toFixed(2));
-    texto = texto.replace(",","").replace(".",",").replace("R$","");
+    texto = texto.replace(",", "").replace(".", ",").replace("R$", "");
     return "R$ " + texto;
 };
 
-export default{
+export default {
     toBD,
     toTela
 }

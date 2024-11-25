@@ -1,38 +1,50 @@
-import axios from 'axios';
+import axios from "axios";
 
-const urlBase = 'http://localhost:8080'; // Ajuste para a URL do seu servidor
+const url = import.meta.env.VITE_APP_URL_API;
 
-// Método para criar um recurso
-const criar = async (path, objeto) => {
-    return await axios.post(`${urlBase}${path}`, objeto);
-};
-
-// Método para atualizar um recurso
-const atualizar = async (path, id, objeto) => {
-    return await axios.put(`${urlBase}${path}/${id}`, objeto);
-};
-
-// Método para apagar um recurso
-const apagar = async (path, id) => {
-    return await axios.delete(`${urlBase}${path}/${id}`);
-};
-
-// Método para listar recursos com paginação e ordenação
-const listar = async (path, pageNumber = 1, pageSize = 10, direction = 'ASC', property = 'id') => {
-    return await axios.get(`${urlBase}${path}`, {
-        params: {
-            pageNumber,
-            pageSize,
-            direction,
-            property
+const getConfig = (
+    {
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-    });
-};
+    }
+);
 
-// Exportando todos os métodos para uso
+// post
+const criar = async (path, objeto) => {
+
+    return await axios.post(url + path, objeto, getConfig);
+
+}
+
+// put
+const atualizar = async (path, id, objeto) => {
+
+    return await axios.put(url + path + "/" + id, objeto, getConfig);
+
+}
+
+//delete
+const apagar = async (path, id) => {
+
+    return await axios.delete(url + path + "/" + id, getConfig);
+
+}
+
+//get
+const listar = async (path, pageNumber, pageSize, direction, property) => {
+    try {
+        const url = `http://localhost:8080/${path}?pageNumber=${pageNumber}&pageSize=${pageSize}&direction=${direction}&property=${property}`;
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao listar :', error);
+        throw error;
+    }
+};
 export default {
     criar,
     atualizar,
     apagar,
     listar
-};
+}

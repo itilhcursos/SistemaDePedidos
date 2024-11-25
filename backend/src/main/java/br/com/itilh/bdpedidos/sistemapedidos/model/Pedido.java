@@ -25,14 +25,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-
 @Entity
 @Table(name = "tb_pedidos")
 public class Pedido {
 
     @Id
-    @SequenceGenerator(name = "sequencial", sequenceName = "tb_pedidos_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial")
+    @SequenceGenerator(name = "sequencial3", sequenceName = "tb_pedidos_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequencial3")
     private BigInteger id;
 
     @ManyToOne
@@ -44,16 +43,16 @@ public class Pedido {
     private FormaPagamento formaPagamento;
 
     @Column(name = "int_numero")
-    private BigInteger numero;
+    private Integer numero;
 
     @Column(name = "dt_compra")
-    private LocalDate dataCompra;
+    private LocalDate compra;
 
     @Column(name = "dt_entrega")
-    private LocalDate dataEntrega;
+    private LocalDate entrega;
 
     @Column(name = "dt_pagamento")
-    private LocalDate dataPagamento;
+    private LocalDate pagamento;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;

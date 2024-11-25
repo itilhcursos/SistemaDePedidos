@@ -1,86 +1,62 @@
 <template>
-    <div class="container">
-      <div class="row">
-        <div class="col-10">
-          <h3 style="font-family: 'Arial', sans-serif;">Listagem de Clientes</h3>
+  <div class="container bg-dark text-white py-3">
+    <div class="row">
+      <div class="col-10">
+        <h3>Clientes</h3>
+      </div>
+      <div class="col-2 d-flex justify-content-end">
+        <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
+          <i class="bi bi-clipboard-plus"></i> Novo
+        </button>
+      </div>
+    </div>
 
-        </div>
-        <div class="col-2 d-flex justify-content-end">
-          <button v-if="!formVisible" @click="novoCliente" class="btn btn-success">
-            <i class="bi bi-clipboard-plus"></i> Novo</button>
-        </div>
-        <div class="row">
-          <div>
-            <FormCliente
-              v-if="formVisible"
-              :propsCliente="clienteEscolhido"
-              @cancelar="limpar"
-              @salvar_cliente="buscarClientes"
-            />
+    <!-- Formulário de Cliente -->
+    <div class="row" v-if="formVisible">
+      <FormCliente
+        :propsCliente="clienteEscolhido"
+        @cancelar="limpar"
+        @salvar_cliente="buscarClientes"
+      />
+    </div>
+
+    <!-- Exibição dos clientes em formato de cartões -->
+    <div class="row mt-3" v-if="!formVisible">
+      <div class="col-md-6 col-lg-4" v-for="cliente in listaClientes" :key="cliente.id">
+        <div class="card cliente-card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>#{{ cliente.id }} - {{ cliente.nomeRazaoSocial }}</span>
+            <button class="btn btn-sm btn-danger" @click="excluirCliente(cliente.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">CNPJ/CPF: {{ cliente.cnpj || cliente.cpf }}</h5>
+            <p class="card-text">
+              <strong>Telefone:</strong> {{ cliente.telefone }}<br>
+              <strong>Endereço:</strong> {{ cliente.endereco }}<br>
+              <strong>Bairro:</strong> {{ cliente.bairro }}<br>
+              <strong>CEP:</strong> {{ cliente.cep }}<br>
+              <strong>Email:</strong> {{ cliente.email }}<br>
+              <strong>Ativo:</strong> {{ formatarLogico(cliente.ativo) }}
+            </p>
+            <button
+              class="btn btn-secondary btn-sm"
+              @click="alterarCliente(cliente)"
+            >
+              Editar
+            </button>
           </div>
         </div>
       </div>
-  
-      <table class="table table-dark table-striped" v-if="!formVisible">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nome/Razao social</th>
-            <th scope="col">Cnpj</th>
-            <th scope="col">Cpf</th>
-            <th scope="col">Telefone</th>
-            <th scope="col">Ativo</th>
-            <th scope="col" class="d-flex justify-content-end">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="cliente in listaClientes" :key="cliente.id" scope="row">
-            <th>
-              {{ cliente.id }}
-               </th>
-               <td>
-              {{ cliente.nomeRazaoSocial }}
-             </td>
-              <td>
-              {{ cliente.cnpj }}
-              </td>
-              <td>
-              {{ cliente.cpf }}
-              </td>
-              <td>
-              {{ cliente.telefone }}
-              </td>
-             
-              <td>
-          {{ cliente.ativo }}
-            </td>
-  
-  
-            <td class="d-flex justify-content-end">
-              <button
-                class="btn btn-btn btn-primary m-2"
-                @click="alterarCliente(cliente)"
-              >
-                <i class="bi bi-clipboard-pulse"></i> Alterar
-              </button>
-  
-              <button
-                class="btn btn-outline-danger m-2"
-                @click="excluirCliente(cliente.id)"
-              >
-                <i class="bi bi-clipboard2-minus"></i> Excluir
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
+
+    <!-- Paginação -->
     <div v-if="!formVisible">
       <hr />
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-auto">
-  
             <button
               v-for="pagina in totalPages"
               :key="pagina"
@@ -89,14 +65,12 @@
             >
               {{ pagina }}
             </button>
-  
-  
           </div>
           <div class="col-auto">
             <input
               type="text"
               v-model="pageNumber"
-              placeholder="Número da pagina"
+              placeholder="Número da página"
               class="form-control w-25"
             />
           </div>
@@ -111,7 +85,13 @@
           <div class="col-auto">
             <select v-model="property" class="form-select">
               <option value="id">ID</option>
-              <option value="nome">Nome</option>
+              <option value="nomeRazaoSocial">Nome ou Razão Social</option>
+              <option value="cnpj">CNPJ</option>
+              <option value="telefone">Telefone</option>
+              <option value="endereco">Endereço</option>
+              <option value="bairro">Bairro</option>
+              <option value="cep">CEP</option>
+              <option value="email">Email</option>
             </select>
           </div>
           <div class="col-auto">
@@ -122,90 +102,97 @@
           </div>
           <div class="col-auto">
             <button @click.prevent="buscarClientes" class="btn btn-success">
-              <i class="bi bi-binoculars"></i>
-              Buscar
+              <i class="bi bi-binoculars"></i> Buscar
             </button>
           </div>
         </div>
       </div>
     </div>
-  </template>
-  
-  
-  <script>
-  import FormCliente from "./FormCliente.vue";
-  import axios from "axios";
-  export default {
-    components: {
-      FormCliente,
+  </div>
+</template>
+
+<script>
+import FormCliente from "./FormCliente.vue";
+import axios from "axios";
+import Logico from "@/utils/Logico.js";
+
+export default {
+  components: {
+    FormCliente,
+  },
+  data() {
+    return {
+      listaClientes: [],
+      clienteEscolhido: null,
+      formVisible: false,
+      pageNumber: 1,
+      pageSize: 10,
+      direction: "ASC",
+      property: "id",
+      totalPages: 0,
+    };
+  },
+  methods: {
+    async buscarClientes() {
+      this.clienteEscolhido = null;
+      this.formVisible = false;
+      const response = await axios.get(
+        `http://localhost:8080/clientes?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
+      );
+      this.listaClientes = response.data.content;
+      this.totalPages = response.data.totalPages;
     },
-    data() {
-      return {
-        listaClientes: [],
-        clienteEscolhido: null,
-        formVisible: false,
-        mode: import.meta.env.MODE,
-        url: import.meta.env.VITE_APP_URL_API,
-        pageNumber: 1,
-        pageSize: 10,
-        direction: "ASC",
-        property: "id",
-        totalPages: 0,
-      };
+    limpar() {
+      this.clienteEscolhido = null;
+      this.formVisible = !this.formVisible;
     },
-    methods: {
-      async buscarClientes() {
-        this.clienteEscolhido = null;
-        this.formVisible = false;
-       
-        const response = await axios.get(
-          `http://localhost:8080/clientes?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}&direction=${this.direction}&property=${this.property}`
-        );
-        console.log(response.data);
-        this.listaClientes = response.data.content;
-        this.totalPages = response.data.totalPages;
-        console.log(this.totalPages);
-      },
-      limpar() {
-        this.clienteEscolhido = null;
-        this.formVisible = !this.formVisible;
-      },
-      novoCliente() {
-        this.formVisible = !this.formVisible;
-      },
-      alterarCliente(cliente) {
-        this.clienteEscolhido = cliente;
-        this.formVisible = true;
-      },
-      async excluirCliente(id) {
-        
-        let config = {
+    novoCliente() {
+      this.formVisible = !this.formVisible;
+    },
+    alterarCliente(cliente) {
+      this.clienteEscolhido = cliente;
+      this.formVisible = true;
+    },
+    async excluirCliente(id) {
+      try {
+        const config = {
           headers: {
-            'Authorization': 'Bearer ' +localStorage.getItem('token')
-          }
-        }
-        try{
-            const response = await axios.delete(`http://localhost:8080/cliente/${id}`, config);
-            console.log(response.data);
-        }catch(error){
-          if(error.response.status === 403){        
-           alert("Usuário não identificado. Faça seu login!");
-          }else if(error.response.status === 400 ){
-            alert(error.response.data.mensagem);     
-          }else{
-            alert(error.message);
-          }
-        }     
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        };
+        await axios.delete(`http://localhost:8080/cliente/${id}`, config);
         this.buscarClientes();
-      },
-      irPara(pagina) {
-        this.pageNumber = pagina;
-        this.buscarClientes();
-      },
+      } catch (error) {
+        console.error(error);
+      }
     },
-    mounted() {
+    irPara(pagina) {
+      this.pageNumber = pagina;
       this.buscarClientes();
     },
-  };
-  </script>
-  
+    formatarLogico(valor) {
+      return Logico.toSimNao(valor);
+    },
+  },
+  mounted() {
+    this.buscarClientes();
+  },
+};
+</script>
+
+<style scoped>
+.container {
+  background-color: #343a40;
+  color: #fff;
+}
+.cliente-card {
+  background-color: #000000cd;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.cliente-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+</style>

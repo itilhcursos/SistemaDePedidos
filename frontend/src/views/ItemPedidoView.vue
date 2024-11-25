@@ -1,5 +1,5 @@
 <script setup>
-import ListarItemPedido from '@/components/ListarItemPedido.vue';
+import ListarItemPedido from '../components/ListarItemPedido.vue';
 </script>
 
 <template>

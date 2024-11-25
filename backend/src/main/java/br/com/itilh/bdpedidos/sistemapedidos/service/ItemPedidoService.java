@@ -1,53 +1,89 @@
 package br.com.itilh.bdpedidos.sistemapedidos.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.itilh.bdpedidos.sistemapedidos.dto.ItemPedidoDTO;
-import br.com.itilh.bdpedidos.sistemapedidos.exception.ProdutoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.IdInexistenteException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoPedidoIdDuplicadoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoEstoqueNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoPrecoNegativoException;
+import br.com.itilh.bdpedidos.sistemapedidos.exception.ItemPedidoProdutoIdDuplicadoException;
 import br.com.itilh.bdpedidos.sistemapedidos.model.ItemPedido;
-import br.com.itilh.bdpedidos.sistemapedidos.model.Produto;
+
 import br.com.itilh.bdpedidos.sistemapedidos.repository.ItemPedidoRepository;
-import br.com.itilh.bdpedidos.sistemapedidos.repository.ProdutoRepository;
-import jakarta.transaction.Transactional;
 
 @Service
 public class ItemPedidoService extends GenericService<ItemPedido, ItemPedidoDTO> {
 
     @Autowired
-    ItemPedidoRepository repositorio;
+    private ItemPedidoRepository itemPedidoRepository;
 
-    @Autowired
-    ProdutoRepository repositorioProduto;
+    public Page<ItemPedidoDTO> listarItemPedidos(Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findAll(pageable));
+    }
 
-    @Transactional
-    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO entityDTO) throws Exception {
+    public Page<ItemPedidoDTO> listarItemPedidoPorPedidoId(BigInteger id, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByPedidoId(id, pageable));
+    }
 
-        Produto produto = repositorioProduto.getReferenceById(entityDTO.getProdutoId());
-        if (produto != null && produto.getQuantidadeEstoque() != null
-                && entityDTO.getQuantidadeEstoque() > 0 &&
-                ((produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque()) >= 0)) {
+    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoId(BigInteger id, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByProdutoId(id, pageable));
+    }
 
-            produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - entityDTO.getQuantidadeEstoque());
-            repositorioProduto.save(produto);
+    public Page<ItemPedidoDTO> listarItemPedidoPorProdutoDescricao(String descricao, Pageable pageable) {
+        return toPageDTO(itemPedidoRepository.findByProduto_DescricaoIgnoreCase(descricao, pageable));
+    }
 
-            entityDTO.setPrecoUnidadeAtual(produto.getPrecoUnidadeAtual());
-            return toDTO(repositorio.save(toEntity(entityDTO)));
+    public ItemPedidoDTO buscarItemPedidoPorId(BigInteger id) throws Exception {
+        return toDTO(itemPedidoRepository.findById(id)
+                .orElseThrow(() -> new IdInexistenteException("ItemPedido", id)));
+    }
+
+    private void validar(ItemPedidoDTO origem) {
+        if (itemPedidoRepository.existsByPedidoId(origem.getPedidoId()))
+            throw new ItemPedidoPedidoIdDuplicadoException(origem.getPedidoId());
+        if (itemPedidoRepository.existsByQuantidadeEstoque(origem.getQuantidadeEstoque()))
+            throw new ItemPedidoEstoqueNegativoException(origem.getQuantidadeEstoque());
+        if (itemPedidoRepository.existsByPrecoUnidadeAtual(origem.getPrecoUnidadeAtual()))
+            throw new ItemPedidoPrecoNegativoException(origem.getPrecoUnidadeAtual());
+        if (itemPedidoRepository.existsByProdutoId(origem.getProdutoId()))
+            throw new ItemPedidoProdutoIdDuplicadoException(origem.getProdutoId());
+    }
+
+    public ItemPedidoDTO criarItemPedido(ItemPedidoDTO origem) throws Exception {
+        validar(origem);
+        return toDTO(itemPedidoRepository.save(toEntity(origem)));
+
+    }
+
+    public ItemPedidoDTO alterarItemPedido(BigInteger id, ItemPedidoDTO origem) throws Exception {
+        validar(origem);
+        return toDTO(itemPedidoRepository.save(toEntity(origem)));
+    }
+
+    public String excluirItemPedido(BigInteger id) throws Exception {
+        try {
+            itemPedidoRepository.deleteById(id);
+            return "Excluído com sucesso";
+        } catch (Exception ex) {
+            throw new Exception("Não foi possível excluir o ID solicitado." + ex.getMessage());
         }
-        throw new ProdutoEstoqueNegativoException(entityDTO.getProdutoDescricao());
-
     }
 
-    @Transactional
-    public String deletePorId(BigInteger id) throws Exception {
-
-        ItemPedido item = repositorio.getReferenceById(id);
-        Produto produto = item.getProduto();
-        produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + item.getQuantidadeEstoque());
-        repositorioProduto.save(produto);
-        repositorio.deleteById(id);
-        return "Excluído";
+    public Object testAlterarItemPedidoPrecoNegativo(BigDecimal precoUnidadeAtual, ItemPedidoDTO origem) {
+        validar(origem);
+        return toDTO(itemPedidoRepository.save(toEntity(origem)));
     }
+
+    public Object alterarItemPedidoEstoqueNegativo(Double quantidadeEstoque, ItemPedidoDTO origem) {
+        validar(origem);
+        return toDTO(itemPedidoRepository.save(toEntity(origem)));
+    }
+
 }

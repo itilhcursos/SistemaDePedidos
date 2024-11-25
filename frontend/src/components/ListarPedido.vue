@@ -1,90 +1,50 @@
 <template>
-  <div class="container-fluid main-container">
-    <div class="header row align-items-center">
-      <div class="col-10">
-        <h3 class="title">Pedidos</h3>
-      </div>
-      <div class="col-2 d-flex justify-content-end">
-        <button v-if="!formVisible" @click="novo" class="btn btn-success btn-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-between">
+        <h3>Pedidos</h3>
+        <button v-if="!formVisible" @click="novo" class="btn btn-success">
           <i class="bi bi-clipboard-plus"></i> Novo
         </button>
       </div>
     </div>
 
-    <div class="form-container" v-if="formVisible">
+    <!-- Formulário de Pedido -->
+    <div class="row" v-if="formVisible">
       <FormPedido :propsPedido="pedidoEscolhido" @cancelar="limpar" @salvar_pedido="buscar" />
     </div>
 
-    <table class="table table-dark table-striped mt-4" v-if="!formVisible">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Número</th>
-          <th scope="col">Cliente</th>
-          <th scope="col">Forma de Pagamento</th>
-          <th scope="col">Data de Pagamento</th>
-          <th scope="col">Data de Compra</th>
-          <th scope="col">Data de Entrega</th>
-          <th scope="col" class="text-center">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="pedido in listaPedidos" :key="pedido.id" scope="row">
-          <td>{{ pedido.id }}</td>
-          <td>{{ pedido.numero }}</td>
-          <td>{{ pedido.clienteNomeRazaoSocial }}</td>
-          <td>{{ pedido.formaPagamentoDescricao }}</td>
-          <td>{{ formatar(pedido.dataPagamento) }}</td>
-          <td>{{ formatar(pedido.dataCompra) }}</td>
-          <td>{{ formatar(pedido.dataEntrega) }}</td>
-          <td class="d-flex justify-content-end">
-            <button class="btn btn-primary btn-sm me-2" @click="alterar(pedido)">
-              <i class="bi bi-clipboard-pulse"></i> Alterar
+    <!-- Cards de Pedidos -->
+    <div class="row mt-3" v-if="!formVisible">
+      <div class="col-md-6 col-lg-4" v-for="pedido in listaPedidos" :key="pedido.id">
+        <div class="card text-bg-dark mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>#{{ pedido.id }} - {{ pedido.numero }}</span>
+            <button class="btn btn-sm btn-danger" @click="excluir(pedido.id)">
+              <i class="bi bi-trash"></i>
             </button>
-            <button class="btn btn-danger btn-sm" @click="excluirPedido(pedido.id)">
-              <i class="bi bi-clipboard2-minus"></i> Excluir
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ pedido.clienteNomeRazaoSocial }}</h5>
+            <p class="card-text">
+              <strong>Forma de Pagamento:</strong> {{ pedido.formaPagamentoDescricao }}<br>
+              <strong>Data Compra:</strong> {{ formatar(pedido.compra) }}<br>
+              <strong>Data Entrega:</strong> {{ formatar(pedido.entrega) }}<br>
+              <strong>Data Pagamento:</strong> {{ formatar(pedido.pagamento) }}
+            </p>
+            <button class="btn btn-secondary btn-sm" @click="alterar(pedido)">
+              Visualizar ou Editar
             </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div v-if="!formVisible" class="pagination-container">
-      <div class="row justify-content-center align-items-center">
-        <div class="col-auto">
-          <button v-for="pagina in totalPages" :key="pagina" @click.prevent="irPara(pagina)"
-            class="btn btn-outline-light ms-1">
-            {{ pagina }}
-          </button>
-        </div>
-        <div class="col-auto">
-          <input type="text" v-model="pageNumber" placeholder="Página" class="form-control w-50" />
-        </div>
-        <div class="col-auto">
-          <select v-model="pageSize" class="form-select">
-            <option value="2">2</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-          </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="property" class="form-select">
-            <option value="id">ID</option>
-            <option value="cliente.nomeRazaoSocial">Nome</option>
-            <option value="formaPagamento.descricao">Forma de Pagamento</option>
-          </select>
-        </div>
-        <div class="col-auto">
-          <select v-model="direction" class="form-select">
-            <option value="ASC">Crescente</option>
-            <option value="DESC">Decrescente</option>
-          </select>
-        </div>
-        <div class="col-auto">
-          <button @click.prevent="buscar" class="btn btn-success btn-sm">
-            <i class="bi bi-binoculars"></i> Buscar
-          </button>
+          </div>
+          <div class="collapse" :id="'itens-' + pedido.id">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-bg-dark d-flex justify-content-between align-items-center"
+                v-for="item in pedido.itens" :key="item.id">
+                <img :src="item.produtoUrlImagem" alt="Produto" height="40" />
+                <span>{{ item.produtoDescricao }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -92,9 +52,10 @@
 </template>
 
 <script>
-import Data from "@/utils/Data";
-import pedidoService from "@/services/PedidoService";
 import FormPedido from "./FormPedido.vue";
+import Data from "../utils/Data";
+import pedidoService from "@/services/PedidoService";
+import axios from "axios";
 
 export default {
   components: {
@@ -116,9 +77,16 @@ export default {
     async buscar() {
       this.pedidoEscolhido = null;
       this.formVisible = false;
-      const response = await pedidoService.listar(this.pageNumber, this.pageSize, this.direction, this.property);
-      this.listaPedidos = response.content;
-      this.totalPages = response.totalPages;
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/pedidos?pageNumber=1&pageSize=10&direction=ASC&property=id"
+        );
+        this.listaPedidos = response.data.content;
+        this.totalPages = response.data.totalPages;
+      } catch (error) {
+        console.error("Erro ao buscar pedidos:", error);
+        alert("Não foi possível carregar os pedidos.");
+      }
     },
     limpar() {
       this.pedidoEscolhido = null;
@@ -131,27 +99,22 @@ export default {
       this.pedidoEscolhido = pedido;
       this.formVisible = true;
     },
-    async excluirPedido(id) {
+    async excluir(id) {
       try {
-        const response = await pedidoService.apagar(id);
-        console.log(response.data);
+        await pedidoService.apagar(id);
+        this.buscar();
       } catch (error) {
         if (error.response?.status === 403) {
-          alert("Usuário não identificado! Faça o login!!!");
+          alert("Usuário não identificado! Faça o login.");
         } else if (error.response?.status === 400) {
           alert(error.response.data.mensagem);
         } else {
-          alert(error.message);
+          alert("Erro ao excluir pedido: " + error.message);
         }
       }
-      this.buscar();
     },
     formatar(data) {
       return Data.formatoDMA(data);
-    },
-    irPara(pagina) {
-      this.pageNumber = pagina;
-      this.buscar();
     },
   },
   mounted() {
@@ -161,38 +124,21 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-  background-color: #23232e;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 0 auto;
-  max-width: 95%;
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.header {
-  margin-bottom: 15px;
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-.title {
-  color: #f0f0f0;
-  font-size: 1.8em;
-}
-
-.table {
+.collapse {
   margin-top: 10px;
 }
 
-.pagination-container {
-  margin-top: 20px;
-}
-
-.btn-outline-light {
-  color: #f0f0f0;
-  border-color: #f0f0f0;
-}
-
-.form-control,
-.form-select {
-  max-width: 150px;
+.card-body {
+  background-color: black;
 }
 </style>

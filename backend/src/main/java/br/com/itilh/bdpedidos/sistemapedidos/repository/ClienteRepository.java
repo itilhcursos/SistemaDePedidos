@@ -1,6 +1,7 @@
 package br.com.itilh.bdpedidos.sistemapedidos.repository;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +13,21 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, BigInteger> {
 
-    Page<Cliente> findByMunicipioNomeIgnoreCase(String nome, Pageable pageable);
+    List<Cliente> findBynomeRazaoSocial(String nomeRazaoSocial);
 
-    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String nomeRazaoSocial);
+    List<Cliente> findBynomeRazaoSocialStartingWithIgnoreCase(String nomeRazaoSocial);
 
-    boolean existsByNomeRazaoSocialAndMunicipioId(String nomeRazaoSocial, BigInteger id);
+    List<Cliente> findBynomeRazaoSocialEndingWithIgnoreCase(String nomeRazaoSocial);
+
+    List<Cliente> findBynomeRazaoSocialContainingIgnoreCase(String nomeRazaoSocial);
+
+    Page<Cliente> findBymunicipioId(BigInteger id, Pageable pageable);
+
+    Page<Cliente> findBymunicipioNomeIgnoreCase(String nome, Pageable pageable);
+
+    boolean existsByNomeRazaoSocial(String nomeRazaoSocial);
+
+    @SuppressWarnings("null")
+    @Override
+    Page<Cliente> findAll(Pageable pageable);
 }

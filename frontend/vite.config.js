@@ -11,6 +11,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
-})
+    },
+  },
+  server: {
+    proxy: {
+      '/pedidos': {
+        target: 'http://localhost:8080',  
+        changeOrigin: true,              
+        secure: false,                  
+        rewrite: (path) => path.replace(/^\/pedidos/, '') 
+      },
+    },
+  },
+      })

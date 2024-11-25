@@ -22,8 +22,6 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
 
     List<Estado> findByNomeContainingIgnoreCase(String nome);
 
-    Page<Estado> findByNomeContainingIgnoreCase(Pageable pageable, String nome);
-
     @Query("FROM Estado e WHERE e.nome like %?1")
     List<Estado> findByMinhaQuery(String nome);
 
