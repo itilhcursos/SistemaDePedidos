@@ -2,6 +2,8 @@ package br.com.itilh.bdpedidos.sistemapedidos.repository;
 
 import java.math.BigInteger;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,9 @@ import br.com.itilh.bdpedidos.sistemapedidos.model.Cliente;
 public interface ClienteRepository  extends JpaRepository<Cliente, BigInteger> {
 
     boolean existsByNomeRazaoSocial(String nomeRazaoSocial);
+
+    Page<Cliente> findByNomeRazaoSocialContainingIgnoreCase(Pageable pageable, String txtBusca);
+
+    Cliente saveall(Object entity);
 
 }

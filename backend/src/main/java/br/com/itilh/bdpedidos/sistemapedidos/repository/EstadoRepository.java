@@ -33,5 +33,7 @@ public interface EstadoRepository extends JpaRepository<Estado, BigInteger> {
 
     boolean existsByNome(String nome);
 
+    Object saveall(Object entity);
+
     
 }

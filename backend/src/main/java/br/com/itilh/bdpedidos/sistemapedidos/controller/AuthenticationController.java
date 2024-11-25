@@ -14,11 +14,12 @@ import br.com.itilh.bdpedidos.sistemapedidos.dto.RegistroDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.dto.SingUpDTO;
 import br.com.itilh.bdpedidos.sistemapedidos.model.Usuario;
 import br.com.itilh.bdpedidos.sistemapedidos.repository.UsuarioRepository;
+import br.com.itilh.bdpedidos.sistemapedidos.security.TokenService;
 
 
 @RestController
 @RequestMapping("auth")
-public class AuthenticationController<TokenService> {
+public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -33,7 +34,7 @@ public class AuthenticationController<TokenService> {
     public SingUpDTO login(@RequestBody AuthLoginDTO dto) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(dto.getLogin(), dto.getSenha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = ((Object) tokenService).generateToken((Usuario)auth.getPrincipal());
+        var token = tokenService.generateToken((Usuario)auth.getPrincipal());
 
         return new SingUpDTO(dto.getLogin(), token);
     }
@@ -47,6 +48,11 @@ public class AuthenticationController<TokenService> {
         Usuario user = new Usuario(dto.getLogin(), senhaCriptografado, dto.role);
         repository.save(user);
         return "ok";
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAuthenticationManager'");
     }
     
 

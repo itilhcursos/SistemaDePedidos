@@ -47,7 +47,7 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
         
         validar(entityDTO);  
         try{    
-            return toDTO(repositorio.save(toEntity(entityDTO)));
+            return toDTO(repositorio.saveall(toEntity(entityDTO)));
         }catch(Exception e){
             throw new Exception("Erro ao salvar o estado.");
         }
@@ -65,7 +65,7 @@ public class EstadoService extends GenericService<Estado,EstadoDTO>{
             throw new EstadoDuplicadoException(novosDados.getNome());
             
         try{     
-         return toDTO(repositorio.save(toEntity(novosDados)));
+         return toDTO(repositorio.saveall(toEntity(novosDados)));
                  }catch(Exception e){
                      throw new Exception("Alteração não foi realizada.");
                  }                                   

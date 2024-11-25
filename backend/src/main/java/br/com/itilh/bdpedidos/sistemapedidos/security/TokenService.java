@@ -1,15 +1,18 @@
 package br.com.itilh.bdpedidos.sistemapedidos.security;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+
 import org.springframework.stereotype.Service;
+
 import br.com.itilh.bdpedidos.sistemapedidos.model.Usuario;
 
 @Service
-public class TokenService<Algorithm>  {
+public class TokenService  {
     private String secret = "Cursos_Itilh";
 
-    public String generateToken (Usuario usuario){
+    public <Algorithm> String generateToken (Usuario usuario){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
@@ -23,11 +26,11 @@ public class TokenService<Algorithm>  {
        }
      
     }
-    public String validateToken (String token){
+
+    public <Algorithm> String validateToken (String token){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            Object JWT;
-            return ((Object) JWT).require(algorithm)
+            return JWT.require(algorithm)
                 .withIssuer("sistemaDePedidos")
                 .build()
                 .verify(token)
