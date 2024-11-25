@@ -6,13 +6,16 @@ import java.time.ZoneOffset;
 
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
 import br.com.itilh.bdpedidos.sistemapedidos.model.Usuario;
 
 @Service
 public class TokenService  {
     private String secret = "Cursos_Itilh";
 
-    public <Algorithm> String generateToken (Usuario usuario){
+    public String generateToken (Usuario usuario){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
@@ -27,7 +30,7 @@ public class TokenService  {
      
     }
 
-    public <Algorithm> String validateToken (String token){
+    public String validateToken (String token){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
