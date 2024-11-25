@@ -73,6 +73,7 @@ export default {
     async salvarFormaPagamento() {
       if (this.descricao === "") {
         this.isInvalido = true;
+         this.mensagem = "Descrição não pode esta vazia!!."
         return;
       }
       this.isInvalido = false;
@@ -82,9 +83,8 @@ export default {
           'Authorization': 'Bearer ' +localStorage.getItem('token')
         }
       }
-
+        try{
       if (this.id === "") {
-        //incluir pelo POST da API
         const response = await axios.post("http://localhost:8080/forma-pagamento", {
           id: this.id,
           descricao: this.descricao,
@@ -92,18 +92,15 @@ export default {
         }, config);
         this.listaFormasPagamento = response.data;
       } else {
-        // alterar pelo PUT da API
         const response = await axios.put(
           `http://localhost:8080/forma-pagamento/${this.id}`,
           {
             id: this.id,
             descricao: this.descricao,
             ativo: this.ativo
-          }, config
-        );
+          }, config );
         this.listaFormasPagamento = response.data;
       }
-
       this.$emit("salvar_formaPagamento", {
         id: this.id,
         descricao: this.descricao,
@@ -113,8 +110,16 @@ export default {
       this.id = "";
       this.descricao = "";
       this.ativo = "";
-    },
-    cancelar() {
+    }catch(error){
+      this.isInvalido=true;
+      if(error.response.status === 403){
+        this.mensagem = "Usuário não identificado! Faça o login!!!";
+       }else if(error.response.status === 400 &&
+       error.response.data.exception === 'FormaPagamentoDuplicadoException'){
+       this.mensagem = error.response.data.mensagem;
+     }else{this.mensagem = error.message;}}},
+   
+     cancelar() {
       this.id = "";
       this.descricao = "";
       this.ativo = "";
