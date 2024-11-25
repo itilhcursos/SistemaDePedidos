@@ -16,6 +16,8 @@ public interface MunicipioRepository extends JpaRepository<Municipio, BigInteger
 
     Page<Municipio> findByEstadoNomeIgnoreCase(String nome, Pageable pageable);
 
+    Page<Municipio> findByNomeContainingIgnoreCase(Pageable pageable, String nome);
+
     boolean existsByNomeAndEstadoId(String nome, BigInteger id);
 
 }

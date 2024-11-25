@@ -17,5 +17,4 @@ public class EstadoDTO {
 
     private BigInteger id;
     private String nome;
-
 }

@@ -39,5 +39,4 @@ public class GenericService<T, D> {
         List<D> dtos = entities.stream().map(this::toDTO).collect(Collectors.toList());
         return new PageImpl<>(dtos, entities.getPageable(), entities.getTotalElements());
     }
-
 }

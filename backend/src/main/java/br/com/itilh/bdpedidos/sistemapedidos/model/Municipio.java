@@ -39,5 +39,4 @@ public class Municipio {
     @ManyToOne
     @JoinColumn(name = "id_estado")
     private Estado estado;
-
 }
