@@ -50,10 +50,7 @@ public class AuthenticationController {
         return "ok";
     }
 
-    public AuthenticationManager getAuthenticationManager() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthenticationManager'");
-    }
+    
     
 
 }
